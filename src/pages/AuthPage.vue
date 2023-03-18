@@ -36,7 +36,8 @@ function register() {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((data) => {
       store.commit("user/setAuth", true);
-      console.log(store.state.user.isAuth);
+      store.commit("user/setUser", data);
+      console.log(store.state.user.isAuth, store.state.user.user);
       localStorage.setItem("user", JSON.stringify(data));
       //vtkkllx2367@gmail.com
      

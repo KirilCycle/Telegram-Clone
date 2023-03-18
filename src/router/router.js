@@ -5,7 +5,7 @@ import RegPage from "@/pages/RegPage";
 import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
 
-const isAuthenticated = store.state.user.isAuth;
+const isAuthenticated = true
 export const routes = [
   {
     path: "/auth",
@@ -22,7 +22,7 @@ export const routes = [
     name: "chat",
     component: ChatPage,
     beforeEnter: (to, from) => {
-      if (!store.state.user.isAuth) {
+      if (!isAuthenticated) {
         return false;
       } else {
         return true

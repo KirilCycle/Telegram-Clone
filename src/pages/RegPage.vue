@@ -21,6 +21,7 @@
 /* eslint-disable */
 import router from "@/router/router";
 import { ref } from "vue";
+import store from '@/store/store'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const email = ref("");
