@@ -5,7 +5,7 @@ import RegPage from "@/pages/RegPage";
 import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
 
-const isAuthenticated = true
+const isAuthenticated = store.state.user.isAuth
 export const routes = [
   {
     path: "/auth",

@@ -55,6 +55,8 @@ export async function useChat() {
     unsubscribe
   })
 
+  console.log(messages)
+
   const sendMessage = text => {
    
       // const {photoURL, uid, displayName} = store.state.user.value
@@ -68,7 +70,7 @@ export async function useChat() {
     
   }
   
-  
+
 
   return {messages, sendMessage}
   
