@@ -5,10 +5,10 @@ import RegPage from "@/pages/RegPage";
 import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
 
-const isAuthenticated = store.state.user.isAuth
+
 export const routes = [
   {
-    path: "/auth",
+    path: "/",
     name: "auth",
     component: AuthPage,
   },
@@ -22,7 +22,7 @@ export const routes = [
     name: "chat",
     component: ChatPage,
     beforeEnter: (to, from) => {
-      if (!isAuthenticated) {
+      if (!store.state.user.isAuth) {
         return false;
       } else {
         return true
@@ -45,7 +45,7 @@ const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
 });
 
-console.log(isAuthenticated, "RES");
+
 
 // router.beforeEach(async (to,from ) => {
 //     if (

@@ -1,59 +1,67 @@
 import axios from "axios";
 import router from "@/router/router";
 
-
 export const userModule = {
   state: () => ({
-   isAuth: false,
-   key: '',
-   user: {},
-   firebaseSetup: {
-     auth: {},
-     firestore: {}
-   }
+    isAuth: false,
+    key: "",
+    user: {},
+    auth: {},
+    firestore: {},
+    firebase: {},
   }),
   getters: {
-       getAuth(state) {
-        return state.isAuth 
-      },
-      getKey(state) {
-        return state.key
-      },
-      getUser(state) {
-        return state.user
-      }
+    getAuth(state) {
+      return state.isAuth;
+    },
+    getKey(state) {
+      return state.key;
+    },
+    getUser(state) {
+      return state.user;
+    },
   },
   mutations: {
-    setAuth(state,bool) {
+    setAuth(state, bool) {
       state.isAuth = bool;
     },
     setUser(state, user) {
-        state.user = user
+      state.user = user;
     },
-    setFirebaseSetup( state, setup) {
-      state.firebaseSetup = setup
-    }
+    setFirestore(state, setup) {
+      state.firestore = setup;
+    },
+    setAuthData(state, setup) {
+      state.auth = setup;
+    },
+    setFireBase(state, setup) {
+      state.ffirebase = setup;
+    },
   },
 
   actions: {
+    setAuth({ state, commit }) {
+      commit("setAuth", true);
+      router.push({ name: "chat" });
+    },
 
-      setAuth({state, commit}) {
-           commit('setAuth', true);
-      },
+    setKey({ state, commit }) {
+      commit("getKey", commit);
+    },
 
-      setKey({state, commit}) {
-        commit('getKey', commit)
-      },
+    setUser({ state, commit, user }) {
+      commit("setUser", user);
+    },
 
-      setUser({state, commit,user}) {
-        commit('setUser', user)
-      },
-
-      setFirebaseSetup({state, commit, setup}) {
-         commit('setFirebaseSetup', setup)
-      }
-
-
-   },
-   namespaced: true
+    setFirestore({ state, commit, setup }) {
+      commit("setFirestore", setup);
+    },
+    setAuthData({ state, commit, setup }) {
+      commit("setAuthData", setup);
+    },
+    setFireBase({ state, commit, setup }) {
+      commit("setFireBase", setup);
+    },
+  },
+  namespaced: true,
 };

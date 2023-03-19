@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { auth, firestore, useChat, onUnmounted } from "@/main";
+import { auth,  useChat, onUnmounted } from "@/main";
 import store from "@/store/store";
 import { ref } from "vue";
 import firebase from "firebase/compat/app";
@@ -23,8 +23,12 @@ import "firebase/compat/firestore";
 export default {
   setup() {
     // const { messages } = useChat();
+
+    // const firestore = store.state.user.firebaseSetup.firestore
+
+
     const value = ref("");
-    const messagesColection = firestore.collection("messages");
+    const messagesColection = store.state.user.firestore.collection("messages");
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
       .limit(200);
@@ -41,17 +45,14 @@ export default {
       console.log(messages);
     };
 
-    async function getMarker() {
-      const snapshot = await firebase.firestore().collection("messages").get();
-      return snapshot.docs.map((doc) => doc.data());
-    }
+   
 
     async function sendMessage(text) {
-      const { photoURL, uid, displayName } = store.state.user.value;
+      // const { photoURL, uid, displayName } = store.state.user.value;
       messagesColection.add({
-        userName: displayName,
-        userId: uid,
-        userPhotoURl: photoURL,
+        // userName: displayName,
+        // userId: uid,
+        // userPhotoURl: photoURL,
         text: text,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });

@@ -1,14 +1,17 @@
 <template>
   <div class="wrap">
     <form>
-      <h2>Log in</h2>
+      <h2 v-if="!wrongData">Log in</h2>
+      <h4 v-if="wrongData">
+        wrong email or password
+      </h4>
       <div class="input-container">
         <p class="info-tx">email</p>
-        <input v-model="email" />
+        <input  :class="{ wrong: wrongValues }" v-model="email" />
       </div>
       <div class="input-container">
         <p class="info-tx">password</p>
-        <input :type="visible" v-model="password" />
+        <input  :class="{ wrong: wrongValues }" :type="visible" v-model="password" />
       </div>
       <button class="pas_visible" > 
         <span @click.prevent="handleVisible" class="material-symbols-outlined"> {{ visible !== 'password'? "visibility": "visibility_off"  }} </span>
@@ -16,6 +19,7 @@
       <!-- <input  v-model="login" /> -->
       <button class="btn-c" @click.prevent="register">log in</button>
       <!-- <button @click.prevent="signInWithGoogle" class="btn-c">create</button> -->
+      <button @click.prevent="googleSignIn">Sign in with google</button>
     </form>
   </div>
 </template>
@@ -27,11 +31,29 @@ import store from "@/store/store";
 import router, { loginnedRoutes } from "@/router/router";
 import { ref } from "vue";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import firebase from "firebase/compat/app";
+
+
 
 const email = ref("");
 const password = ref("");
 const error = ref("");
 const visible = ref("password");
+const wrongValues = ref(false)
+const wrongData = ref(false)
+
+function googleSignIn () {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth().signInWithPopup(provider).then((res) => {
+    
+    store.commit('user/setAuth',true)
+    store.commit('user/setUser',res.user)
+    
+    router.push({ name: "chat" });
+
+  }).catch(e => alert(er))
+}
 
 function handleVisible () {
   visible.value === "password" ? visible.value = "text" :visible.value = "password"
@@ -51,20 +73,38 @@ function register() {
         router.push({ name: "chat" });
       })
       .catch((er) => {
-        // redirect()
+        wrongData.value = true
       });
   } else {
+    wrongValues.value = true
+   
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
+h4 {
+  color: #f70000;
+}
+
+
 form {
   width: 380px;
   height: auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
+}
+
+.wronginput {
+  color: red;
+}
+@media (max-width: 550px) {
+  form {
+    width: 280px;
+   
+  }
 }
 
 .btn {
@@ -138,6 +178,24 @@ input {
 }
 
 input:focus {
-  border: 1px solid rgb(242, 242, 242);
+  border: 1px solid rgb(0, 252, 4);
 }
+.wrong {
+  border: 1px solid rgb(255, 0, 0);
+  background-color: #ffffff00;
+  margin-top: 10px;
+  font: 1rem sans-serif;
+  padding-left: 5px;
+  border-radius: 5px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  color: gray;
+}
+
+.wrong:focus {
+  border: 1px solid rgb(255, 18, 18);
+}
+
+
 </style>
