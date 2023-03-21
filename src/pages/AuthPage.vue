@@ -1,20 +1,26 @@
 <template>
-  <div class="wrap">
+  <div v-on:scroll.native="log" class="wrap">
+    <ul></ul>
     <form>
-      <h2 v-if="!wrongData">Log in</h2>
-      <h4 v-if="wrongData">
-        wrong email or password
-      </h4>
+      <h2 v-font-size="count" v-if="!wrongData">Log in</h2>
+      <button @click.prevent="count += 1">+</button>
+      <h4 v-if="wrongData">wrong email or password</h4>
       <div class="input-container">
         <p class="info-tx">email</p>
-        <input  :class="{ wrong: wrongValues }" v-model="email" />
+        <input :class="{ wrong: wrongValues }" v-model="email" />
       </div>
       <div class="input-container">
         <p class="info-tx">password</p>
-        <input  :class="{ wrong: wrongValues }" :type="visible" v-model="password" />
+        <input
+          :class="{ wrong: wrongValues }"
+          :type="visible"
+          v-model="password"
+        />
       </div>
-      <button class="pas_visible" > 
-        <span @click.prevent="handleVisible" class="material-symbols-outlined"> {{ visible !== 'password'? "visibility": "visibility_off"  }} </span>
+      <button class="pas_visible">
+        <span @click.prevent="handleVisible" class="material-symbols-outlined">
+          {{ visible !== "password" ? "visibility" : "visibility_off" }}
+        </span>
       </button>
       <!-- <input  v-model="login" /> -->
       <button class="btn-c" @click.prevent="register">log in</button>
@@ -24,70 +30,84 @@
   </div>
 </template>
 
-
-<script setup>
-/* eslint-disable */
+<script>
 import store from "@/store/store";
 import router, { loginnedRoutes } from "@/router/router";
-import { ref } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from "firebase/compat/app";
+import useValidationForm from "@/hooks/useValidationForm";
+import useValidationFeatures from '@/hooks/useValidationsFeatures'
 
 
 
-const email = ref("");
-const password = ref("");
-const error = ref("");
-const visible = ref("password");
-const wrongValues = ref(false)
-const wrongData = ref(false)
 
-function googleSignIn () {
-  const provider = new firebase.auth.GoogleAuthProvider();
+export default {
+  data() {
+    return {
+      count: 3,
+      response: {},
+    };
+  },
 
-  firebase.auth().signInWithPopup(provider).then((res) => {
-    
-    store.commit('user/setAuth',true)
-    store.commit('user/setUser',res.user)
-    
-    router.push({ name: "chat" });
+  setup(props) {
 
-  }).catch(e => alert(er))
-}
+    const {error,visible,wrongValues,wrongData,password,email} = useValidationForm()
+    const { googleSignIn } = useValidationFeatures()
 
-function handleVisible () {
-  visible.value === "password" ? visible.value = "text" :visible.value = "password"
-}
+    watchEffect (() => {
 
+      console.log(email.value)
 
-function register() {
-  if (email.value.length > 7 && password.value.length > 7) {
-    signInWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then((data) => {
-        store.commit("user/setAuth", true);
-        store.commit("user/setUser", data);
-        console.log(store.state.user.isAuth, store.state.user.user);
-        localStorage.setItem("user", JSON.stringify(data));
-        //vtkkllx2367@gmail.com
+    })
 
-        router.push({ name: "chat" });
-      })
-      .catch((er) => {
-        wrongData.value = true
-      });
-  } else {
-    wrongValues.value = true
-   
-  }
-}
+    return {
+      googleSignIn,
+      error,
+      visible,
+      wrongValues,
+      wrongData
+    }
+
+  },
+
+  methods: {
+
+    handleVisible() {
+      this.visible === "password"
+        ? (this.visible = "text")
+        : (this.visible = "password");
+    },
+
+    log() {
+      console.log("LLLOOGG");
+    },
+
+    register() {
+      if (this.email.length > 7 && this.password.length > 7) {
+        signInWithEmailAndPassword(getAuth(), this.email, this.password)
+          .then((data) => {
+            store.commit("user/setAuth", true);
+            store.commit("user/setUser", data);
+            console.log(store.state.user.isAuth, store.state.user.user);
+            localStorage.setItem("user", JSON.stringify(data));
+            router.push({ name: "chat" });
+          })
+          .catch((er) => {
+            this.wrongData = true;
+          });
+      } else {
+        this.wrongValues = true;
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 h4 {
   color: #f70000;
 }
-
 
 form {
   width: 380px;
@@ -103,7 +123,6 @@ form {
 @media (max-width: 550px) {
   form {
     width: 280px;
-   
   }
 }
 
@@ -129,8 +148,6 @@ h2 {
   font-weight: 650;
 }
 .wrap {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,6 +213,4 @@ input:focus {
 .wrong:focus {
   border: 1px solid rgb(255, 18, 18);
 }
-
-
 </style>

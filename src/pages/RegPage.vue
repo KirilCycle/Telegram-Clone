@@ -26,7 +26,7 @@
         </button>
         <!-- <input  v-model="login" /> -->
         <button class="btn-c" @click.prevent="register">Go</button>
-        <button  @click.prevent="useGoogle" >Google</button>
+        <button @click.prevent="googleSignIn">Sign in with google</button>
         <!-- <button @click.prevent="signInWithGoogle" class="btn-c">create</button> -->
       </form>
     </div>
@@ -39,18 +39,17 @@ import router from "@/router/router";
 import { ref } from "vue";
 import store from "@/store/store";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import useValidationForm from "@/hooks/useValidationForm";
+import useValidationFeatures from '@/hooks/useValidationsFeatures'
 
-const email = ref("");
-const password = ref("");
-const error = ref("");
-const visible = ref("password");
-const wrongValues = ref(false);
-const wrongData = ref(false);
+
+const {email,password,error,visible,wrongValues,wrongData} = useValidationForm()
+
+const { googleSignIn } = useValidationFeatures()
 
 function handleVisible () {
   visible.value === "password" ? visible.value = "text" :visible.value = "password"
 }
-
 
 
 function register() {
@@ -65,7 +64,6 @@ function register() {
         router.push({ name: "chat" });
       })
       .catch((er) => {
-        
           wrongData.value = true
       });
   } else {

@@ -23,10 +23,7 @@ import "firebase/compat/firestore";
 export default {
   setup() {
     // const { messages } = useChat();
-
     // const firestore = store.state.user.firebaseSetup.firestore
-
-
     const value = ref("");
     const messagesColection = store.state.user.firestore.collection("messages");
     const messagesQuery = messagesColection
@@ -45,7 +42,6 @@ export default {
       console.log(messages);
     };
 
-   
 
     async function sendMessage(text) {
       // const { photoURL, uid, displayName } = store.state.user.value;
@@ -81,6 +77,6 @@ export default {
   position: fixed;
   bottom: 0;
   height: 60px;
-  background-color: #fff;
+  background-color: #007e67;
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div class="wrap">
     <router-view></router-view>
+    <!-- <navbar-bottom v-if="store.state.user.isAuth"></navbar-bottom> -->
   </div>
 </template>
 
-<script setup >
+<script setup>
 import router from "./router/router";
 import store from "./store/store";
-
 
 import { initializeApp } from "firebase/app";
 
@@ -41,31 +41,27 @@ const analytics = getAnalytics(app);
 
 firebase.initializeApp(firebaseConfig);
 
- const auth = initializeAuth(app, {
+const auth = initializeAuth(app, {
   persistence: browserLocalPersistence,
   // No popupRedirectResolver defined
 });
- const firestore = firebase.firestore();
+const firestore = firebase.firestore();
 
- onMounted(() => {
-   store.commit('user/setFirestore',firestore)
-   store.commit('user/setAuthData',auth)
+onMounted(() => {
+  store.commit("user/setFirestore", firestore);
+  store.commit("user/setAuthData", auth);
   //  store.commit('user/setFireBase',firebase)
-  })
+});
 
 
 </script>
 
 <style>
 .wrap {
-  width: 100vw;
-  height: 100vh;
-  background-color: #191919;
 }
 * {
   margin: 0px;
   bottom: 0px;
-
   padding: 0px;
 }
 

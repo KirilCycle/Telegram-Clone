@@ -4,13 +4,19 @@ import AuthPage from "@/pages/AuthPage";
 import RegPage from "@/pages/RegPage";
 import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
-
-
+import GamePage from "@/pages/GamePage";
+ 
 export const routes = [
   {
     path: "/",
     name: "auth",
     component: AuthPage,
+  },
+  {
+    path:"/game",
+    name:"game",
+    component: GamePage,
+    
   },
   {
     path: "/reg",

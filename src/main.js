@@ -1,46 +1,17 @@
-import { createApp, ref,onUnmounted } from "vue";
+import { createApp, ref, onUnmounted } from "vue";
 import App from "./App.vue";
 import router from "./router/router";
 /* eslint-disable */
 import store from "./store/store";
 // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
+import derectives from '@/directives/index'
 
-// // v9 compat packages are API compatible with v8 code
-// import firebase from "firebase/compat/app";
-// import "firebase/compat/auth";
-// import "firebase/compat/firestore";
-// import { initializeAuth, browserLocalPersistence } from "firebase/auth";
+const app = createApp(App);
 
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
+derectives.forEach((der) => {
+    app.directive(der.name, der)
+})
 
-// // Your web app's Firebase configuration
-// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBvHKL-VuejWaJoRvmhOPOvIeOpSk0frOA",
-//   authDomain: "vue-chat-dd5cd.firebaseapp.com",
-//   projectId: "vue-chat-dd5cd",
-//   storageBucket: "vue-chat-dd5cd.appspot.com",
-//   messagingSenderId: "261289183633",
-//   appId: "1:261289183633:web:a4ec3e3621cf0deecf7230",
-//   measurementId: "G-FCV2NMR8XK",
-// };
+app.directive();
 
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
-// firebase.initializeApp(firebaseConfig);
-
-// export const auth = initializeAuth(app, {
-//   persistence: browserLocalPersistence,
-//   // No popupRedirectResolver defined
-// });
-// export const firestore = firebase.firestore();
-
-
-
-
-createApp(App).use(store).use(router).mount("#app");
+app.use(store).use(router).mount("#app");
