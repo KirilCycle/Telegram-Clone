@@ -3,7 +3,6 @@
     <ul></ul>
     <form>
       <h2 v-font-size="count" v-if="!wrongData">Log in</h2>
-      <button @click.prevent="count += 1">+</button>
       <h4 v-if="wrongData">wrong email or password</h4>
       <div class="input-container">
         <p class="info-tx">email</p>
@@ -165,7 +164,7 @@ h2 {
   height: min-content;
   display: block;
   margin: 0% auto;
-  width: min-content;
+  width: 40px;
   margin-top: 5px;
   background-color: rgba(0, 0, 0, 0);
   :hover {

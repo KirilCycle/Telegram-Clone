@@ -11,6 +11,7 @@ import store from "./store/store";
 
 import { initializeApp } from "firebase/app";
 
+
 import { getAnalytics } from "firebase/analytics";
 
 // v9 compat packages are API compatible with v8 code
@@ -19,6 +20,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
 import { onMounted } from "vue";
+import { getFirestore } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,6 +38,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+
+
+
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
@@ -47,11 +52,25 @@ const auth = initializeAuth(app, {
 });
 const firestore = firebase.firestore();
 
+const db = getFirestore(app);
+
 onMounted(() => {
   store.commit("user/setFirestore", firestore);
   store.commit("user/setAuthData", auth);
+  store.commit("user/setDb", db);
+
   //  store.commit('user/setFireBase',firebase)
 });
+
+
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://support.google.com/firebase/answer/7015592
+// Initialize Firebase
+// Initialize Cloud Firestore and get a reference to the service
+
+
+
+
 
 
 </script>
@@ -63,6 +82,14 @@ onMounted(() => {
   margin: 0px;
   bottom: 0px;
   padding: 0px;
+}
+
+*:focus {
+  outline: none;
+}
+
+textarea:focus, input:focus{
+  outline: none;
 }
 
 button {
@@ -100,5 +127,6 @@ button {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #101010;
 }
 </style>

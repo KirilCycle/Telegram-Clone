@@ -9,6 +9,7 @@ export const userModule = {
     auth: {},
     firestore: {},
     firebase: {},
+    db: {},
   }),
   getters: {
     getAuth(state) {
@@ -20,6 +21,9 @@ export const userModule = {
     getUser(state) {
       return state.user;
     },
+    getDb(state) {
+      return state.db
+    }
   },
   mutations: {
     setAuth(state, bool) {
@@ -37,9 +41,17 @@ export const userModule = {
     setFireBase(state, setup) {
       state.ffirebase = setup;
     },
+    setDb(state,db) {
+      state.db = db
+    }
   },
 
   actions: {
+
+    setDb({state, commit, db}){
+      commit("setDb",db)
+    },
+
     setAuth({ state, commit }) {
       commit("setAuth", true);
       router.push({ name: "chat" });

@@ -26,7 +26,7 @@
         </button>
         <!-- <input  v-model="login" /> -->
         <button class="btn-c" @click.prevent="register">Go</button>
-        <button @click.prevent="googleSignIn">Sign in with google</button>
+        <!-- <button @click.prevent="googleSignIn">Sign in with google</button> -->
         <!-- <button @click.prevent="signInWithGoogle" class="btn-c">create</button> -->
       </form>
     </div>
@@ -51,7 +51,6 @@ function handleVisible () {
   visible.value === "password" ? visible.value = "text" :visible.value = "password"
 }
 
-
 function register() {
   if (email.value.length > 7 && password.value.length > 7) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
@@ -73,6 +72,8 @@ function register() {
 </script>
 
 <style lang="scss" scoped>
+
+$crazy_color: #00ff44;
 
 h4 {
   color: #f70000;
@@ -104,7 +105,7 @@ form {
   padding: 10px 32px 10px 32px;
   border-radius: 5px;
   color: rgb(0, 0, 0);
-  background-color: #3bd23d;
+  background-color: $crazy_color;
   margin: 0% auto;
   width: 100%;
   border: 0px;
@@ -113,7 +114,7 @@ form {
 
 h2 {
   font-size: 2rem;
-  color: #3bd23d;
+  color: $crazy_color;
   font-weight: 100;
   font-family: "Noto Sans", sans-serif;
   font-weight: 650;
@@ -142,7 +143,7 @@ h2 {
   margin-top: 5px;
   background-color: rgba(0, 0, 0, 0);
   :hover {
-    color: #3bd23d;
+    color: $crazy_color;
   }
   margin-bottom: 5px;
 }
@@ -168,7 +169,7 @@ input {
 }
 
 input:focus {
-  border: 1px solid rgb(0, 252, 4);
+  border: 1px solid $crazy_color;
 }
 .wrong {
   border: 1px solid rgb(255, 0, 0);
