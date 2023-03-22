@@ -3,7 +3,7 @@ import router from "@/router/router";
 
 export const userModule = {
   state: () => ({
-    isAuth: false,
+    isAuth: true,
     key: "",
     user: {},
     auth: {},

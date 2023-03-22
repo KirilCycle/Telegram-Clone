@@ -1,8 +1,8 @@
 <template>
-  <div v-on:scroll.native="log" class="wrap">
+  <div  class="wrap">
     <ul></ul>
     <form>
-      <h2 v-font-size="count" v-if="!wrongData">Log in</h2>
+      <h2 v-if="!wrongData">Log in</h2>
       <h4 v-if="wrongData">wrong email or password</h4>
       <div class="input-container">
         <p class="info-tx">email</p>
@@ -23,8 +23,7 @@
       </button>
       <!-- <input  v-model="login" /> -->
       <button class="btn-c" @click.prevent="register">log in</button>
-      <!-- <button @click.prevent="signInWithGoogle" class="btn-c">create</button> -->
-      <button @click.prevent="googleSignIn">Sign in with google</button>
+      <router-link class="link" to="/reg">I dont have account yet</router-link>
     </form>
   </div>
 </template>
@@ -104,6 +103,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+$crazy_color: #00ff44;
 h4 {
   color: #f70000;
 }
@@ -111,11 +112,18 @@ h4 {
 form {
   width: 380px;
   height: auto;
+  position: absolute;
+  bottom: 100px;
   padding: 20px;
   display: flex;
+  margin: 0% auto;
   flex-direction: column;
 }
 
+.link {
+  color: $crazy_color;
+  margin-top: 20px;
+}
 .wronginput {
   color: red;
 }
@@ -141,7 +149,7 @@ form {
 
 h2 {
   font-size: 2rem;
-  color: #3bd23d;
+  color: #ffffff;
   font-weight: 100;
   font-family: "Noto Sans", sans-serif;
   font-weight: 650;
@@ -166,7 +174,7 @@ h2 {
   margin: 0% auto;
   width: 40px;
   margin-top: 5px;
-  background-color: rgba(0, 0, 0, 0);
+
   :hover {
     color: #3bd23d;
   }
@@ -185,7 +193,7 @@ input {
   background-color: #ffffff00;
   margin-top: 10px;
   font: 1rem sans-serif;
-  padding-left: 5px;
+ 
   border-radius: 5px;
   width: 100%;
   height: 50px;

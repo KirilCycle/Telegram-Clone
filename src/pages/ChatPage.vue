@@ -58,11 +58,9 @@ export default {
         .reverse();
     });
 
-    const nan = () => {
-      console.log(messages);
-    };
 
     async function sendMessage(text) {
+      value.value = ' '
       // const { photoURL, uid, displayName } = store.state.user.value;
       messagesColection.add({
         // userName: displayName,
@@ -70,6 +68,7 @@ export default {
         // userPhotoURl: photoURL,
         text: text,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        
       });
     }
 
@@ -104,7 +103,6 @@ export default {
     return {
       sendMessage,
       bottom,
-      nan,
       messages,
       getUSesr,
     };
@@ -116,6 +114,9 @@ export default {
 
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
+
+
+
 .content {
   width: 100%;
   background-color: #000000;
@@ -151,13 +152,16 @@ $crazy_color: #00ff44;
     }
   }
 
+
   input {
     width: 80%;
+    -webkit-appearance: none;
     background-color: #00000000;
     height: 35px;
     border: 1px solid gray;
     border-radius: 35px;
     padding-left: 5px;
+    font-size: 1.2rem;
     margin-right: 5px;
     color: white;
     &:focus {

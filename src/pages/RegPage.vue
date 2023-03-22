@@ -29,6 +29,7 @@
         <!-- <button @click.prevent="googleSignIn">Sign in with google</button> -->
         <!-- <button @click.prevent="signInWithGoogle" class="btn-c">create</button> -->
       </form>
+      <router-link class="link" to="/">I already have account </router-link>
     </div>
   </div>
 </template>
@@ -79,6 +80,10 @@ h4 {
   color: #f70000;
 }
 
+.link {
+  color: $crazy_color;
+  margin-top: 20px;
+}
 
 form {
   width: 380px;
@@ -114,7 +119,7 @@ form {
 
 h2 {
   font-size: 2rem;
-  color: $crazy_color;
+  color: white;
   font-weight: 100;
   font-family: "Noto Sans", sans-serif;
   font-weight: 650;
