@@ -1,5 +1,12 @@
+Skip to content Search or jump to… Pull requests Issues Codespaces Marketplace
+Explore @KirilCycle KirilCycle / teom_lab Public Cannot fork because you own
+this repository and are not a member of any organizations. Code Issues Pull
+requests Actions Projects Wiki Security Insights Settings
+teom_lab/src/pages/AuthPage.vue @KirilCycle KirilCycle new reg/auth pages Latest
+commit 05bd5d8 2 days ago History 1 contributor 223 lines (192 sloc) 4.22 KB
+
 <template>
-  <div  class="wrap">
+  <div class="wrap">
     <ul></ul>
     <form>
       <h2 v-if="!wrongData">Log in</h2>
@@ -35,11 +42,7 @@ import { ref, watch, watchEffect } from "vue";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import useValidationForm from "@/hooks/useValidationForm";
-import useValidationFeatures from '@/hooks/useValidationsFeatures'
-
-
-
-
+import useValidationFeatures from "@/hooks/useValidationsFeatures";
 export default {
   data() {
     return {
@@ -47,38 +50,26 @@ export default {
       response: {},
     };
   },
-
   setup(props) {
-
-    const {error,visible,wrongValues,wrongData,password,email} = useValidationForm()
-    const { googleSignIn } = useValidationFeatures()
-
-    watchEffect (() => {
-
-      console.log(email.value)
-
-    })
-
+    const { error, visible, wrongValues, wrongData, password, email } =
+      useValidationForm();
+    const { googleSignIn } = useValidationFeatures();
+    watchEffect(() => {
+      console.log(email.value);
+    });
     return {
       googleSignIn,
       error,
       visible,
       wrongValues,
-      wrongData
-    }
-
+      wrongData,
+    };
   },
-
   methods: {
-
     handleVisible() {
       this.visible === "password"
         ? (this.visible = "text")
         : (this.visible = "password");
-    },
-
-    log() {
-      console.log("LLLOOGG");
     },
 
     register() {
@@ -88,7 +79,6 @@ export default {
             store.commit("user/setAuth", true);
             store.commit("user/setUser", data);
             console.log(store.state.user.isAuth, store.state.user.user);
-            localStorage.setItem("user", JSON.stringify(data));
             router.push({ name: "chat" });
           })
           .catch((er) => {
@@ -103,12 +93,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 $crazy_color: #00ff44;
 h4 {
   color: #f70000;
 }
-
 form {
   width: 380px;
   height: auto;
@@ -119,7 +107,6 @@ form {
   margin: 0% auto;
   flex-direction: column;
 }
-
 .link {
   color: $crazy_color;
   margin-top: 20px;
@@ -132,10 +119,8 @@ form {
     width: 280px;
   }
 }
-
 .btn {
 }
-
 .btn-c {
   padding: 10px 32px 10px 32px;
   border-radius: 5px;
@@ -146,7 +131,6 @@ form {
   border: 0px;
   font-size: 1.3rem;
 }
-
 h2 {
   font-size: 2rem;
   color: #ffffff;
@@ -160,47 +144,41 @@ h2 {
   align-items: center;
   flex-direction: column;
 }
-
 .input-container {
   width: 100%;
   position: relative;
   display: flex;
   margin-top: 32px;
 }
-
 .pas_visible {
   height: min-content;
   display: block;
   margin: 0% auto;
   width: 40px;
   margin-top: 5px;
-
   :hover {
     color: #3bd23d;
   }
   margin-bottom: 5px;
 }
-
 .info-tx {
   color: gray;
   position: absolute;
   top: -12px;
   left: 2%;
 }
-
 input {
   border: 1px solid rgb(98, 98, 98);
   background-color: #ffffff00;
   margin-top: 10px;
   font: 1rem sans-serif;
- 
+
   border-radius: 5px;
   width: 100%;
   height: 50px;
   line-height: 50px;
   color: gray;
 }
-
 input:focus {
   border: 1px solid rgb(0, 252, 4);
 }
@@ -216,8 +194,10 @@ input:focus {
   line-height: 50px;
   color: gray;
 }
-
 .wrong:focus {
   border: 1px solid rgb(255, 18, 18);
 }
 </style>
+Footer © 2023 GitHub, Inc. Footer navigation Terms Privacy Security Status Docs
+Contact GitHub Pricing API Training Blog About teom_lab/AuthPage.vue at main ·
+KirilCycle/teom_lab

@@ -1,0 +1,149 @@
+<template>
+  <div class="wrap">
+    <div class="image-container">
+      <img />
+    </div>
+
+    <div v-if="!preparedToChangeName">
+      <h2>
+        {{ takeName }}
+        <span
+          @click="preparedToChangeName = true"
+          class="material-symbols-outlined"
+        >
+          edit
+        </span>
+      </h2>
+    </div>
+    <div v-else class="input-container">
+      <p @click="changeDisplayName">apply</p>
+      <input v-model.trim="value" class="chnage-name-input" />
+      <span
+        @click="preparedToChangeName = false"
+        class="material-symbols-outlined"
+      >
+        close
+      </span>
+    </div>
+    <p class="value-alert" v-if="wrongVal">u cant use @,#,!,$,+,|,|</p>
+  </div>
+</template>
+
+<script>
+import store from "@/store/store";
+import { getAuth, updateProfile } from "firebase/auth";
+
+export default {
+  data() {
+    return {
+      user: store.state.user.user,
+      preparedToChangeName: false,
+      value: store.state.user.user.displayName
+        ? store.state.user.user.displayName
+        : store.state.user.user.email,
+      wrongVal: false,
+      changedName: false,
+    };
+  },
+  computed: {
+    takeName() {
+ if(this.changedName) {
+    return this.changedName;
+ }
+      if (this.user.displayName) {
+        return this.user.displayName;
+      } else {
+          return this.user.email;
+      }
+    },
+  },
+  methods: {
+    changeDisplayName() {
+      const symphols = ["@", "#", "$", "!", "+", "|", "/"];
+
+      let ready = true;
+
+      for (let i = 0; i < this.value.length; i++) {
+        for (let j = 0; j < symphols.length; j++) {
+          if (this.value[i].includes(symphols[j])) {
+            ready = false;
+            this.wrongVal = true;
+            return;
+          }
+        }
+      }
+
+
+      if (ready) {
+          updateProfile(this.user, {
+            displayName: this.value,
+          })
+            .then(() => {
+              this.changedName = this.value.trim()
+            })
+            .catch((error) => {
+              
+            });
+      }
+    },
+  },
+  setup(props) {
+    console.log(store.state.user);
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+$crazy_color: #00ff44;
+.wrap {
+  margin-top: 70px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .image-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background-color: #fff;
+  }
+
+  h2 {
+    margin-top: 10px;
+    color: rgb(148, 148, 148);
+    font-size: 20px;
+    font-weight: normal;
+  }
+
+  .value-alert {
+    margin-top: 10px;
+    color: rgb(61, 61, 61);
+  }
+
+  .input-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      margin-right: 7px;
+      color: $crazy_color;
+    }
+
+    input {
+      max-width: 60%;
+      background-color: rgba(102, 51, 153, 0);
+      color: rgb(153, 153, 153);
+      border-bottom: 2px solid rgb(59, 59, 59);
+      font-size: 20px;
+
+      &:focus {
+      }
+    }
+    span {
+      color: $crazy_color;
+    }
+  }
+}
+</style>

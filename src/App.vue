@@ -1,27 +1,25 @@
 <template>
   <div class="wrap">
     <router-view></router-view>
-    <!-- <navbar-bottom v-if="store.state.user.isAuth"></navbar-bottom> -->
+    <top-navbar v-if="store.state.user.isAuth"></top-navbar>
   </div>
 </template>
 
 <script setup>
 import router from "./router/router";
+import TopNavbar from "./components/TopNavbar.vue";
 import store from "./store/store";
-
 import { initializeApp } from "firebase/app";
-
-
 import { getAnalytics } from "firebase/analytics";
-
 // v9 compat packages are API compatible with v8 code
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import {  signOut } from "firebase/auth";
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
-import { onMounted } from "vue";
+import { onMounted, watchEffect, ref, watch, } from "vue";
 import { getFirestore } from "firebase/firestore";
-
+import { getAuth, setPersistence, signInWithRedirect, inMemoryPersistence, GoogleAuthProvider } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -38,9 +36,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-
-
-
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
@@ -50,29 +45,49 @@ const auth = initializeAuth(app, {
   persistence: browserLocalPersistence,
   // No popupRedirectResolver defined
 });
+
+// const auths = getAuth();
+// signOut(auths).then(() => {
+//   // Sign-out successful.
+// }).catch((error) => {
+//   // An error happened.
+// });
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log(user, 'USER')
+    store.commit("user/setUser", user);
+    store.commit("user/setAuthData", auth);
+    store.commit("user/setAuth", true);
+    store.commit("user/setDb", db);
+    console.log(store.state.user.user);
+
+  } else {
+    console.log('NOO :(')
+  }
+});
+
+
 const firestore = firebase.firestore();
 
 const db = getFirestore(app);
 
+
+
 onMounted(() => {
   store.commit("user/setFirestore", firestore);
-  store.commit("user/setAuthData", auth);
-  store.commit("user/setDb", db);
 
-  //  store.commit('user/setFireBase',firebase)
+  // console.log(auth.currentUser,store.state.user.isAuth, 'APPP')
 });
 
 
-// TODO: Replace the following with your app's Firebase project configuration
+store.commit("user/setFireBase", firebase);
+
+//  the following with your app's Firebase project configuration
 // See: https://support.google.com/firebase/answer/7015592
 // Initialize Firebase
 // Initialize Cloud Firestore and get a reference to the service
-
-
-
-
-
-
 </script>
 
 <style>
@@ -83,12 +98,22 @@ onMounted(() => {
   bottom: 0px;
   padding: 0px;
 }
+input{
+  outline: none;
+  border:none;
+  background-image:none;
+  background-color:transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;  
+}
 
 *:focus {
   outline: none;
 }
 
-textarea:focus, input:focus{
+textarea:focus,
+input:focus {
   outline: none;
 }
 

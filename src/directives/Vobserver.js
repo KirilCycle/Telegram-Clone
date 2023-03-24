@@ -11,7 +11,7 @@ export default {
     let callback = function (entries, observer) {
 
       if ( entries[0].isIntersecting) {
-        binding.value.execute();
+        binding.value();
       }
     };
 

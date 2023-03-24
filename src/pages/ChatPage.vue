@@ -1,9 +1,17 @@
 <template>
   <div class="wrap">
     <div class="content">
-      <div v-for="mes in messages" :key="mes.id">
-       <message-item :message="mes"></message-item>
-      </div>
+      <div v-observer="fetchPrevious"></div>
+      <TransitionGroup name="list" tag="div">
+        <message-item
+          v-for="mes in messages"
+          :key="mes.id"
+          :message="mes"
+        ></message-item>
+      </TransitionGroup>
+      <button @click="scrollToBottom" class="scrll-to-btm">
+        <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+      </button>
       <div ref="bottom"></div>
     </div>
     <div class="input-container">
@@ -16,51 +24,72 @@
 </template>
 
 <script>
-import { auth, useChat, onUnmounted } from "@/main";
 import store from "@/store/store";
 import { nextTick, ref, watch } from "vue";
+import { query, orderBy, startAt, startAfter } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
-import MessageItem from '../components/MessageItem.vue';
+import MessageItem from "../components/MessageItem.vue";
+
 
 export default {
   components: { MessageItem },
   setup() {
+    let previousDoc = ref(null);
+
+  
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
     const bottom = ref(null);
-
     console.log(bottom, "bor");
-
     const db = store.state.user.db;
 
-    async function getUSesr() {
-      console.log(chats);
-    }
+    console.log(db,'DB');
 
     const value = ref("");
 
+    const total = ref(0)
+
+    const opened = ref(30)
+
     const messagesColection = store.state.user.firestore.collection("messages");
+
+
+    function fetchPrevious() {
+      // const res = messagesColection
+      // .orderBy("createdAt", "desc")
+      // .limitToLast(total.value - 30);
+      console.log(messages)
+    }
+
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
-      .limit(200);
-
+      .limit(30);
+    //.limitToLast(10) получить последних
+    //
+    //limit - taking lasts
+    //
+    //  .limitToLast(20)
     const messages = ref([]);
-
-    const unsubscribe = messagesQuery.onSnapshot((snapshot) => {
+    
+    const unsubscribe = messagesQuery.onSnapshot((snapshot, parameters) => {
+      console.log(messagesColection.count);
+      total.value = snapshot.docs.length
       messages.value = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .reverse();
     });
 
+    
+
 
     async function sendMessage(text) {
-      value.value = ' '
+      value.value = " ";
       // const { photoURL, uid, displayName } = store.state.user.value;
       messagesColection.add({
         // userName: displayName,
@@ -68,26 +97,20 @@ export default {
         // userPhotoURl: photoURL,
         text: text,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        
       });
     }
 
     const auth = getAuth();
 
-    updateProfile(auth.currentUser, {
-      displayName: "Jane Q. User",
-      photoURL: "https://example.com/jane-q-user/profile.jpg",
-    })
-      .then(() => {
-        // Profile updated!
-        // ...
-      })
-      .catch((error) => {
-        // An error occurred
-        // ...
-      });
+    console.log(auth, "AUTH");
+
+ 
 
     // Start listing users from the beginning, 1000 at a time.
+
+    function scrollToBottom() {
+      bottom.value?.scrollIntoView({ behavior: "smooth" });
+    }
 
     watch(
       messages,
@@ -104,7 +127,8 @@ export default {
       sendMessage,
       bottom,
       messages,
-      getUSesr,
+      scrollToBottom,
+      fetchPrevious,
     };
   },
 };
@@ -115,13 +139,40 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 
-
-
 .content {
   width: 100%;
   background-color: #000000;
   padding-bottom: 50px;
   padding-top: 30px;
+  min-height: 100vh;
+
+  .scrll-to-btm {
+    position: fixed;
+    width: 35px;
+    height: 35px;
+    background-color: rgb(0, 0, 0);
+    color: rgb(61, 61, 61);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17.5px;
+    right: px;
+    border: 1px solid rgb(42, 42, 42);
+    bottom: 100px;
+    &:hover {
+      color: #00ff44;
+    }
+  }
+
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.5s ease;
+  }
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
 }
 
 .input-container {
@@ -152,7 +203,6 @@ $crazy_color: #00ff44;
     }
   }
 
-
   input {
     width: 80%;
     -webkit-appearance: none;
@@ -161,7 +211,8 @@ $crazy_color: #00ff44;
     border: 1px solid gray;
     border-radius: 35px;
     padding-left: 5px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    padding-left: 10px;
     margin-right: 5px;
     color: white;
     &:focus {
