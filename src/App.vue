@@ -1,7 +1,9 @@
 <template>
   <div class="wrap">
     <router-view></router-view>
-    <top-navbar v-if="store.state.user.isAuth"></top-navbar>
+    <TransitionGroup name="nav" tag="div">
+    <top-navbar v-if="store.state.user.isAuth && store.state.user.navbarVisible"></top-navbar>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -91,6 +93,20 @@ store.commit("user/setFireBase", firebase);
 </script>
 
 <style>
+
+.nav-enter-active{
+  transform: translateY(0px);
+}
+.nav-leave-active {
+  transition: all 0.5s ease;
+}
+.nav-enter-from,
+.nav-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+
 .wrap {
 }
 * {

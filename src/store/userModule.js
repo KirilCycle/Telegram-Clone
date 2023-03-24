@@ -10,10 +10,14 @@ export const userModule = {
     firestore: {},
     firebase: {},
     db: {},
+    navbarVisible: true,
   }),
   getters: {
     getAuth(state) {
       return state.isAuth;
+    },
+    getNavbarVisible(state) {
+      return state.navbarVisible;
     },
     getKey(state) {
       return state.key;
@@ -26,6 +30,9 @@ export const userModule = {
     }
   },
   mutations: {
+    setNavbar(state, bool) {
+      state.navbarVisible = bool;
+    },
     setAuth(state, bool) {
       state.isAuth = bool;
     },
@@ -50,6 +57,10 @@ export const userModule = {
 
     setDb({state, commit, db}){
       commit("setDb",db)
+    },
+
+    setNavbarVisible({state, commit, bool}){
+         commit('setNavbar', bool)
     },
 
     setAuth({ state, commit }) {

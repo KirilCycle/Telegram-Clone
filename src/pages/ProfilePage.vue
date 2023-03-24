@@ -80,6 +80,7 @@ export default {
           })
             .then(() => {
               this.changedName = this.value.trim()
+              this.preparedToChangeName = false
             })
             .catch((error) => {
               

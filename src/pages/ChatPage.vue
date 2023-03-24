@@ -103,15 +103,11 @@ export default {
     const auth = getAuth();
 
     console.log(auth, "AUTH");
-
- 
-
     // Start listing users from the beginning, 1000 at a time.
 
     function scrollToBottom() {
       bottom.value?.scrollIntoView({ behavior: "smooth" });
     }
-
     watch(
       messages,
       () => {

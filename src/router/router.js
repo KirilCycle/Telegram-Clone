@@ -26,6 +26,7 @@ export const routes = [
       }
 
     },
+
   },
   {
     path:"/game",
@@ -47,7 +48,9 @@ export const routes = [
         console.log( store.state.user.user,'router');
         return false;
       } else {
+        store.commit("user/setNavbar", true);
         return true
+
       }
 
     },

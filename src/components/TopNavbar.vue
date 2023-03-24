@@ -1,11 +1,13 @@
 <template>
-  <div class="nav-container">
-    <div  class="profile-contntainer">
-      <router-link to="/profile">
-        <img :src="takephotoUrl">
-      </router-link>
+
+    <div class="nav-container">
+      <div class="profile-contntainer">
+        <router-link to="/profile">
+          <img @click="hideNavbar" :src="takephotoUrl">
+        </router-link>
+      </div>
     </div>
-  </div>
+
 </template>
 
 <script>
@@ -20,6 +22,7 @@ export default {
       photo: store.state.user.user.photoURL
     }
   },
+
   computed: {
     takephotoUrl() {
       if (store.state.user.user.photoURL !== "https://example.com/jane-q-user/profile.jpg" && store.state.user.user.photoUR ) {
@@ -35,8 +38,15 @@ export default {
       console.log(store.state.user.user.photoURL)
     }
 
+    function hideNavbar () {
+      store.commit("user/setNavbar", false);
+    }
+
+   
+
     return {
-      show
+      show,
+      hideNavbar
     }
 
   }
@@ -45,6 +55,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.nav-enter-active,
+.nav-leave-active {
+  transition: all 0.5s ease;
+}
+.nav-enter-from,
+.nav-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
 .nav-container {
   width: 100%;
   z-index: 20;
