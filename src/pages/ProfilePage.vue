@@ -1,4 +1,8 @@
 <template>
+  <button class="logout">
+    logout
+    <span @click="logout" class="material-symbols-outlined"> logout </span>
+  </button>
   <div class="wrap">
     <div class="image-container">
       <img />
@@ -31,7 +35,7 @@
 
 <script>
 import store from "@/store/store";
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, updateProfile, signOut } from "firebase/auth";
 
 export default {
   data() {
@@ -47,13 +51,13 @@ export default {
   },
   computed: {
     takeName() {
- if(this.changedName) {
-    return this.changedName;
- }
+      if (this.changedName) {
+        return this.changedName;
+      }
       if (this.user.displayName) {
         return this.user.displayName;
       } else {
-          return this.user.email;
+        return this.user.email;
       }
     },
   },
@@ -73,23 +77,38 @@ export default {
         }
       }
 
-
       if (ready) {
-          updateProfile(this.user, {
-            displayName: this.value,
+        updateProfile(this.user, {
+          displayName: this.value,
+        })
+          .then(() => {
+            this.changedName = this.value.trim();
+            this.preparedToChangeName = false;
           })
-            .then(() => {
-              this.changedName = this.value.trim()
-              this.preparedToChangeName = false
-            })
-            .catch((error) => {
-              
-            });
+          .catch((error) => {});
       }
     },
   },
   setup(props) {
     console.log(store.state.user);
+
+    
+    function logout () {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          // Sign-out successful.
+        })
+        .catch((error) => {
+          // An error happened.
+        });
+
+    }
+
+
+    return {
+      logout
+    };
   },
 };
 </script>
@@ -101,6 +120,14 @@ $crazy_color: #00ff44;
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  .logout {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 10px;
+    color: $crazy_color;
+  }
 
   .image-container {
     width: 100px;

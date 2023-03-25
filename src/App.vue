@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import router from "./router/router";
+import router,  { routes, } from "./router/router";
 import TopNavbar from "./components/TopNavbar.vue";
 import store from "./store/store";
 import { initializeApp } from "firebase/app";
@@ -55,7 +55,6 @@ const auth = initializeAuth(app, {
 //   // An error happened.
 // });
 
-
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log(user, 'USER')
@@ -63,8 +62,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     store.commit("user/setAuthData", auth);
     store.commit("user/setAuth", true);
     store.commit("user/setDb", db);
-    console.log(store.state.user.user);
-
+    router.push({ name:  window.location.hash.replace('#/', '')});
+    // window.location.hash.replace('#/', '')
+    
   } else {
     console.log('NOO :(')
   }
@@ -86,7 +86,7 @@ onMounted(() => {
 
 store.commit("user/setFireBase", firebase);
 
-//  the following with your app's Firebase project configuration
+// the following with your app's Firebase project configuration
 // See: https://support.google.com/firebase/answer/7015592
 // Initialize Firebase
 // Initialize Cloud Firestore and get a reference to the service

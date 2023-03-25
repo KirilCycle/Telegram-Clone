@@ -5,7 +5,7 @@ export const userModule = {
   state: () => ({
     isAuth: false,
     key: "",
-    user: {},
+    user: null,
     auth: {},
     firestore: {},
     firebase: {},

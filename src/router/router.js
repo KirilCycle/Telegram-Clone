@@ -6,20 +6,38 @@ import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
 import GamePage from "@/pages/GamePage";
 import ProfilePage from "@/pages/ProfilePage";
+import {ref} from 'vue'
+import { async } from "@firebase/util";
  
+
+const isAuthed = ref(store.state.user.user)
+
 export const routes = [
   {
     path: "/",
     name: "auth",
     component: AuthPage,
+    beforeEnter: async (to, from) => {
+      if (await store.state.user.user) {
+        router.push({name:'chat'})
+        return false;
+      } else {
+        return true
+      }
+
+    },
+    
   },
+
+  
+
   {
     path: "/profile",
     name: "profile",
     component: ProfilePage,
-    beforeEnter: (to, from) => {
-      if (!store.state.user.isAuth) {
-        console.log( store.state.user.user,'router');
+    beforeEnter: async (to, from) => {
+      if (! await store.state.user.user) {
+        console.log( store.state.user.user,'router 2');
         return false;
       } else {
         return true
@@ -32,7 +50,6 @@ export const routes = [
     path:"/game",
     name:"game",
     component: GamePage,
-    
   },
   {
     path: "/reg",
@@ -43,9 +60,10 @@ export const routes = [
     path: "/chat",
     name: "chat",
     component: ChatPage,
-    beforeEnter: (to, from) => {
-      if (!store.state.user.isAuth) {
-        console.log( store.state.user.user,'router');
+    beforeEnter: async (to, from) => {
+      if (!await store.state.user.user) {
+
+        console.log( store.state.user.user,'router',isAuthed.value);
         return false;
       } else {
         store.commit("user/setNavbar", true);

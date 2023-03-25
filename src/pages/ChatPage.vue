@@ -9,16 +9,22 @@
           :message="mes"
         ></message-item>
       </TransitionGroup>
-      <button @click="scrollToBottom" class="scrll-to-btm">
-        <span class="material-symbols-outlined"> keyboard_arrow_down </span>
-      </button>
       <div ref="bottom"></div>
     </div>
     <div class="input-container">
-      <input placeholder="Write message..." v-model="value" />
-      <button @click="sendMessage(value)">
-        <span class="material-symbols-outlined"> arrow_upward </span>
-      </button>
+
+      <div class="input_content">
+        <input placeholder="Write message..." v-model="value" />
+        <button @click="sendMessage(value)">
+          <span class="material-symbols-outlined"> arrow_upward </span>
+         
+          <button @click="scrollToBottom" class="scrll-to-btm">
+            <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+          </button>
+         
+        </button>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -144,6 +150,7 @@ $crazy_color: #00ff44;
 
   .scrll-to-btm {
     position: fixed;
+    bottom: 100px;
     width: 35px;
     height: 35px;
     background-color: rgb(0, 0, 0);
@@ -152,7 +159,7 @@ $crazy_color: #00ff44;
     align-items: center;
     justify-content: center;
     border-radius: 17.5px;
-    right: px;
+    right: 10px;
     border: 1px solid rgb(42, 42, 42);
     bottom: 100px;
     &:hover {
@@ -170,50 +177,58 @@ $crazy_color: #00ff44;
     transform: translateX(30px);
   }
 }
-
 .input-container {
-  position: fixed;
-  display: flex;
   width: 100%;
-  bottom: 0;
-  height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: #1f1e1ed5;
-  justify-content: center;
+  height: 50px;
+  position: fixed;
+ 
+
+  flex-direction: column;
+  bottom: 0;
   align-items: center;
   backdrop-filter: blur(5px);
+.input_content {
+  width: 100%;
+  margin-right: 5px;
+  display: flex;
 
-  button {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    border-radius: 17.5px;
-    background-color: #000000;
-    :hover {
-      color: $crazy_color;
+    button {
+      width: 35px;
+      height: 35px;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      border-radius: 17.5px;
+      background-color: #000000;
+      :hover {
+        color: $crazy_color;
+      }
+      span {
+        font-size: 16px;
+      }
     }
-    span {
-      font-size: 16px;
+  
+    input {
+      width: 80%;
+      -webkit-appearance: none;
+      background-color: #00000000;
+      height: 35px;
+      border: 1px solid gray;
+      border-radius: 35px;
+      padding-left: 5px;
+      font-size: 1.1rem;
+      padding-left: 10px;
+      color: white;
+      &:focus {
+        border: 1px solid $crazy_color;
+      }
     }
-  }
 
-  input {
-    width: 80%;
-    -webkit-appearance: none;
-    background-color: #00000000;
-    height: 35px;
-    border: 1px solid gray;
-    border-radius: 35px;
-    padding-left: 5px;
-    font-size: 1.1rem;
-    padding-left: 10px;
-    margin-right: 5px;
-    color: white;
-    &:focus {
-      border: 1px solid $crazy_color;
-    }
-  }
+}
 }
 </style>
