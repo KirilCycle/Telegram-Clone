@@ -12,19 +12,23 @@
       <div ref="bottom"></div>
     </div>
     <div class="input-container">
-
       <div class="input_content">
         <input placeholder="Write message..." v-model="value" />
+
+        <input
+          type="file"
+          @change="(event) => uploadImage(event.target.files[0])"
+          class="image-input"
+        />
+
         <button @click="sendMessage(value)">
           <span class="material-symbols-outlined"> arrow_upward </span>
-         
+
           <button @click="scrollToBottom" class="scrll-to-btm">
             <span class="material-symbols-outlined"> keyboard_arrow_down </span>
           </button>
-         
         </button>
       </div>
-      
     </div>
   </div>
 </template>
@@ -33,6 +37,8 @@
 import store from "@/store/store";
 import { nextTick, ref, watch } from "vue";
 import { query, orderBy, startAt, startAfter } from "firebase/firestore";
+import UniqueId from "vue-unique-id";
+import { v4 as uuid } from "uuid";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -40,38 +46,67 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
-
+import { uploadBytes, listAll } from "@firebase/storage";
+import { getStorage, getDownloadURL } from "firebase/storage";
 
 export default {
   components: { MessageItem },
   setup() {
-    let previousDoc = ref(null);
+    // Create a reference with an initial file path and name
+    const storage = getStorage();
+    const pathReference = store.state.user.customStorageRef(storage, "images/logo-kirilla_v2.png0120ba5e-8bed-4d11-80f5-a5e15a880a27");
 
-  
+    async function SUS (){
+      getDownloadURL(pathReference).then((url) => {
+              console.log(url,'AS PATH');
+              console.log(it)
+            });
+    }
+
+    SUS()
+
+
+   
+
+    let previousDoc = ref(null);
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
     const bottom = ref(null);
     console.log(bottom, "bor");
     const db = store.state.user.db;
 
-    console.log(db,'DB');
+    console.log(db, "DB");
 
     const value = ref("");
 
-    const total = ref(0)
+    const total = ref(0);
 
-    const opened = ref(30)
+    const opened = ref(30);
+
+    const imageUpload = ref(null);
 
     const messagesColection = store.state.user.firestore.collection("messages");
-
 
     function fetchPrevious() {
       // const res = messagesColection
       // .orderBy("createdAt", "desc")
       // .limitToLast(total.value - 30);
-      console.log(messages)
+      console.log(messages);
     }
 
+    async function myList() {
+      listAll(pathReference).then((response) => {
+
+        response.items.forEach((it) => {
+          getDownloadURL(it).then((url) => {
+            console.log(url);
+            console.log(it)
+          });
+        });
+      });
+    }
+
+    myList();
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
@@ -82,17 +117,14 @@ export default {
     //
     //  .limitToLast(20)
     const messages = ref([]);
-    
+
     const unsubscribe = messagesQuery.onSnapshot((snapshot, parameters) => {
       console.log(messagesColection.count);
-      total.value = snapshot.docs.length
+      total.value = snapshot.docs.length;
       messages.value = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .reverse();
     });
-
-    
-
 
     async function sendMessage(text) {
       value.value = " ";
@@ -125,12 +157,36 @@ export default {
       { deep: true }
     );
 
+   async function uploadImage(doc) {
+      imageUpload.value = doc;
+
+      if (imageUpload.value !== null) {
+        const imageRef = store.state.user.customStorageRef(
+          store.state.user.storage,
+          `images/${imageUpload.value.name + uuid()}`
+        );
+        uploadBytes(imageRef, imageUpload.value)
+          .then((res) => {
+            console.log(res.ref._location.path_);
+              messagesColection.add({
+                imageRef:res.ref._location.path_, 
+                text: 'D',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              });
+            
+          })
+          .catch((e) => console.log(e),'AAA ERRO MESSAGE');
+        // console.log(uuid())
+      }
+    }
+
     return {
       sendMessage,
       bottom,
       messages,
       scrollToBottom,
       fetchPrevious,
+      uploadImage,
     };
   },
 };
@@ -184,16 +240,20 @@ $crazy_color: #00ff44;
   background-color: #1f1e1ed5;
   height: 50px;
   position: fixed;
- 
-
   flex-direction: column;
   bottom: 0;
   align-items: center;
   backdrop-filter: blur(5px);
-.input_content {
-  width: 100%;
-  margin-right: 5px;
-  display: flex;
+
+  .input_content {
+    width: 100%;
+    margin-right: 5px;
+    display: flex;
+    .image-input {
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+    }
 
     button {
       width: 35px;
@@ -212,7 +272,7 @@ $crazy_color: #00ff44;
         font-size: 16px;
       }
     }
-  
+
     input {
       width: 80%;
       -webkit-appearance: none;
@@ -228,7 +288,6 @@ $crazy_color: #00ff44;
         border: 1px solid $crazy_color;
       }
     }
-
-}
+  }
 }
 </style>

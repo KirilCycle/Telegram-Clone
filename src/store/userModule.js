@@ -11,9 +11,18 @@ export const userModule = {
     firebase: {},
     db: {},
     navbarVisible: true,
+    storage: null,
+    customStorageRef: null
   }),
   getters: {
+    getCustomStorageRef(state) {
+    return state.customStorageRef
+    }, 
+     
     getAuth(state) {
+      return state.storage;
+    },
+    getStorage(state) {
       return state.isAuth;
     },
     getNavbarVisible(state) {
@@ -30,6 +39,12 @@ export const userModule = {
     }
   },
   mutations: {
+    setCustomStorageRef(state, ref) {
+     state.customStorageRef = ref
+    },
+    setStorage(state, storage) {
+      state.storage = storage;
+    },
     setNavbar(state, bool) {
       state.navbarVisible = bool;
     },
@@ -55,6 +70,12 @@ export const userModule = {
 
   actions: {
 
+    setCustomStorageRef({state, commit, ref}) {
+       commit('setCustomStorageRef', ref)
+    },
+    setStorage({state, commit, storage}) {
+      commit("setStorage",storage)
+    },
     setDb({state, commit, db}){
       commit("setDb",db)
     },

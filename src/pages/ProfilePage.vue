@@ -1,4 +1,7 @@
 <template>
+  <button @click="$router.go(-1)" class="back">
+    <span class="material-symbols-outlined"> arrow_back_ios </span>
+  </button>
   <button class="logout">
     logout
     <span @click="logout" class="material-symbols-outlined"> logout </span>
@@ -92,8 +95,7 @@ export default {
   setup(props) {
     console.log(store.state.user);
 
-    
-    function logout () {
+    function logout() {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
@@ -102,12 +104,10 @@ export default {
         .catch((error) => {
           // An error happened.
         });
-
     }
 
-
     return {
-      logout
+      logout,
     };
   },
 };
@@ -120,6 +120,14 @@ $crazy_color: #00ff44;
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  .back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 10px;
+    color: $crazy_color;
+  }
 
   .logout {
     position: absolute;

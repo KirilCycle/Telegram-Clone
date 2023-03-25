@@ -16,12 +16,14 @@ import { getAnalytics } from "firebase/analytics";
 // v9 compat packages are API compatible with v8 code
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import {ref} from 'firebase/storage'
 import "firebase/compat/firestore";
 import {  signOut } from "firebase/auth";
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
-import { onMounted, watchEffect, ref, watch, } from "vue";
+import { onMounted, watchEffect, watch, } from "vue";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, setPersistence, signInWithRedirect, inMemoryPersistence, GoogleAuthProvider } from "firebase/auth";
+import { getStorage } from 'firebase/storage'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -75,11 +77,12 @@ const firestore = firebase.firestore();
 
 const db = getFirestore(app);
 
-
+const storage = getStorage(app)
 
 onMounted(() => {
   store.commit("user/setFirestore", firestore);
-
+  store.commit("user/setStorage",storage)
+  store.commit("user/setCustomStorageRef", ref)
   // console.log(auth.currentUser,store.state.user.isAuth, 'APPP')
 });
 
