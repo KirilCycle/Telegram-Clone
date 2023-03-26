@@ -9,22 +9,23 @@
           :message="mes"
         ></message-item>
       </TransitionGroup>
+      <button @click="scrollToBottom" class="scrll-to-btm">
+        <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+      </button>
       <div ref="bottom"></div>
     </div>
     <div class="input-container">
-
       <div class="input_content">
+        <div class="file-upl-content">
+          <span class="material-symbols-outlined"> attach_file </span>
+          <input @change="uploadImage" class="file-input" type="file" />
+        </div>
+
         <input placeholder="Write message..." v-model="value" />
         <button @click="sendMessage(value)">
           <span class="material-symbols-outlined"> arrow_upward </span>
-         
-          <button @click="scrollToBottom" class="scrll-to-btm">
-            <span class="material-symbols-outlined"> keyboard_arrow_down </span>
-          </button>
-         
         </button>
       </div>
-      
     </div>
   </div>
 </template>
@@ -42,38 +43,35 @@ import { doc, getDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 
-
 export default {
   components: { MessageItem },
   setup() {
     let previousDoc = ref(null);
 
-  
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
     const bottom = ref(null);
     console.log(bottom, "bor");
     const db = store.state.user.db;
 
-    console.log(db,'DB');
+    console.log(db, "DB");
 
     const value = ref("");
 
-    const total = ref(0)
+    const total = ref(0);
 
-    const opened = ref(30)
+    const opened = ref(30);
 
     const messagesColection = store.state.user.firestore.collection("messages");
-    
+
     const messages = ref([]);
 
     function fetchPrevious() {
       // const res = messagesColection
       // .orderBy("createdAt", "desc")
       // .limitToLast(total.value - 30);
-      console.log(messages)
+      console.log(messages);
     }
-
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
@@ -83,30 +81,37 @@ export default {
     //limit - taking lasts
     //
     //  .limitToLast(20)
-    
+
     const unsubscribe = messagesQuery.onSnapshot((snapshot, parameters) => {
       console.log(messagesColection.count);
-      total.value = snapshot.docs.length
+      total.value = snapshot.docs.length;
       messages.value = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .reverse();
     });
 
-    
-
-
     async function sendMessage(text) {
-    
       // const { photoURL, uid, displayName } = store.state.user.value;
       if (auth.currentUser && text.length > 0 && text.length < 2000) {
         messagesColection.add({
-          userName: auth.currentUser.displayName? auth.currentUser.displayName.slice(0,25):auth.currentUser.email, 
+          userName: auth.currentUser.displayName
+            ? auth.currentUser.displayName.slice(0, 25)
+            : auth.currentUser.email,
           userId: auth.currentUser.uid,
-          userPhotoURl: auth.currentUser.photoURL && !auth.currentUser.photoURL.includes('examle') ? auth.currentUser.photoURL : 'https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg',
+          userPhotoURl:
+            auth.currentUser.photoURL &&
+            !auth.currentUser.photoURL.includes("examle")
+              ? auth.currentUser.photoURL
+              : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
           text: text,
-          messageId: uuidv4() + auth.currentUser.uid.replaceAll(' ','') + text.replaceAll(' ',''),
+          messageId:
+            uuidv4() +
+            auth.currentUser.uid.replaceAll(" ", "") +
+            text.replaceAll(" ", ""),
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+         
         });
+        value.value = ''
       }
     }
 
@@ -129,11 +134,17 @@ export default {
       { deep: true }
     );
 
+    function uploadImage(event) {
+      console.log(event.target.files[0]);
+    }
+
     return {
       sendMessage,
       bottom,
+      value,
       messages,
       scrollToBottom,
+      uploadImage,
       fetchPrevious,
     };
   },
@@ -183,26 +194,54 @@ $crazy_color: #00ff44;
 }
 .input-container {
   width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
   background-color: #1f1e1ed5;
   height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
- 
-
   flex-direction: column;
   bottom: 0;
   align-items: center;
   backdrop-filter: blur(5px);
-.input_content {
-  width: 100%;
-  margin-right: 5px;
-  display: flex;
+
+  .input_content {
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    .file-upl-content {
+      width: min-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      span {
+        position: absolute;
+        height: 100%;
+        color: #404661;
+        font-size: 2rem;
+        
+      }
+      
+      .file-input {
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
+        background-color: red;
+        border-radius: 0px;
+        height: 100%;
+        opacity: 0;
+      }
+    }
 
     button {
       width: 35px;
       height: 35px;
-      margin-left: 10px;
+      margin-left: 5px;
+      margin-right: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -216,7 +255,7 @@ $crazy_color: #00ff44;
         font-size: 16px;
       }
     }
-  
+
     input {
       width: 80%;
       -webkit-appearance: none;
@@ -232,7 +271,6 @@ $crazy_color: #00ff44;
         border: 1px solid $crazy_color;
       }
     }
-
-}
+  }
 }
 </style>
