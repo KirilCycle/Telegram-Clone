@@ -129,7 +129,7 @@ $padver: 16px;
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-right: 5px;
+ 
 
   span {
     display: block;

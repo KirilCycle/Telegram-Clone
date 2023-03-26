@@ -9,20 +9,25 @@
           :message="mes"
         ></message-item>
       </TransitionGroup>
-      <button @click.prevent="scrollToBottom" class="scrll-to-btm">
+      <button v-if="!allowedAutoScroll" @click.prevent="scrollToBottom" class="scrll-to-btm">
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
       <div class="bottom" ref="bottom">
         <div v-desapeared="disableAutoScroll"></div>
       </div>
     </div>
+
     <div class="input-container">
+    
       <div class="input_content">
        <selected-file-modal @notready="messageisNotReady = true" :notready="messageisNotReady" @sendmesimg="sendMessage" ></selected-file-modal>
         <input type="text" placeholder="Write message..." v-model="value" />
-        <button @click.prevent="sendMessage(value)">
-          <span class="material-symbols-outlined"> arrow_upward </span>
-        </button>
+        
+        <div class="input_container_btns_container">
+          <button @click.prevent="sendMessage(value)">
+            <span class="material-symbols-outlined"> arrow_upward </span>
+          </button>
+        </div>    
       </div>
     </div>
   </div>
@@ -220,7 +225,7 @@ $crazy_color: #00ff44;
   }
 }
 .input-container {
-  padding: 0px;
+  padding: 0px 10px 0px 10px;
   margin: 0px;
   width: 100%;
   background-color: #1f1e1ed5;
@@ -233,18 +238,21 @@ $crazy_color: #00ff44;
   bottom: 0;
   align-items: center;
   backdrop-filter: blur(5px);
+  box-sizing: border-box;
 
   .input_content {
+    box-sizing: border-box;
     width: 100%;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
     display: flex;
+
 
     button {
       width: 35px;
       height: 35px;
-      margin-left: 5px;
-      margin-right: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
