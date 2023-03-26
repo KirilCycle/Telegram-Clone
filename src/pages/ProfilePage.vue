@@ -115,8 +115,14 @@ export default {
 
 
      async fetchUs () {
-      console.log(this.photo)
-      getDownloadURL(this.photo).then((url) => {
+      
+      const storage = getStorage();
+     
+      const pathReference = store.state.user.customStorageRef(
+        storage,
+        `${this.photo}`)
+
+      getDownloadURL(pathReference).then((url) => {
         console.log(url, "AS PATH");
         this.photo = url;
       }).catch((er) => console.log('er',er))
