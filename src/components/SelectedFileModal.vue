@@ -121,9 +121,8 @@ $padver: 16px;
   box-sizing: border-box;
 }
 .file-upl-content {
-  padding: 15px;
-  overflow: hidden;
-  width: 15px;
+  width: 20px;
+  overflow: hidden ;
   height: 100%;
   display: flex;
   cursor: pointer;
@@ -133,20 +132,20 @@ $padver: 16px;
   margin-right: 5px;
 
   span {
-    display: inline;
-    position: absolute;
-
-    height: 100%;
+    display: block;
+    position: relative;
+    right: 10px;
+    height: 30px;
     width: 15px;
     color: #404661;
     top: 0%;
+    margin: 0% auto ;
     font-size: 2rem;
   }
 
   .file-input {
     width: 13px;
     position: absolute;
-    background-color: red;
     border-radius: 0px;
     height: 100%;
     opacity: 0;

@@ -18,7 +18,6 @@
     </div>
     <div class="input-container">
       <div class="input_content">
-       
        <selected-file-modal @notready="messageisNotReady = true" :notready="messageisNotReady" @sendmesimg="sendMessage" ></selected-file-modal>
         <input type="text" placeholder="Write message..." v-model="value" />
         <button @click.prevent="sendMessage(value)">
@@ -85,7 +84,6 @@ export default {
     //  .limitToLast(20)
 
     const unsubscribe = messagesQuery.onSnapshot((snapshot, parameters) => {
-      console.log(messagesColection.count);
       total.value = snapshot.docs.length;
       messages.value = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -95,7 +93,7 @@ export default {
     async function sendMessage(text,imagePath) {
       // const { photoURL, uid, displayName } = store.state.user.value;
       if (auth.currentUser  && text.length < 2000) {
-        
+        scrollToBottom()
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -131,6 +129,11 @@ export default {
     // Start listing users from the beginning, 1000 at a time.
 
    
+    function scrollToBottom () {
+      bottom.value?.scrollIntoView({ behavior: "smooth" });
+    }
+
+
     watch(
       messages,
       () => {
@@ -153,6 +156,7 @@ export default {
       sendMessage,
       disableAutoScroll,
       bottom,
+      scrollToBottom,
       value,
       messages,
       fetchPrevious,
@@ -216,6 +220,8 @@ $crazy_color: #00ff44;
   }
 }
 .input-container {
+  padding: 0px;
+  margin: 0px;
   width: 100%;
   background-color: #1f1e1ed5;
   height: 50px;
@@ -229,12 +235,10 @@ $crazy_color: #00ff44;
   backdrop-filter: blur(5px);
 
   .input_content {
-    width: 95%;
+    width: 100%;
     justify-content: center;
     align-items: center;
     display: flex;
-
-    
 
     button {
       width: 35px;
@@ -256,7 +260,7 @@ $crazy_color: #00ff44;
     }
 
     input {
-      width: 80%;
+      width: 65%;
       background-color: #00000000;
       height: 35px;
       border: 1px solid gray;
