@@ -118,6 +118,7 @@ $crazy_color: #00ff44;
   .image-container {
     margin-top: 15px;
     width: 100%;
+    background-color: rgb(76, 76, 76);
 
      img {
       max-width: 100%;

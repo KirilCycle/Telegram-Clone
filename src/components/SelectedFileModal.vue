@@ -89,33 +89,6 @@ export default {
 
     const auth = getAuth();
 
-    // async function sendMessage(text) {
-    //   // const { photoURL, uid, displayName } = store.state.user.value;
-    //   if (auth.currentUser && text.length > 0 && text.length < 2000) {
-    //     messagesColection.add({
-    //       userName: auth.currentUser.displayName
-    //         ? auth.currentUser.displayName.slice(0, 25)
-    //         : auth.currentUser.email,
-    //       userId: auth.currentUser.uid,
-    //       userPhotoURl:
-    //         auth.currentUser.photoURL &&
-    //         !auth.currentUser.photoURL.includes("examle")
-    //           ? auth.currentUser.photoURL
-    //           : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
-    //       text: text,
-    //       messageId:
-    //         uuidv4() +
-    //         auth.currentUser.uid.replaceAll(" ", "") +
-    //         text.replaceAll(" ", ""),
-    //       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-
-    //     });
-    //     value.value = ''
-    //   }
-    // }
-
-    // 'file' comes from the Blob or File API
-
     async function postMessage(photo, capture, emit) {
         emit('notready', true)
       const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);

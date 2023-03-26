@@ -12,7 +12,9 @@
       <button @click.prevent="scrollToBottom" class="scrll-to-btm">
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
-      <div ref="bottom"></div>
+      <div class="bottom" ref="bottom">
+        <div v-desapeared="disableAutoScroll"></div>
+      </div>
     </div>
     <div class="input-container">
       <div class="input_content">
@@ -59,6 +61,7 @@ export default {
     const value = ref("");
     const total = ref(0);
     const messageisNotReady = ref(false) 
+    const allowedAutoScroll = ref(true)
  
     
     const opened = ref(30);
@@ -127,30 +130,34 @@ export default {
     console.log(auth, "AUTH");
     // Start listing users from the beginning, 1000 at a time.
 
-    function scrollToBottom() {
-      bottom.value?.scrollIntoView({ behavior: "smooth" });
-    }
+   
     watch(
       messages,
       () => {
         nextTick(() => {
           console.log("tock", bottom.value);
-          bottom.value?.scrollIntoView({ behavior: "smooth" });
+          if (allowedAutoScroll.value) {
+            bottom.value?.scrollIntoView({ behavior: "smooth" });
+          }
         });
       },
       { deep: true }
     );
 
-  
+  function disableAutoScroll(visibleBot) {
+    allowedAutoScroll.value = visibleBot
+
+  }
 
     return {
       sendMessage,
+      disableAutoScroll,
       bottom,
       value,
       messages,
-      scrollToBottom,
       fetchPrevious,
       messageisNotReady,
+      allowedAutoScroll
     };
   },
 };
@@ -168,6 +175,17 @@ $crazy_color: #00ff44;
   padding-top: 30px;
   min-height: 100vh;
 
+  .bottom {
+    width: 100%;
+    height: 5px;
+    position: relative;
+
+    div {
+      position: absolute;
+      height: 50px;
+      width: 100%;
+    }
+  }
   .scrll-to-btm {
     position: fixed;
     bottom: 100px;
