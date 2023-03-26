@@ -184,6 +184,7 @@ $crazy_color: #00ff44;
   .list-wrap {
     position: relative;
     top: 65px;
+    margin-bottom: 70px;
   }
   .bottom {
     width: 100%;

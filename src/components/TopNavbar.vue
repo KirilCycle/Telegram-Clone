@@ -12,14 +12,12 @@
 
 <script>
 import store from "@/store/store";
-import { computed } from "vue";
-import router from "@/router/router";
-import { getStorage, uploadBytes, ref,getDownloadURL} from "firebase/storage";
+import { getStorage,getDownloadURL} from "firebase/storage";
 
 export default {
   data() {
     return {
-      photo: store.state.user.user.photoURL,
+      photo: store.state.user.user.photoURL ?store.state.user.user.photoURL : 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg',
     };
   },
   methods: {

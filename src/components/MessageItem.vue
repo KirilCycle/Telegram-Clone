@@ -105,7 +105,7 @@ $crazy_color: #00ff44;
     height: 35px;
     margin-top: 5px;
     border-radius: 50%;
-    background-color: $crazy_color;
+   
     position: sticky;
     top: 60px;
     overflow: hidden;
