@@ -50,6 +50,9 @@ const auth = initializeAuth(app, {
   // No popupRedirectResolver defined
 });
 
+
+
+
 // const auths = getAuth();
 // signOut(auths).then(() => {
 //   // Sign-out successful.
@@ -93,6 +96,21 @@ store.commit("user/setFireBase", firebase);
 // See: https://support.google.com/firebase/answer/7015592
 // Initialize Firebase
 // Initialize Cloud Firestore and get a reference to the service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 <style>

@@ -1,6 +1,9 @@
 <template>
   <div class="item">
-    <img v-if="photoURL" :src="photoURL" />
+    <div class="image-container" v-if="photoURL" >
+      <img  :src="photoURL" />
+    </div>
+
     <p>{{ message.text }}</p>
   </div>
 </template>
@@ -8,7 +11,7 @@
 <script>
 import { ref } from "vue";
 import { getStorage, getDownloadURL } from "firebase/storage";
-import  store  from "@/store/store";
+import store from "@/store/store";
 
 export default {
   props: {
@@ -17,9 +20,7 @@ export default {
     required: true,
   },
   setup(props) {
-
-    const photoURL = ref(null)
-
+    const photoURL = ref(null);
 
     const storage = getStorage();
     // async function SUS (){
@@ -30,16 +31,18 @@ export default {
     // }
 
     if (props.message.imageRef) {
-      
-      const pathReference = store.state.user.customStorageRef(storage, `${props.message.imageRef}`);
+      const pathReference = store.state.user.customStorageRef(
+        storage,
+        `${props.message.imageRef}`
+      );
 
-     console.log( pathReference);
+      console.log(pathReference);
 
       getDownloadURL(pathReference).then((url) => {
-              console.log(url,'AS PATH');
-            
-              photoURL.value = url
-            });
+        console.log(url, "AS PATH");
+
+        photoURL.value = url;
+      });
     }
 
     // let photoSrc = ref(null);
@@ -65,6 +68,16 @@ export default {
   right: 0px;
   margin-left: 10px;
   border-radius: 5px;
+
+  .image-container {
+     width: 100%;
+
+     img {
+      max-width: 100%;
+      min-width: 100%;
+     }
+
+  }
 
   .time {
     font-size: 0.6rem;
