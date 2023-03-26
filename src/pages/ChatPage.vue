@@ -9,7 +9,7 @@
           :message="mes"
         ></message-item>
       </TransitionGroup>
-      <button @click="scrollToBottom" class="scrll-to-btm">
+      <button @click.prevent="scrollToBottom" class="scrll-to-btm">
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
       <div ref="bottom"></div>
@@ -17,9 +17,9 @@
     <div class="input-container">
       <div class="input_content">
        
-       <selected-file-modal></selected-file-modal>
+       <selected-file-modal @sendmesimg="sendMessage" ></selected-file-modal>
         <input placeholder="Write message..." v-model="value" />
-        <button @click="sendMessage(value)">
+        <button @click.prevent="sendMessage(value)">
           <span class="material-symbols-outlined"> arrow_upward </span>
         </button>
       </div>
@@ -88,10 +88,11 @@ export default {
         .reverse();
     });
 
-    async function sendMessage(text) {
+    async function sendMessage(text,imagePath) {
       // const { photoURL, uid, displayName } = store.state.user.value;
       if (auth.currentUser && text.length > 0 && text.length < 2000) {
-        messagesColection.add({
+        
+        const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
             : auth.currentUser.email,
@@ -108,7 +109,11 @@ export default {
             text.replaceAll(" ", ""),
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
          
-        });
+        } 
+        if (imagePath) {
+             message.imageRef = imagePath
+        }
+        messagesColection.add(message);
         value.value = ''
       }
     }

@@ -21,7 +21,7 @@
         </div>
         <div class="modal_manage">
           <button @click="v = false">Cancel</button>
-          <button>Send</button>
+          <button @click="() => postMessage(photo, capture, $emit)">Send</button>
         </div>
       </div>
     </div>
@@ -29,6 +29,10 @@
 </template>
 
 <script>
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getAuth } from "@firebase/auth";
+import { uuidv4 } from "@firebase/util";
+
 export default {
   props: {
     files: Array,
@@ -41,8 +45,9 @@ export default {
           event.target.files[0].name.includes(".png") ||
           event.target.files[0].name.includes(".jpg")
         ) {
-            this.preview = URL.createObjectURL(event.target.files[0]);
-            this.v = true;
+          this.photo = event.target.files[0];
+          this.preview = URL.createObjectURL(event.target.files[0]);
+          this.v = true;
         } else {
           this.photo = false;
         }
@@ -55,6 +60,52 @@ export default {
       v: false,
       filePreview: null,
       photo: null,
+    };
+  },
+  setup(props) {
+    const storage = getStorage();
+
+    const auth = getAuth();
+
+    // async function sendMessage(text) {
+    //   // const { photoURL, uid, displayName } = store.state.user.value;
+    //   if (auth.currentUser && text.length > 0 && text.length < 2000) {
+    //     messagesColection.add({
+    //       userName: auth.currentUser.displayName
+    //         ? auth.currentUser.displayName.slice(0, 25)
+    //         : auth.currentUser.email,
+    //       userId: auth.currentUser.uid,
+    //       userPhotoURl:
+    //         auth.currentUser.photoURL &&
+    //         !auth.currentUser.photoURL.includes("examle")
+    //           ? auth.currentUser.photoURL
+    //           : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
+    //       text: text,
+    //       messageId:
+    //         uuidv4() +
+    //         auth.currentUser.uid.replaceAll(" ", "") +
+    //         text.replaceAll(" ", ""),
+    //       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+
+    //     });
+    //     value.value = ''
+    //   }
+    // }
+
+    // 'file' comes from the Blob or File API
+
+    function postMessage(photo, capture, emit) {
+      const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
+      uploadBytes(storageRef, photo)
+        .then((snapshot) => {
+          console.log(storageRef._location.path_, "Uploaded a blob or file!");
+
+          emit("sendmesimg", capture, storageRef._location.path_);
+        })
+        .catch((er) => console.log(er, "post er"));
+    }
+    return {
+      postMessage,
     };
   },
 };
@@ -120,7 +171,7 @@ $padver: 16px;
       align-items: center;
       justify-content: center;
       img {
-        height: auto;
+        max-height: 65%;
         max-width: 100%;
       }
     }
@@ -128,7 +179,6 @@ $padver: 16px;
     .capture-container {
       @extend %paddings-setup;
       input {
-
         width: 100%;
         border-radius: 0px;
         border-bottom: 1px solid #0091ff;
