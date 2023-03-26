@@ -17,7 +17,7 @@
         </div>
 
         <div class="capture-container">
-          <input placeholder="Caption" />
+          <input v-model="capture" type="text" placeholder="Caption" />
         </div>
         <div class="modal_manage">
           <button @click="v = false">Cancel</button>
@@ -51,6 +51,7 @@ export default {
   },
   data() {
     return {
+      capture: "",
       v: false,
       filePreview: null,
       photo: null,
@@ -109,8 +110,8 @@ $padver: 16px;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #232323;
-    min-width: 300px;
-    min-height: 350px;
+    min-width: 330px;
+    min-height: 410px;
 
     .img-container {
       width: 100%;
@@ -119,7 +120,6 @@ $padver: 16px;
       align-items: center;
       justify-content: center;
       img {
-        
         height: 100%;
       }
     }
@@ -128,6 +128,7 @@ $padver: 16px;
       @extend %paddings-setup;
       input {
         width: 100%;
+        border-radius: 0px;
         border-bottom: 1px solid #0091ff;
         box-sizing: border-box;
         height: 30px;
@@ -150,8 +151,8 @@ $padver: 16px;
         cursor: pointer;
         font-weight: 550;
         color: #0091ff;
-        @extend %paddings-setup;
         border-radius: 5px;
+        @extend %paddings-setup;
 
         &:hover {
           background-color: rgba(0, 145, 255, 0.083);
