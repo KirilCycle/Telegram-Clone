@@ -124,6 +124,9 @@ $padver: 16px;
 }
 .file-upl-content {
   padding: 15px;
+  overflow: hidden;
+  width: 15px;
+  height: 100%;
   display: flex;
   cursor: pointer;
   justify-content: center;
@@ -131,19 +134,24 @@ $padver: 16px;
   position: relative;
 
   span {
+    display: inline;
     position: absolute;
+  
     height: 100%;
+    width: 15px;
     color: #404661;
     top: 0%;
     font-size: 2rem;
+    
   }
 
   .file-input {
-    width: 20px;
+    width: 13px;
     position: absolute;
     background-color: red;
     border-radius: 0px;
     height: 100%;
+ 
     opacity: 0;
   }
 }

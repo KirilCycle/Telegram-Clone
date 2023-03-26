@@ -18,7 +18,7 @@
       <div class="input_content">
        
        <selected-file-modal @sendmesimg="sendMessage" ></selected-file-modal>
-        <input placeholder="Write message..." v-model="value" />
+        <input type="text" placeholder="Write message..." v-model="value" />
         <button @click.prevent="sendMessage(value)">
           <span class="material-symbols-outlined"> arrow_upward </span>
         </button>
@@ -99,7 +99,7 @@ export default {
           userId: auth.currentUser.uid,
           userPhotoURl:
             auth.currentUser.photoURL &&
-            !auth.currentUser.photoURL.includes("examle")
+            !auth.currentUser.photoURL.includes("example.com")
               ? auth.currentUser.photoURL
               : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
           text: text,
@@ -234,7 +234,6 @@ $crazy_color: #00ff44;
 
     input {
       width: 80%;
-      -webkit-appearance: none;
       background-color: #00000000;
       height: 35px;
       border: 1px solid gray;
