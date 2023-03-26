@@ -42,7 +42,7 @@ export default {
         `${props.message.imageRef}`
       );
 
-      console.log(pathReference);
+      console.log(pathReference, 'HHHHHEEEEERERREREEEE');
 
       getDownloadURL(pathReference).then((url) => {
         console.log(url, "AS PATH");

@@ -8,8 +8,9 @@
   </button>
   <div class="wrap">
     <div class="image-container">
-      <img />
+      <img :src="photo" />
     </div>
+    <input type="file" @change="uploadPhoto" />
 
     <div v-if="!preparedToChangeName">
       <h2>
@@ -38,7 +39,18 @@
 
 <script>
 import store from "@/store/store";
-import { getAuth, updateProfile, signOut } from "firebase/auth";
+import { updateProfile, signOut } from "firebase/auth";
+import { nextTick, watch } from "vue";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import { getAuth } from "firebase/auth";
+import { collection } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import MessageItem from "../components/MessageItem.vue";
+import { uuidv4 } from "@firebase/util";
+import SelectedFileModal from "@/components/SelectedFileModal.vue";
+import { getStorage, uploadBytes, ref,getDownloadURL} from "firebase/storage";
 
 export default {
   data() {
@@ -50,6 +62,11 @@ export default {
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
+      photo:
+        store.state.user.user.photoURL &&
+        !store.state.user.user.photoURL.includes("example.com")
+          ? store.state.user.user.photoURL
+          : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
     };
   },
   computed: {
@@ -62,7 +79,11 @@ export default {
       } else {
         return this.user.email;
       }
-    },
+    }, 
+  },
+  created() {
+    
+    this.fetchUs()
   },
   methods: {
     changeDisplayName() {
@@ -91,6 +112,16 @@ export default {
           .catch((error) => {});
       }
     },
+
+
+     async fetchUs () {
+      console.log(this.photo)
+      getDownloadURL(this.photo).then((url) => {
+        console.log(url, "AS PATH");
+        this.photo = url;
+      }).catch((er) => console.log('er',er))
+     }
+
   },
   setup(props) {
     console.log(store.state.user);
@@ -106,8 +137,60 @@ export default {
         });
     }
 
+    function uploadPhoto(e) {
+      if (e.target.files[0]) {
+        const uploadedTarget = e.target.files[0];
+
+        if (
+          uploadedTarget.name.includes(".png") ||
+          uploadedTarget.name.includes(".jpg") ||
+          uploadedTarget.name.includes(".jpeg") ||
+          uploadedTarget.name.includes(".svg")
+        ) {
+          const storage = getStorage();
+          const auth = getAuth();
+
+          const storageRef = ref(
+            storage,
+            `images/${uploadedTarget.name + uuidv4()}`
+          );
+
+          uploadBytes(storageRef, uploadedTarget)
+            .then((snapshot) => {
+              console.log(
+                storageRef._location.path_,
+                "Uploaded a blob or file!"
+              );
+
+
+              updateProfile(auth.currentUser, {
+                photoURL: storageRef._location.path_,
+              })
+                .then(() => {
+                 console.log('good')
+                })
+                .catch((error) => {
+                  console.log('huynya', error)
+                });
+            })
+            .catch((er) => console.log(er, "post er"));
+
+          console.log(e.target.files[0]);
+        } else {
+          console.log("no");
+        }
+      }
+    }
+
+
+   
+
+
+
     return {
       logout,
+      uploadPhoto,
+      
     };
   },
 };
@@ -140,8 +223,15 @@ $crazy_color: #00ff44;
   .image-container {
     width: 100px;
     height: 100px;
-    border-radius: 50px;
+    border-radius: 50%;
+    overflow: hidden;
     background-color: #fff;
+
+    img {
+      width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
   }
 
   h2 {
