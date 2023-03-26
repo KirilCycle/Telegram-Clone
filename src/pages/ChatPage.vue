@@ -105,7 +105,6 @@ export default {
             : auth.currentUser.email,
           userId: auth.currentUser.uid,
           userPhotoURl:
-            auth.currentUser.photoURL &&
             !auth.currentUser.photoURL.includes("example.com")
               ? auth.currentUser.photoURL
               : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",

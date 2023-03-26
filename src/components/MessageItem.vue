@@ -1,16 +1,15 @@
 <template>
   <div class="item">
     <div class="profile-conatainer">
-      <img :src="message.userPhotoURl">
+      <img :src="profilePhotoUrl" />
     </div>
     <div class="item-body">
-      <p class="user-name"> {{message.userName.slice(0,18)}}</p>
-      <div class="image-container" v-if="photoURL" >
-        <img  :src="photoURL" />
+      <p class="user-name">{{ message.userName.slice(0, 18) }}</p>
+      <div class="image-container" v-if="photoURL">
+        <img :src="photoURL" />
       </div>
       <p class="item_body_text">{{ message.text }}</p>
     </div>
-
   </div>
 </template>
 
@@ -25,8 +24,37 @@ export default {
     isMy: Boolean,
     required: true,
   },
+  data() {
+    return {
+      profilePhotoUrl: "",
+    };
+  },
+  methods: {
+    async fetchUs() {
+      const storage = getStorage();
+
+      const pathReference = store.state.user.customStorageRef(
+        storage,
+        `${this.message.userPhotoURl}`
+      );
+
+      getDownloadURL(pathReference)
+        .then((url) => {
+          console.log(url, "AS PATH FROM ITEM");
+          this.profilePhotoUrl = url;
+        })
+        .catch((er) => console.log("er", er));
+    },
+  },
+
+  created() {
+    this.fetchUs();
+  },
+
   setup(props) {
     const photoURL = ref(null);
+
+    console.log(props.message.userPhotoURl, "ASS I NEED");
 
     const storage = getStorage();
     // async function SUS (){
@@ -42,10 +70,10 @@ export default {
         `${props.message.imageRef}`
       );
 
-      console.log(pathReference, 'HHHHHEEEEERERREREEEE');
+      console.log(pathReference, "HHHHHEEEEERERREREEEE");
 
       getDownloadURL(pathReference).then((url) => {
-        console.log(url, "AS PATH");
+        console.log(url, "AS PATH MESI");
         photoURL.value = url;
       });
     }
@@ -61,7 +89,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 $crazy_color: #00ff44;
 .item {
   width: 80%;
@@ -82,12 +109,11 @@ $crazy_color: #00ff44;
     img {
       width: 100%;
       min-height: 100%;
-      object-fit:cover;
+      object-fit: cover;
     }
-    
   }
   .item-body {
-     left: 0px;
+    left: 0px;
     .item_body_text {
       font-size: 0.9rem;
       margin-top: 15px;
@@ -112,7 +138,6 @@ $crazy_color: #00ff44;
     margin-left: 10px;
     border-radius: 5px;
     width: 70%;
-   
   }
 
   .image-container {
@@ -120,11 +145,10 @@ $crazy_color: #00ff44;
     width: 100%;
     background-color: rgb(76, 76, 76);
 
-     img {
+    img {
       max-width: 100%;
       min-width: 100%;
-     }
-
+    }
   }
 
   .time {

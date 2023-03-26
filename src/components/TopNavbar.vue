@@ -2,9 +2,9 @@
   <div class="nav-container">
     <div class="profile-contntainer">
       <router-link to="/profile">
-        <div  class="profile-img-container">
-          <img @click="hideNavbar" :src="takephotoUrl" />
-        </div> 
+        <div class="profile-img-container">
+          <img @click="hideNavbar" :src="photo" />
+        </div>
       </router-link>
     </div>
   </div>
@@ -14,6 +14,7 @@
 import store from "@/store/store";
 import { computed } from "vue";
 import router from "@/router/router";
+import { getStorage, uploadBytes, ref,getDownloadURL} from "firebase/storage";
 
 export default {
   data() {
@@ -21,13 +22,32 @@ export default {
       photo: store.state.user.user.photoURL,
     };
   },
+  methods: {
+    async fetchUs() {
+      const storage = getStorage();
+
+      const pathReference = store.state.user.customStorageRef(
+        storage,
+        `${this.photo}`
+      );
+
+      getDownloadURL(pathReference)
+        .then((url) => {
+          console.log(url, "AS PATH");
+          this.photo = url;
+        })
+        .catch((er) => console.log("er", er));
+    },
+  },
+  created() {
+    this.fetchUs();
+  },
 
   computed: {
     takephotoUrl() {
       if (
         store.state.user.user.photoURL !==
-          "https://example.com/jane-q-user/profile.jpg" &&
-        store.state.user.user.photoUR
+          "https://example.com/jane-q-user/profile.jpg" 
       ) {
         return store.state.user.user.photoURL;
       } else {
@@ -80,7 +100,6 @@ export default {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    
 
     .profile-img-container {
       width: 50px;
@@ -90,13 +109,11 @@ export default {
       overflow: hidden;
 
       img {
-         width: 100%;
-         min-height: 100%;
-         object-fit:cover;
-        
+        width: 100%;
+        min-height: 100%;
+        object-fit: cover;
       }
     }
-
   }
 }
 </style>
