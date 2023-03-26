@@ -1,10 +1,16 @@
 <template>
   <div class="item">
-    <div class="image-container" v-if="photoURL" >
-      <img  :src="photoURL" />
+    <div class="profile-conatainer">
+      <img :src="message.userPhotoURl">
+    </div>
+    <div class="item-body">
+      <p class="user-name"> {{message.userName.slice(0,18)}}</p>
+      <div class="image-container" v-if="photoURL" >
+        <img  :src="photoURL" />
+      </div>
+      <p class="item_body_text">{{ message.text }}</p>
     </div>
 
-    <p>{{ message.text }}</p>
   </div>
 </template>
 
@@ -56,21 +62,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+$crazy_color: #00ff44;
 .item {
-  width: 70%;
-  padding: 10px;
-  color: white;
-  background: rgb(35, 35, 35);
-  display: flex;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
+  width: 80%;
   position: relative;
-  right: 0px;
-  margin-left: 10px;
-  border-radius: 5px;
+  display: flex;
+
+  .profile-conatainer {
+    width: 35px;
+    height: 35px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background-color: $crazy_color;
+    position: sticky;
+    top: 60px;
+    overflow: hidden;
+    left: 5px;
+
+    img {
+      width: 100%;
+      min-height: 100%;
+      object-fit:cover;
+    }
+    
+  }
+  .item-body {
+     left: 0px;
+    .item_body_text {
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+    .user-name {
+      font-size: 1rem;
+      position: absolute;
+      top: 5px;
+      left: 13px;
+      color: $crazy_color;
+    }
+
+    padding: 13px;
+    color: white;
+    background: rgb(35, 35, 35);
+    display: flex;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    position: relative;
+    right: 0px;
+    margin-left: 10px;
+    border-radius: 5px;
+    width: 70%;
+   
+  }
 
   .image-container {
-     width: 100%;
+    margin-top: 15px;
+    width: 100%;
 
      img {
       max-width: 100%;
