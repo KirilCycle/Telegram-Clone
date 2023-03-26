@@ -16,11 +16,8 @@
     </div>
     <div class="input-container">
       <div class="input_content">
-        <div class="file-upl-content">
-          <span class="material-symbols-outlined"> attach_file </span>
-          <input @change="uploadImage" class="file-input" type="file" />
-        </div>
-
+       
+       <selected-file-modal></selected-file-modal>
         <input placeholder="Write message..." v-model="value" />
         <button @click="sendMessage(value)">
           <span class="material-symbols-outlined"> arrow_upward </span>
@@ -42,28 +39,29 @@ import { collection, getDocs } from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
+import SelectedFileModal from "@/components/SelectedFileModal.vue";
+
 
 export default {
-  components: { MessageItem },
+  components: { MessageItem, SelectedFileModal },
   setup() {
     let previousDoc = ref(null);
 
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
+
+
+
     const bottom = ref(null);
     console.log(bottom, "bor");
     const db = store.state.user.db;
-
     console.log(db, "DB");
-
     const value = ref("");
-
     const total = ref(0);
-
+ 
+    
     const opened = ref(30);
-
     const messagesColection = store.state.user.firestore.collection("messages");
-
     const messages = ref([]);
 
     function fetchPrevious() {
@@ -134,9 +132,7 @@ export default {
       { deep: true }
     );
 
-    function uploadImage(event) {
-      console.log(event.target.files[0]);
-    }
+  
 
     return {
       sendMessage,
@@ -144,7 +140,6 @@ export default {
       value,
       messages,
       scrollToBottom,
-      uploadImage,
       fetchPrevious,
     };
   },
@@ -211,31 +206,7 @@ $crazy_color: #00ff44;
     align-items: center;
     display: flex;
 
-    .file-upl-content {
-      width: min-content;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-
-      span {
-        position: absolute;
-        height: 100%;
-        color: #404661;
-        font-size: 2rem;
-        
-      }
-      
-      .file-input {
-        cursor: pointer;
-        width: 10px;
-        height: 10px;
-        background-color: red;
-        border-radius: 0px;
-        height: 100%;
-        opacity: 0;
-      }
-    }
+    
 
     button {
       width: 35px;
