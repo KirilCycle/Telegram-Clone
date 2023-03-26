@@ -20,8 +20,24 @@
           <input v-model="capture" type="text" placeholder="Caption" />
         </div>
         <div class="modal_manage">
-          <button @click="v = false">Cancel</button>
-          <button @click="() => postMessage(photo, capture, $emit)">Send</button>
+          <button
+            :class="{ 'btn-disabled':notready }"
+            :disabled="notready"
+            @click="v = false"
+          >
+            Cancel
+          </button>
+          <button
+            :class="{ 'btn-disabled': notready }"
+            :disabled="notready"
+            @click="
+              () => {
+                postMessage(photo, capture, $emit);
+              }
+            "
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>
@@ -36,17 +52,22 @@ import { uuidv4 } from "@firebase/util";
 export default {
   props: {
     files: Array,
+    notready: Boolean,
     required: true,
   },
   methods: {
     uploadImage(event) {
       if (event.target.files[0]) {
+        const uploadedTarget = event.target.files[0].name;
+
         if (
-          event.target.files[0].name.includes(".png") ||
-          event.target.files[0].name.includes(".jpg")
+          uploadedTarget.includes(".png") ||
+          uploadedTarget.includes(".jpg") ||
+          uploadedTarget.includes(".jpeg") ||
+          uploadedTarget.includes(".svg")
         ) {
           this.photo = event.target.files[0];
-          this.preview = URL.createObjectURL(event.target.files[0]);
+          this.preview = URL.createObjectURL(this.photo);
           this.v = true;
         } else {
           this.photo = false;
@@ -60,6 +81,7 @@ export default {
       v: false,
       filePreview: null,
       photo: null,
+    
     };
   },
   setup(props) {
@@ -94,12 +116,15 @@ export default {
 
     // 'file' comes from the Blob or File API
 
-    function postMessage(photo, capture, emit) {
+    async function postMessage(photo, capture, emit) {
+        emit('notready', true)
       const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
-      uploadBytes(storageRef, photo)
-        .then((snapshot) => {
-          console.log(storageRef._location.path_, "Uploaded a blob or file!");
 
+
+      uploadBytes(storageRef, photo)
+        
+      .then((snapshot) => {
+          console.log(storageRef._location.path_, "Uploaded a blob or file!");
           emit("sendmesimg", capture, storageRef._location.path_);
         })
         .catch((er) => console.log(er, "post er"));
@@ -132,17 +157,17 @@ $padver: 16px;
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-right: 5px;
 
   span {
     display: inline;
     position: absolute;
-  
+
     height: 100%;
     width: 15px;
     color: #404661;
     top: 0%;
     font-size: 2rem;
-    
   }
 
   .file-input {
@@ -151,7 +176,6 @@ $padver: 16px;
     background-color: red;
     border-radius: 0px;
     height: 100%;
- 
     opacity: 0;
   }
 }
@@ -205,6 +229,20 @@ $padver: 16px;
       justify-content: space-between;
       align-items: center;
       height: max-content;
+
+      .btn-disabled {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        cursor: pointer;
+        font-weight: 550;
+        color: #535353;
+        border-radius: 5px;
+        @extend %paddings-setup;
+
+        &:hover {
+          background-color: rgba(0, 145, 255, 0);
+          @extend %paddings-setup;
+        }
+      }
 
       button {
         font-family: Avenir, Helvetica, Arial, sans-serif;

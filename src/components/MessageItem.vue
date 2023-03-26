@@ -46,7 +46,6 @@ export default {
 
       getDownloadURL(pathReference).then((url) => {
         console.log(url, "AS PATH");
-
         photoURL.value = url;
       });
     }
@@ -96,6 +95,7 @@ $crazy_color: #00ff44;
     .user-name {
       font-size: 1rem;
       position: absolute;
+      font-weight: 500;
       top: 5px;
       left: 13px;
       color: $crazy_color;

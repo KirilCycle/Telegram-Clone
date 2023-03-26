@@ -17,7 +17,7 @@
     <div class="input-container">
       <div class="input_content">
        
-       <selected-file-modal @sendmesimg="sendMessage" ></selected-file-modal>
+       <selected-file-modal @notready="messageisNotReady = true" :notready="messageisNotReady" @sendmesimg="sendMessage" ></selected-file-modal>
         <input type="text" placeholder="Write message..." v-model="value" />
         <button @click.prevent="sendMessage(value)">
           <span class="material-symbols-outlined"> arrow_upward </span>
@@ -58,6 +58,7 @@ export default {
     console.log(db, "DB");
     const value = ref("");
     const total = ref(0);
+    const messageisNotReady = ref(false) 
  
     
     const opened = ref(30);
@@ -90,7 +91,7 @@ export default {
 
     async function sendMessage(text,imagePath) {
       // const { photoURL, uid, displayName } = store.state.user.value;
-      if (auth.currentUser && text.length > 0 && text.length < 2000) {
+      if (auth.currentUser  && text.length < 2000) {
         
         const message = {
           userName: auth.currentUser.displayName
@@ -111,9 +112,12 @@ export default {
          
         } 
         if (imagePath) {
+             messageisNotReady.value = true
              message.imageRef = imagePath
         }
-        messagesColection.add(message);
+        messagesColection.add(message).then((res) => {console.log('completed')
+        messageisNotReady.value = false
+      }  )
         value.value = ''
       }
     }
@@ -146,6 +150,7 @@ export default {
       messages,
       scrollToBottom,
       fetchPrevious,
+      messageisNotReady,
     };
   },
 };
