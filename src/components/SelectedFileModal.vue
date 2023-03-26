@@ -41,8 +41,8 @@ export default {
           event.target.files[0].name.includes(".png") ||
           event.target.files[0].name.includes(".jpg")
         ) {
-          this.v = true;
-          this.preview = URL.createObjectURL(event.target.files[0]);
+            this.preview = URL.createObjectURL(event.target.files[0]);
+            this.v = true;
         } else {
           this.photo = false;
         }
@@ -120,13 +120,15 @@ $padver: 16px;
       align-items: center;
       justify-content: center;
       img {
-        height: 100%;
+        height: auto;
+        max-width: 100%;
       }
     }
 
     .capture-container {
       @extend %paddings-setup;
       input {
+
         width: 100%;
         border-radius: 0px;
         border-bottom: 1px solid #0091ff;
