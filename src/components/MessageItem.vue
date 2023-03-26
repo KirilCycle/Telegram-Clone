@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      profilePhotoUrl: "",
+      profilePhotoUrl: this.message.photoURL?this.message.photoURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg' ,
     };
   },
   methods: {
@@ -48,7 +48,12 @@ export default {
   },
 
   created() {
-    this.fetchUs();
+    if (this.profilePhotoUrl) {
+      this.fetchUs();
+      
+    } else {
+      this.profilePhotoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg'
+    }
   },
 
   setup(props) {
@@ -91,7 +96,7 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 .item {
-  width: 80%;
+  width: 85%;
   position: relative;
   display: flex;
 

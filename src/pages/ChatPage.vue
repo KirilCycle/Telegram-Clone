@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="content">
       <div v-observer="fetchPrevious"></div>
-      <TransitionGroup name="list" tag="div">
+      <TransitionGroup name="list" class="list-wrap" tag="div">
         <message-item
           v-for="mes in messages"
           :key="mes.id"
@@ -56,8 +56,6 @@ export default {
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
 
-
-
     const bottom = ref(null);
     console.log(bottom, "bor");
     const db = store.state.user.db;
@@ -104,10 +102,6 @@ export default {
             ? auth.currentUser.displayName.slice(0, 25)
             : auth.currentUser.email,
           userId: auth.currentUser.uid,
-          userPhotoURl:
-            !auth.currentUser.photoURL.includes("example.com")
-              ? auth.currentUser.photoURL
-              : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
           text: text,
           messageId:
             uuidv4() +
@@ -119,6 +113,10 @@ export default {
         if (imagePath) {
              messageisNotReady.value = true
              message.imageRef = imagePath
+        } if (auth.currentUser.photoURL) {
+        
+           message.userPhotoURl = auth.currentUser.photoURL
+             
         }
         messagesColection.add(message).then((res) => {console.log('completed')
         messageisNotReady.value = false
@@ -183,6 +181,10 @@ $crazy_color: #00ff44;
   padding-top: 30px;
   min-height: 100vh;
 
+  .list-wrap {
+    position: relative;
+    top: 65px;
+  }
   .bottom {
     width: 100%;
     height: 5px;
