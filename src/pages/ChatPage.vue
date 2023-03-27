@@ -70,12 +70,16 @@ export default {
     const messagesColection = store.state.user.firestore.collection("messages");
     const messages = ref([]);
 
+   
+
     function fetchPrevious() {
       // const res = messagesColection
       // .orderBy("createdAt", "desc")
       // .limitToLast(total.value - 30);
       console.log(messages);
     }
+
+   
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")

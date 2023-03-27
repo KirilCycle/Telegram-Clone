@@ -59,6 +59,7 @@ const auth = initializeAuth(app, {
 // }).catch((error) => {
 //   // An error happened.
 // });
+const db = getFirestore(app);
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -78,7 +79,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 const firestore = firebase.firestore();
 
-const db = getFirestore(app);
 
 const storage = getStorage(app)
 
