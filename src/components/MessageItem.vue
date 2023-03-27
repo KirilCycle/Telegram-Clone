@@ -3,8 +3,13 @@
     <div class="profile-conatainer">
       <img :src="profilePhotoUrl" />
     </div>
-    <div @contextmenu.prevent="messageActions" class="item-body">
-      
+    <div
+      @touchend="stop"
+      @touchstart="start"
+      @touchmove="stop"
+      @contextmenu.prevent="messageActions"
+      class="item-body"
+    >
       <p class="user-name">{{ message.userName.slice(0, 18) }}</p>
       <div class="image-container" v-if="photoURL">
         <img :src="photoURL" />
@@ -38,24 +43,19 @@ export default {
       profilePhotoUrl: this.message.photoURL
         ? this.message.photoURL
         : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg",
-        visible: false
+      
     };
   },
   methods: {
-    
+    selectAction(e) {
+      console.log("select");
+    },
+
     async deleteMes() {
       await deleteDoc(doc(store.state.user.db, "messages", this.message.id));
     },
 
-    messageActions(ev) {
-      console.log('message item')
-      this.visible = true
-    },
-
-
-    
     async fetchUs() {
-
       const storage = getStorage();
 
       const pathReference = store.state.user.customStorageRef(
@@ -82,13 +82,9 @@ export default {
   },
 
   setup(props) {
-    // async function deleteITem () {
-    //   await deleteDoc(doc(store.state.user.db, "messages", "AoJeuaH2nEVsMMcF762k"));
-    // }
-
-    // deleteITem()
- 
     const auth = getAuth();
+
+    const visible = ref(false)
 
     const photoURL = ref(null);
 
@@ -96,11 +92,6 @@ export default {
 
     const storage = getStorage();
     // async function SUS (){
-    //   getDownloadURL(pathReference).then((url) => {
-    //           console.log(url,'AS PATH');
-    //           console.log(it)
-    //         });
-    // }
 
     if (props.message.imageRef) {
       const pathReference = store.state.user.customStorageRef(
@@ -116,12 +107,28 @@ export default {
       });
     }
 
-    // let photoSrc = ref(null);
+    
+    const myTimeout = ref(null)
+    
+    function open() {
+      visible.value = true
+    }
+    function start () {
+      myTimeout.value = setTimeout(open, 1000) 
+    }
+
+    function stop() {
+      clearTimeout(myTimeout.value)
+    }
 
     return {
       // photoSrc,
+      stop,
+      open,
+      start,
       auth,
       photoURL,
+      visible
     };
   },
 };
@@ -135,7 +142,7 @@ $crazy_color: #00ff44;
   width: 120px;
   height: auto;
   right: -10px;
-  top: -0px;
+  bottom: 0px;
   border-radius: 5px;
   overflow: hidden;
   z-index: 30;
@@ -152,7 +159,6 @@ $crazy_color: #00ff44;
       background-color: #8f8f8f9b;
     }
   }
-
 }
 .item {
   width: 85%;
