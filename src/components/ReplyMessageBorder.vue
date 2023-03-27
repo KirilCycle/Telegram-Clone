@@ -1,20 +1,31 @@
 <template>
   <div class="rep-container">
-    <div class="target-info">
+    <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
       <div class="text-container">
         <h3>{{$store.state.chat.from}}</h3>
-        <p>{{$store.state.chat.text}}</p>
+        <p>{{$store.state.chat.text.slice(0,30)}}</p>
       </div>
     </div>
-    <span class="material-symbols-outlined"> close </span>
+    <span class="material-symbols-outlined" @click="reset"> close </span>
   </div>
 </template>
 
 <script>
+import store from '@/store/store';
 export default {
   data() {
     
+  },
+  methods: {
+    reset() {
+        store.commit('chat/setReplyMsgRef', null)
+        store.commit('chat/setFrom',null)
+        store.commit('chat/setText', null)
+    },
+    scrllToTarget() {
+        store.state.chat.replyMsgRef.scrollIntoView({block: "center", behavior: "smooth"})  
+    }
   },
   props: {
     ref: Object,
