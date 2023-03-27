@@ -17,7 +17,7 @@
       <p class="item_body_text">{{ message.text }}</p>
     </div>
     
-   <message-actions-modal @closed="visible = false" :visible="visible"></message-actions-modal>
+   <message-actions-modal v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
     <!-- <ul v-if="visible" class="message-ations">
       <li @click="deleteMes" v-if="ableTodelete">delete</li>
       <li>reply</li>
@@ -60,9 +60,7 @@ export default {
       console.log("select");
     },
 
-    async deleteMes() {
-      await deleteDoc(doc(store.state.user.db, "messages", this.message.id));
-    },
+ 
 
     async fetchUs() {
       const storage = getStorage();
@@ -123,7 +121,7 @@ export default {
       visible.value = true
     }
     function start () {
-      myTimeout.value = setTimeout(open, 500) 
+      myTimeout.value = setTimeout(open, 600) 
     }
 
     function stop() {
