@@ -50,13 +50,21 @@ import SelectedFileModal from "@/components/SelectedFileModal.vue";
 
 export default {
   components: { MessageItem, SelectedFileModal },
+
+
   setup() {
     let previousDoc = ref(null);
 
+   
+  setTimeout(() => {
+    store.state.chat.replyMsgRef.scrollIntoView()
+  },10000)
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
 
+
     const bottom = ref(null);
+
     console.log(bottom, "bor");
     const db = store.state.user.db;
     console.log(db, "DB");

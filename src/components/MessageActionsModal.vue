@@ -22,7 +22,7 @@
             <span class="material-symbols-outlined"> delete </span>
             <button>Delete</button>
           </li>
-          <li>
+          <li @click="setReplyTarger">
             <span class="material-symbols-outlined"> reply </span>
             <button>Reply</button>
           </li>
@@ -38,10 +38,12 @@ import { deleteDoc } from "firebase/firestore";
 import { doc } from "firebase/firestore";
 import ProfileImage from "@/components/ProfileImage.vue";
 
+
 export default {
   components: { ProfileImage },
   props: {
     message: Object,
+    msgRef: Object,
     profileurl: String,
     visible: Boolean,
     required: true,
@@ -50,6 +52,10 @@ export default {
     async remMsg() {
       await deleteDoc(doc(store.state.user.db, "messages", this.message.id));
     },
+    setReplyTarger () {
+        store.commit('chat/setReplyMsgRef', this.msgRef)
+        console.log(store.state.chat.replyMsgRef, 'FROM REDUX')
+    }
   },
   data() {
     return {
@@ -59,6 +65,9 @@ export default {
       filePreview: null,
       photo: null,
     };
+  },
+  created() {
+   console.log( this, 'RESULT');
   },
 };
 </script>
@@ -130,7 +139,6 @@ $crazy_color: #00ff44;
   height: 100vh;
   overflow-y: hidden;
   z-index: 100;
-
   backdrop-filter: blur(7px);
   background-color: #000000ce;
 

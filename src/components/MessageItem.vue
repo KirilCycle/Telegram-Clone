@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div ref="msg" class="item">
    
   <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
    
@@ -17,7 +17,7 @@
       <p class="item_body_text">{{ message.text }}</p>
     </div>
     
-   <message-actions-modal v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
+   <message-actions-modal :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
     
     
   </div>
@@ -41,6 +41,7 @@ export default {
     message: Object,
     isMy: Boolean,
     required: true,
+    
   },
   data() {
     return {
@@ -48,6 +49,7 @@ export default {
       profilePhotoUrl: this.message.photoURL
         ? this.message.photoURL
         : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg",
+         msgRef: null
       
     };
   },
@@ -77,7 +79,11 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
+
+    this.msgRef = this.$refs.msg
+
+    
     if (this.profilePhotoUrl) {
       this.fetchUs();
     } else {
@@ -85,6 +91,7 @@ export default {
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg";
     }
   },
+ 
 
   setup(props) {
     const auth = getAuth();
@@ -112,6 +119,7 @@ export default {
       });
     }
 
+
     
     const myTimeout = ref(null)
     
@@ -125,6 +133,8 @@ export default {
     function stop() {
       clearTimeout(myTimeout.value)
     }
+
+
 
     return {
       // photoSrc,
