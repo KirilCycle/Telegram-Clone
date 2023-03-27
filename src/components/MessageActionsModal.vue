@@ -76,7 +76,7 @@ $crazy_color: #00ff44;
     transform: translate(-50%, -50%);
     min-width: 310px;
     width: 90%;
-    top: 10%;
+    top: 30%;
     left: 50%;
     max-height: 150px;
 
@@ -137,7 +137,7 @@ $crazy_color: #00ff44;
 
   .modal {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #232323d2;
