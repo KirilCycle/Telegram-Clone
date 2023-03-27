@@ -18,10 +18,7 @@
     </div>
     
    <message-actions-modal v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
-    <!-- <ul v-if="visible" class="message-ations">
-      <li @click="deleteMes" v-if="ableTodelete">delete</li>
-      <li>reply</li>
-    </ul> -->
+    
     
   </div>
 </template>
@@ -178,6 +175,7 @@ $crazy_color: #00ff44;
 
   
   .item-body {
+    
     left: 0px;
     .item_body_text {
       font-size: 0.9rem;
@@ -191,7 +189,7 @@ $crazy_color: #00ff44;
       left: 13px;
       color: $crazy_color;
     }
-
+    word-break: break-all;
     padding: 13px;
     color: white;
     background: rgb(35, 35, 35);
