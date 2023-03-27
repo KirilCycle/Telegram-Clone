@@ -16,10 +16,13 @@
       </div>
       <p class="item_body_text">{{ message.text }}</p>
     </div>
-    <ul v-if="visible" class="message-ations">
+    
+   <message-actions-modal @closed="visible = false" :visible="visible"></message-actions-modal>
+    <!-- <ul v-if="visible" class="message-ations">
       <li @click="deleteMes" v-if="ableTodelete">delete</li>
       <li>reply</li>
-    </ul>
+    </ul> -->
+    
   </div>
 </template>
 
@@ -30,8 +33,12 @@ import store from "@/store/store";
 import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import MessageActionsModalVue from './MessageActionsModal.vue';
+import MessageActionsModal from './MessageActionsModal.vue';
 
 export default {
+  components: { MessageActionsModal },
+
   props: {
     message: Object,
     isMy: Boolean,
@@ -47,6 +54,8 @@ export default {
     };
   },
   methods: {
+
+
     selectAction(e) {
       console.log("select");
     },
@@ -114,7 +123,7 @@ export default {
       visible.value = true
     }
     function start () {
-      myTimeout.value = setTimeout(open, 1000) 
+      myTimeout.value = setTimeout(open, 500) 
     }
 
     function stop() {
