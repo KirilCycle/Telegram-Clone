@@ -1,11 +1,16 @@
 <template>
   <Teleport to="body">
+   
+   
+    
+     
     <div
       @click.prevent="$emit('closed')"
       @touchmove.prevent="null"
       class="conatiner"
       v-if="visible"
     >
+    
       <div class="modal">
         <ul class="actions-list">
           <li v-if="ableTodelete" @click.prevent="remMsg">
@@ -30,8 +35,11 @@
 import store from '@/store/store';
 import { deleteDoc } from "firebase/firestore";
 import { doc } from "firebase/firestore";
+import ProfileImage from '@/components/ProfileImage.vue';
+
 
 export default {
+  components: { ProfileImage },
   props: {
     message: Object,
     profileurl: String,
@@ -58,6 +66,9 @@ export default {
 
 <style lang="scss" scoped>
 .conatiner {
+    -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
   position: fixed;
   width: 100%;
   height: 100vh;

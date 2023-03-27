@@ -1,31 +1,20 @@
 <template>
-  <div class="item">
-   
-  <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
-   
+    <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
     <div
-      @touchend="stop"
-      @touchstart="start"
-      @touchmove="stop"
-      @contextmenu.prevent="messageActions"
-      class="item-body"
-    >
-      <p class="user-name">{{ message.userName.slice(0, 18) }}</p>
-      <div class="image-container" v-if="photoURL">
-        <img :src="photoURL" />
-      </div>
-      <p class="item_body_text">{{ message.text }}</p>
+    @touchend="stop"
+    @touchstart="start"
+    @touchmove="stop"
+    @contextmenu.prevent="messageActions"
+    class="item-body"
+  >
+    <p class="user-name">{{ message.userName.slice(0, 18) }}</p>
+    <div class="image-container" v-if="photoURL">
+      <img :src="photoURL" />
     </div>
-    
-   <message-actions-modal v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
-    <!-- <ul v-if="visible" class="message-ations">
-      <li @click="deleteMes" v-if="ableTodelete">delete</li>
-      <li>reply</li>
-    </ul> -->
-    
+    <p class="item_body_text">{{ message.text }}</p>
   </div>
+  
 </template>
-
 <script>
 import { ref } from "vue";
 import { getStorage, getDownloadURL } from "firebase/storage";
@@ -33,9 +22,8 @@ import store from "@/store/store";
 import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import ProfileImage from "./ProfileImage.vue";
-import MessageActionsModal from './MessageActionsModal.vue';
-
+import MessageActionsModal from '@/components/MessageActionsModal.vue';
+import ProfileImage from '@/components/ProfileImage.vue';
 
 export default {
   components: { MessageActionsModal, ProfileImage },
@@ -53,6 +41,14 @@ export default {
         : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg",
       
     };
+  },
+  watch: {
+     visible() {
+         this.$emit('openModal',true)
+         console.log('GO')
+        if (this.visible.value) {
+        }
+     }
   },
   methods: {
 
@@ -120,6 +116,7 @@ export default {
     
     function open() {
       visible.value = true
+
     }
     function start () {
       myTimeout.value = setTimeout(open, 600) 
@@ -141,7 +138,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 

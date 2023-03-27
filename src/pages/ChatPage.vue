@@ -202,6 +202,9 @@ $crazy_color: #00ff44;
     }
   }
   .scrll-to-btm {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
     position: fixed;
     bottom: 100px;
     width: 35px;

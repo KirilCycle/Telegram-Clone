@@ -153,6 +153,9 @@ $padver: 16px;
 }
 
 .bloor {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
   position: fixed;
   background-color: #1e1e1ebb;
   width: 100%;
