@@ -17,8 +17,9 @@
       </div>
     </div>
 
+    <reply-message-border></reply-message-border>
     <div class="input-container">
-    
+       
       <div class="input_content">
        <selected-file-modal @notready="messageisNotReady = true" :notready="messageisNotReady" @sendmesimg="sendMessage" ></selected-file-modal>
         <input type="text" placeholder="Write message..." v-model="value" />
@@ -46,19 +47,19 @@ import { doc, getDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
+import ReplyMessageBorder from '@/components/ReplyMessageBorder.vue';
 
 
 export default {
-  components: { MessageItem, SelectedFileModal },
-
+  components: { MessageItem, SelectedFileModal, ReplyMessageBorder },
 
   setup() {
     let previousDoc = ref(null);
 
    
-  setTimeout(() => {
-    store.state.chat.replyMsgRef.scrollIntoView()
-  },10000)
+
+    // store.state.chat.replyMsgRef.
+
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
 
@@ -214,18 +215,18 @@ $crazy_color: #00ff44;
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
     position: fixed;
-    bottom: 100px;
+  
     width: 35px;
     height: 35px;
     background-color: rgb(0, 0, 0);
-    color: rgb(61, 61, 61);
+    color: rgb(255, 255, 255);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 17.5px;
     right: 10px;
     border: 1px solid rgb(42, 42, 42);
-    bottom: 100px;
+    bottom: 120px;
     &:hover {
       color: #00ff44;
     }
@@ -242,10 +243,11 @@ $crazy_color: #00ff44;
   }
 }
 .input-container {
-  padding: 0px 10px 0px 10px;
   margin: 0px;
   width: 100%;
+  padding: 0px 10px 0px 10px;
   background-color: #1f1e1ed5;
+  backdrop-filter: blur(5px);
   height: 50px;
   display: flex;
   justify-content: center;
@@ -254,7 +256,6 @@ $crazy_color: #00ff44;
   flex-direction: column;
   bottom: 0;
   align-items: center;
-  backdrop-filter: blur(5px);
   box-sizing: border-box;
 
   .input_content {

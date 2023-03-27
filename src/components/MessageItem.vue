@@ -10,7 +10,7 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-      <p class="user-name">{{ message.userName.slice(0, 18) }}</p>
+      <p class="user-name">{{ message.userName.slice(0, 24) }}</p>
       <div class="image-container" v-if="photoURL">
         <img :src="photoURL" />
       </div>
@@ -188,6 +188,7 @@ $crazy_color: #00ff44;
     
     left: 0px;
     .item_body_text {
+      text-align: left;
       font-size: 0.9rem;
       margin-top: 15px;
     }
