@@ -14,7 +14,7 @@
       <div class="image-container" v-if="photoURL">
         <img :src="photoURL" />
       </div>
-      <p class="item_body_text">{{ message.text }}</p>
+      <p :ref="message.id" class="item_body_text">{{ message.text }}</p>
     </div>
     
    <message-actions-modal :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
@@ -43,6 +43,8 @@ export default {
     required: true,
     
   },
+
+
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,

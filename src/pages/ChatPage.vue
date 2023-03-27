@@ -21,8 +21,9 @@
       </div>
     </div>
 
-
-    <reply-message-border  v-if="store.state.chat.replyMsgRef"></reply-message-border>
+    <reply-message-border
+      v-if="store.state.chat.replyMsgRef"
+    ></reply-message-border>
     <div class="input-container">
       <div class="input_content">
         <selected-file-modal
@@ -62,10 +63,16 @@ export default {
 
   data() {
     return {
-      store: store
-    }
+      store: store,
+    };
   },
-  
+  mounted() {
+    setTimeout(() => {
+      console.log("Mounted - ok");
+      console.log(this.$refs);
+    }, 5000);
+  },
+
   setup() {
     let previousDoc = ref(null);
 
@@ -76,13 +83,12 @@ export default {
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
 
-    setTimeout(() => {console.log(store.state.chat.replyMsgRef,'FROM DATAAd ') }, 7000)
+    // setTimeout(() => {console.log(this.$refs,'FROM DATAAd ') }, 2000)
 
     const bottom = ref(null);
 
     console.log(bottom, "bor");
-    const db = store.state.user.db;
-    console.log(db, "DB");
+
     const value = ref("");
     const total = ref(0);
     const messageisNotReady = ref(false);
@@ -98,15 +104,50 @@ export default {
       // .limitToLast(total.value - 30);
       console.log(messages);
     }
+    const db = firebase.firestore();
+
+    const collectionRef = db.collection("messages");
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
+      // .startAfter(50)
       .limit(30);
     //.limitToLast(10) получить последних
     //
     //limit - taking lasts
     //
     //  .limitToLast(20)
+
+    let previousQuerySnapshot = null;
+
+    
+
+    collectionRef
+      .orderBy("createdAt", "desc")
+      .limit(20)
+      .get()
+      .then((querySnapshot) => {
+        previousQuerySnapshot = querySnapshot; // assign the result to the variable
+        // handle the fetched data
+        console.log(previousQuerySnapshot, 'GPT');
+      })
+      .catch((error) => {
+        // handle the error
+      });
+
+
+      
+      collectionRef
+  .orderBy('createdAt', 'desc')
+  .startAfter(20)
+  .limit(20)
+  .get()
+  .then(querySnapshot => {
+    // handle the fetched data
+  })
+  .catch(error => {
+    // handle the error
+  });
 
     const unsubscribe = messagesQuery.onSnapshot((snapshot, parameters) => {
       total.value = snapshot.docs.length;
@@ -182,7 +223,6 @@ export default {
       fetchPrevious,
       messageisNotReady,
       allowedAutoScroll,
-    
     };
   },
 };
@@ -252,8 +292,8 @@ $crazy_color: #00ff44;
   margin: 0px;
   width: 100%;
   padding: 0px 10px 0px 10px;
-  background-color: #1f1e1ed5;
-  backdrop-filter: blur(5px);
+  background-color: #1f1e1ee6;
+  backdrop-filter: blur(8px);
   height: 50px;
   display: flex;
   justify-content: center;

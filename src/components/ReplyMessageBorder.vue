@@ -3,8 +3,8 @@
     <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
       <div class="text-container">
-        <h3>{{$store.state.chat.from}}</h3>
-        <p>{{$store.state.chat.text.slice(0,30)}}</p>
+        <h3>{{$store.state.chat.from.slice(0,30)}}</h3>
+        <p>{{$store.state.chat.text.slice(0,29)}}</p>
       </div>
     </div>
     <span class="material-symbols-outlined" @click="reset"> close </span>
@@ -35,15 +35,18 @@ export default {
 
 <style lang="scss" scoped>
 .rep-container {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
     $crazy_color: #00ff44;
    
   cursor: pointer;
   padding: 0px 10px 0px 10px;
   box-sizing: border-box;
-  background-color: #1f1e1ed5;
-  backdrop-filter: blur(5px);
-  height: 51px;
-  bottom: 50px;
+  background-color: #1f1e1ee6;
+  backdrop-filter: blur(8px);
+  height: 50px;
+  bottom: 49.5px;
   position: fixed;
   width: 100%;
   display: flex;
@@ -63,7 +66,7 @@ export default {
     display: flex;
     justify-content: start;
     flex-direction: row;
-    max-width: 45%;
+    max-width: 100%;
     align-items: start;
 
     .text-container {
