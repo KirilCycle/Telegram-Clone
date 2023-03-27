@@ -54,6 +54,8 @@ export default {
     },
     setReplyTarger () {
         store.commit('chat/setReplyMsgRef', this.msgRef)
+        store.commit('chat/setFrom',this.message.userName)
+        store.commit('chat/setText', this.message.text)
         console.log(store.state.chat.replyMsgRef, 'FROM REDUX')
     }
   },

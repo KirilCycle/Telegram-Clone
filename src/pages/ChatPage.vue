@@ -9,7 +9,11 @@
           :message="mes"
         ></message-item>
       </TransitionGroup>
-      <button v-if="!allowedAutoScroll" @click.prevent="scrollToBottom" class="scrll-to-btm">
+      <button
+        v-if="!allowedAutoScroll"
+        @click.prevent="scrollToBottom"
+        class="scrll-to-btm"
+      >
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
       <div class="bottom" ref="bottom">
@@ -17,18 +21,22 @@
       </div>
     </div>
 
-    <reply-message-border></reply-message-border>
+
+    <reply-message-border  v-if="store.state.chat.replyMsgRef"></reply-message-border>
     <div class="input-container">
-       
       <div class="input_content">
-       <selected-file-modal @notready="messageisNotReady = true" :notready="messageisNotReady" @sendmesimg="sendMessage" ></selected-file-modal>
+        <selected-file-modal
+          @notready="messageisNotReady = true"
+          :notready="messageisNotReady"
+          @sendmesimg="sendMessage"
+        ></selected-file-modal>
         <input type="text" placeholder="Write message..." v-model="value" />
-        
+
         <div class="input_container_btns_container">
           <button @click.prevent="sendMessage(value)">
             <span class="material-symbols-outlined"> arrow_upward </span>
           </button>
-        </div>    
+        </div>
       </div>
     </div>
   </div>
@@ -47,22 +55,28 @@ import { doc, getDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
-import ReplyMessageBorder from '@/components/ReplyMessageBorder.vue';
-
+import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
 
 export default {
   components: { MessageItem, SelectedFileModal, ReplyMessageBorder },
 
+  data() {
+    return {
+      store: store
+    }
+  },
+  
   setup() {
     let previousDoc = ref(null);
 
-   
+    // let replyTarget = ref(store.state.chat.replyMsgRef);
 
     // store.state.chat.replyMsgRef.
 
     // const { messages } = useChat();
     // const firestore = store.state.user.firebaseSetup.firestore
 
+    setTimeout(() => {console.log(store.state.chat.replyMsgRef,'FROM DATAAd ') }, 7000)
 
     const bottom = ref(null);
 
@@ -71,15 +85,12 @@ export default {
     console.log(db, "DB");
     const value = ref("");
     const total = ref(0);
-    const messageisNotReady = ref(false) 
-    const allowedAutoScroll = ref(true)
- 
-    
+    const messageisNotReady = ref(false);
+    const allowedAutoScroll = ref(true);
+
     const opened = ref(30);
     const messagesColection = store.state.user.firestore.collection("messages");
     const messages = ref([]);
-
-   
 
     function fetchPrevious() {
       // const res = messagesColection
@@ -87,8 +98,6 @@ export default {
       // .limitToLast(total.value - 30);
       console.log(messages);
     }
-
-   
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
@@ -106,10 +115,10 @@ export default {
         .reverse();
     });
 
-    async function sendMessage(text,imagePath) {
+    async function sendMessage(text, imagePath) {
       // const { photoURL, uid, displayName } = store.state.user.value;
-      if (auth.currentUser  && text.length < 2000) {
-        scrollToBottom()
+      if (auth.currentUser && text.length < 2000) {
+        scrollToBottom();
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -121,20 +130,19 @@ export default {
             auth.currentUser.uid.replaceAll(" ", "") +
             text.replaceAll(" ", ""),
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-         
-        } 
+        };
         if (imagePath) {
-             messageisNotReady.value = true
-             message.imageRef = imagePath
-        } if (auth.currentUser.photoURL) {
-        
-           message.userPhotoURl = auth.currentUser.photoURL
-             
+          messageisNotReady.value = true;
+          message.imageRef = imagePath;
         }
-        messagesColection.add(message).then((res) => {console.log('completed')
-        messageisNotReady.value = false
-      }  )
-        value.value = ''
+        if (auth.currentUser.photoURL) {
+          message.userPhotoURl = auth.currentUser.photoURL;
+        }
+        messagesColection.add(message).then((res) => {
+          console.log("completed");
+          messageisNotReady.value = false;
+        });
+        value.value = "";
       }
     }
 
@@ -143,11 +151,9 @@ export default {
     console.log(auth, "AUTH");
     // Start listing users from the beginning, 1000 at a time.
 
-   
-    function scrollToBottom () {
+    function scrollToBottom() {
       bottom.value?.scrollIntoView({ behavior: "smooth" });
     }
-
 
     watch(
       messages,
@@ -162,10 +168,9 @@ export default {
       { deep: true }
     );
 
-  function disableAutoScroll(visibleBot) {
-    allowedAutoScroll.value = visibleBot
-
-  }
+    function disableAutoScroll(visibleBot) {
+      allowedAutoScroll.value = visibleBot;
+    }
 
     return {
       sendMessage,
@@ -176,7 +181,8 @@ export default {
       messages,
       fetchPrevious,
       messageisNotReady,
-      allowedAutoScroll
+      allowedAutoScroll,
+    
     };
   },
 };
@@ -215,7 +221,7 @@ $crazy_color: #00ff44;
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
     position: fixed;
-  
+
     width: 35px;
     height: 35px;
     background-color: rgb(0, 0, 0);
@@ -266,7 +272,6 @@ $crazy_color: #00ff44;
     flex-direction: row;
     justify-content: space-between;
     display: flex;
-
 
     button {
       width: 35px;

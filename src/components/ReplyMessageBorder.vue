@@ -3,8 +3,8 @@
     <div class="target-info">
       <span class="material-symbols-outlined"> reply </span>
       <div class="text-container">
-        <h3>Pavel Durov</h3>
-        <p>Bllawdlaw ldwa ldlwa ldwal dlwad ld</p>
+        <h3>{{$store.state.chat.from}}</h3>
+        <p>{{$store.state.chat.text}}</p>
       </div>
     </div>
     <span class="material-symbols-outlined"> close </span>
@@ -12,15 +12,21 @@
 </template>
 
 <script>
-import store from "@/store/store";
-
-export default {};
+export default {
+  data() {
+    
+  },
+  props: {
+    ref: Object,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .rep-container {
+    $crazy_color: #00ff44;
+   
   cursor: pointer;
-  $crazy_color: #00ff44;
   padding: 0px 10px 0px 10px;
   box-sizing: border-box;
   background-color: #1f1e1ed5;
@@ -38,6 +44,7 @@ export default {};
     width: 35px;
     height: 35px;
     overflow: hidden;
+    flex-shrink: 0;
     cursor: pointer;
     color: $crazy_color;
   }
@@ -45,7 +52,7 @@ export default {};
     display: flex;
     justify-content: start;
     flex-direction: row;
-    max-width: 60%;
+    max-width: 45%;
     align-items: start;
 
     .text-container {
