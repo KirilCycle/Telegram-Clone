@@ -29,7 +29,7 @@ export default {
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
-    slectedChatRef.doc(props.chatId).onSnapshot((doc) => {
+    slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
         chat.value = doc.data();

@@ -54,7 +54,7 @@ export default {
 
       // Atomically add a new region to the "regions" array field.
       await updateDoc(washingtonRef, {
-        messages: arrayUnion("greawdatirgiaawdawwaddwdnias"),
+        messages: arrayUnion("sex"),
       });
     },
   },
@@ -89,6 +89,20 @@ if (store.state.chat.chatId) {
 }
 
 
+
+// Query the usersPrew collection
+const query = db.collection('usersPrew').where('email', '>=', 'masterok').where('email', '<=', 'susz');
+
+// Get the query results
+query.get().then((querySnapshot) => {
+  const users = [];
+  querySnapshot.forEach((doc) => {
+    // Get the document data and add it to the users array
+    const user = doc.data();
+    users.push(user);
+  });
+  console.log(users);
+});
 
 
 
@@ -141,7 +155,7 @@ if (store.state.chat.chatId) {
   margin-top: 70px;
 }
 .chat-list {
-  width: 200px;
+  width: 300px;
   height: 100vh;
   background-color: rgb(46, 46, 55);
   display: flex;

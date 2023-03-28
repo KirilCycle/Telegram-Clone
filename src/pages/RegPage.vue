@@ -41,30 +41,52 @@ import { ref } from "vue";
 import store from "@/store/store";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import useValidationForm from "@/hooks/useValidationForm";
-import useValidationFeatures from '@/hooks/useValidationsFeatures'
+import useValidationFeatures from "@/hooks/useValidationsFeatures";
+import { doc, setDoc } from "firebase/firestore";
+import firebase from "firebase/compat/app";
 
+const { email, password, error, visible, wrongValues, wrongData } =
+  useValidationForm();
 
-const {email,password,error,visible,wrongValues,wrongData} = useValidationForm()
+const { googleSignIn } = useValidationFeatures();
 
-const { googleSignIn } = useValidationFeatures()
-
-function handleVisible () {
-  visible.value === "password" ? visible.value = "text" :visible.value = "password"
+function handleVisible() {
+  visible.value === "password"
+    ? (visible.value = "text")
+    : (visible.value = "password");
 }
 
 function register() {
   if (email.value.length > 7 && password.value.length > 7) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then((data) => {
+       
+
+        const db = firebase.firestore()
+
+        //vtkkllx2367@gmail.com
+        // Add a new document in collection "cities"
+       
+        // store.commit("user/setAuth", true);
+        // console.log(store.state.user.isAuth);
+
+        setDoc(doc(db, "usersPrew", data.user.uid), {
+          uid: data.user.uid,
+          email: data.user.email,
+          displayName: data.user.displayName,
+          photoURL: data.user.photoURL,
+        }).then((res) =>  {
+
+
         store.commit("user/setAuth", true);
         console.log(store.state.user.isAuth);
-        localStorage.setItem("user", JSON.stringify(data));
-        //vtkkllx2367@gmail.com
-
         router.push({ name: "chat" });
+
+        } )
+
       })
       .catch((er) => {
-          wrongData.value = true
+        wrongData.value = true;
       });
   } else {
     wrongValues.value = true;
@@ -73,7 +95,6 @@ function register() {
 </script>
 
 <style lang="scss" scoped>
-
 $crazy_color: #00ff44;
 
 h4 {
@@ -99,7 +120,6 @@ form {
 @media (max-width: 550px) {
   form {
     width: 280px;
-   
   }
 }
 
@@ -192,6 +212,4 @@ input:focus {
 .wrong:focus {
   border: 1px solid rgb(255, 18, 18);
 }
-
-
 </style>
