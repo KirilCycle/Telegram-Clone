@@ -1,27 +1,39 @@
 <template>
   <div class="main">
     <div class="chat-list">
-      <div
-        @click="() => $store.commit('chat/setChatId', cht)  "
-        class="chatitem"
-        v-for="cht in chatList.chats"
-        :key="cht"
-      >
-        {{ cht }}
+      <p @click="isSearch = true">search chats</p>
+
+      <div v-if="!isSearch" class="chat-list-container">
+      
+        <div 
+          @click="() => $store.commit('chat/setChatId', cht)"
+          class="chatitem"
+          v-for="cht in chatList.chats"
+          :key="cht"
+        >
+          {{ cht }}
+        </div>
       </div>
-    </div>
+
+      <div v-else>
+        <founded-chats-list></founded-chats-list>
+        
+      </div>
+
+      </div>
+
     <div class="chat-container">
       <h2>selectedChat: {{ $store.state.chat.chatId }}</h2>
-     
+
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat :chatId="$store.state.chat.chatId"></direct-chat>
       </div>
-     
+
       <div v-else>
         <h2>Select chat</h2>
       </div>
-     
+
       <button @click="addNewMessag">SENNENENEND TEST</button>
     </div>
   </div>
@@ -36,14 +48,16 @@ import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import DirectChat from "@/components/DirectChat.vue";
+import FoundedChatsList from '@/components/FoundedChatsList.vue';
 
 export default {
   components: {
     DirectChat,
+    FoundedChatsList,
   },
   data() {
     return {
-      
+      isSearch: false,
     };
   },
 
@@ -69,42 +83,39 @@ export default {
 
     const chatList = ref("");
 
-    const chat =ref("")
+    const chat = ref("");
 
+    const slectedChatRef = db.collection("chats");
 
-    const slectedChatRef = db.collection("chats")
+    if (store.state.chat.chatId) {
+      slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
+        if (doc.exists) {
+          // Do something with the document data
+          chat.value = doc.data();
 
-if (store.state.chat.chatId) {
-
-  slectedChatRef.doc( store.state.chat.chatId).onSnapshot((doc) => {
-    if (doc.exists) {
-      // Do something with the document data
-      chat.value = doc.data();
-  
-      console.log(chat.value, "cht but isnt list juct cht");
-    } else {
-      console.log("No such document!");
+          console.log(chat.value, "cht but isnt list juct cht");
+        } else {
+          console.log("No such document!");
+        }
+      });
     }
-  })
-}
 
+    // Query the usersPrew collection
+    // const query = db
+    //   .collection("usersPrew")
+    //   .where("email", ">=", "masterok")
+    //   .where("email", "<=", "susz");
 
-
-// Query the usersPrew collection
-const query = db.collection('usersPrew').where('email', '>=', 'masterok').where('email', '<=', 'susz');
-
-// Get the query results
-query.get().then((querySnapshot) => {
-  const users = [];
-  querySnapshot.forEach((doc) => {
-    // Get the document data and add it to the users array
-    const user = doc.data();
-    users.push(user);
-  });
-  console.log(users);
-});
-
-
+    // // Get the query results
+    // query.get().then((querySnapshot) => {
+    //   const users = [];
+    //   querySnapshot.forEach((doc) => {
+    //     // Get the document data and add it to the users array
+    //     const user = doc.data();
+    //     users.push(user);
+    //   });
+    //   console.log(users);
+    // });
 
 
 
@@ -119,8 +130,6 @@ query.get().then((querySnapshot) => {
         console.log("No such document!");
       }
     });
-
-   
 
     // const chatRef = doc(db, "chats", data.selectedChatId);
 
