@@ -1,11 +1,15 @@
 <template>
+  <div v-if="$store.state.chat.selectedUser" class="chat-nav">
+    <p class="">
+      {{ $store.state.chat.selectedUser.email }}
+    </p>
+  </div>
   <div class="main">
     <div class="chat-list">
       <p @click="isSearch = true">search chats</p>
 
       <div v-if="!isSearch" class="chat-list-container">
-      
-        <div 
+        <div
           @click="() => $store.commit('chat/setChatId', cht)"
           class="chatitem"
           v-for="cht in chatList.chats"
@@ -17,10 +21,8 @@
 
       <div v-else>
         <founded-chats-list></founded-chats-list>
-        
       </div>
-
-      </div>
+    </div>
 
     <div class="chat-container">
       <h2>selectedChat: {{ $store.state.chat.chatId }}</h2>
@@ -28,13 +30,22 @@
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat :chatId="$store.state.chat.chatId"></direct-chat>
+
+        <input placeholder="enter test message" v-model="value" />
+        <button @click="addNewMessag">SENNENENEND TEST</button>
       </div>
 
-      <div v-else>
+      <div v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser">
         <h2>Select chat</h2>
       </div>
 
-      <button @click="addNewMessag">SENNENENEND TEST</button>
+      <div v-if="$store.state.chat.selectedUser">
+        <h2>Target chat</h2>
+        <input v-model="value" />
+        <button @click="() => sendMessageToFoundedChat(value)">
+          enter message
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -48,7 +59,8 @@ import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import DirectChat from "@/components/DirectChat.vue";
-import FoundedChatsList from '@/components/FoundedChatsList.vue';
+import FoundedChatsList from "@/components/FoundedChatsList.vue";
+import { getAuth } from "firebase/auth";
 
 export default {
   components: {
@@ -58,6 +70,7 @@ export default {
   data() {
     return {
       isSearch: false,
+      value: "",
     };
   },
 
@@ -68,7 +81,7 @@ export default {
 
       // Atomically add a new region to the "regions" array field.
       await updateDoc(washingtonRef, {
-        messages: arrayUnion("sex"),
+        messages: arrayUnion(this.value),
       });
     },
   },
@@ -117,9 +130,6 @@ export default {
     //   console.log(users);
     // });
 
-
-
-
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
@@ -137,12 +147,106 @@ export default {
     // // To update age and favorite color:
     // updateDoc(frankDocRef, {
     //   "messages": arrayUnion("message test")
-
     // });
+
+    const auth = getAuth();
+
+    function sendMessageToFoundedChat(v) {
+      if (auth.currentUser.uid && store.state.chat.selectedUser.uid) {
+        const createNewChatid =
+          auth.currentUser.uid + store.state.chat.selectedUser.uid;
+        //  const data = {
+        //  }
+        const documentName = auth.currentUser.uid;
+        // Get a reference to the document and retrieve the data
+        db.collection("usersLinksToChat")
+          .doc(documentName)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              // Document data exists, do something with it
+              const data = doc.data();
+              if (
+                data.chats.includes(createNewChatid) ||
+                data.chats.includes(
+                  store.state.chat.selectedUser.uid + auth.currentUser.uid
+                )
+              ) {
+                console.log("exist");
+              } else {
+                console.log("net nixuya");
+
+                // Define the custom document name and the data to add to the chats collection
+                // const customDocName = "my-chat-1";
+                const data = {
+                  members: [
+                    auth.currentUser.uid,
+                    store.state.chat.selectedUser.uid,
+                  ],
+                  messages: [v],
+                };
+
+                // Create a document reference with the custom document name and set the data to it
+                db.collection("chats")
+                  .doc(createNewChatid)
+                  .set(data)
+                  .then(() => {
+                    console.log("Document successfully written!");
+
+                    async function addChatToUserLink(user) {
+                      const userLinkDocumentRef = db
+                        .collection("usersLinksToChat")
+                        .doc( user);
+
+                      // use the arrayUnion operator to add the new chat value to the chat array property
+                      await userLinkDocumentRef.update({
+                        chats: firebase.firestore.FieldValue.arrayUnion(
+                          createNewChatid
+                        ),
+                      });
+                    }
+
+                    addChatToUserLink(store.state.chat.selectedUser.uid)
+                    addChatToUserLink(auth.currentUser.uid)
+
+
+                  })
+                  .catch((error) => {
+                    console.error("Error writing document: ", error);
+                  });
+
+                // const chatRef = doc(db, "chats", data.selectedChatId);
+
+                // //update
+                // // To update age and favorite color:
+                // updateDoc(frankDocRef, {
+                //   "messages": arrayUnion("message test")
+                // });
+
+                //ad this chat to chats
+
+                //ad to my chats
+                //end target chat
+              }
+            } else {
+              // Document doesn't exist
+              console.log("No such document!");
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting document:", error);
+          });
+
+        // }
+
+        console.log("eneter", createNewChatid);
+      }
+    }
 
     return {
       chatList,
       chat,
+      sendMessageToFoundedChat,
     };
 
     // let query = db.collection("usersLinksToChat",'loVxhSxDf7dbHOJ6Sjmtdr1tyZ52')
@@ -157,6 +261,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.chat-nav {
+  color: white;
+}
 .main {
   display: flex;
   justify-content: center;

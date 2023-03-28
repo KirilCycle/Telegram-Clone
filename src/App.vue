@@ -2,7 +2,7 @@
   <div class="wrap">
     <router-view></router-view>
     <TransitionGroup name="nav" tag="div">
-    <top-navbar v-if="store.state.user.isAuth && store.state.user.navbarVisible"></top-navbar>
+    <!-- <top-navbar v-if="store.state.user.isAuth && store.state.user.navbarVisible"></top-navbar> -->
     </TransitionGroup>
   </div>
 </template>

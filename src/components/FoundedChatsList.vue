@@ -2,7 +2,7 @@
   <div>
     <input placeholder="search chats" @input="(e) => searchUsers(e.target.value)" >
     <div>
-        <div v-for="us in founded" :key="us.uid">
+        <div @click="$store.commit('chat/setSelectedUser',us)" v-for="us in founded" :key="us.uid">
            <p>
                {{ us.email }}
            </p>
