@@ -5,6 +5,7 @@ export const chatModule = {
     replyMsgRef: null,
     text: null,
     from: null,
+    chatId: null
   }),
   getters: {
     getReplyMsgRef(state) {
@@ -13,11 +14,17 @@ export const chatModule = {
     getText(state) {
       return state.text;
     },
+    getChatId(state) {
+      return state.chatId;
+    },
     getFrom(state) {
       return state.from;
     },
   },
   mutations: {
+    setChatId(state,id) {
+     state.chatId = id
+    } ,
     setReplyMsgRef(state, ref) {
       state.replyMsgRef = ref;
     },
@@ -30,6 +37,10 @@ export const chatModule = {
   },
 
   actions: {
+
+    setChatId({state, commit,id }) {
+      commit("setChatId", id)
+    },
     setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);
     },

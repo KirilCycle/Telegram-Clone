@@ -103,9 +103,9 @@ export default {
     }
     const db = firebase.firestore();
 
-    const collectionRef = db.collection("messages");
+    // const collectionRef = db.collection("messages");
 
-    const messagesRef = store.state.user.firestore.collection("messages");
+    // const messagesRef = store.state.user.firestore.collection("messages");
 
     // query.onSnapshot((snapshot, parameters) => {
     //  console.log( snapshot.docs, 'docs');
