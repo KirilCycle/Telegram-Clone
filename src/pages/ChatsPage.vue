@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>SUS
     <div class="chatitem" v-for="cht in chatList.chats" :key="cht">
       {{cht }}
     </div>
@@ -21,11 +21,13 @@ export default {
 
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
+    console.log(store.state.user.user.uid, 'cht')
+
     const collectionRef = db.collection("usersLinksToChat");
 
-    const chatList = ref("");
+     const chatList = ref("");
 
-    collectionRef.doc("loVxhSxDf7dbHOJ6Sjmtdr1tyZ52").onSnapshot((doc) => {
+    collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
         chatList.value = doc.data()
@@ -64,9 +66,8 @@ div {
 }
 
 .chatitem {
-  margin-top: 70px;
-  font-size: 1rem;
-  color: white;
+  font-size: 22rem;
+  color: #ffffff;
 }
 
 </style>

@@ -5,11 +5,10 @@ import RegPage from "@/pages/RegPage";
 import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
 import GamePage from "@/pages/GamePage";
-import ChatsPage from "@/pages/ChatsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import {ref} from 'vue'
 import { async } from "@firebase/util";
- 
+import ChatsPage from '@/pages/ChatsPage'
 
 const isAuthed = ref(store.state.user.user)
 
@@ -73,13 +72,25 @@ export const routes = [
       }
 
     },
-
   },
   {
     path: "/chats",
-    name: "chat",
+    name: "chats",
     component: ChatsPage,
-  }
+    beforeEnter: async (to, from) => {
+      if (!await store.state.user.user) {
+
+        console.log( store.state.user.user,'router',isAuthed.value);
+        return false;
+      } else {
+        store.commit("user/setNavbar", true);
+        return true
+
+      }
+
+    },
+  },
+
 ];
 
 export const loginnedRoutes = [
