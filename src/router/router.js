@@ -5,6 +5,7 @@ import RegPage from "@/pages/RegPage";
 import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
 import GamePage from "@/pages/GamePage";
+import ChatsPage from "@/pages/ChatsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import {ref} from 'vue'
 import { async } from "@firebase/util";
@@ -72,7 +73,13 @@ export const routes = [
       }
 
     },
+
   },
+  {
+    path: "/chats",
+    name: "chat",
+    component: ChatsPage,
+  }
 ];
 
 export const loginnedRoutes = [

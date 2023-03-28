@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <div class="content">
-      <div v-observer="fetchPrevious"></div>
+      <div v-observer="fetchMore"></div>
       <TransitionGroup name="list" class="list-wrap" tag="div">
         <message-item
           v-for="mes in messages"
@@ -99,62 +99,52 @@ export default {
     const messages = ref([]);
 
     function fetchPrevious() {
-      // const res = messagesColection
-      // .orderBy("createdAt", "desc")
-      // .limitToLast(total.value - 30);
       console.log(messages);
     }
     const db = firebase.firestore();
 
     const collectionRef = db.collection("messages");
 
+    const messagesRef = store.state.user.firestore.collection("messages");
+
+    // query.onSnapshot((snapshot, parameters) => {
+    //  console.log( snapshot.docs, 'docs');
+    //  snapshot.docs
+    //     .map((doc) => ({ id: doc.id, ...doc.data() }))
+    //     .reverse();
+    // });
+
+    //limitToLast(12) наш последний индекс
+
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
-      // .startAfter(50)
-      .limit(30);
+      .limit(5);
     //.limitToLast(10) получить последних
     //
     //limit - taking lasts
     //
     //  .limitToLast(20)
 
-    let previousQuerySnapshot = null;
-
-    
-
-    collectionRef
+    let query = db
+      .collection("messages")
       .orderBy("createdAt", "desc")
-      .limit(20)
-      .get()
-      .then((querySnapshot) => {
-        previousQuerySnapshot = querySnapshot; // assign the result to the variable
-        // handle the fetched data
-        console.log(previousQuerySnapshot, 'GPT');
-      })
-      .catch((error) => {
-        // handle the error
-      });
+      // .limit(10)
+      // .endBefore('f07c4709-4a87-49b9-a7fb-b1e1f3c5ac09E7iKQQ9OuWY6I1E0W06Bv9WYZ0l1HHUUUUGGaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      //  .limitToLast('c82e4c2f-e4a0-4799-a7f0-6d89210ef4cfE7iKQQ9OuWY6I1E0W06Bv9WYZ0l1')
 
 
-      
-      collectionRef
-  .orderBy('createdAt', 'desc')
-  .startAfter(20)
-  .limit(20)
-  .get()
-  .then(querySnapshot => {
-    // handle the fetched data
-  })
-  .catch(error => {
-    // handle the error
-  });
+      //.endBefore начиная с 
 
-    const unsubscribe = messagesQuery.onSnapshot((snapshot, parameters) => {
-      total.value = snapshot.docs.length;
+    const unsubscribe = query.onSnapshot((snapshot, parameters) => {
       messages.value = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .reverse();
+      console.log(messages.value, "docs");
     });
+
+    function fetchMore() {
+      query.limit(2);
+    }
 
     async function sendMessage(text, imagePath) {
       // const { photoURL, uid, displayName } = store.state.user.value;
@@ -216,6 +206,7 @@ export default {
     return {
       sendMessage,
       disableAutoScroll,
+      fetchMore,
       bottom,
       scrollToBottom,
       value,
