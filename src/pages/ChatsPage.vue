@@ -172,7 +172,7 @@ export default {
                 if (error.code === "not-found") {
                   userLinksToChatRef
                     .set({
-                      chats: [chtaid],
+                      chats: [ chtaid],
                     })
                     .catch((error) => {
                       console.error(
@@ -189,27 +189,26 @@ export default {
               });
           }
 
-          setLinksToChats(auth.currentUser.uid, createNewChatid);
-          setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
+          // setLinksToChats(store.state.user.user.uid.toString(), createNewChatid);
+          // setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
 
-          Promise.all([ setLinksToChats(auth.currentUser.uid, setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid))])
+          Promise.all([ setLinksToChats(auth.currentUser.uid, createNewChatid),  setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid)  ])
             .then((results) => {
              
                           
               
               const chatData = { 
-                members: [auth.currentUser.uid,store.state.chat.selectedUser.uid ],
+                members: [ store.state.user.user.uid , store.state.chat.selectedUser.uid ],
                 messages: [v]
               };
 
+             async function steDocument ()  {
+              await setDoc(doc(db, "chats",createNewChatid ), {
+                ...chatData
+                  });
+             }
 
-              firebase.firestore().collection("chats").doc(createNewChatid).set(chatData)
-                 .then(() => {
-                 console.log("New chat document created with ID:", createNewChatid);
-                  })
-             .catch(error => {
-              console.error("Error creating new chat document:", error);
-                       });
+             steDocument()
 
             })
             .catch((error) => {
