@@ -43,7 +43,7 @@
         <h2>Target chat</h2>
         <input v-model="value" />
         <button @click="() => sendMessageToFoundedChat(value)">
-          enter message
+          enter target mes
         </button>
       </div>
     </div>
@@ -155,91 +155,80 @@ export default {
       if (auth.currentUser.uid && store.state.chat.selectedUser.uid) {
         const createNewChatid =
           auth.currentUser.uid + store.state.chat.selectedUser.uid;
-        //  const data = {
-        //  }
-        const documentName = auth.currentUser.uid;
-        // Get a reference to the document and retrieve the data
-        db.collection("usersLinksToChat")
-          .doc(documentName)
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              // Document data exists, do something with it
-              const data = doc.data();
-              if (
-                data.chats.includes(createNewChatid) ||
-                data.chats.includes(
-                  store.state.chat.selectedUser.uid + auth.currentUser.uid
-                )
-              ) {
-                console.log("exist");
-              } else {
-                console.log("net nixuya");
 
-                // Define the custom document name and the data to add to the chats collection
-                // const customDocName = "my-chat-1";
-                const data = {
-                  members: [
-                    auth.currentUser.uid,
-                    store.state.chat.selectedUser.uid,
-                  ],
-                  messages: [v],
-                };
+        if (!chatList.value.chats) {
+          async function setLinksToChats(userid, chtaid) {
+            const userLinksToChatRef = firebase
+              .firestore()
+              .collection("usersLinksToChat")
+              .doc(userid);
 
-                // Create a document reference with the custom document name and set the data to it
-                db.collection("chats")
-                  .doc(createNewChatid)
-                  .set(data)
-                  .then(() => {
-                    console.log("Document successfully written!");
+            userLinksToChatRef
+              .update({
+                chats: firebase.firestore.FieldValue.arrayUnion(chtaid),
+              })
+              .catch((error) => {
+                // if the document doesn't exist, create it and add the new chat
+                if (error.code === "not-found") {
+                  userLinksToChatRef
+                    .set({
+                      chats: [chtaid],
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error adding new chat to usersLinksToChat collection:",
+                        error
+                      );
+                    });
+                } else {
+                  console.error(
+                    "Error updating chats in usersLinksToChat collection:",
+                    error
+                  );
+                }
+              });
+          }
 
-                    async function addChatToUserLink(user) {
-                      const userLinkDocumentRef = db
-                        .collection("usersLinksToChat")
-                        .doc( user);
+          setLinksToChats(auth.currentUser.uid, createNewChatid);
+          setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
 
-                      // use the arrayUnion operator to add the new chat value to the chat array property
-                      await userLinkDocumentRef.update({
-                        chats: firebase.firestore.FieldValue.arrayUnion(
-                          createNewChatid
-                        ),
-                      });
-                    }
-
-                    addChatToUserLink(store.state.chat.selectedUser.uid)
-                    addChatToUserLink(auth.currentUser.uid)
+          Promise.all([ setLinksToChats(auth.currentUser.uid, setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid))])
+            .then((results) => {
+             
+                          
+              
+              const chatData = { 
+                members: [auth.currentUser.uid,store.state.chat.selectedUser.uid ],
+                messages: [v]
+              };
 
 
+              firebase.firestore().collection("chats").doc(createNewChatid).set(chatData)
+                 .then(() => {
+                 console.log("New chat document created with ID:", createNewChatid);
                   })
-                  .catch((error) => {
-                    console.error("Error writing document: ", error);
-                  });
+             .catch(error => {
+              console.error("Error creating new chat document:", error);
+                       });
 
-                // const chatRef = doc(db, "chats", data.selectedChatId);
+            })
+            .catch((error) => {
+              console.error("An error occurred:", error);
+              // Code to execute if there was an error with either function
+            });
 
-                // //update
-                // // To update age and favorite color:
-                // updateDoc(frankDocRef, {
-                //   "messages": arrayUnion("message test")
-                // });
+         
 
-                //ad this chat to chats
+          console.log(
+            auth.currentUser.uid,
+            store.state.chat.selectedUser.uid,
+            "OUR LOG"
+          );
 
-                //ad to my chats
-                //end target chat
-              }
-            } else {
-              // Document doesn't exist
-              console.log("No such document!");
-            }
-          })
-          .catch((error) => {
-            console.log("Error getting document:", error);
-          });
-
-        // }
-
-        console.log("eneter", createNewChatid);
+          console.log("bad idea");
+        } else {
+          console.log("clear");
+        }
       }
     }
 
