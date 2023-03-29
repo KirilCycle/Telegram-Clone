@@ -8,16 +8,13 @@
     <div class="chat-list">
       <p @click="isSearch = true">search chats</p>
 
+
       <div v-if="!isSearch" class="chat-list-container">
-        <div
-          @click="() => $store.commit('chat/setChatId', cht)"
-          class="chatitem"
-          v-for="cht in chatList.chats"
-          :key="cht"
-        >
-          {{ cht }}
-        </div>
+       
+      <chat-list :chatList="chatList" ></chat-list>
+       
       </div>
+
 
       <div v-else>
         <founded-chats-list></founded-chats-list>
@@ -62,11 +59,13 @@ import DirectChat from "@/components/DirectChat.vue";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
+import ChatList from '@/components/ChatList.vue';
 
 export default {
   components: {
     DirectChat,
     FoundedChatsList,
+    ChatList,
   },
   data() {
     return {
