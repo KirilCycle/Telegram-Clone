@@ -100,8 +100,8 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-       
         // firebase
+
         //   .firestore()
         //   .collection("chats")
         //   .doc(store.state.chat.chatId)
@@ -109,9 +109,9 @@ export default {
         //   .add(message);
 
         // console.log(message);
-          await updateDoc(chatRef, {
-
+        await updateDoc(chatRef, {
           messages: arrayUnion(message),
+          lastMessage: this.value
         });
       }
 
@@ -183,17 +183,40 @@ export default {
 
         const createNewChatid = userId1 + userId2;
 
+        const user1Ref = db.collection("usersLinksToChat").doc(userId1);
+            const user2Ref = db.collection("usersLinksToChat").doc(userId2);
+            const chatId = userId1 + userId2; 
+
+        const message = {
+              userName: auth.currentUser.displayName
+                ? auth.currentUser.displayName.slice(0, 25)
+                : auth.currentUser.email,
+              userId: auth.currentUser.uid,
+              text: v,
+              createdAt: Timestamp.now(),
+              id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
+              // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+            if (auth.currentUser.photoURL) {
+              message.userPhotoURl = auth.currentUser.photoURL;
+            }
+          
+
+          const chatData = {
+            lastMessage: message.text,
+            members: [userId1, userId2],
+            messages: [message],
+          };
+
+
+
+
         if (!chatList.value.chats) {
           const db = firebase.firestore();
           const batch = db.batch();
 
           // Step 1: Add the unique ID to the `chats` array in both users' documents.
-          const user1Ref = db.collection("usersLinksToChat").doc(userId1);
-
-          const user2Ref = db.collection("usersLinksToChat").doc(userId2);
-
-          const chatId = userId1 + userId2; // Replace this with your code to generate a unique ID.
-
+        
           batch.update(user1Ref, {
             chats: firebase.firestore.FieldValue.arrayUnion(chatId),
           });
@@ -205,11 +228,8 @@ export default {
           // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
           const chatRef = db.collection("chats").doc(chatId);
 
-          const chatData = {
-            members: [userId1, userId2],
-            messages: [v],
-          };
-
+        
+           
           batch.set(chatRef, chatData);
 
           // Commit the batch operation.
@@ -228,15 +248,16 @@ export default {
               store.state.chat.selectedUser.uid + auth.currentUser.uid
             )
           ) {
-            console.log("xuyna nashel  ");
+
+
+            console.log("xuyna nashel");
+            
           } else {
             const db = firebase.firestore();
             const batch = db.batch();
 
             // Step 1: Add the unique ID to the `chats` array in both users' documents.
-            const user1Ref = db.collection("usersLinksToChat").doc(userId1);
-            const user2Ref = db.collection("usersLinksToChat").doc(userId2);
-            const chatId = userId1 + userId2; // Replace this with your code to generate a unique ID.
+           
 
             batch.update(user1Ref, {
               chats: firebase.firestore.FieldValue.arrayUnion(chatId),
@@ -247,10 +268,9 @@ export default {
 
             // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
             const chatRef = db.collection("chats").doc(chatId);
-            const chatData = {
-              members: [userId1, userId2],
-              messages: [v],
-            };
+           
+           
+          
 
             batch.set(chatRef, chatData);
 
