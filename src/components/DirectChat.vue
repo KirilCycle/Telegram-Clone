@@ -6,7 +6,7 @@
 import { collection, getDocs, getDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { ref } from "vue";
+import { ref,watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
@@ -19,7 +19,7 @@ export default {
   setup(props) {
     const db = firebase.firestore();
 
-    // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
+   
 
     const chat = ref("");
 
@@ -29,16 +29,21 @@ export default {
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
-    slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
-      if (doc.exists) {
-        // Do something with the document data
-        chat.value = doc.data();
+    watchEffect(() => {  
 
-        console.log(chat.value, "cht but isnt list juct cht");
-      } else {
-        console.log("No such document!");
-      }
-    });
+      slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
+        if (doc.exists) {
+          // Do something with the document data
+          chat.value = doc.data();
+  
+          console.log(chat.value, "cht but isnt list juct cht");
+        } else {
+          console.log("No such document!");
+        }
+      });
+
+     })
+
 
     return {
         chat

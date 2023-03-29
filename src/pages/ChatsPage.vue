@@ -29,10 +29,10 @@
 
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
-        <direct-chat :chatId="$store.state.chat.chatId"></direct-chat>
+        <direct-chat></direct-chat>
 
         <input placeholder="enter test message" v-model="value" />
-        <button @click="addNewMessag">SENNENENEND TEST</button>
+        <button @click="addNewMessage">SENNENENEND TEST</button>
       </div>
 
       <div v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser">
@@ -76,9 +76,9 @@ export default {
   },
 
   methods: {
-    async addNewMessag() {
+    async addNewMessage() {
       const db = firebase.firestore();
-      const washingtonRef = doc(db, "chats", store.state.chat.chatId);
+      const chatRef = doc(db, "chats", store.state.chat.chatId);
       const auth = getAuth();
 
       if (
@@ -109,7 +109,7 @@ export default {
         //   .add(message);
 
         // console.log(message);
-          await updateDoc(washingtonRef, {
+          await updateDoc(chatRef, {
 
           messages: arrayUnion(message),
         });
