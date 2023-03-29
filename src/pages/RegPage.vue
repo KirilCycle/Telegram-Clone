@@ -58,10 +58,6 @@ function handleVisible() {
 
 
 
-
-
-
-
 function register() {
   if (email.value.length > 7 && password.value.length > 7) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
@@ -73,7 +69,7 @@ function register() {
                 uid: data.user.uid,
                 email: data.user.email,
                 displayName: data.user.displayName,
-                photoURL: data.user.photoURL,
+                photoURL: `https://gravatar.com/avatar/${data.user.uid}?s=400&d=robohash&r=x`,
               })
 
       }

@@ -1,7 +1,6 @@
 <template>
   <chat-item
     @click="() => $store.commit('chat/setChatId', cht)"
-    class="chatitem"
     v-for="cht in chatList.chats"
     :key="cht"
     :chatId="cht"

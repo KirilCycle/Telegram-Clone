@@ -5,11 +5,11 @@
     </p>
   </div>
   <div class="main">
-    <div class="chat-list">
+    <div class="left-bar">
       <p @click="isSearch = true">search chats</p>
 
 
-      <div v-if="!isSearch" class="chat-list-container">
+      <div v-if="!isSearch" class="chat-list">
        
       <chat-list :chatList="chatList" ></chat-list>
        
@@ -316,7 +316,7 @@ export default {
   align-items: center;
   margin-top: 70px;
 }
-.chat-list {
+.left-bar {
   width: 300px;
   height: 100vh;
   background-color: rgb(46, 46, 55);
