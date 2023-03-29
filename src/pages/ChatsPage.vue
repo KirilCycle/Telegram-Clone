@@ -156,7 +156,9 @@ export default {
         const createNewChatid =
           auth.currentUser.uid + store.state.chat.selectedUser.uid;
 
-        if (!chatList.value.chats) {
+         
+
+        if (!chatList.value.chats ) {
           async function setLinksToChats(userid, chtaid) {
             const userLinksToChatRef = firebase
               .firestore()
@@ -192,7 +194,7 @@ export default {
           // setLinksToChats(store.state.user.user.uid.toString(), createNewChatid);
           // setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
 
-          Promise.all([ setLinksToChats(auth.currentUser.uid, createNewChatid),  setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid)  ])
+          Promise.all([ setLinksToChats(auth.currentUser.uid.toString(), createNewChatid),  setLinksToChats(store.state.chat.selectedUser.uid.toString(), createNewChatid)  ])
             .then((results) => {
              
                           
@@ -226,7 +228,91 @@ export default {
 
           console.log("bad idea");
         } else {
-          console.log("clear");
+
+          if (chatList.value.chats.includes(createNewChatid) || chatList.value.chats.includes(store.state.chat.selectedUser.uid + auth.currentUser.uid)) {
+
+            console.log('xuyna nashel  ')
+
+
+
+          } else {
+
+            async function setLinksToChats(userid, chtaid) {
+            const userLinksToChatRef = firebase
+              .firestore()
+              .collection("usersLinksToChat")
+              .doc(userid);
+
+            userLinksToChatRef
+              .update({
+                chats: firebase.firestore.FieldValue.arrayUnion(chtaid),
+              })
+              .catch((error) => {
+                // if the document doesn't exist, create it and add the new chat
+                if (error.code === "not-found") {
+                  userLinksToChatRef
+                    .set({
+                      chats: [ chtaid],
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error adding new chat to usersLinksToChat collection:",
+                        error
+                      );
+                    });
+                } else {
+                  console.error(
+                    "Error updating chats in usersLinksToChat collection:",
+                    error
+                  );
+                }
+              });
+          }
+
+          // setLinksToChats(store.state.user.user.uid.toString(), createNewChatid);
+          // setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
+
+          Promise.all([ setLinksToChats(auth.currentUser.uid.toString(), createNewChatid),  setLinksToChats(store.state.chat.selectedUser.uid.toString(), createNewChatid)  ])
+            .then((results) => {
+             
+                          
+              
+              const chatData = { 
+                members: [ store.state.user.user.uid , store.state.chat.selectedUser.uid ],
+                messages: [v]
+              };
+
+             async function steDocument ()  {
+              await setDoc(doc(db, "chats",createNewChatid ), {
+                ...chatData
+                  });
+             }
+
+             steDocument()
+
+            })
+            .catch((error) => {
+              console.error("An error occurred:", error);
+              // Code to execute if there was an error with either function
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            console.log("net tatogo ", chatList.value);
+          }
+
         }
       }
     }
