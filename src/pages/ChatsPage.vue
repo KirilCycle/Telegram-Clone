@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { collection, getDocs, getDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, Timestamp } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
 import { ref } from "vue";
@@ -61,6 +61,7 @@ import { doc, setDoc } from "firebase/firestore";
 import DirectChat from "@/components/DirectChat.vue";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
+import { uuidv4 } from "@firebase/util";
 
 export default {
   components: {
@@ -78,11 +79,43 @@ export default {
     async addNewMessag() {
       const db = firebase.firestore();
       const washingtonRef = doc(db, "chats", store.state.chat.chatId);
+      const auth = getAuth();
+
+      if (
+        auth.currentUser &&
+        this.value.length < 2000 &&
+        this.value.length > 0
+      ) {
+        const message = {
+          userName: auth.currentUser.displayName
+            ? auth.currentUser.displayName.slice(0, 25)
+            : auth.currentUser.email,
+          userId: auth.currentUser.uid,
+          text: this.value,
+          createdAt: Timestamp.now(),
+          id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
+          // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+        if (auth.currentUser.photoURL) {
+          message.userPhotoURl = auth.currentUser.photoURL;
+        }
+
+       
+        // firebase
+        //   .firestore()
+        //   .collection("chats")
+        //   .doc(store.state.chat.chatId)
+        //   .collection("messages")
+        //   .add(message);
+
+        // console.log(message);
+          await updateDoc(washingtonRef, {
+
+          messages: arrayUnion(message),
+        });
+      }
 
       // Atomically add a new region to the "regions" array field.
-      await updateDoc(washingtonRef, {
-        messages: arrayUnion(this.value),
-      });
     },
   },
   setup(data) {
@@ -140,14 +173,6 @@ export default {
         console.log("No such document!");
       }
     });
-
-    // const chatRef = doc(db, "chats", data.selectedChatId);
-
-    // //update
-    // // To update age and favorite color:
-    // updateDoc(frankDocRef, {
-    //   "messages": arrayUnion("message test")
-    // });
 
     const auth = getAuth();
 

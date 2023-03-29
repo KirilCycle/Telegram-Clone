@@ -58,31 +58,6 @@ function handleVisible() {
 
 
 
-async  function addPrewUser ( ) {
-  setDoc(doc(db, "usersPrew", data.user.uid), {
-              uid: data.user.uid,
-              email: data.user.email,
-              displayName: data.user.displayName,
-              photoURL: data.user.photoURL,
-            }).then((res) =>  {
-    
-    
-            store.commit("user/setAuth", true);
-            console.log(store.state.user.isAuth);
-            router.push({ name: "chat" });
-    
-            } )
-    
-          
-          .catch((er) => {
-            wrongData.value = true;
-          });
-
-}
-
-
-
-
 
 
 
@@ -92,12 +67,39 @@ function register() {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then((data) => {
       const db = firebase.firestore()
-  
-       setTimeout(() => {
-         addPrewUser()
-       },40000)
+      
+      async function addUserPrew () {
+        setDoc(doc(db, "usersPrew", data.user.uid), {
+                uid: data.user.uid,
+                email: data.user.email,
+                displayName: data.user.displayName,
+                photoURL: data.user.photoURL,
+              })
 
-       
+      }
+
+      async function addUsersChatLink () {
+
+        setDoc(doc(db, "usersLinksToChat", data.user.uid), {
+           chats: []  
+         }) 
+      }
+           
+
+           const first = addUserPrew()
+           const second = addUsersChatLink()
+
+          Promise.all([first,second]).then((res) =>  {
+    
+    
+    store.commit("user/setAuth", true);
+    console.log(store.state.user.isAuth);
+    router.push({ name: "chat" });
+
+    } ).catch().catch((er) => {
+            wrongData.value = true;
+          });
+
 
   }).catch((er) => {
             wrongData.value = true;
