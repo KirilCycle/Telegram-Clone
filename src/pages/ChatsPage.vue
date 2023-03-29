@@ -153,166 +153,101 @@ export default {
 
     function sendMessageToFoundedChat(v) {
       if (auth.currentUser.uid && store.state.chat.selectedUser.uid) {
-        const createNewChatid =
-          auth.currentUser.uid + store.state.chat.selectedUser.uid;
 
-         
+        const userId1 =  auth.currentUser.uid
+        const userId2 = store.state.chat.selectedUser.uid
 
-        if (!chatList.value.chats ) {
-          async function setLinksToChats(userid, chtaid) {
-            const userLinksToChatRef = firebase
-              .firestore()
-              .collection("usersLinksToChat")
-              .doc(userid);
+        const createNewChatid = userId1 + userId2
+          
 
-            userLinksToChatRef
-              .update({
-                chats: firebase.firestore.FieldValue.arrayUnion(chtaid),
-              })
-              .catch((error) => {
-                // if the document doesn't exist, create it and add the new chat
-                if (error.code === "not-found") {
-                  userLinksToChatRef
-                    .set({
-                      chats: [ chtaid],
-                    })
-                    .catch((error) => {
-                      console.error(
-                        "Error adding new chat to usersLinksToChat collection:",
-                        error
-                      );
-                    });
-                } else {
-                  console.error(
-                    "Error updating chats in usersLinksToChat collection:",
-                    error
-                  );
-                }
-              });
-          }
+        if (!chatList.value.chats) {
+        
+          const db = firebase.firestore();
+            const batch = db.batch();
 
-          // setLinksToChats(store.state.user.user.uid.toString(), createNewChatid);
-          // setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
+        
 
-          Promise.all([ setLinksToChats(auth.currentUser.uid.toString(), createNewChatid),  setLinksToChats(store.state.chat.selectedUser.uid.toString(), createNewChatid)  ])
-            .then((results) => {
-             
-                          
-              
-              const chatData = { 
-                members: [ store.state.user.user.uid , store.state.chat.selectedUser.uid ],
-                messages: [v]
-              };
+            // Step 1: Add the unique ID to the `chats` array in both users' documents.
+            const user1Ref = db.collection("usersLinksToChat").doc(userId1);
+            const user2Ref = db.collection("usersLinksToChat").doc(userId2);
+            const chatId = userId1 + userId2 // Replace this with your code to generate a unique ID.
 
-             async function steDocument ()  {
-              await setDoc(doc(db, "chats",createNewChatid ), {
-                ...chatData
-                  });
-             }
-
-             steDocument()
-
-            })
-            .catch((error) => {
-              console.error("An error occurred:", error);
-              // Code to execute if there was an error with either function
+            batch.update(user1Ref, {
+              chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+            });
+            batch.update(user2Ref, {
+              chats: firebase.firestore.FieldValue.arrayUnion(chatId),
             });
 
-         
+            // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+            const chatRef = db.collection("chats").doc(chatId);
+            const chatData = {
+              /* Replace this with your chat data */
+            };
 
-          console.log(
-            auth.currentUser.uid,
-            store.state.chat.selectedUser.uid,
-            "OUR LOG"
-          );
+            batch.set(chatRef, chatData);
 
-          console.log("bad idea");
-        } else {
+            // Commit the batch operation.
+            batch
+              .commit()
+              .then(() => {
+                console.log("Batch operation successful");
+              })
+              .catch((error) => {
+                console.error("Batch operation failed:", error);
+              });
 
-          if (chatList.value.chats.includes(createNewChatid) || chatList.value.chats.includes(store.state.chat.selectedUser.uid + auth.currentUser.uid)) {
+          
 
-            console.log('xuyna nashel  ')
-
-
-
+        }
+          
+         else {
+          if (
+            chatList.value.chats.includes(createNewChatid) ||
+            chatList.value.chats.includes(
+              store.state.chat.selectedUser.uid + auth.currentUser.uid
+            )
+          ) {
+            console.log("xuyna nashel  ");
           } else {
 
-            async function setLinksToChats(userid, chtaid) {
-            const userLinksToChatRef = firebase
-              .firestore()
-              .collection("usersLinksToChat")
-              .doc(userid);
+            const db = firebase.firestore();
+            const batch = db.batch();
 
-            userLinksToChatRef
-              .update({
-                chats: firebase.firestore.FieldValue.arrayUnion(chtaid),
-              })
-              .catch((error) => {
-                // if the document doesn't exist, create it and add the new chat
-                if (error.code === "not-found") {
-                  userLinksToChatRef
-                    .set({
-                      chats: [ chtaid],
-                    })
-                    .catch((error) => {
-                      console.error(
-                        "Error adding new chat to usersLinksToChat collection:",
-                        error
-                      );
-                    });
-                } else {
-                  console.error(
-                    "Error updating chats in usersLinksToChat collection:",
-                    error
-                  );
-                }
-              });
-          }
+        
 
-          // setLinksToChats(store.state.user.user.uid.toString(), createNewChatid);
-          // setLinksToChats(store.state.chat.selectedUser.uid, createNewChatid);
+            // Step 1: Add the unique ID to the `chats` array in both users' documents.
+            const user1Ref = db.collection("usersLinksToChat").doc(userId1);
+            const user2Ref = db.collection("usersLinksToChat").doc(userId2);
+            const chatId = userId1 + userId2 // Replace this with your code to generate a unique ID.
 
-          Promise.all([ setLinksToChats(auth.currentUser.uid.toString(), createNewChatid),  setLinksToChats(store.state.chat.selectedUser.uid.toString(), createNewChatid)  ])
-            .then((results) => {
-             
-                          
-              
-              const chatData = { 
-                members: [ store.state.user.user.uid , store.state.chat.selectedUser.uid ],
-                messages: [v]
-              };
-
-             async function steDocument ()  {
-              await setDoc(doc(db, "chats",createNewChatid ), {
-                ...chatData
-                  });
-             }
-
-             steDocument()
-
-            })
-            .catch((error) => {
-              console.error("An error occurred:", error);
-              // Code to execute if there was an error with either function
+            batch.update(user1Ref, {
+              chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+            });
+            batch.update(user2Ref, {
+              chats: firebase.firestore.FieldValue.arrayUnion(chatId),
             });
 
+            // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+            const chatRef = db.collection("chats").doc(chatId);
+            const chatData = {
+              /* Replace this with your chat data */
+            };
 
+            batch.set(chatRef, chatData);
 
-
-
-
-
-
-
-
-
-
-
-
+            // Commit the batch operation.
+            batch
+              .commit()
+              .then(() => {
+                console.log("Batch operation successful");
+              })
+              .catch((error) => {
+                console.error("Batch operation failed:", error);
+              });
 
             console.log("net tatogo ", chatList.value);
           }
-
         }
       }
     }
