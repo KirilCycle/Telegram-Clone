@@ -56,39 +56,52 @@ function handleVisible() {
     : (visible.value = "password");
 }
 
+
+
+async  function addPrewUser ( ) {
+  setDoc(doc(db, "usersPrew", data.user.uid), {
+              uid: data.user.uid,
+              email: data.user.email,
+              displayName: data.user.displayName,
+              photoURL: data.user.photoURL,
+            }).then((res) =>  {
+    
+    
+            store.commit("user/setAuth", true);
+            console.log(store.state.user.isAuth);
+            router.push({ name: "chat" });
+    
+            } )
+    
+          
+          .catch((er) => {
+            wrongData.value = true;
+          });
+
+}
+
+
+
+
+
+
+
+
 function register() {
   if (email.value.length > 7 && password.value.length > 7) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then((data) => {
+      const db = firebase.firestore()
+  
+       setTimeout(() => {
+         addPrewUser()
+       },40000)
+
        
 
-        const db = firebase.firestore()
-
-        //vtkkllx2367@gmail.com
-        // Add a new document in collection "cities"
-       
-        // store.commit("user/setAuth", true);
-        // console.log(store.state.user.isAuth);
-
-        setDoc(doc(db, "usersPrew", data.user.uid), {
-          uid: data.user.uid,
-          email: data.user.email,
-          displayName: data.user.displayName,
-          photoURL: data.user.photoURL,
-        }).then((res) =>  {
-
-
-        store.commit("user/setAuth", true);
-        console.log(store.state.user.isAuth);
-        router.push({ name: "chat" });
-
-        } )
-
-      })
-      .catch((er) => {
-        wrongData.value = true;
-      });
-  } else {
+  }).catch((er) => {
+            wrongData.value = true;
+          });} else {
     wrongValues.value = true;
   }
 }
