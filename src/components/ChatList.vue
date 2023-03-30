@@ -17,7 +17,11 @@ export default {
   },
   props: {
     chatList: Array,
+
     required: true,
+  },
+  created() {
+  console.log(this.serachQ, 'FROM LIST');
   },
 };
 </script>

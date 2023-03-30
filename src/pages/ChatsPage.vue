@@ -6,13 +6,18 @@
   </div>
   <div class="main">
     <div class="left-bar">
-      <p @click="isSearch = true">search chats</p>
+      <div class="left_bar_srch-wrap" placeholder="search chat"> 
+        <button>
+
+        </button>
+        <input placeholder="search chat" @input="(e) => serachChat(e.target.value)"/>
+      </div>
 
 
       <div v-if="!isSearch" class="chat-list">
        
-      <chat-list :chatList="chatList" ></chat-list>
-       
+         <chat-list  :serachQ="serachQ" :chatList="chatList" ></chat-list>
+        
       </div>
 
 
@@ -71,6 +76,7 @@ export default {
     return {
       isSearch: false,
       value: "",
+      serachQ: ''
     };
   },
 
@@ -99,15 +105,7 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-        // firebase
-
-        //   .firestore()
-        //   .collection("chats")
-        //   .doc(store.state.chat.chatId)
-        //   .collection("messages")
-        //   .add(message);
-
-        // console.log(message);
+     
         await updateDoc(chatRef, {
           messages: arrayUnion(message),
           lastMessage: this.value
@@ -116,6 +114,14 @@ export default {
 
       // Atomically add a new region to the "regions" array field.
     },
+
+    serachChat (querry) {
+     
+     querry.length > 0 ?store.commit('chat/setQuerry', querry):store.commit('chat/setQuerry', null)
+
+
+
+    }
   },
   setup(data) {
     const db = firebase.firestore();
@@ -145,21 +151,7 @@ export default {
       });
     }
 
-    // Query the usersPrew collection
-    // const query = db
-    //   .collection("usersPrew")
-    //   .where("email", ">=", "masterok")
-    //   .where("email", "<=", "susz");
-
-    // // Get the query results
-    // query.get().then((querySnapshot) => {
-    //   const users = [];
-    //   querySnapshot.forEach((doc) => {
-    //     // Get the document data and add it to the users array
-    //     const user = doc.data();
-    //     users.push(user);
-    //   });
-    //   console.log(users);
+  
     // });
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
@@ -310,23 +302,33 @@ export default {
 .chat-nav {
   color: white;
 }
+
+
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
+
 }
 .left-bar {
   width: 300px;
-  height: 100vh;
+
   background-color: rgb(46, 46, 55);
   display: flex;
   flex-direction: column;
+  .chat-list {
+    overflow-y: auto;   
+    overflow-x:hidden ;
+    min-height: 90vh; 
+    max-height: 90vh; 
+  }
 }
 .chat-container {
+  
+  min-height: 90vh; 
+  max-height: 90vh;
   width: 100%;
-  height: 100vh;
-  background-color: #2a293f;
+  background-color: #939393;
 }
 .chatitem {
   cursor: pointer;

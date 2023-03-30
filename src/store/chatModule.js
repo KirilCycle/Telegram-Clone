@@ -6,7 +6,8 @@ export const chatModule = {
     text: null,
     from: null,
     chatId: null,
-    selectedUser: null
+    selectedUser: null,
+    querry: null
   }),
   getters: {
     getReplyMsgRef(state) {
@@ -14,6 +15,9 @@ export const chatModule = {
     },
     getText(state) {
       return state.text;
+    },
+    getQuerry(state) {
+      return state.querry;
     },
     getChatId(state) {
       return state.chatId;
@@ -29,6 +33,9 @@ export const chatModule = {
     setChatId(state,id) {
      state.chatId = id
     },
+    setQuerry(state,q) {
+      state.querry= q
+     },
     setSelectedUser(state,selectedUser) {
       state.selectedUser = selectedUser
      },
@@ -49,6 +56,9 @@ export const chatModule = {
     },
     setChatId({state, commit,id }) {
       commit("setChatId", id)
+    },
+    setQuerry({state, commit,q }) {
+      commit("setQuerry", q)
     },
     setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);
