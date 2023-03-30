@@ -156,6 +156,7 @@ export default {
       slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
         if (doc.exists) {
           // Do something with the document data
+
           chat.value = doc.data();
 
           console.log(chat.value, "cht but isnt list juct cht");
@@ -170,6 +171,8 @@ export default {
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
+        console.log(doc.data(), "MAIN CHATS");
+        store.commit("chat/setChatIdList", doc.data());
         chatList.value = doc.data();
 
         console.log(chatList.value, "cht");
@@ -180,7 +183,7 @@ export default {
 
     const auth = getAuth();
 
-    function sendMessageToFoundedChat(v) {
+    async function sendMessageToFoundedChat(v) {
       if (auth.currentUser.uid && store.state.chat.selectedUser.uid) {
         const userId1 = auth.currentUser.uid;
         const userId2 = store.state.chat.selectedUser.uid;
@@ -211,72 +214,104 @@ export default {
           messages: [message],
         };
 
-        if (!chatList.value.chats) {
-          const db = firebase.firestore();
-          const batch = db.batch();
+        try {
+          const chatsRef = db.collection("chats");
+          const chatDocRef = chatsRef.doc(userId2 + userId1 );
 
-          // Step 1: Add the unique ID to the `chats` array in both users' documents.
+          chatDocRef.get().then((doc) => {
+            if (doc.exists) {
+              console.log("Document exists 1");
+            } else {
 
-          batch.update(user1Ref, {
-            chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-          });
+              const chatDocRefSec = chatsRef.doc(chatId)
 
-          batch.update(user2Ref, {
-            chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-          });
+              chatDocRefSec.get().then((doc) => {
+            if (doc.exists) {
+              console.log("Document exists 2");
+            } else {
+             
 
-          // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
-          const chatRef = db.collection("chats").doc(chatId);
+              const db = firebase.firestore();
+                const batch = db.batch();
 
-          batch.set(chatRef, chatData);
+                // Step 1: Add the unique ID to the `chats` array in both users' documents.
 
-          // Commit the batch operation.
-          batch
-            .commit()
-            .then(() => {
-              console.log("Batch operation successful");
+                batch.update(user1Ref, {
+                  chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+                });
+                batch.update(user2Ref, {
+                  chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+                });
+
+                // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+                const chatRef = db.collection("chats").doc(chatId);
+
+                batch.set(chatRef, chatData);
+
+                // Commit the batch operation.
+                batch
+                  .commit()
+                  .then(() => {
+                    console.log("Batch operation successful");
+                  })
+                  .catch((error) => {
+                    console.error("Batch operation failed:", error);
+                  });
+              }
+
+
+
+            
             })
-            .catch((error) => {
-              console.error("Batch operation failed:", error);
-            });
-        } else {
-          if (
-            chatList.value.chats.includes(createNewChatid) ||
-            chatList.value.chats.includes(
-              store.state.chat.selectedUser.uid + auth.currentUser.uid
-            )
-          ) {
-            console.log("xuyna nashel");
-          } else {
-            const db = firebase.firestore();
-            const batch = db.batch();
-
-            // Step 1: Add the unique ID to the `chats` array in both users' documents.
-
-            batch.update(user1Ref, {
-              chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-            });
-            batch.update(user2Ref, {
-              chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-            });
-
-            // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
-            const chatRef = db.collection("chats").doc(chatId);
-
-            batch.set(chatRef, chatData);
-
-            // Commit the batch operation.
-            batch
-              .commit()
-              .then(() => {
-                console.log("Batch operation successful");
-              })
-              .catch((error) => {
-                console.error("Batch operation failed:", error);
-              });
-
-            console.log("net tatogo ", chatList.value);
+          
           }
+          
+          });
+
+          // const res = await getDoc(doc, db, "chats", createNewChatid);
+
+          // if (!res.exists()) {
+          //   //first verify
+          //   const resSecond = await getDoc(
+          //     doc,
+          //     db,
+          //     "chats",
+          //     store.state.chat.selectedUser.uid + auth.currentUser.uid
+          //   ).then((res) => {
+          //     if (!resSecond.exists()) {
+          //       const db = firebase.firestore();
+          //       const batch = db.batch();
+
+          //       // Step 1: Add the unique ID to the `chats` array in both users' documents.
+
+          //       batch.update(user1Ref, {
+          //         chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+          //       });
+          //       batch.update(user2Ref, {
+          //         chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+          //       });
+
+          //       // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+          //       const chatRef = db.collection("chats").doc(chatId);
+
+          //       batch.set(chatRef, chatData);
+
+          //       // Commit the batch operation.
+          //       batch
+          //         .commit()
+          //         .then(() => {
+          //           console.log("Batch operation successful");
+          //         })
+          //         .catch((error) => {
+          //           console.error("Batch operation failed:", error);
+          //         });
+          //     }
+
+          //   })
+
+          // }
+        } catch (e) {
+          console.log(e, "case 1");
         }
       }
     }

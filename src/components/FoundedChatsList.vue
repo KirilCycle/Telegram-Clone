@@ -18,7 +18,7 @@
 
       </chat-item>
     </div>
-  
+    items
   </div>
 </template>
 

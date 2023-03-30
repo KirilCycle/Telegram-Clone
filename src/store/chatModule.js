@@ -7,9 +7,13 @@ export const chatModule = {
     from: null,
     chatId: null,
     selectedUser: null,
-    querry: null
+    querry: null,
+    chatIdList: [],
   }),
   getters: {
+    getChatIdList(state) {
+       return state.chatIdList;
+    },
     getReplyMsgRef(state) {
       return state.replyMsgRef;
     },
@@ -30,6 +34,9 @@ export const chatModule = {
     },
   },
   mutations: {
+    setChatIdList(state, chats) {
+      state.chatIdList = chats
+    },
     setChatId(state,id) {
      state.chatId = id
     },
@@ -51,6 +58,9 @@ export const chatModule = {
   },
 
   actions: {
+    setChatIdList({state,commit,chts}) {
+      commit('setChatIdList',chts)
+    },
     setSelectedUser({state,commit,user}) {
      commit('setSelectedUser',user)
     },

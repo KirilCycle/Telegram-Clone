@@ -20,6 +20,11 @@ export default {
 
     required: true,
   },
+  watch: {
+     chatList() {
+      console.log('chatlist', this.chatList)
+     }
+  },
   created() {
   console.log(this.serachQ, 'FROM LIST');
   },
