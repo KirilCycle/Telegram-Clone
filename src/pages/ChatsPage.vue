@@ -3,13 +3,13 @@
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat"> 
-        <div class="menu-btn-wrap">
+        <button class="menu-btn-wrap">
           <button class='menu-btn'>
               <span></span>
               <span></span>
               <span></span>
           </button>
-        </div>
+        </button>
         <input placeholder="Search" @input="(e) => serachChat(e.target.value)"/>
 
         <button class="left_bar_srch_wrap_settings">
@@ -21,11 +21,8 @@
 
 
       <div v-if="!isSearch" class="chat-list">
-       
          <chat-list  :serachQ="serachQ" :chatList="chatList" ></chat-list>
-        
       </div>
-
 
       <div v-else>
         <founded-chats-list></founded-chats-list>
@@ -82,7 +79,7 @@ export default {
   },
   data() {
     return {
-      isSearch: false,
+      isSearch: true,
       value: "",
       serachQ: ''
     };
