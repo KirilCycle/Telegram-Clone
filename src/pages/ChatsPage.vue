@@ -14,13 +14,7 @@
           @input="(e) => serachChat(e.target.value)"
         />
 
-        <button
-          @click="isSearch = !isSearch"
-          :class="{
-            left_bar_srch_wrap_global_search: isSearch,
-            left_bar_srch_wrap_local_search: !isSearch,
-          }"
-        >
+        <button @click="isSearch = !isSearch" class="left_bar_srch_wrap_settings">
           <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
@@ -37,7 +31,7 @@
     <div class="chat-container">
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <nav class="chat-nav">
-          <h3>{{ chatName }}</h3>
+          <h3>{{ $store.state.chat.selectedUser }}</h3>
         </nav>
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat></direct-chat>
@@ -68,7 +62,7 @@ import store from "@/store/store";
 import { ref } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, writeBatch } from "firebase/firestore";
 import DirectChat from "@/components/DirectChat.vue";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
@@ -83,7 +77,7 @@ export default {
   },
   data() {
     return {
-      isSearch: false,
+      isSearch: true,
       value: "",
       serachQ: "",
     };
@@ -129,14 +123,6 @@ export default {
         : store.commit("chat/setQuerry", null);
     },
   },
-  computed: {
-    chatName() {
-      if (store.state.chat.selectedUser?.displayName) {
-        return store.state.chat.selectedUser.displayName;
-      }
-      return store.state.chat.selectedUser.email?.replace("@gmail.com", "");
-    },
-  },
   setup(data) {
     const db = firebase.firestore();
 
@@ -156,7 +142,6 @@ export default {
       slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
         if (doc.exists) {
           // Do something with the document data
-
           chat.value = doc.data();
 
           console.log(chat.value, "cht but isnt list juct cht");
@@ -171,8 +156,6 @@ export default {
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
-        console.log(doc.data(), "MAIN CHATS");
-        store.commit("chat/setChatIdList", doc.data());
         chatList.value = doc.data();
 
         console.log(chatList.value, "cht");
@@ -193,6 +176,7 @@ export default {
         const user1Ref = db.collection("usersLinksToChat").doc(userId1);
         const user2Ref = db.collection("usersLinksToChat").doc(userId2);
         const chatId = userId1 + userId2;
+        const enotherChatId = userId2 + userId1;
 
         const message = {
           userName: auth.currentUser.displayName
@@ -214,109 +198,80 @@ export default {
           messages: [message],
         };
 
-        try {
-          const chatsRef = db.collection("chats");
-          const chatDocRef = chatsRef.doc(userId2 + userId1 );
+        const chatsRef = db.collection("chats");
+        const chatDocRef = chatsRef.doc(enotherChatId);
 
-          chatDocRef.get().then((doc) => {
-            if (doc.exists) {
-              console.log("Document exists 1");
-            } else {
+        chatDocRef.get().then((doc) => {
+          if (doc.exists) {
+            console.log("Document exists 1");
+          } else {
+            const chatDocRefSecond = chatsRef.doc(chatId);
 
-              const chatDocRefSec = chatsRef.doc(chatId)
+            chatDocRefSecond.get().then((doc) => {
+              if (doc.exists) {
+                console.log("Document exists 2");
+              } else {
+                async function createChatWithFirstMessage() {
+                  const db = firebase.firestore();
+                  const batch = writeBatch(db);
 
-              chatDocRefSec.get().then((doc) => {
-            if (doc.exists) {
-              console.log("Document exists 2");
-            } else {
-             
-
-              const db = firebase.firestore();
-                const batch = db.batch();
-
-                // Step 1: Add the unique ID to the `chats` array in both users' documents.
-
-                batch.update(user1Ref, {
-                  chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-                });
-                
-                setTimeout(() => {
-                  batch.update(user2Ref, {
+                  const chatRef = db.collection("chats").doc(chatId);
+                  batch.set(chatRef, chatData);
+                  // Step 1: Add the unique ID to the `chats` array in both users' documents.
+                  batch.update(user1Ref, {
                     chats: firebase.firestore.FieldValue.arrayUnion(chatId),
                   });
-                },2000)
-
-
-                // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
-                const chatRef = db.collection("chats").doc(chatId);
-
-                batch.set(chatRef, chatData);
-
-                // Commit the batch operation.
-                batch
-                  .commit()
-                  .then(() => {
-                    console.log("Batch operation successful");
-                  })
-                  .catch((error) => {
-                    console.error("Batch operation failed:", error);
+ 
+                    batch.update(user2Ref, {
+                    chats: firebase.firestore.FieldValue.arrayUnion(chatId),
                   });
+
+                  
+                  // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+
+                  // Wait for both update operations to complete before committing the batch.
+                
+                    await  batch
+                        .commit()
+                        .then(() => {
+                          console.log("Batch operation successful");
+                        })
+                        .catch((error) => {
+                          console.error("Batch operation failed:", error);
+                        });
+                    
+                 
+                }
+
+                createChatWithFirstMessage();
               }
-
-
-
-            
-            })
-          
+            });
           }
-          
-          });
+        });
 
-          // const res = await getDoc(doc, db, "chats", createNewChatid);
+        // const db = firebase.firestore();
+        // const batch = db.batch();
+        // // Step 1: Add the unique ID to the `chats` array in both users' documents.
 
-          // if (!res.exists()) {
-          //   //first verify
-          //   const resSecond = await getDoc(
-          //     doc,
-          //     db,
-          //     "chats",
-          //     store.state.chat.selectedUser.uid + auth.currentUser.uid
-          //   ).then((res) => {
-          //     if (!resSecond.exists()) {
-          //       const db = firebase.firestore();
-          //       const batch = db.batch();
+        // batch.update(user1Ref, {
+        //   chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+        // });
+        // batch.update(user2Ref, {
+        //   chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+        // });
+        // // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+        // const chatRef = db.collection("chats").doc(chatId);
 
-          //       // Step 1: Add the unique ID to the `chats` array in both users' documents.
-
-          //       batch.update(user1Ref, {
-          //         chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-          //       });
-          //       batch.update(user2Ref, {
-          //         chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-          //       });
-
-          //       // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
-          //       const chatRef = db.collection("chats").doc(chatId);
-
-          //       batch.set(chatRef, chatData);
-
-          //       // Commit the batch operation.
-          //       batch
-          //         .commit()
-          //         .then(() => {
-          //           console.log("Batch operation successful");
-          //         })
-          //         .catch((error) => {
-          //           console.error("Batch operation failed:", error);
-          //         });
-          //     }
-
-          //   })
-
-          // }
-        } catch (e) {
-          console.log(e, "case 1");
-        }
+        // batch.set(chatRef, chatData);
+        // // Commit the batch operation.
+        // batch
+        //   .commit()
+        //   .then(() => {
+        //     console.log("Batch operation successful");
+        //   })
+        //   .catch((error) => {
+        //     console.error("Batch operation failed:", error);
+        //   });
       }
     }
 
@@ -402,7 +357,7 @@ export default {
       border-bottom-left-radius: 5px;
     }
 
-    .left_bar_srch_wrap_local_search {
+    .left_bar_srch_wrap_settings {
       width: 35px;
       height: 35px;
       background-color: rgb(46, 46, 55);
@@ -415,14 +370,6 @@ export default {
       span {
         font-size: 1.2rem;
         margin: 0% auto;
-      }
-    }
-
-    .left_bar_srch_wrap_global_search {
-      color: rgb(21, 255, 56);
-      @extend .left_bar_srch_wrap_local_search;
-      &:hover {
-        color: rgb(21, 255, 56);
       }
     }
   }
