@@ -3,10 +3,20 @@
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat"> 
-        <button>
+        <div class="menu-btn-wrap">
+          <button class='menu-btn'>
+              <span></span>
+              <span></span>
+              <span></span>
+          </button>
+        </div>
+        <input placeholder="Search" @input="(e) => serachChat(e.target.value)"/>
 
+        <button class="left_bar_srch_wrap_settings">
+          <span class="material-symbols-outlined">
+            language
+            </span>
         </button>
-        <input placeholder="search hat" @input="(e) => serachChat(e.target.value)"/>
       </div>
 
 
@@ -114,10 +124,7 @@ export default {
     },
 
     serachChat (querry) {
-     
      querry.length > 0 ?store.commit('chat/setQuerry', querry):store.commit('chat/setQuerry', null)
-
-
 
     }
   },
@@ -314,30 +321,79 @@ export default {
   flex-direction: column;
 
   .left_bar_srch-wrap {
+    flex-shrink: 0;
     width: 100%;
     padding: 5px;
     box-sizing: border-box;
-    height: 8%;
+    height: 10vh;
     display: flex;
     flex-direction: row;
     align-items: center;
     background-color: #1d1e2a;
 
 
-    button {
+
+    .menu-btn-wrap {
+      cursor: pointer;
+      border-radius: 5px;
       width: 35px;
       height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        background-color: #4040406b;
+      }
+      .menu-btn {
+     
+        width: 35px;
+        height: 15px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        
+        
+       span {
+          width: 65%;
+          height: 2px;
+          background-color:  #8b8b8b;
+        }
+  
+      }
+
     }
 
     input{
       background-color: rgb(46, 46, 55);
-      height: 30px;
-      width: 237px;
+      height: 35px;
+      width: 210px;
+      padding-right: 5px;
       margin-left:5px;
       font-size: 0.9rem;
       color: #e7e7e7;
-      border-radius: 5px;
       padding-left: 3px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px ;
+    }
+
+    .left_bar_srch_wrap_settings {
+      width: 35px;
+      height: 35px;
+      background-color: rgb(46, 46, 55);
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px ;
+      &:hover {
+        color: rgb(146, 146, 146);
+      }
+      cursor: pointer;
+      span {
+        font-size: 1.2rem;
+        margin: 0% auto;
+        
+
+      }
     }
     
 
@@ -365,7 +421,7 @@ export default {
       width: 100%;
       padding: 5px;
       box-sizing: border-box;
-      height: 10%;
+      height: 10vh;
       display: flex;
       flex-direction: row;
       align-items: center;
