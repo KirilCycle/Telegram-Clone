@@ -1,19 +1,19 @@
 <template>
-  <chat-item
+  <chat-list-item
     @click="() => $store.commit('chat/setChatId', cht)"
     v-for="cht in chatList.chats"
     :key="cht"
     :chatId="cht"
   >
-  </chat-item >
+</chat-list-item>
 </template>
 
 <script>
 import store from "@/store/store";
-import ChatItem from "./ChatItem.vue";
+import ChatListItem from "./ChatListItem.vue";
 export default {
   components: {
-    ChatItem,
+    ChatListItem,
   },
   props: {
     chatList: Array,
