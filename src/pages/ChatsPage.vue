@@ -239,9 +239,13 @@ export default {
                 batch.update(user1Ref, {
                   chats: firebase.firestore.FieldValue.arrayUnion(chatId),
                 });
-                batch.update(user2Ref, {
-                  chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-                });
+                
+                setTimeout(() => {
+                  batch.update(user2Ref, {
+                    chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+                  });
+                },2000)
+
 
                 // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
                 const chatRef = db.collection("chats").doc(chatId);
