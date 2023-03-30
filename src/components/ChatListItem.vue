@@ -1,5 +1,5 @@
 <template>
-  <div @click="$store.commit('chat/setSelectedUser',chatName )" v-show="isVisible" >
+  <div @click="$store.commit('chat/setSelectedUser',enotherUser )" v-show="isVisible" >
       <chat-item :pthUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`">
 
         <h3>{{ chatName }}</h3>

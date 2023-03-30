@@ -1,27 +1,32 @@
 <template>
-
   <div class="main">
     <div class="left-bar">
-      <div class="left_bar_srch-wrap" placeholder="search chat"> 
+      <div class="left_bar_srch-wrap" placeholder="search chat">
         <button class="menu-btn-wrap">
-          <button class='menu-btn'>
-              <span></span>
-              <span></span>
-              <span></span>
+          <button class="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </button>
-        <input placeholder="Search" @input="(e) => serachChat(e.target.value)"/>
+        <input
+          placeholder="Search"
+          @input="(e) => serachChat(e.target.value)"
+        />
 
-        <button class="left_bar_srch_wrap_settings">
-          <span class="material-symbols-outlined">
-            language
-            </span>
+        <button
+          @click="isSearch = !isSearch"
+          :class="{
+            left_bar_srch_wrap_global_search: isSearch,
+            left_bar_srch_wrap_local_search: !isSearch,
+          }"
+        >
+          <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
 
-
       <div v-if="!isSearch" class="chat-list">
-         <chat-list  :serachQ="serachQ" :chatList="chatList" ></chat-list>
+        <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
 
       <div v-else>
@@ -30,10 +35,9 @@
     </div>
 
     <div class="chat-container">
-     
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <nav class="chat-nav">
-          <h3>{{$store.state.chat.selectedUser}}</h3>
+          <h3>{{ chatName }}</h3>
         </nav>
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat></direct-chat>
@@ -69,7 +73,7 @@ import DirectChat from "@/components/DirectChat.vue";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
-import ChatList from '@/components/ChatList.vue';
+import ChatList from "@/components/ChatList.vue";
 
 export default {
   components: {
@@ -79,9 +83,9 @@ export default {
   },
   data() {
     return {
-      isSearch: true,
+      isSearch: false,
       value: "",
-      serachQ: ''
+      serachQ: "",
     };
   },
 
@@ -110,20 +114,28 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-     
         await updateDoc(chatRef, {
           messages: arrayUnion(message),
-          lastMessage: this.value
+          lastMessage: this.value,
         });
       }
 
       // Atomically add a new region to the "regions" array field.
     },
 
-    serachChat (querry) {
-     querry.length > 0 ?store.commit('chat/setQuerry', querry):store.commit('chat/setQuerry', null)
-
-    }
+    serachChat(querry) {
+      querry.length > 0
+        ? store.commit("chat/setQuerry", querry)
+        : store.commit("chat/setQuerry", null);
+    },
+  },
+  computed: {
+    chatName() {
+      if (store.state.chat.selectedUser?.displayName) {
+        return store.state.chat.selectedUser.displayName;
+      }
+      return store.state.chat.selectedUser.email?.replace("@gmail.com", "");
+    },
   },
   setup(data) {
     const db = firebase.firestore();
@@ -153,7 +165,6 @@ export default {
       });
     }
 
-  
     // });
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
@@ -177,39 +188,35 @@ export default {
         const createNewChatid = userId1 + userId2;
 
         const user1Ref = db.collection("usersLinksToChat").doc(userId1);
-            const user2Ref = db.collection("usersLinksToChat").doc(userId2);
-            const chatId = userId1 + userId2; 
+        const user2Ref = db.collection("usersLinksToChat").doc(userId2);
+        const chatId = userId1 + userId2;
 
         const message = {
-              userName: auth.currentUser.displayName
-                ? auth.currentUser.displayName.slice(0, 25)
-                : auth.currentUser.email,
-              userId: auth.currentUser.uid,
-              text: v,
-              createdAt: Timestamp.now(),
-              id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
-              // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            };
-            if (auth.currentUser.photoURL) {
-              message.userPhotoURl = auth.currentUser.photoURL;
-            }
-          
+          userName: auth.currentUser.displayName
+            ? auth.currentUser.displayName.slice(0, 25)
+            : auth.currentUser.email,
+          userId: auth.currentUser.uid,
+          text: v,
+          createdAt: Timestamp.now(),
+          id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
+          // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+        if (auth.currentUser.photoURL) {
+          message.userPhotoURl = auth.currentUser.photoURL;
+        }
 
-          const chatData = {
-            lastMessage: message.text,
-            members: [userId1, userId2],
-            messages: [message],
-          };
-
-
-
+        const chatData = {
+          lastMessage: message.text,
+          members: [userId1, userId2],
+          messages: [message],
+        };
 
         if (!chatList.value.chats) {
           const db = firebase.firestore();
           const batch = db.batch();
 
           // Step 1: Add the unique ID to the `chats` array in both users' documents.
-        
+
           batch.update(user1Ref, {
             chats: firebase.firestore.FieldValue.arrayUnion(chatId),
           });
@@ -221,8 +228,6 @@ export default {
           // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
           const chatRef = db.collection("chats").doc(chatId);
 
-        
-           
           batch.set(chatRef, chatData);
 
           // Commit the batch operation.
@@ -241,16 +246,12 @@ export default {
               store.state.chat.selectedUser.uid + auth.currentUser.uid
             )
           ) {
-
-
             console.log("xuyna nashel");
-            
           } else {
             const db = firebase.firestore();
             const batch = db.batch();
 
             // Step 1: Add the unique ID to the `chats` array in both users' documents.
-           
 
             batch.update(user1Ref, {
               chats: firebase.firestore.FieldValue.arrayUnion(chatId),
@@ -261,9 +262,6 @@ export default {
 
             // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
             const chatRef = db.collection("chats").doc(chatId);
-           
-           
-          
 
             batch.set(chatRef, chatData);
 
@@ -301,20 +299,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
-
 .main {
   display: flex;
   justify-content: center;
-
 }
 .left-bar {
   width: 350px;
   background-color: rgb(46, 46, 55);
   display: flex;
-  min-height: 100vh; 
-  max-height: 100vh; 
+  min-height: 100vh;
+  max-height: 100vh;
   flex-direction: column;
 
   .left_bar_srch-wrap {
@@ -328,8 +322,6 @@ export default {
     align-items: center;
     background-color: #1d1e2a;
 
-
-
     .menu-btn-wrap {
       cursor: pointer;
       border-radius: 5px;
@@ -342,7 +334,6 @@ export default {
         background-color: #4040406b;
       }
       .menu-btn {
-     
         width: 35px;
         height: 15px;
         display: flex;
@@ -350,37 +341,34 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        
-        
-       span {
+
+        span {
           width: 65%;
           height: 2px;
-          background-color:  #8b8b8b;
+          background-color: #8b8b8b;
         }
-  
       }
-
     }
 
-    input{
+    input {
       background-color: rgb(46, 46, 55);
       height: 35px;
       width: 210px;
       padding-right: 5px;
-      margin-left:5px;
+      margin-left: 5px;
       font-size: 0.9rem;
       color: #e7e7e7;
       padding-left: 3px;
       border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px ;
+      border-bottom-left-radius: 5px;
     }
 
-    .left_bar_srch_wrap_settings {
+    .left_bar_srch_wrap_local_search {
       width: 35px;
       height: 35px;
       background-color: rgb(46, 46, 55);
       border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px ;
+      border-bottom-right-radius: 5px;
       &:hover {
         color: rgb(146, 146, 146);
       }
@@ -388,25 +376,26 @@ export default {
       span {
         font-size: 1.2rem;
         margin: 0% auto;
-        
-
       }
     }
-    
 
+    .left_bar_srch_wrap_global_search {
+      color: rgb(21, 255, 56);
+      @extend .left_bar_srch_wrap_local_search;
+      &:hover {
+        color: rgb(21, 255, 56);
+      }
+    }
   }
   .chat-list {
-    overflow-y: auto;   
-    overflow-x:hidden ;
-    min-height: 95vh; 
-    max-height: 95vh; 
-    
-   
-
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 95vh;
+    max-height: 95vh;
   }
 }
 .chat-container {
-  min-height: 100vh; 
+  min-height: 100vh;
   max-height: 100vh;
   width: 100%;
   background-color: #939393;
@@ -424,10 +413,7 @@ export default {
       align-items: center;
       background-color: #1d1e2a;
     }
-
-
   }
-
 }
 .chatitem {
   cursor: pointer;
