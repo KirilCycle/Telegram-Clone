@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isVisible" class="cht-i">
+  <div @click="$store.commit('chat/setSelectedUser',chatName )" v-show="isVisible" class="cht-i">
     <div class="img-conatiner">
       <div class="img-wrap">
         <img

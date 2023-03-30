@@ -193,6 +193,7 @@ button {
 
 body {
   background-color: rgb(17, 17, 17);
-  
+  margin: 0px;
+  border: 0px;
 }
 </style>

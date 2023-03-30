@@ -1,4 +1,5 @@
 <template>
+  
     <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 </template>
 
@@ -53,4 +54,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+nav {
+    width: 100%;
+    padding: 5px;
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    background-color: #1d1e2a;
+}
+
+</style>

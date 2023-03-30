@@ -1,16 +1,12 @@
 <template>
-  <div v-if="$store.state.chat.selectedUser" class="chat-nav">
-    <p class="">
-      {{ $store.state.chat.selectedUser.email }}
-    </p>
-  </div>
+
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat"> 
         <button>
 
         </button>
-        <input placeholder="search chat" @input="(e) => serachChat(e.target.value)"/>
+        <input placeholder="search hat" @input="(e) => serachChat(e.target.value)"/>
       </div>
 
 
@@ -27,9 +23,11 @@
     </div>
 
     <div class="chat-container">
-      <h2>selectedChat: {{ $store.state.chat.chatId }}</h2>
-
+     
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
+        <nav class="chat-nav">
+          <h3>{{$store.state.chat.selectedUser}}</h3>
+        </nav>
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat></direct-chat>
 
@@ -299,36 +297,84 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chat-nav {
-  color: white;
-}
+
 
 
 .main {
   display: flex;
   justify-content: center;
-  align-items: center;
 
 }
 .left-bar {
-  width: 300px;
-
+  width: 350px;
   background-color: rgb(46, 46, 55);
   display: flex;
+  min-height: 100vh; 
+  max-height: 100vh; 
   flex-direction: column;
+
+  .left_bar_srch-wrap {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    height: 8%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #1d1e2a;
+
+
+    button {
+      width: 35px;
+      height: 35px;
+    }
+
+    input{
+      background-color: rgb(46, 46, 55);
+      height: 30px;
+      width: 237px;
+      margin-left:5px;
+      font-size: 0.9rem;
+      color: #e7e7e7;
+      border-radius: 5px;
+      padding-left: 3px;
+    }
+    
+
+  }
   .chat-list {
     overflow-y: auto;   
     overflow-x:hidden ;
-    min-height: 90vh; 
-    max-height: 90vh; 
+    min-height: 95vh; 
+    max-height: 95vh; 
+    
+   
+
   }
 }
 .chat-container {
-  
-  min-height: 90vh; 
-  max-height: 90vh;
+  min-height: 100vh; 
+  max-height: 100vh;
   width: 100%;
   background-color: #939393;
+
+  .chat-wrap {
+    height: 100%;
+
+    .chat-nav {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+      height: 10%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: #1d1e2a;
+    }
+
+
+  }
+
 }
 .chatitem {
   cursor: pointer;
