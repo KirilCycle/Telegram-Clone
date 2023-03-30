@@ -31,7 +31,7 @@
     <div class="chat-container">
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <nav class="chat-nav">
-          <h3>{{ $store.state.chat.selectedUser }}</h3>
+          <h3>{{ $store.state.chat.selectedUser.email }}</h3>
         </nav>
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat></direct-chat>
@@ -44,7 +44,7 @@
         <h2>Select chat</h2>
       </div>
 
-      <div v-if="$store.state.chat.selectedUser">
+      <div v-if="$store.state.chat.selectedUser.new">
         <h2>Target chat</h2>
         <input v-model="value" />
         <button @click="() => sendMessageToFoundedChat(value)">
@@ -156,6 +156,7 @@ export default {
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
+        store.commit('chat/setChatIdList',doc.data())
         chatList.value = doc.data();
 
         console.log(chatList.value, "cht");
@@ -175,6 +176,7 @@ export default {
 
         const user1Ref = db.collection("usersLinksToChat").doc(userId1);
         const user2Ref = db.collection("usersLinksToChat").doc(userId2);
+       
         const chatId = userId1 + userId2;
         const enotherChatId = userId2 + userId1;
 
@@ -225,8 +227,7 @@ export default {
                     batch.update(user2Ref, {
                     chats: firebase.firestore.FieldValue.arrayUnion(chatId),
                   });
-
-                  
+          
                   // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
 
                   // Wait for both update operations to complete before committing the batch.
@@ -239,8 +240,6 @@ export default {
                         .catch((error) => {
                           console.error("Batch operation failed:", error);
                         });
-                    
-                 
                 }
 
                 createChatWithFirstMessage();
@@ -249,29 +248,7 @@ export default {
           }
         });
 
-        // const db = firebase.firestore();
-        // const batch = db.batch();
-        // // Step 1: Add the unique ID to the `chats` array in both users' documents.
-
-        // batch.update(user1Ref, {
-        //   chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-        // });
-        // batch.update(user2Ref, {
-        //   chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-        // });
-        // // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
-        // const chatRef = db.collection("chats").doc(chatId);
-
-        // batch.set(chatRef, chatData);
-        // // Commit the batch operation.
-        // batch
-        //   .commit()
-        //   .then(() => {
-        //     console.log("Batch operation successful");
-        //   })
-        //   .catch((error) => {
-        //     console.error("Batch operation failed:", error);
-        //   });
+        
       }
     }
 
@@ -281,13 +258,7 @@ export default {
       sendMessageToFoundedChat,
     };
 
-    // let query = db.collection("usersLinksToChat",'loVxhSxDf7dbHOJ6Sjmtdr1tyZ52')
-
-    // const unsubscribe = docSnap.onSnapshot((snapshot, parameters) => {
-    //   chatList.value = snapshot.docs
-    //     .map((doc) => ({ id: doc.id, ...doc.data() }))
-    //     .reverse();
-    //   console.log(chatList.value, "docs");
+    
   },
 };
 </script>

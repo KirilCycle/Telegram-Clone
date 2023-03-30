@@ -3,19 +3,22 @@
     <div>
       <chat-item
         :pthUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
-        @click="$store.commit('chat/setSelectedUser', us)"
+        @click="() => handle(us)"
         v-for="us in founded"
         :key="us.uid"
       >
-      <div class="text-container">
-        <h3>
-            {{ us.displayName? us.displayName: us.email.replace('@gmail.com','') }}
+        <div class="text-container">
+          <h3>
+            {{
+              us.displayName
+                ? us.displayName
+                : us.email.replace("@gmail.com", "")
+            }}
           </h3>
           <p>
             {{ us.email }}
           </p>
-      </div>  
-
+        </div>
       </chat-item>
     </div>
     items
@@ -39,13 +42,10 @@ export default {
     return {};
   },
   computed: {
-
     takeName() {
       if (us.display) {
-
       }
-    }
-
+    },
   },
 
   setup() {
@@ -76,15 +76,43 @@ export default {
       });
     });
 
+    function handle(us) {
+     
+      const first =
+        us.uid + store.state.user.user.uid
+    
+      const second =
+        store.state.user.user.uid + us.uid
+  
+
+      if (store.state.chat.chatIdList.chats.includes(first)) {
+        store.commit("chat/setSelectedUser", us);
+        store.commit("chat/setChatId",  first);
+      } else if (store.state.chat.chatIdList.chats.includes(second)) {
+        store.commit("chat/setSelectedUser", us);
+        store.commit("chat/setChatId", second);
+      } else {
+
+        const modiffied = us
+
+        modiffied.new = true
+
+        store.commit("chat/setSelectedUser", modiffied);
+
+        
+
+      }
+    }
+
     return {
       founded,
+      handle,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 h3 {
   font-size: 0.9rem;
   font-weight: 550;
@@ -98,6 +126,4 @@ p {
 .text-container {
   text-align: left;
 }
-
-
 </style>
