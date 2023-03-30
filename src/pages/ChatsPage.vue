@@ -29,10 +29,10 @@
     </div>
 
     <div class="chat-container">
+      <nav class="chat-nav">
+        <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
+      </nav>
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
-        <nav class="chat-nav">
-          <h3>{{ $store.state.chat.selectedUser.email }}</h3>
-        </nav>
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat></direct-chat>
 
@@ -44,13 +44,15 @@
         <h2>Select chat</h2>
       </div>
 
-      <div v-if="$store.state.chat.selectedUser.new">
+      <div v-if="$store.state.chat.selectedUser?.new">
         <h2>Target chat</h2>
         <input v-model="value" />
         <button @click="() => sendMessageToFoundedChat(value)">
           enter target mes
         </button>
       </div>
+
+
     </div>
   </div>
 </template>

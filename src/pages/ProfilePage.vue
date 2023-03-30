@@ -8,7 +8,7 @@
   </button>
   <div class="wrap">
     <div class="image-container">
-      <img :src="photo" />
+      <img :src="user.photoURL" />
     </div>
     <input type="file" @change="uploadPhoto" />
 
@@ -62,11 +62,7 @@ export default {
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
-      photo:
-        store.state.user.user.photoURL &&
-        !store.state.user.user.photoURL.includes("example.com")
-          ? store.state.user.user.photoURL
-          : "https://5.imimg.com/data5/AK/RA/MY-68428614/apple-1000x1000.jpg",
+     
     };
   },
   computed: {
@@ -82,8 +78,6 @@ export default {
     }, 
   },
   created() {
-    
-    this.fetchUs()
   },
   methods: {
     changeDisplayName() {
@@ -114,19 +108,7 @@ export default {
     },
 
 
-     async fetchUs () {
-      
-      const storage = getStorage();
-     
-      const pathReference = store.state.user.customStorageRef(
-        storage,
-        `${this.photo}`)
-
-      getDownloadURL(pathReference).then((url) => {
-        console.log(url, "AS PATH");
-        this.photo = url;
-      }).catch((er) => console.log('er',er))
-     }
+   
 
   },
   setup(props) {
@@ -168,16 +150,20 @@ export default {
                 "Uploaded a blob or file!"
               );
 
+              getDownloadURL(storageRef).then((url) => {
 
-              updateProfile(auth.currentUser, {
-                photoURL: storageRef._location.path_,
-              })
-                .then(() => {
-                 console.log('good')
+                updateProfile(auth.currentUser, {
+                  photoURL: url,
                 })
-                .catch((error) => {
-                  console.log('huynya', error)
-                });
+                  .then(() => {
+                   console.log('good', url)
+                  })
+                  .catch((error) => {
+                    console.log('huynya', error)
+                  });
+              }).catch((er) => console.log('er',er))
+
+
             })
             .catch((er) => console.log(er, "post er"));
 

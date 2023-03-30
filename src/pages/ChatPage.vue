@@ -24,6 +24,7 @@
     <reply-message-border
       v-if="store.state.chat.replyMsgRef"
     ></reply-message-border>
+    
     <div class="input-container">
       <div class="input_content">
         <selected-file-modal

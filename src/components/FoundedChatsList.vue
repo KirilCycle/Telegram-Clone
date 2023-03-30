@@ -92,15 +92,10 @@ export default {
         store.commit("chat/setSelectedUser", us);
         store.commit("chat/setChatId", second);
       } else {
-
         const modiffied = us
-
         modiffied.new = true
-
         store.commit("chat/setSelectedUser", modiffied);
-
-        
-
+        store.commit("chat/setChatId", null);
       }
     }
 
