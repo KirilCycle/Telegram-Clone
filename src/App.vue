@@ -1,9 +1,9 @@
 <template>
   <div class="wrap">
+    <my-profile v-if="$store.state.user.user"></my-profile>
+    
     <router-view></router-view>
-    <TransitionGroup name="nav" tag="div">
-    <!-- <top-navbar v-if="store.state.user.isAuth && store.state.user.navbarVisible"></top-navbar> -->
-    </TransitionGroup>
+   
   </div>
 </template>
 
@@ -17,6 +17,7 @@ import { getAnalytics } from "firebase/analytics";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import {ref} from 'firebase/storage'
+import MyProfile from "./components/MyProfile.vue";
 import "firebase/compat/firestore";
 import {  signOut } from "firebase/auth";
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
@@ -114,6 +115,32 @@ store.commit("user/setFireBase", firebase);
 </script>
 
 <style>
+
+.bloor {
+  position: fixed;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  background-color: #15151500;
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+}
+.profile-container-hidden {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    min-width: 500px;
+    transform: translateX(-100%);
+    background-color: rgba(0, 0, 0, 0);
+  
+    
+}
+.profile-container {
+  
+    min-width: 500px;
+    transform: translateX(0%);
+    background-color: black;
+    
+}
+
 
 .nav-enter-active{
   transform: translateY(0px);

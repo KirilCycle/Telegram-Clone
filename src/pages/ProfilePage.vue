@@ -1,38 +1,29 @@
 <template>
-  <button @click="$router.go(-1)" class="back">
-    <span class="material-symbols-outlined"> arrow_back_ios </span>
-  </button>
-  <button class="logout">
-    logout
-    <span @click="logout" class="material-symbols-outlined"> logout </span>
-  </button>
+
   <div class="wrap">
+    <button  v-show="!inEdit" @click="$emit('close')" class="back">
+      <span class="material-symbols-outlined"> arrow_back_ios </span>
+    </button>
+    <button  v-show="inEdit" @click="inEdit = false" class="back">
+      Cancel
+    </button>
+    <button v-show="!inEdit"  @click="inEdit = true" class="logout">
+      Edit profile
+    </button>
+    <button v-show="inEdit"  @click="inEdit = true" class="logout">
+      apply
+    </button>
     <div class="image-container">
       <img :src="user.photoURL" />
     </div>
     <input type="file" @change="uploadPhoto" />
 
-    <div v-if="!preparedToChangeName">
+    <div>
       <h2>
-        {{ takeName }}
-        <span
-          @click="preparedToChangeName = true"
-          class="material-symbols-outlined"
-        >
-          edit
-        </span>
+        {{ $store.state.user.user.displayName }}
       </h2>
     </div>
-    <div v-else class="input-container">
-      <p @click="changeDisplayName">apply</p>
-      <input v-model.trim="value" class="chnage-name-input" />
-      <span
-        @click="preparedToChangeName = false"
-        class="material-symbols-outlined"
-      >
-        close
-      </span>
-    </div>
+    
     <p class="value-alert" v-if="wrongVal">u cant use @,#,!,$,+,|,|</p>
   </div>
 </template>
@@ -62,20 +53,9 @@ export default {
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
+      inEdit: false,
      
     };
-  },
-  computed: {
-    takeName() {
-      if (this.changedName) {
-        return this.changedName;
-      }
-      if (this.user.displayName) {
-        return this.user.displayName;
-      } else {
-        return this.user.email;
-      }
-    }, 
   },
   created() {
   },
@@ -228,7 +208,7 @@ $crazy_color: #00ff44;
 
   h2 {
     margin-top: 10px;
-    color: rgb(148, 148, 148);
+    color: rgb(255, 255, 255);
     font-size: 20px;
     font-weight: normal;
   }
