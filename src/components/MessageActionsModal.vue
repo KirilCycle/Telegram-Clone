@@ -51,9 +51,9 @@ export default {
   },
   methods: {
     async remMsg() {
-     this.removeMsg(store.state.chat.chatId,this.message.id)
+     this.removeMsg('94euI3zGEYNXtRN0bzxTTBI54jw2LJYbWn7O2OV8Ar1B8mCgVIGsUiF2','5b4ed7e7-71df-4be4-880c-4eda0cc9380e94euI3zGEYNXtRN0bzxTTBI54jw2')
 
-    // console.log(store.state.chat.chatId,this.message.id, 'DEL AC' )
+    console.log(store.state.chat.chatId,this.message.id, 'DEL AC',this.removeMsg )
     },
     show() {
        console.log(this.message)

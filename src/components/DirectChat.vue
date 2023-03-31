@@ -34,26 +34,22 @@ export default {
     };
   },
   methods: {
-    deleteMessage(chatId, messageId) {
+    async deleteMessage(chatId, messageId) {
      
-        const db = firebase.firestore();
-        // Get a reference to the chat document
-        const chatRef = db.collection("chats").doc(chatId);
+      // Get a reference to the chat document
+      const db  = firebase.firestore()
 
-        // Remove the message from the messages array
-        chatRef
-          .update({
-            messages: firebase.firestore.FieldValue.arrayRemove({
-              id: messageId,
-            }),
-          })
-          .then(() => {
-            console.log("Message deleted successfully, yo!");
-          })
-          .catch((error) => {
-            console.error("Error deleting message, yo:", error);
-          });
-      
+      // Remove the message from the messages array
+      //doc(db, "chats", store.state.chat.chatId);
+      try {
+        const chatRef = doc(db, "chats",chatId );
+        await updateDoc(chatRef, {
+          messages: arrayRemove(messageId),
+        });
+        console.log("Message deleted successfully!",chatId, '<= chatID', messageId, '<= messid' );
+      } catch (error) {
+        console.error("Error deleting message:", error);
+      }
     },
   },
 
