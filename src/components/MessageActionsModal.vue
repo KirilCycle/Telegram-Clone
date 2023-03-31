@@ -51,7 +51,12 @@ export default {
   },
   methods: {
     async remMsg() {
-     this.removeMsg()
+     this.removeMsg(store.state.chat.chatId,this.message.id)
+
+    // console.log(store.state.chat.chatId,this.message.id, 'DEL AC' )
+    },
+    show() {
+       console.log(this.message)
     },
     setReplyTarger () {
         store.commit('chat/setReplyMsgRef', this.msgRef)

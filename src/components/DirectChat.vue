@@ -1,6 +1,11 @@
 <template>
   <div class="wrp">
-    <message-item :removeMessage="deleteMessage" v-for="it in chat.messages" :key="it.uid" :message="it"></message-item>
+    <message-item
+      :removeMessage="deleteMessage"
+      v-for="it in chat.messages"
+      :key="it.uid"
+      :message="it"
+    ></message-item>
   </div>
 </template>
 
@@ -26,13 +31,30 @@ export default {
   data() {
     return {
       sendMsg: this.sendMsg,
-      
-    }
+    };
   },
   methods: {
-    deleteMessage( ) {
-       alert('deleted')
-    }
+    deleteMessage(chatId, messageId) {
+     
+        const db = firebase.firestore();
+        // Get a reference to the chat document
+        const chatRef = db.collection("chats").doc(chatId);
+
+        // Remove the message from the messages array
+        chatRef
+          .update({
+            messages: firebase.firestore.FieldValue.arrayRemove({
+              id: messageId,
+            }),
+          })
+          .then(() => {
+            console.log("Message deleted successfully, yo!");
+          })
+          .catch((error) => {
+            console.error("Error deleting message, yo:", error);
+          });
+      
+    },
   },
 
   setup(props) {
@@ -77,7 +99,6 @@ nav {
 }
 .wrp {
   padding-top: 70px;
-  
 }
 
 .chat {
