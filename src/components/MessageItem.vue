@@ -1,7 +1,7 @@
 <template>
   <div ref="msg" class="item">
    
-  <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
+  <profile-image :profilePhotoUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"></profile-image>
    
     <div
       @touchend="stop"
@@ -12,7 +12,7 @@
     >
       <p class="user-name">{{ message.userName.slice(0, 24) }}</p>
       <div class="image-container" v-if="photoURL">
-        <img :src="photoURL" />
+        <img :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`" />
       </div>
       <p :ref="message.id" class="item_body_text">{{ message.text }}</p>
     </div>
@@ -48,10 +48,7 @@ export default {
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
-      profilePhotoUrl: this.message.photoURL
-        ? this.message.photoURL
-        : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg",
-         msgRef: null
+      profilePhotoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg"
       
     };
   },
@@ -102,7 +99,6 @@ export default {
 
     const photoURL = ref(null);
 
-    console.log(props.message.userPhotoURl, "ASS I NEED");
 
     const storage = getStorage();
     // async function SUS (){

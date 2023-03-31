@@ -48,10 +48,10 @@ $crazy_color: #00ff44;
 .profile {
   position: fixed;
   top: 0px;
-  background-color: #ffffff49;
   width: 55px;
   height: 55px;
   right: 0px;
+  z-index: 100;
   .photo-container {
     border-radius: 50%;
     height: 100%;

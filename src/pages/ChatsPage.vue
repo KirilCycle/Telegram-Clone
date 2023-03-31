@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <button class="menu-btn-wrap">
@@ -30,32 +29,33 @@
     </div>
 
     <div class="right-side">
-
       <div class="chat-container">
-       
         <nav class="chat-nav">
           <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
         </nav>
-  
-        <div v-if="$store.state.chat.chatId" class="chat-wrap">
-      
-          <direct-chat :sendMsg="addNewMessage"></direct-chat>
-         
- 
+
+        <div v-if="$store.state.chat.chatId">
+          <div class="chat-wrap">
+            <direct-chat :sendMsg="addNewMessage"></direct-chat>
+          </div>
         </div>
-  
-        <div v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser">
+
+        <!-- <chat-input :sendMsg="addNewMessage"></chat-input> -->
+
+        <div
+          v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser"
+        >
           <h2>Select chat</h2>
         </div>
-  
+
         <div class="target-chat" v-if="$store.state.chat.selectedUser?.new">
-          <h2>Target chat xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</h2>
-        
-          <chat-input
-            :sendMsg="sendMessageToFoundedChat"
-          ></chat-input>
+          <h2>
+            Target chat
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          </h2>
+
+          <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
         </div>
-  
       </div>
     </div>
   </div>
@@ -209,8 +209,7 @@ export default {
           if (doc.exists) {
             console.log("Document exists 1");
             store.commit("chat/setChatId", enotherChatId);
-            store.commit("chat/setSelectedUser", userId2)
-           
+            store.commit("chat/setSelectedUser", userId2);
           } else {
             const chatDocRefSecond = chatsRef.doc(chatId);
 
@@ -218,8 +217,7 @@ export default {
               if (doc.exists) {
                 console.log("Document exists 2");
                 store.commit("chat/setChatId", chatId);
-                store.commit("chat/setSelectedUser", userId2)
-               
+                store.commit("chat/setSelectedUser", userId2);
               } else {
                 async function createChatWithFirstMessage() {
                   const db = firebase.firestore();
@@ -245,7 +243,7 @@ export default {
                     .then(() => {
                       console.log("Batch operation successful");
                       store.commit("chat/setChatId", chatId);
-                      store.commit("chat/setSelectedUser", userId2)
+                      store.commit("chat/setSelectedUser", userId2);
                     })
                     .catch((error) => {
                       console.error("Batch operation failed:", error);
@@ -270,12 +268,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 $custom-c1: rgb(20, 20, 20);
 $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
-
 
 .main {
   display: flex;
@@ -367,6 +363,21 @@ $custom-c3: rgb(0, 128, 255);
     min-height: 95vh;
     max-height: 95vh;
   }
+
+  .chat-list::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+  }
+
+  .chat-list-wrap::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.648);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .chat-list-wrap::-webkit-scrollbar-thumb {
+    background: rgba(152, 152, 152, 0.577);
+    border-radius: 20px;
+  }
 }
 
 .right-side {
@@ -395,27 +406,23 @@ $custom-c3: rgb(0, 128, 255);
     font-size: 0.9rem;
     color: #e2e2e2;
 
-
-  .chat-wrap {
-    width: 100%;
-    overflow-y: scroll;
-    height: 100%;
-
+    .chat-wrap {
+      width: 100%;
+      overflow-y: scroll;
+      height: 80vh;
     }
   }
 }
 
-
-
 .chat-container::-webkit-scrollbar {
   width: 5px;
 }
- 
+
 .chat-container::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.517);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
- 
+
 .chat-container::-webkit-scrollbar-thumb {
   background: rgba(152, 152, 152, 0.577);
   border-radius: 20px;

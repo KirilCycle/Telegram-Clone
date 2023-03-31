@@ -55,7 +55,9 @@ export default {
       }
     }
   }
-
+  .chatitem_info_container {
+    text-align: left;
+  }
 
 }
 

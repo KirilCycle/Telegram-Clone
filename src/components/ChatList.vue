@@ -1,11 +1,14 @@
 <template>
-  <chat-list-item
-    @click="() => $store.commit('chat/setChatId', cht)"
-    v-for="cht in chatList.chats"
-    :key="cht"
-    :chatId="cht"
-  >
-</chat-list-item>
+  <div class="chat-list-wrap">
+    <chat-list-item
+     
+      @click="() => $store.commit('chat/setChatId', cht)"
+      v-for="cht in chatList.chats"
+      :key="cht"
+      :chatId="cht"
+    >
+  </chat-list-item>
+  </div>
 </template>
 
 <script>
@@ -31,4 +34,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.chat-list-wrap {
+   padding-top: 10px;
+   padding-bottom: 20px;
+}
+
+
+</style>

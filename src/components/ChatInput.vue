@@ -4,6 +4,8 @@
       <span>
         <span class="material-symbols-outlined"> attach_file </span>
       </span>
+      
+     
       <input v-model="value" placeholder="Write a message..." />
 
       <button @click="() =>sendMsg(value)">enter</button>
@@ -34,43 +36,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .input-container {
+ position: fixed;
   width: 100%;
-  height: 40px;
-  position: fixed;
-  bottom: 0px;
-  background-color: #202020;
-  padding: 5px 10px 5px 10px;
+  margin: 0px;
+
+
+  padding: 0px 10px 0px 10px;
+  background-color: #1f1e1ee6;
+  backdrop-filter: blur(8px);
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  bottom: 0;
+  align-items: center;
+  box-sizing: border-box;
+
 
   .content {
-    margin: 0% auto;
-    height: 40px;
+    
+    box-sizing: border-box;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    background-color: red;
     justify-content: center;
     align-items: center;
-    span {
-      overflow: hidden;
-      height: 100%;
-      flex-shrink: 0;
-    }
+    flex-direction: row;
+    justify-content: space-around;
+    display: flex;
+    height: 90%;
+   
 
     input {
-      width: 100px;
+      width: 100%;
       height: 100%;
-      background-color: #fff;
+      background-color: #ffffff75;
     }
 
     button {
       width: 35px;
-      display: flex;
+      height: 35px;
+      background-color: #585858;
       flex-shrink: 0;
-      background-color: red;
-      height: 100%;
     }
+
+
+
   }
 }
 </style>
