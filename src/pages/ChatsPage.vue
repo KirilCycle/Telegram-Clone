@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <button class="menu-btn-wrap">
@@ -13,53 +14,48 @@
           placeholder="Search"
           @input="(e) => serachChat(e.target.value)"
         />
-
-        <button @click="isSearch = !isSearch" class="left_bar_srch_wrap_settings">
+        <button
+          @click="isSearch = !isSearch"
+          class="left_bar_srch_wrap_settings"
+        >
           <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
-
       <div v-if="!isSearch" class="chat-list">
         <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
-
       <div v-else>
         <founded-chats-list></founded-chats-list>
       </div>
     </div>
 
-    <div class="chat-container">
-      <nav class="chat-nav">
-        <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
-      </nav>
+    <div class="right-side">
+
+      <div class="chat-container">
+        <nav class="chat-nav">
+          <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
+        </nav>
+  
+        <div v-if="$store.state.chat.chatId" class="chat-wrap">
       
-      <div v-if="$store.state.chat.chatId" class="chat-wrap">
-        <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
-        <direct-chat></direct-chat>
-
-        <!-- <input placeholder="enter test message" v-model="value" /> -->
+          <direct-chat></direct-chat>
+ 
+        </div>
+  
+        <div v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser">
+          <h2>Select chat</h2>
+        </div>
+  
+        <div class="target-chat" v-if="$store.state.chat.selectedUser?.new">
+          <h2>Target chat xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</h2>
         
-     
-        <!-- <button @click="addNewMessage">SENNENENEND TEST</button> -->
+        </div>
+  
+        <!-- <chat-input
+          :sendMsg="addNewMessage"
+          :senFirstMsg="sendMessageToFoundedChat"
+        ></chat-input> -->
       </div>
-
-      <div v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser">
-        <h2>Select chat</h2>
-      </div>
-
-      <div v-if="$store.state.chat.selectedUser?.new">
-       
-       
-        <h2>Target chat</h2>
-        <!-- <input v-model="value" />
-        <button @click="() => sendMessageToFoundedChat(value)">
-          enter target mes
-        </button> -->
-       </div>
-       
-       <chat-input :sendMsg="addNewMessage" :senFirstMsg="sendMessageToFoundedChat"></chat-input>
-       
-
     </div>
   </div>
 </template>
@@ -77,7 +73,7 @@ import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
-import ChatInput from '@/components/ChatInput.vue';
+import ChatInput from "@/components/ChatInput.vue";
 
 export default {
   components: {
@@ -100,11 +96,7 @@ export default {
       const chatRef = doc(db, "chats", store.state.chat.chatId);
       const auth = getAuth();
 
-      if (
-        auth.currentUser &&
-        text.length < 2000 &&
-        text.length > 0
-      ) {
+      if (auth.currentUser && text.length < 2000 && text.length > 0) {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -124,8 +116,6 @@ export default {
           lastMessage: text,
         });
       }
-
-     
     },
 
     serachChat(querry) {
@@ -167,7 +157,7 @@ export default {
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         // Do something with the document data
-        store.commit('chat/setChatIdList',doc.data())
+        store.commit("chat/setChatIdList", doc.data());
         chatList.value = doc.data();
 
         console.log(chatList.value, "cht");
@@ -187,7 +177,7 @@ export default {
 
         const user1Ref = db.collection("usersLinksToChat").doc(userId1);
         const user2Ref = db.collection("usersLinksToChat").doc(userId2);
-       
+
         const chatId = userId1 + userId2;
         const enotherChatId = userId2 + userId1;
 
@@ -234,23 +224,24 @@ export default {
                   batch.update(user1Ref, {
                     chats: firebase.firestore.FieldValue.arrayUnion(chatId),
                   });
- 
-                    batch.update(user2Ref, {
+
+                  batch.update(user2Ref, {
                     chats: firebase.firestore.FieldValue.arrayUnion(chatId),
                   });
-          
+
                   // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
 
                   // Wait for both update operations to complete before committing the batch.
-                
-                    await  batch
-                        .commit()
-                        .then(() => {
-                          console.log("Batch operation successful");
-                        })
-                        .catch((error) => {
-                          console.error("Batch operation failed:", error);
-                        });
+
+                  await batch
+                    .commit()
+                    .then(() => {
+                      console.log("Batch operation successful");
+                      store.commit("chat/setChatId", chatId);
+                    })
+                    .catch((error) => {
+                      console.error("Batch operation failed:", error);
+                    });
                 }
 
                 createChatWithFirstMessage();
@@ -258,8 +249,6 @@ export default {
             });
           }
         });
-
-        
       }
     }
 
@@ -268,23 +257,27 @@ export default {
       chat,
       sendMessageToFoundedChat,
     };
-
-    
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
+
 .main {
   display: flex;
   justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
 }
 .left-bar {
-  width: 350px;
+  min-width: 300px;
+  flex-shrink: 0;
   background-color: rgb(46, 46, 55);
   display: flex;
-  min-height: 100vh;
-  max-height: 100vh;
+  min-height: 100%;
+  max-height: 100%;
   flex-direction: column;
 
   .left_bar_srch-wrap {
@@ -292,7 +285,7 @@ export default {
     width: 100%;
     padding: 5px;
     box-sizing: border-box;
-    height: 10vh;
+    height: 10%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -362,13 +355,20 @@ export default {
     max-height: 95vh;
   }
 }
-.chat-container {
-  min-height: 100vh;
-  max-height: 100vh;
+
+.right-side {
   width: 100%;
+  height: 100%;
+  background-color: #0f0f0f;
+}
+.chat-container {
+  width: 100%;
+  height: 100%;
   background-color: #939393;
 
   .chat-wrap {
+    width: 100%;
+    overflow-y: scroll;
     height: 100%;
 
     .chat-nav {

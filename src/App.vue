@@ -1,6 +1,6 @@
 <template>
+  <my-profile class="profile" v-if="$store.state.user.user"></my-profile>
   <div class="wrap">
-    <my-profile v-if="$store.state.user.user"></my-profile>
     
     <router-view></router-view>
    
@@ -116,6 +116,12 @@ store.commit("user/setFireBase", firebase);
 
 <style>
 
+.profile {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+}
+
 .bloor {
   position: fixed;
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
@@ -154,8 +160,15 @@ store.commit("user/setFireBase", firebase);
   transform: translateY(-100px);
 }
 
+p{ 
+  margin: 0px;
+}
+
 
 .wrap {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
 }
 * {
   margin: 0px;
@@ -211,6 +224,7 @@ button {
 
 #app {
   padding: 0px;
+  
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -220,7 +234,6 @@ button {
 
 body {
   background-color: rgb(17, 17, 17);
-  margin: 0px;
-  border: 0px;
+
 }
 </style>

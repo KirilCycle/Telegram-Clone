@@ -59,6 +59,8 @@ export default {
     async fethcEnotherUser() {
       const myCollectionRef = this.db.collection("usersPrew");
 
+      console.log('EXECUTE', this.enotherUserId)
+
       const documentRef = myCollectionRef.doc(this.enotherUserId);
 
       // Retrieve the document using the get() method
@@ -72,6 +74,7 @@ export default {
           if (us?.displayName) {
             this.chatName = us.displayName;
           }
+          console.log(this.enotherUser, us)
           this.chatName = us.email?.replace("@gmail.com", "");
         })
         .catch((error) => {

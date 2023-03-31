@@ -1,6 +1,7 @@
 <template>
 
   <div class="wrap">
+    <h1 @click="logout">LOOOOOGG OUT</h1>
     <button  v-show="!inEdit" @click="$emit('close')" class="back">
       <span class="material-symbols-outlined"> arrow_back_ios </span>
     </button>
@@ -155,9 +156,6 @@ export default {
     }
 
 
-   
-
-
 
     return {
       logout,
@@ -171,6 +169,11 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 .wrap {
+
+  h1 {
+    color: white;
+  }
+
   margin-top: 70px;
   display: flex;
   align-items: center;

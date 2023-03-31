@@ -1,9 +1,9 @@
 <template>
-  <button @click="v = true">
+  <div class="profile" @click="v = true">
     <div class="photo-container">
       <img :src="photo" >
     </div>
-  </button>
+  </div>
 
   <teleport to="body">
     <Transition>
@@ -45,21 +45,27 @@ export  default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 
-.photo-container {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  overflow: hidden;
+.profile {
   position: fixed;
   top: 0px;
-  border: 1px solid rgb(57, 57, 57);
+  background-color: #ffffff49;
+  width: 55px;
+  height: 55px;
   right: 0px;
-  background-color: $crazy_color;
-
-  img {
+  .photo-container {
+    border-radius: 50%;
+    height: 100%;
     width: 100%;
-    min-height: 100%;
-    object-fit: cover;
+    overflow: hidden;
+    border: 1px solid rgb(57, 57, 57);
+    background-color: $crazy_color;
+  
+    img {
+      width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
+  
   }
 
 }
