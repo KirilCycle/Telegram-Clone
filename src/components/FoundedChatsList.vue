@@ -61,6 +61,8 @@ export default {
         .collection("usersPrew")
         .where("email", ">=", store.state.chat.querry)
         .where("email", "<=", store.state.chat.querry + "z")
+        // .orWhere("displayName", ">=", store.state.chat.querry)
+        // .orWhere("displayName", "<=", store.state.chat.querry + "\uf8ff")
         .limit(9);
 
       // Get the query results
@@ -77,23 +79,19 @@ export default {
     });
 
     function handle(us) {
-     
-      const first =
-        us.uid + store.state.user.user.uid
-    
-      const second =
-        store.state.user.user.uid + us.uid
-  
+      const first = us.uid + store.state.user.user.uid;
+
+      const second = store.state.user.user.uid + us.uid;
 
       if (store.state.chat.chatIdList.chats.includes(first)) {
         store.commit("chat/setSelectedUser", us);
-        store.commit("chat/setChatId",  first);
+        store.commit("chat/setChatId", first);
       } else if (store.state.chat.chatIdList.chats.includes(second)) {
         store.commit("chat/setSelectedUser", us);
         store.commit("chat/setChatId", second);
       } else {
-        const modiffied = us
-        modiffied.new = true
+        const modiffied = us;
+        modiffied.new = true;
         store.commit("chat/setSelectedUser", modiffied);
         store.commit("chat/setChatId", null);
       }

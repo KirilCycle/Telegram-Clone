@@ -2,8 +2,10 @@
   <div @click="$store.commit('chat/setSelectedUser',enotherUser )" v-show="isVisible" >
       <chat-item :pthUrl="enotherUser.photoURL">
 
+        <div class="txt-container">
         <h3>{{ chatName }}</h3>
-        <p>{{ item.lastMessage }}</p>
+          <p>{{ item.lastMessage }}</p>
+        </div>
        
       </chat-item>   
   </div>
@@ -97,6 +99,11 @@ export default {
     display: flex;
     flex-direction: column;
     text-align: left;
+
+    .txt-container {
+      max-width: 100%;
+      overflow: hidden;
+    }
 
     h3 {
       font-size: 0.9rem;

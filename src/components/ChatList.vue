@@ -39,6 +39,7 @@ export default {
 .chat-list-wrap {
    padding-top: 10px;
    padding-bottom: 20px;
+ 
 }
 
 .list-enter-active,

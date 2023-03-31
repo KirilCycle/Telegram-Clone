@@ -15,7 +15,8 @@
         />
         <button
           @click="isSearch = !isSearch"
-          class="left_bar_srch_wrap_settings"
+          :class="{ 'left_bar_srch_wrap_settings': !isSearch, 'left_bar_srch_wrap_settings_active': isSearch }"
+        
         >
           <span class="material-symbols-outlined"> language </span>
         </button>
@@ -281,7 +282,9 @@ $custom-c3: rgb(0, 128, 255);
   height: 100vh;
 }
 .left-bar {
-  min-width: 300px;
+  width: 300px;
+  overflow: hidden;
+  resize: horizontal;
   flex-shrink: 0;
   background-color: $custom-c1;
   display: flex;
@@ -289,9 +292,10 @@ $custom-c3: rgb(0, 128, 255);
   max-height: 100%;
   flex-direction: column;
 
+
   .left_bar_srch-wrap {
     flex-shrink: 0;
-    width: 100%;
+    min-width: 100%;
     box-sizing: border-box;
     padding: 5px;
     height: 10%;
@@ -331,7 +335,7 @@ $custom-c3: rgb(0, 128, 255);
     input {
       background-color: $custom-c2;
       height: 35px;
-      width: 210px;
+      width: 90%;
       padding-right: 5px;
       margin-left: 5px;
       font-size: 0.9rem;
@@ -356,6 +360,26 @@ $custom-c3: rgb(0, 128, 255);
         margin: 0% auto;
       }
     }
+    .left_bar_srch_wrap_settings_active {
+      width: 35px;
+      color:  $custom-c3;
+      height: 35px;
+      background-color: $custom-c2;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      &:hover {
+        color: rgb(146, 146, 146);
+      }
+      cursor: pointer;
+      span {
+        font-size: 1.2rem;
+        margin: 0% auto;
+      }
+    }
+
+
+
+
   }
   .chat-list {
     
