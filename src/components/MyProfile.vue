@@ -1,5 +1,9 @@
 <template>
-  <button @click="v = true">open profile</button>
+  <button @click="v = true">
+    <div class="photo-container">
+      <img :src="photo" >
+    </div>
+  </button>
 
   <teleport to="body">
     <Transition>
@@ -14,20 +18,55 @@
 
 <script>
 import ProfilePage from "@/pages/ProfilePage.vue";
-export default {
+import { getAuth } from 'firebase/auth';
+import  { ref } from 'vue';
+export  default {
   components: { ProfilePage },
   data() {
     return {
       v: false,
+      
     };
   },
+  setup() {
+
+
+    const auth = getAuth()
+
+    const photo = ref(auth.currentUser.photoURL)
+
+    return {
+      photo
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+$crazy_color: #00ff44;
+
+.photo-container {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: fixed;
+  top: 0px;
+  border: 1px solid rgb(57, 57, 57);
+  right: 0px;
+  background-color: $crazy_color;
+
+  img {
+    width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+
+}
+
 v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .v-enter-from,
@@ -38,7 +77,7 @@ v-enter-active,
 .bloor {
   position: fixed;
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-  background-color: #15151500;
+  background-color: #151515b8;
   width: 100%;
   height: 100%;
   display: flex;

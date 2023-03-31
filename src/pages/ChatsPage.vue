@@ -32,12 +32,15 @@
       <nav class="chat-nav">
         <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
       </nav>
+      
       <div v-if="$store.state.chat.chatId" class="chat-wrap">
         <!-- <div v-for="txt in chat.messages" :key="txt">{{txt}}</div> -->
         <direct-chat></direct-chat>
 
-        <input placeholder="enter test message" v-model="value" />
-        <button @click="addNewMessage">SENNENENEND TEST</button>
+        <!-- <input placeholder="enter test message" v-model="value" /> -->
+        
+     
+        <!-- <button @click="addNewMessage">SENNENENEND TEST</button> -->
       </div>
 
       <div v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser">
@@ -45,13 +48,17 @@
       </div>
 
       <div v-if="$store.state.chat.selectedUser?.new">
+       
+       
         <h2>Target chat</h2>
-        <input v-model="value" />
+        <!-- <input v-model="value" />
         <button @click="() => sendMessageToFoundedChat(value)">
           enter target mes
-        </button>
-      </div>
-
+        </button> -->
+       </div>
+       
+       <chat-input :sendMsg="addNewMessage" :senFirstMsg="sendMessageToFoundedChat"></chat-input>
+       
 
     </div>
   </div>
@@ -70,38 +77,40 @@ import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
+import ChatInput from '@/components/ChatInput.vue';
 
 export default {
   components: {
     DirectChat,
     FoundedChatsList,
     ChatList,
+    ChatInput,
   },
   data() {
     return {
-      isSearch: true,
+      isSearch: false,
       value: "",
       serachQ: "",
     };
   },
 
   methods: {
-    async addNewMessage() {
+    async addNewMessage(text) {
       const db = firebase.firestore();
       const chatRef = doc(db, "chats", store.state.chat.chatId);
       const auth = getAuth();
 
       if (
         auth.currentUser &&
-        this.value.length < 2000 &&
-        this.value.length > 0
+        text.length < 2000 &&
+        text.length > 0
       ) {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
             : auth.currentUser.email,
           userId: auth.currentUser.uid,
-          text: this.value,
+          text,
           createdAt: Timestamp.now(),
           id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -112,11 +121,11 @@ export default {
 
         await updateDoc(chatRef, {
           messages: arrayUnion(message),
-          lastMessage: this.value,
+          lastMessage: text,
         });
       }
 
-      // Atomically add a new region to the "regions" array field.
+     
     },
 
     serachChat(querry) {
