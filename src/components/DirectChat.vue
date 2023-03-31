@@ -35,18 +35,43 @@ export default {
   },
   methods: {
     async deleteMessage(chatId, messageId) {
-     
+      // const db = firebase.firestore();
+      // const chatRef = doc(db, "chats", store.state.chat.chatId);
+      // const auth = getAuth();
+
+      // if (auth.currentUser && text.length < 2000 && text.length > 0) {
+      //   const message = {
+      //     userName: auth.currentUser.displayName
+      //       ? auth.currentUser.displayName.slice(0, 25)
+      //       : auth.currentUser.email,
+      //     userId: auth.currentUser.uid,
+      //     text,
+      //     createdAt: Timestamp.now(),
+      //     id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
+      //     // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      //   };
+      //   if (auth.currentUser.photoURL) {
+      //     message.userPhotoURl = auth.currentUser.photoURL;
+      //   }
+
+      //   await updateDoc(chatRef, {
+      //     messages: arrayUnion(message),
+      //     lastMessage: text,
+      //   });
+
       // Get a reference to the chat document
-      const db  = firebase.firestore()
+      const db = firebase.firestore();
 
       // Remove the message from the messages array
       //doc(db, "chats", store.state.chat.chatId);
       try {
-        const chatRef = doc(db, "chats",chatId );
-        await updateDoc(chatRef, {
-          messages: arrayRemove(messageId),
+        const chatRef = doc(db, "chats", chatId);
+
+        await updateDoc(chatRef,{
+          messages: firebase.firestore.FieldValue.arrayRemove(messageId),
         });
-        console.log("Message deleted successfully!",chatId, '<= chatID', messageId, '<= messid' );
+
+        console.log("Message deleted successfully!");
       } catch (error) {
         console.error("Error deleting message:", error);
       }
