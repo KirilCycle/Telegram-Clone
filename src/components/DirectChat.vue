@@ -1,6 +1,6 @@
 <template>
-  
-    <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
+
+    <div class="chat" v-for="it in chat.messages" :key="it.uid">{{ it.text }}</div>
 </template>
 
 <script>
@@ -63,6 +63,12 @@ nav {
     display: flex;
     flex-direction: row;
     background-color: #1d1e2a;
+}
+
+.chat {
+  width: 100%;
+  background-color: green;
+  
 }
 
 </style>

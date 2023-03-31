@@ -32,6 +32,7 @@
     <div class="right-side">
 
       <div class="chat-container">
+       
         <nav class="chat-nav">
           <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
         </nav>
@@ -51,10 +52,10 @@
         
         </div>
   
-        <!-- <chat-input
+        <chat-input
           :sendMsg="addNewMessage"
           :senFirstMsg="sendMessageToFoundedChat"
-        ></chat-input> -->
+        ></chat-input>
       </div>
     </div>
   </div>
@@ -263,7 +264,9 @@ export default {
 
 <style lang="scss" scoped>
 
-
+$custom-c1: rgb(20, 20, 20);
+$custom-c2: rgb(34, 34, 34);
+$custom-c3: rgb(0, 128, 255);
 .main {
   display: flex;
   justify-content: center;
@@ -274,7 +277,7 @@ export default {
 .left-bar {
   min-width: 300px;
   flex-shrink: 0;
-  background-color: rgb(46, 46, 55);
+  background-color: $custom-c1;
   display: flex;
   min-height: 100%;
   max-height: 100%;
@@ -283,13 +286,13 @@ export default {
   .left_bar_srch-wrap {
     flex-shrink: 0;
     width: 100%;
-    padding: 5px;
     box-sizing: border-box;
+    padding: 5px;
     height: 10%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: #1d1e2a;
+    background-color: $custom-c1;
 
     .menu-btn-wrap {
       cursor: pointer;
@@ -304,7 +307,7 @@ export default {
       }
       .menu-btn {
         width: 35px;
-        height: 15px;
+        height: 20px;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -320,7 +323,7 @@ export default {
     }
 
     input {
-      background-color: rgb(46, 46, 55);
+      background-color: $custom-c2;
       height: 35px;
       width: 210px;
       padding-right: 5px;
@@ -335,7 +338,7 @@ export default {
     .left_bar_srch_wrap_settings {
       width: 35px;
       height: 35px;
-      background-color: rgb(46, 46, 55);
+      background-color: $custom-c2;
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
       &:hover {
@@ -363,23 +366,30 @@ export default {
 }
 .chat-container {
   width: 100%;
+  overflow-y: scroll;
   height: 100%;
   background-color: #939393;
+  .chat-nav {
+    position: fixed;
+    top: 0px;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: $custom-c2;
+    font-size: 0.9rem;
+    color: #e2e2e2;
+
 
   .chat-wrap {
     width: 100%;
     overflow-y: scroll;
     height: 100%;
 
-    .chat-nav {
-      width: 100%;
-      padding: 5px;
-      box-sizing: border-box;
-      height: 10vh;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      background-color: #1d1e2a;
     }
   }
 }
