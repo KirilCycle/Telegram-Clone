@@ -1,8 +1,5 @@
 <template>
-  <message-item v-for="it in chat.messages" :key="it.uid"></message-item>
-  <div class="chat" v-for="it in chat.messages" :key="it.uid">
-    {{ it.text }}
-  </div>
+  <message-item :removeMessage="deleteMessage" v-for="it in chat.messages" :key="it.uid" :message="it"></message-item>
 </template>
 
 <script>
@@ -27,7 +24,13 @@ export default {
   data() {
     return {
       sendMsg: this.sendMsg,
-    };
+      
+    }
+  },
+  methods: {
+    deleteMessage( ) {
+       alert('deleted')
+    }
   },
 
   setup(props) {

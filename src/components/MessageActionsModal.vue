@@ -46,11 +46,12 @@ export default {
     msgRef: Object,
     profileurl: String,
     visible: Boolean,
+    removeMsg: Function,
     required: true,
   },
   methods: {
     async remMsg() {
-      await deleteDoc(doc(store.state.user.db, "messages", this.message.id));
+     this.removeMsg()
     },
     setReplyTarger () {
         store.commit('chat/setReplyMsgRef', this.msgRef)

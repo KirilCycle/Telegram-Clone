@@ -17,7 +17,7 @@
       <p :ref="message.id" class="item_body_text">{{ message.text }}</p>
     </div>
     
-   <message-actions-modal :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
+   <message-actions-modal :removeMsg="removeMessage" :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
     
     
   </div>
@@ -40,6 +40,7 @@ export default {
   props: {
     message: Object,
     isMy: Boolean,
+    removeMessage: Function,
     required: true,
     
   },
@@ -48,76 +49,17 @@ export default {
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
-      profilePhotoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg"
+      profilePhotoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg",
+      removeMessage: this.removeMessage
       
     };
   },
-  methods: {
 
-
-    selectAction(e) {
-      console.log("select");
-    },
 
  
-
-    async fetchUs() {
-      const storage = getStorage();
-
-      const pathReference = store.state.user.customStorageRef(
-        storage,
-        `${this.message.userPhotoURl}`
-      );
-
-      getDownloadURL(pathReference)
-        .then((url) => {
-          console.log(url, "AS PATH FROM ITEM");
-          this.profilePhotoUrl = url;
-        })
-        .catch((er) => console.log("er", er));
-    },
-  },
-
-  mounted() {
-
-    this.msgRef = this.$refs.msg
-
-    
-    if (this.profilePhotoUrl) {
-      this.fetchUs();
-    } else {
-      this.profilePhotoUrl =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg";
-    }
-  },
- 
-
   setup(props) {
-    const auth = getAuth();
-
-    const visible = ref(false)
-
-    const photoURL = ref(null);
-
-
-    const storage = getStorage();
-    // async function SUS (){
-
-    if (props.message.imageRef) {
-      const pathReference = store.state.user.customStorageRef(
-        storage,
-        `${props.message.imageRef}`
-      );
-
-      console.log(pathReference, "HHHHHEEEEERERREREEEE");
-
-      getDownloadURL(pathReference).then((url) => {
-        console.log(url, "AS PATH MESI");
-        photoURL.value = url;
-      });
-    }
-
-
+    
+   const auth = getAuth()
     
     const myTimeout = ref(null)
     
@@ -132,6 +74,7 @@ export default {
       clearTimeout(myTimeout.value)
     }
 
+    const visible = ref(false)
 
 
     return {
@@ -140,7 +83,6 @@ export default {
       open,
       start,
       auth,
-      photoURL,
       visible
     };
   },
