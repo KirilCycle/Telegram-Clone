@@ -56,50 +56,59 @@ function handleVisible() {
     : (visible.value = "password");
 }
 
-
-
 function register() {
   if (email.value.length > 7 && password.value.length > 7) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then((data) => {
-      const db = firebase.firestore()
-      
-      async function addUserPrew () {
-        setDoc(doc(db, "usersPrew", data.user.uid), {
-                uid: data.user.uid,
-                email: data.user.email,
-                displayName: data.user.displayName,
-                photoURL: `https://robohash.org/${data.user.uid}.png`,
-              })
+        const db = firebase.firestore();
 
-      }
+        const auth = getAuth()
 
-      async function addUsersChatLink () {
+        async function addUserPrew() {
+          setDoc(doc(db, "usersPrew", data.user.uid), {
+            uid: data.user.uid,
+            email: data.user.email,
+            displayName: data.user.displayName,
+            photoURL: `https://robohash.org/${data.user.uid}.png`,
+          });
+        }
 
-        setDoc(doc(db, "usersLinksToChat", data.user.uid), {
-           chats: []  
-         }) 
-      }
-           
-
-           const first = addUserPrew()
-           const second = addUsersChatLink()
-
-          Promise.all([first,second]).then((res) =>  {
-    
-    
-    store.commit("user/setAuth", true);
-    console.log(store.state.user.isAuth);
-    router.push({ name: "chat" });
-
-    } ).catch().catch((er) => {
-            wrongData.value = true;
+        updateProfile(auth.currentUser, {
+          photoURL:  `https://robohash.org/${data.user.uid}.png`,
+        })
+          .then(() => {
+            // Profile updated!
+            // ...
+          })
+          .catch((error) => {
+            // An error occurred
+            // ...
           });
 
+        async function addUsersChatLink() {
+          setDoc(doc(db, "usersLinksToChat", data.user.uid), {
+            chats: [],
+          });
+        }
 
-  }).catch((er) => {
+        const first = addUserPrew();
+        const second = addUsersChatLink();
+
+        Promise.all([first, second])
+          .then((res) => {
+            store.commit("user/setAuth", true);
+            console.log(store.state.user.isAuth);
+            router.push({ name: "chat" });
+          })
+          .catch()
+          .catch((er) => {
             wrongData.value = true;
-          });} else {
+          });
+      })
+      .catch((er) => {
+        wrongData.value = true;
+      });
+  } else {
     wrongValues.value = true;
   }
 }

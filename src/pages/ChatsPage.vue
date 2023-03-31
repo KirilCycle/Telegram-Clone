@@ -121,7 +121,7 @@ export default {
 
     serachChat(querry) {
       querry.length > 0
-        ? store.commit("chat/setQuerry", querry)
+        ? store.commit("chat/setQuerry", querry.toLowerCase())
         : store.commit("chat/setQuerry", null);
     },
   },
@@ -313,7 +313,7 @@ $custom-c3: rgb(0, 128, 255);
       }
       .menu-btn {
         width: 35px;
-        height: 20px;
+        height: 10px;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -321,7 +321,7 @@ $custom-c3: rgb(0, 128, 255);
         justify-content: space-between;
 
         span {
-          width: 65%;
+          width: 45%;
           height: 2px;
           background-color: #8b8b8b;
         }

@@ -2,7 +2,7 @@
   <div>
     <div>
       <chat-item
-        :pthUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
+        :pthUrl="us.photoURL"
         @click="() => handle(us)"
         v-for="us in founded"
         :key="us.uid"

@@ -1,7 +1,7 @@
 <template>
   <div ref="msg" class="item">
    
-  <profile-image :profilePhotoUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"></profile-image>
+  <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
    
     <div
     v-on:click.right="visible  = true"
@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
-      profilePhotoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg",
+      profilePhotoUrl: this.message.userPhotoURl,
       removeMessage: this.removeMessage
       
     };
@@ -151,7 +151,7 @@ $crazy_color: #8db2fa;
     position: relative;
     right: 0px;
     margin-left: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     width: 70%;
   }
 

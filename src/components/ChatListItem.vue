@@ -1,6 +1,6 @@
 <template>
   <div @click="$store.commit('chat/setSelectedUser',enotherUser )" v-show="isVisible" >
-      <chat-item :pthUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`">
+      <chat-item :pthUrl="enotherUser.photoURL">
 
         <h3>{{ chatName }}</h3>
         <p>{{ item.lastMessage }}</p>
@@ -89,4 +89,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
+  .chatitem_info_container {
+    height: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    h3 {
+      font-size: 0.9rem;
+      font-weight: 550;
+      color: white;
+    }
+    p {
+      font-size: 0.8rem;
+      color: #616161;
+    }
+  }
+
 </style>

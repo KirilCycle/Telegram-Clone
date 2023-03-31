@@ -50,7 +50,6 @@ export default {
       margin: 0% auto;
       width: 50px;
       height: 50px;
-      background-color: #1875ff;
       border-radius: 50%;
       overflow: hidden;
 
