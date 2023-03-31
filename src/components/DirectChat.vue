@@ -1,12 +1,12 @@
 <template>
-  <TransitionGroup name="list" class="wrp" tag="div">
+  <div class="wrp" >
     <message-item
       :removeMessage="deleteMessage"
       v-for="it in chat.messages"
       :key="it.uid"
       :message="it"
     ></message-item>
-  </TransitionGroup>
+  </div>
 </template>
 
 <script>

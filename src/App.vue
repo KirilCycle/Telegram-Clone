@@ -93,23 +93,6 @@ onMounted(() => {
 
 store.commit("user/setFireBase", firebase);
 
-// the following with your app's Firebase project configuration
-// See: https://support.google.com/firebase/answer/7015592
-// Initialize Firebase
-// Initialize Cloud Firestore and get a reference to the service
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </script>
@@ -148,17 +131,7 @@ store.commit("user/setFireBase", firebase);
 }
 
 
-.nav-enter-active{
-  transform: translateY(0px);
-}
-.nav-leave-active {
-  transition: all 0.5s ease;
-}
-.nav-enter-from,
-.nav-leave-to {
-  opacity: 0;
-  transform: translateY(-100px);
-}
+
 
 p{ 
   margin: 0px;

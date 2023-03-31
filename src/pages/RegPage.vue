@@ -69,7 +69,7 @@ function register() {
                 uid: data.user.uid,
                 email: data.user.email,
                 displayName: data.user.displayName,
-                photoURL: `https://gravatar.com/avatar/${data.user.uid}?s=400&d=robohash&r=x`,
+                photoURL: `https://robohash.org/${data.user.uid}.png`,
               })
 
       }

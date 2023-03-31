@@ -51,9 +51,10 @@ $crazy_color: #00ff44;
   width: 55px;
   height: 55px;
   right: 0px;
-  z-index: 100;
+  z-index: 120;
   .photo-container {
     border-radius: 50%;
+  
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -81,6 +82,7 @@ v-enter-active,
 }
 
 .bloor {
+  z-index: 120;
   position: fixed;
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
   background-color: #151515b8;

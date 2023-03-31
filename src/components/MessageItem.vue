@@ -11,7 +11,7 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-      <p class="user-name">{{ message.userName.slice(0, 24) }}</p>
+      <p class="user-name">{{ message.userName }}</p>
       <div class="image-container" v-if="photoURL">
         <img :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`" />
       </div>
@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$crazy_color: #00ff44;
+$crazy_color: #8db2fa;
 
 .message-ations {
   position: absolute;
@@ -120,7 +120,7 @@ $crazy_color: #00ff44;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-  width: 85%;
+  width: 65%;
   position: relative;
   display: flex;
 

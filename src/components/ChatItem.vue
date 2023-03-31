@@ -1,5 +1,5 @@
 <template>
-  <div class="cht-i">
+  <div class="cht-i" :class="{ active: isActive, 'text-danger': hasError }">
     <div class="img-conatiner">
       <div class="img-wrap">
         <img
@@ -32,13 +32,19 @@ export default {
   width: 100%;
   height: 70px;
   display: flex;
+  &:hover{
+    background-color: #ffffff3b;
+  }
   flex-direction: row;
+  align-items: center;
 
   .img-conatiner {
     padding-left: 5px;
     padding-right: 5px;
     height: 100%;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
 
     .img-wrap {
       margin: 0% auto;

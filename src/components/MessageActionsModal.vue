@@ -11,7 +11,7 @@
           <img :src="profileurl" />
         </div>
         <div class="msg_prew_body">
-          <h3>{{ message.userName.slice(0, 18) }}</h3>
+          <h3>{{ message.userName }}</h3>
           <p >{{ message.text.slice(0,100) }}</p>
         </div>
       </div>

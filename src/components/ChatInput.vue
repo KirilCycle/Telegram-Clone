@@ -59,7 +59,7 @@ export default {
   .content {
     
     box-sizing: border-box;
-    width: 100%;
+    width: 100px;
     background-color: red;
     justify-content: center;
     align-items: center;

@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <!-- <chat-input :sendMsg="addNewMessage"></chat-input> -->
+        <chat-input :sendMsg="addNewMessage"></chat-input>
 
         <div
           v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser"
@@ -400,7 +400,7 @@ $custom-c3: rgb(0, 128, 255);
     box-sizing: border-box;
     padding: 5px;
     z-index: 100;
-    height: 7%;
+    height: 9%;
     display: flex;
     flex-direction: row;
     align-items: center;

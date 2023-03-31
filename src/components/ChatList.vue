@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-list-wrap">
+  <TransitionGroup name="list" class="chat-list-wrap" tag="div">
     <chat-list-item
      
       @click="() => $store.commit('chat/setChatId', cht)"
@@ -8,7 +8,7 @@
       :chatId="cht"
     >
   </chat-list-item>
-  </div>
+</TransitionGroup>
 </template>
 
 <script>
@@ -41,5 +41,14 @@ export default {
    padding-bottom: 20px;
 }
 
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
 
 </style>
