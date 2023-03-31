@@ -15,8 +15,10 @@
         />
         <button
           @click="isSearch = !isSearch"
-          :class="{ 'left_bar_srch_wrap_settings': !isSearch, 'left_bar_srch_wrap_settings_active': isSearch }"
-        
+          :class="{
+            left_bar_srch_wrap_settings: !isSearch,
+            left_bar_srch_wrap_settings_active: isSearch,
+          }"
         >
           <span class="material-symbols-outlined"> language </span>
         </button>
@@ -32,6 +34,7 @@
     <div class="right-side">
       <div class="chat-container">
         <nav class="chat-nav">
+          <span class="material-symbols-outlined"> chevron_left </span>
           <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
         </nav>
 
@@ -292,7 +295,6 @@ $custom-c3: rgb(0, 128, 255);
   max-height: 100%;
   flex-direction: column;
 
-
   .left_bar_srch-wrap {
     flex-shrink: 0;
     min-width: 100%;
@@ -362,7 +364,7 @@ $custom-c3: rgb(0, 128, 255);
     }
     .left_bar_srch_wrap_settings_active {
       width: 35px;
-      color:  $custom-c3;
+      color: $custom-c3;
       height: 35px;
       background-color: $custom-c2;
       border-top-right-radius: 5px;
@@ -376,13 +378,8 @@ $custom-c3: rgb(0, 128, 255);
         margin: 0% auto;
       }
     }
-
-
-
-
   }
   .chat-list {
-    
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 95vh;
@@ -422,7 +419,7 @@ $custom-c3: rgb(0, 128, 255);
     flex-shrink: 0;
     width: 100%;
     box-sizing: border-box;
-    padding: 5px;
+    padding: 5px 0px 5px 15px;
     z-index: 100;
     height: 9%;
     display: flex;
@@ -431,6 +428,10 @@ $custom-c3: rgb(0, 128, 255);
     background-color: $custom-c2;
     font-size: 0.9rem;
     color: #e2e2e2;
+
+    span {
+      display: none;
+    }
 
     .chat-wrap {
       width: 100%;
@@ -457,5 +458,36 @@ $custom-c3: rgb(0, 128, 255);
   cursor: pointer;
   font-size: 1rem;
   color: #ffffff;
+}
+
+@media (max-width: 600px) {
+
+  
+  .right-side-shoved-back {
+    width: 100%;
+    position: absolute;
+    transform: translate(0%);
+  }
+  .right-side {
+    width: 100%;
+    position: absolute;
+    transform: translate(120%);
+
+    .chat-container {
+      .chat-nav {
+        span {
+          display: none;
+          cursor: pointer;
+
+        }
+      }
+    }
+  }
+
+  .left-bar {
+    width: 100%;
+    position: relative;
+    resize: none;
+  }
 }
 </style>

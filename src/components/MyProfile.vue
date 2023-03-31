@@ -53,6 +53,7 @@ $crazy_color: #00ff44;
   right: 0px;
   z-index: 120;
   .photo-container {
+  
     border-radius: 50%;
   
     height: 100%;

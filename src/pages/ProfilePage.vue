@@ -1,7 +1,6 @@
 <template>
 
   <div class="wrap">
-    <h1 @click="logout">LOOOOOGG OUT</h1>
     <button  v-show="!inEdit" @click="$emit('close')" class="back">
       <span class="material-symbols-outlined"> arrow_back_ios </span>
     </button>
@@ -17,12 +16,15 @@
     <div class="image-container">
       <img :src="user.photoURL" />
     </div>
-    <input type="file" @change="uploadPhoto" />
+    <!-- <input type="file" @change="uploadPhoto" /> -->
 
-    <div>
+    <div class="profile-txt-wrp">
       <h2>
         {{ $store.state.user.user.displayName }}
       </h2>
+      <h3>
+        {{ $store.state.user.user.email }}
+      </h3>
     </div>
     
     <p class="value-alert" v-if="wrongVal">u cant use @,#,!,$,+,|,|</p>
@@ -169,6 +171,21 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 .wrap {
+
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  .profile-txt-wrp {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      color: #434343;
+      font-size: 1rem;
+      margin-top: 6px;
+    }
+  }
 
   h1 {
     color: white;

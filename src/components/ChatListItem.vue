@@ -102,6 +102,7 @@ export default {
 
     .txt-container {
       max-width: 100%;
+      
       overflow: hidden;
     }
 

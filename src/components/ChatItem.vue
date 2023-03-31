@@ -31,7 +31,7 @@ export default {
 .cht-i {
   width: 100%;
   height: 70px;
-  overflow: hidden;
+  
   display: flex;
   &:hover{
     background-color: #ffffff3b;
