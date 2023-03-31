@@ -4,6 +4,7 @@
   <profile-image :profilePhotoUrl="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"></profile-image>
    
     <div
+    v-on:click.right="visible  = true"
       @touchend="stop"
       @touchstart="start"
       @touchmove="stop"

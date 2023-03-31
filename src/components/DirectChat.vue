@@ -1,12 +1,12 @@
 <template>
-  <div class="wrp">
+  <TransitionGroup name="list" class="wrp" tag="div">
     <message-item
       :removeMessage="deleteMessage"
       v-for="it in chat.messages"
       :key="it.uid"
       :message="it"
     ></message-item>
-  </div>
+  </TransitionGroup>
 </template>
 
 <script>
@@ -35,39 +35,12 @@ export default {
   },
   methods: {
     async deleteMessage(chatId, messageId) {
-      // const db = firebase.firestore();
-      // const chatRef = doc(db, "chats", store.state.chat.chatId);
-      // const auth = getAuth();
-
-      // if (auth.currentUser && text.length < 2000 && text.length > 0) {
-      //   const message = {
-      //     userName: auth.currentUser.displayName
-      //       ? auth.currentUser.displayName.slice(0, 25)
-      //       : auth.currentUser.email,
-      //     userId: auth.currentUser.uid,
-      //     text,
-      //     createdAt: Timestamp.now(),
-      //     id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
-      //     // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      //   };
-      //   if (auth.currentUser.photoURL) {
-      //     message.userPhotoURl = auth.currentUser.photoURL;
-      //   }
-
-      //   await updateDoc(chatRef, {
-      //     messages: arrayUnion(message),
-      //     lastMessage: text,
-      //   });
-
-      // Get a reference to the chat document
       const db = firebase.firestore();
 
-      // Remove the message from the messages array
-      //doc(db, "chats", store.state.chat.chatId);
       try {
         const chatRef = doc(db, "chats", chatId);
 
-        await updateDoc(chatRef,{
+        await updateDoc(chatRef, {
           messages: firebase.firestore.FieldValue.arrayRemove(messageId),
         });
 
@@ -118,6 +91,18 @@ nav {
   flex-direction: row;
   background-color: #1d1e2a;
 }
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+
 .wrp {
   padding-top: 70px;
 }
