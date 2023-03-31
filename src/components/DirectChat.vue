@@ -1,6 +1,11 @@
 <template>
 
-    <div class="chat" v-for="it in chat.messages" :key="it.uid">{{ it.text }}</div>
+    <div class="chat" v-for="it in chat.messages" :key="it.uid">{{ it.text }}
+    </div>
+    <chat-input
+    :sendMsg="sendMsg"
+  ></chat-input>
+
 </template>
 
 <script>
@@ -11,10 +16,20 @@ import { ref,watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
+import ChatInput from "./ChatInput.vue";
+
 export default {
+  components: {ChatInput},
   props: {
     chatId: Array,
+    sendMsg: Function,
     required: true,
+  },
+
+  data() {
+    return {
+      sendMsg: this.sendMsg
+    }
   },
 
   setup(props) {
@@ -66,9 +81,9 @@ nav {
 }
 
 .chat {
+
   width: 100%;
-  background-color: green;
-  
+
 }
 
 </style>

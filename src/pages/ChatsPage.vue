@@ -39,7 +39,8 @@
   
         <div v-if="$store.state.chat.chatId" class="chat-wrap">
       
-          <direct-chat></direct-chat>
+          <direct-chat :sendMsg="addNewMessage"></direct-chat>
+         
  
         </div>
   
@@ -50,12 +51,11 @@
         <div class="target-chat" v-if="$store.state.chat.selectedUser?.new">
           <h2>Target chat xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</h2>
         
+          <chat-input
+            :sendMsg="sendMessageToFoundedChat"
+          ></chat-input>
         </div>
   
-        <chat-input
-          :sendMsg="addNewMessage"
-          :senFirstMsg="sendMessageToFoundedChat"
-        ></chat-input>
       </div>
     </div>
   </div>
@@ -208,12 +208,18 @@ export default {
         chatDocRef.get().then((doc) => {
           if (doc.exists) {
             console.log("Document exists 1");
+            store.commit("chat/setChatId", enotherChatId);
+            store.commit("chat/setSelectedUser", userId2)
+           
           } else {
             const chatDocRefSecond = chatsRef.doc(chatId);
 
             chatDocRefSecond.get().then((doc) => {
               if (doc.exists) {
                 console.log("Document exists 2");
+                store.commit("chat/setChatId", chatId);
+                store.commit("chat/setSelectedUser", userId2)
+               
               } else {
                 async function createChatWithFirstMessage() {
                   const db = firebase.firestore();
@@ -239,6 +245,7 @@ export default {
                     .then(() => {
                       console.log("Batch operation successful");
                       store.commit("chat/setChatId", chatId);
+                      store.commit("chat/setSelectedUser", userId2)
                     })
                     .catch((error) => {
                       console.error("Batch operation failed:", error);
@@ -265,8 +272,11 @@ export default {
 <style lang="scss" scoped>
 
 $custom-c1: rgb(20, 20, 20);
-$custom-c2: rgb(34, 34, 34);
+$custom-c2: rgb(32, 32, 32);
+$custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
+
+
 .main {
   display: flex;
   justify-content: center;
@@ -364,11 +374,12 @@ $custom-c3: rgb(0, 128, 255);
   height: 100%;
   background-color: #0f0f0f;
 }
+
 .chat-container {
   width: 100%;
   overflow-y: scroll;
   height: 100%;
-  background-color: #939393;
+  background-color: $custom-c4;
   .chat-nav {
     position: fixed;
     top: 0px;
@@ -376,7 +387,7 @@ $custom-c3: rgb(0, 128, 255);
     width: 100%;
     box-sizing: border-box;
     padding: 5px;
-    height: 10%;
+    height: 7%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -392,6 +403,22 @@ $custom-c3: rgb(0, 128, 255);
 
     }
   }
+}
+
+
+
+.chat-container::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+.chat-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.517);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+.chat-container::-webkit-scrollbar-thumb {
+  background: rgba(152, 152, 152, 0.577);
+  border-radius: 20px;
 }
 .chatitem {
   cursor: pointer;
