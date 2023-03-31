@@ -1,24 +1,19 @@
 <template>
-
   <div class="wrap">
-    <button  v-show="!inEdit" @click="$emit('close')" class="back">
+    <button v-show="!inEdit" @click="$emit('close')" class="back">
       <span class="material-symbols-outlined"> arrow_back_ios </span>
     </button>
-    <button  v-show="inEdit" @click="inEdit = false" class="back">
-      Cancel
-    </button>
-    <button v-show="!inEdit"  @click="inEdit = true" class="logout">
+    <button v-show="inEdit" @click="inEdit = false" class="back">Cancel</button>
+    <button v-show="!inEdit" @click="inEdit = true" class="logout">
       Edit profile
     </button>
-    <button v-show="inEdit"  @click="inEdit = true" class="logout">
-      apply
-    </button>
+    <button v-show="inEdit" @click="handleChanging" class="logout">apply</button>
     <div class="image-container">
-      <img :src="user.photoURL" />
+      <img :src="profilePhoto" />
     </div>
-    <!-- <input type="file" @change="uploadPhoto" /> -->
+    <input type="file" @change="(e) => showPrewiePhoto(e,profilePhoto )" />
 
-    <div class="profile-txt-wrp">
+    <div v-if="!inEdit" class="profile-txt-wrp">
       <h2>
         {{ $store.state.user.user.displayName }}
       </h2>
@@ -26,7 +21,15 @@
         {{ $store.state.user.user.email }}
       </h3>
     </div>
-    
+    <div v-else class="profile-edit-container">
+     <span class="pht-settings">
+       <h3>Set new photo</h3>
+       <span class="material-symbols-outlined"> add_a_photo </span>
+     </span>
+
+      <input v-model="value" class="displayname" />
+    </div>
+
     <p class="value-alert" v-if="wrongVal">u cant use @,#,!,$,+,|,|</p>
   </div>
 </template>
@@ -44,24 +47,22 @@ import { doc, getDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
-import { getStorage, uploadBytes, ref,getDownloadURL} from "firebase/storage";
+import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 
 export default {
   data() {
     return {
       user: store.state.user.user,
-      preparedToChangeName: false,
+      profilePhoto:  store.state.user.user.photoURL,
       value: store.state.user.user.displayName
         ? store.state.user.user.displayName
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
-      inEdit: false,
-     
+      inEdit: true,
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     changeDisplayName() {
       const symphols = ["@", "#", "$", "!", "+", "|", "/"];
@@ -90,8 +91,28 @@ export default {
       }
     },
 
+     showPrewiePhoto (e) {
+      if (e.target.files[0]) {
+        const uploadedTarget = e.target.files[0];
 
-   
+        if (
+          uploadedTarget.name.includes(".png") ||
+          uploadedTarget.name.includes(".jpg") ||
+          uploadedTarget.name.includes(".jpeg") ||
+          uploadedTarget.name.includes(".svg")
+        ) {
+         
+          this.profilePhoto = URL.createObjectURL(e.target.files[0]);
+    
+          // selectedPhoto.value = e.target.files[0]
+
+        } else {
+          console.log("no");
+        }
+      }
+    }
+
+
 
   },
   setup(props) {
@@ -133,20 +154,19 @@ export default {
                 "Uploaded a blob or file!"
               );
 
-              getDownloadURL(storageRef).then((url) => {
-
-                updateProfile(auth.currentUser, {
-                  photoURL: url,
-                })
-                  .then(() => {
-                   console.log('good', url)
+              getDownloadURL(storageRef)
+                .then((url) => {
+                  updateProfile(auth.currentUser, {
+                    photoURL: url,
                   })
-                  .catch((error) => {
-                    console.log('huynya', error)
-                  });
-              }).catch((er) => console.log('er',er))
-
-
+                    .then(() => {
+                      console.log("good", url);
+                    })
+                    .catch((error) => {
+                      console.log("huynya", error);
+                    });
+                })
+                .catch((er) => console.log("er", er));
             })
             .catch((er) => console.log(er, "post er"));
 
@@ -157,12 +177,23 @@ export default {
       }
     }
 
+    function handleChanging () {
 
+      //text handle
+
+      //photo handle
+
+    }
+
+    
+
+   
 
     return {
       logout,
       uploadPhoto,
-      
+      handleChanging,
+     
     };
   },
 };
@@ -171,7 +202,6 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 .wrap {
-
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 
@@ -185,6 +215,44 @@ $crazy_color: #00ff44;
       font-size: 1rem;
       margin-top: 6px;
     }
+  }
+
+  .profile-edit-container {
+    display: flex;
+    width: 100%;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .pht-settings {
+      color: $crazy_color;
+      display: flex;
+      h3 {
+        font-size: 1rem;
+      } 
+      span {
+         font-size: 1.3rem;
+         margin-left: 5px;
+         
+      }
+      
+
+    }
+
+    input {
+      margin-top: 10px;
+      width: 75%;
+      height: 35px;
+      background-color: #3c3c3c;
+      border-radius: 10px;
+      color: #ffffff;
+      font-weight: 500;
+      padding-left: 5px;
+      font-size: 1.1rem;
+    }
+
   }
 
   h1 {
