@@ -1,5 +1,7 @@
 <template>
-  <message-item :removeMessage="deleteMessage" v-for="it in chat.messages" :key="it.uid" :message="it"></message-item>
+  <div class="wrp">
+    <message-item :removeMessage="deleteMessage" v-for="it in chat.messages" :key="it.uid" :message="it"></message-item>
+  </div>
 </template>
 
 <script>
@@ -72,6 +74,10 @@ nav {
   display: flex;
   flex-direction: row;
   background-color: #1d1e2a;
+}
+.wrp {
+  padding-top: 70px;
+  
 }
 
 .chat {

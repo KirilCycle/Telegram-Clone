@@ -358,6 +358,7 @@ $custom-c3: rgb(0, 128, 255);
     }
   }
   .chat-list {
+    
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 95vh;
@@ -398,6 +399,7 @@ $custom-c3: rgb(0, 128, 255);
     width: 100%;
     box-sizing: border-box;
     padding: 5px;
+    z-index: 100;
     height: 7%;
     display: flex;
     flex-direction: row;
