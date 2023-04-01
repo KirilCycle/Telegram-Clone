@@ -68,17 +68,40 @@ const db = getFirestore(app);
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     async function checkNeccessaryData() {
+
+      console.log('v action')
       const docRef = doc(db, "usersLinksToChat", user.uid);
       const docSnap = await getDoc(docRef);
 
+      
       if (!docSnap.exists()) {
+        console.log('cc action')
         await setDoc(doc(db, "usersLinksToChat", user.uid), {
           chats: []
         });
       }
+
+
+      const prewuserSnapRef = doc(db, "usersPrew", user.uid);
+      const prewuserSnap = await getDoc(prewuserSnapRef);
+
+      if (!prewuserSnap.exists()) {
+        console.log('cpu action')
+        await setDoc(doc(db, "usersPrew", user.uid), {
+          uid:user.uid,
+          photoURl:user.photoURL,
+          displayName: user.displayName,
+          email: user.email
+
+        });
+      }
+
+
+
+
     }
 
-    
+
     checkNeccessaryData();
 
     console.log(user, "USER");
