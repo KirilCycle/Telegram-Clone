@@ -11,7 +11,7 @@
     </button>
     <button
       v-show="inEdit"
-      @click="() => handleChanging(value, newFile)"
+      @click="() => handleChanging(value, newFile, cancelChangings)"
       class="logout"
     >
       apply
@@ -19,19 +19,25 @@
     <div class="image-container">
       <img :src="profilePhoto" />
     </div>
-    <input type="file" @change="(e) => showPrewiePhoto(e, profilePhoto)" />
 
+    <h2>
+      {{ $store.state.user.user.displayName }}
+    </h2>
     <div v-if="!inEdit" class="profile-txt-wrp">
-      <h2>
-        {{ $store.state.user.user.displayName }}
-      </h2>
       <h3>
         {{ $store.state.user.user.email }}
       </h3>
     </div>
     <div v-else class="profile-edit-container">
       <span class="pht-settings">
+        <input
+          class="file-input"
+          v-if="inEdit"
+          type="file"
+          @change="(e) => showPrewiePhoto(e, profilePhoto)"
+        />
         <h3>Set new photo</h3>
+
         <span class="material-symbols-outlined"> add_a_photo </span>
       </span>
       <input v-model="value" class="displayname" />
@@ -50,7 +56,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
 import { collection } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc,updateDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
@@ -188,7 +194,7 @@ export default {
       }
     }
 
-    function handleChanging(newdisplayname, newFile) {
+    function handleChanging(newdisplayname, newFile, finishFn) {
       //text handle
       if (newdisplayname.length > 4 && newFile) {
         console.log("LETS GO", newFile);
@@ -206,8 +212,7 @@ export default {
           }
         }
 
-
-        console.log( newFile,`images/${newFile.name + uuidv4()}`, 'REESSS')
+        console.log(newFile, `images/${newFile.name + uuidv4()}`, "REESSS");
 
         const storage = getStorage();
         const auth = getAuth();
@@ -225,8 +230,22 @@ export default {
                   displayName: newdisplayname,
                 })
                   .then(() => {
-                    console.log("good", url);
-                     url
+                    async function chnagePrewUser(userId, changes) {
+
+                      const db = firebase.firestore();
+
+                      const frankDocRef = doc(db, "usersPrew", userId);
+
+                      await updateDoc(frankDocRef, changes);
+                    }
+
+                    chnagePrewUser(auth.currentUser.uid, {
+                      photoURL: url,
+                      displayName: newdisplayname,
+                    }).then(() => {
+                      console.log("good", url);
+                      finishFn();
+                    }).catch((er) => console.log(er,'huynya peredelivay'))
                   })
                   .catch((error) => {
                     console.log("huynya", error);
@@ -271,6 +290,7 @@ $crazy_color: #00ff44;
   }
 
   .profile-edit-container {
+    position: relative;
     display: flex;
     width: 100%;
     padding: 25px;
@@ -285,6 +305,15 @@ $crazy_color: #00ff44;
       h3 {
         font-size: 1rem;
       }
+
+      .file-input {
+        top: 0px;
+        width: 130px;
+        opacity: 0;
+        color: #00ff44;
+        position: absolute;
+      }
+
       span {
         font-size: 1.3rem;
         margin-left: 5px;
