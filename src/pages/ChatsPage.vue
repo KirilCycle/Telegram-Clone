@@ -23,10 +23,10 @@
           <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
-      <div v-if="!isSearch" class="chat-list">
+      <div v-show="!isSearch" class="chat-list">
         <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
-      <div v-else>
+      <div v-if="isSearch">
         <founded-chats-list></founded-chats-list>
       </div>
     </div>
@@ -35,14 +35,27 @@
 
       <div class="chat-nav-x">Helllo</div>
       <div class="chat-container-x">
+       
         <div v-if="$store.state.chat.chatId">
+     
           <div class="chat-wrap">
-            <direct-chat :sendMsg="addNewMessage"></direct-chat>
+            <!-- <direct-chat></direct-chat> -->
+            <!-- <chatisnt-selected-vue></chatisnt-selected-vue> -->
+            <new-chat-vue :user="{displayName: 'prosss'}"></new-chat-vue>
           </div>
         </div>
+
+        <div v-else>
+           Select chat
+        </div>
+     
       </div>
+     
       <div class="chat-input-block-x">
-        <div class="input-wrap"></div>
+
+        
+        <chat-input :sendMsg="sendMessageToFoundedChat "></chat-input>
+
       </div>
      
       <!-- <div class="chat-container"> -->
@@ -93,10 +106,14 @@ import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
 import ChatInput from "@/components/ChatInput.vue";
+import NewChatVue from '@/components/NewChat.vue';
+import ChatisntSelectedVue from '@/components/ChatisntSelected.vue';
 
 export default {
   components: {
     DirectChat,
+    NewChatVue,
+    ChatisntSelectedVue,
     FoundedChatsList,
     ChatList,
     ChatInput,
@@ -142,6 +159,17 @@ export default {
         ? store.commit("chat/setQuerry", querry.toLowerCase())
         : store.commit("chat/setQuerry", null);
     },
+  },
+  computed: {
+
+    selectedChatAction() {
+      console.log("recalculate")
+        if (store.state.chat.selectedUser?.new) {
+          return this.sendMessageToFoundedChat
+        } 
+        return this.addNewMessage 
+    }
+
   },
   setup(data) {
     const db = firebase.firestore();
