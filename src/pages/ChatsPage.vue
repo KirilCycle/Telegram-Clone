@@ -422,6 +422,7 @@ $custom-c3: rgb(0, 128, 255);
     padding: 5px 0px 5px 15px;
     z-index: 100;
     height: 9%;
+    max-height: 60px;
     display: flex;
     flex-direction: row;
     align-items: center;

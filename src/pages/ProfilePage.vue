@@ -3,15 +3,23 @@
     <button v-show="!inEdit" @click="$emit('close')" class="back">
       <span class="material-symbols-outlined"> arrow_back_ios </span>
     </button>
-    <button v-show="inEdit" @click="inEdit = false" class="back">Cancel</button>
+    <button v-show="inEdit" @click="cancelChangings" class="back">
+      Cancel
+    </button>
     <button v-show="!inEdit" @click="inEdit = true" class="logout">
       Edit profile
     </button>
-    <button v-show="inEdit" @click="handleChanging" class="logout">apply</button>
+    <button
+      v-show="inEdit"
+      @click="() => handleChanging(value, profilePhoto)"
+      class="logout"
+    >
+      apply
+    </button>
     <div class="image-container">
       <img :src="profilePhoto" />
     </div>
-    <input type="file" @change="(e) => showPrewiePhoto(e,profilePhoto )" />
+    <input type="file" @change="(e) => showPrewiePhoto(e, profilePhoto)" />
 
     <div v-if="!inEdit" class="profile-txt-wrp">
       <h2>
@@ -22,11 +30,10 @@
       </h3>
     </div>
     <div v-else class="profile-edit-container">
-     <span class="pht-settings">
-       <h3>Set new photo</h3>
-       <span class="material-symbols-outlined"> add_a_photo </span>
-     </span>
-
+      <span class="pht-settings">
+        <h3>Set new photo</h3>
+        <span class="material-symbols-outlined"> add_a_photo </span>
+      </span>
       <input v-model="value" class="displayname" />
     </div>
 
@@ -53,13 +60,14 @@ export default {
   data() {
     return {
       user: store.state.user.user,
-      profilePhoto:  store.state.user.user.photoURL,
+      profilePhoto: store.state.user.user.photoURL,
       value: store.state.user.user.displayName
         ? store.state.user.user.displayName
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
       inEdit: true,
+      newFile: null,
     };
   },
   created() {},
@@ -91,7 +99,7 @@ export default {
       }
     },
 
-     showPrewiePhoto (e) {
+    showPrewiePhoto(e) {
       if (e.target.files[0]) {
         const uploadedTarget = e.target.files[0];
 
@@ -101,19 +109,22 @@ export default {
           uploadedTarget.name.includes(".jpeg") ||
           uploadedTarget.name.includes(".svg")
         ) {
-         
-          this.profilePhoto = URL.createObjectURL(e.target.files[0]);
-    
-          // selectedPhoto.value = e.target.files[0]
+          this.profilePhoto = URL.createObjectURL(uploadedTarget);
 
+          this.newFile = uploadedTarget;
+
+          console.log(this.newFile);
+          // selectedPhoto.value = e.target.files[0]
         } else {
           console.log("no");
         }
       }
-    }
+    },
 
-
-
+    cancelChangings() {
+      this.inEdit = false;
+      this.profilePhoto = this.user.photoURL;
+    },
   },
   setup(props) {
     console.log(store.state.user);
@@ -177,23 +188,61 @@ export default {
       }
     }
 
-    function handleChanging () {
-
+    function handleChanging(newdisplayname, newFile) {
       //text handle
+      if (newdisplayname.length > 4 && newFile) {
+        console.log("LETS GO", newFile);
+        const symphols = ["@", "#", "$", "!", "+", "|", "/"];
+
+        let ready = true;
+
+        for (let i = 0; i < newdisplayname.length; i++) {
+          for (let j = 0; j < symphols.length; j++) {
+            if (newdisplayname[i].includes(symphols[j])) {
+              ready = false;
+
+              return;
+            }
+          }
+        }
+
+        const storage = getStorage();
+        const auth = getAuth();
+
+        const storageRef = ref(storage, `images/${newFile.name + uuidv4()}`);
+
+        uploadBytes(storageRef, newFile)
+          .then((snapshot) => {
+            storageRef._location.path_, "Uploaded a blob or file!";
+
+            getDownloadURL(storageRef)
+              .then((url) => {
+                updateProfile(auth.currentUser, {
+                  photoURL: url,
+                  displayName: newdisplayname,
+                })
+                  .then(() => {
+                    console.log("good", url);
+                  })
+                  .catch((error) => {
+                    console.log("huynya", error);
+                  });
+              })
+              .catch((er) => console.log("er", er));
+          })
+
+          .catch((er) => console.log(er, "post er"));
+      } else {
+        console.log("gimno peredelivay");
+      }
 
       //photo handle
-
     }
-
-    
-
-   
 
     return {
       logout,
       uploadPhoto,
       handleChanging,
-     
     };
   },
 };
@@ -231,28 +280,24 @@ $crazy_color: #00ff44;
       display: flex;
       h3 {
         font-size: 1rem;
-      } 
-      span {
-         font-size: 1.3rem;
-         margin-left: 5px;
-         
       }
-      
-
+      span {
+        font-size: 1.3rem;
+        margin-left: 5px;
+      }
     }
 
     input {
-      margin-top: 10px;
+      margin-top: 15px;
       width: 75%;
       height: 35px;
-      background-color: #3c3c3c;
-      border-radius: 10px;
+      background-color: #303030;
+      border-radius: 5px;
       color: #ffffff;
       font-weight: 500;
       padding-left: 5px;
       font-size: 1.1rem;
     }
-
   }
 
   h1 {
@@ -321,7 +366,7 @@ $crazy_color: #00ff44;
       max-width: 60%;
       background-color: rgba(102, 51, 153, 0);
       color: rgb(153, 153, 153);
-      border-bottom: 2px solid rgb(59, 59, 59);
+      border-bottom: 2px solid rgb(47, 47, 47);
       font-size: 20px;
 
       &:focus {
