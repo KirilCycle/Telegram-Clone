@@ -1,26 +1,29 @@
 <template>
   <div class="wrap">
-    <button v-show="!inEdit" @click="$emit('close')" class="back">
-      <span class="material-symbols-outlined"> arrow_back_ios </span>
-    </button>
-    <button v-show="inEdit" @click="cancelChangings" class="back">
-      Cancel
-    </button>
-    <button v-show="!inEdit" @click="inEdit = true" class="logout">
-      Edit profile
-    </button>
-    <button
-      v-show="inEdit"
-      @click="() => handleChanging(value, newFile, cancelChangings)"
-      class="logout"
-    >
-      apply
-    </button>
+     
+    <h1 @click="logout">LOOOOOOOOGGGGGGOOOOOUUUUUUTTTT</h1>
+      <button v-show="!inEdit" @click="$emit('close')" class="back">
+        <span class="material-symbols-outlined"> arrow_back_ios </span>
+      </button>
+      <button v-show="inEdit" @click="cancelChangings" class="back">
+        Cancel
+      </button>
+      <button v-show="!inEdit" @click="inEdit = true" class="logout">
+        Edit profile
+      </button>
+      <button
+        v-show="inEdit"
+        @click="() => handleChanging(value, newFile, cancelChangings)"
+        class="logout"
+      >
+        apply
+      </button>
+ 
     <div class="image-container">
       <img :src="profilePhoto" />
     </div>
 
-    <h2>
+    <h2 v-if="!inEdit">
       {{ $store.state.user.user.displayName }}
     </h2>
     <div v-if="!inEdit" class="profile-txt-wrp">
@@ -240,8 +243,8 @@ export default {
                     }
 
                     chnagePrewUser(auth.currentUser.uid, {
-                      photoURL: url,
-                      displayName: newdisplayname,
+                      "photoURL": url,
+                      "displayName": newdisplayname,
                     }).then(() => {
                       console.log("good", url);
                       finishFn();
@@ -273,9 +276,20 @@ export default {
 
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
+
+
+
 .wrap {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+
+
+  button {
+    height: auto;
+    text-align: center;
+    padding: 20px ;
+    
+   }
 
   .profile-txt-wrp {
     text-align: center;

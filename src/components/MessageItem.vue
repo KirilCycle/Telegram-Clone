@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
-      profilePhotoUrl: this.message.userPhotoURl,
+      profilePhotoUrl: this.message.userPhotoURl?this.message.userPhotoURl: '',
       removeMessage: this.removeMessage
       
     };

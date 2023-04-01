@@ -44,6 +44,7 @@ import useValidationForm from "@/hooks/useValidationForm";
 import useValidationFeatures from "@/hooks/useValidationsFeatures";
 import { doc, setDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
+import { updateProfile } from "firebase/auth";
 
 const { email, password, error, visible, wrongValues, wrongData } =
   useValidationForm();
@@ -57,12 +58,20 @@ function handleVisible() {
 }
 
 function register() {
+
+  
   if (email.value.length > 7 && password.value.length > 7) {
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then((data) => {
         const db = firebase.firestore();
 
         const auth = getAuth()
+
+        async function addUsersChatLink() {
+          setDoc(doc(db, "usersLinksToChat", data.user.uid), {
+            chats: [],
+          });
+        }
 
         async function addUserPrew() {
           setDoc(doc(db, "usersPrew", data.user.uid), {
@@ -73,8 +82,18 @@ function register() {
           });
         }
 
-        updateProfile(auth.currentUser, {
-          photoURL:  `https://robohash.org/${data.user.uid}.png`,
+      
+
+
+        const first = addUserPrew();
+        const second = addUsersChatLink();
+
+
+        Promise.all([first, second])
+          .then((res) => {
+        
+            updateProfile(auth.currentUser, {
+            photoURL:  `https://robohash.org/${data.user.uid}.png`,
         })
           .then(() => {
             // Profile updated!
@@ -85,30 +104,23 @@ function register() {
             // ...
           });
 
-        async function addUsersChatLink() {
-          setDoc(doc(db, "usersLinksToChat", data.user.uid), {
-            chats: [],
-          });
-        }
-
-        const first = addUserPrew();
-        const second = addUsersChatLink();
-
-        Promise.all([first, second])
-          .then((res) => {
+            
             store.commit("user/setAuth", true);
             console.log(store.state.user.isAuth);
             router.push({ name: "chat" });
           })
-          .catch()
+          .catch((er) => console.log(er, 's'))
           .catch((er) => {
+            console.log(er, 's')
             wrongData.value = true;
           });
       })
       .catch((er) => {
+        console.log(er, 's')
         wrongData.value = true;
       });
   } else {
+    
     wrongValues.value = true;
   }
 }

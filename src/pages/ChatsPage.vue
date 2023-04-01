@@ -223,38 +223,90 @@ export default {
                 store.commit("chat/setChatId", chatId);
                 store.commit("chat/setSelectedUser", userId2);
               } else {
-                async function createChatWithFirstMessage() {
-                  const db = firebase.firestore();
-                  const batch = writeBatch(db);
+                async function checkIfAllNeccessaryDataExist() {
+                  const docRef = doc(db, "cities", "SF");
+                  const docSnap = await getDoc(docRef);
 
-                  const chatRef = db.collection("chats").doc(chatId);
-                  batch.set(chatRef, chatData);
-                  // Step 1: Add the unique ID to the `chats` array in both users' documents.
-                  batch.update(user1Ref, {
-                    chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-                  });
+                  if (docSnap.exists()) {
+                    console.log("Document data:", docSnap.data());
+                  } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                  }
 
-                  batch.update(user2Ref, {
-                    chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-                  });
+                  // const docUser1Ref = doc(db, "usersLinksToChat", userId1);
+                  // const docSnap = await getDoc(docUser1Ref);
 
-                  // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+                  // const docUser2Ref = doc(db, "usersLinksToChat", userId1);
+                  // const docSnap2 = await getDoc(docUser2Ref);
 
-                  // Wait for both update operations to complete before committing the batch.
+                  // if (await docUser1Ref.exists()) {
 
-                  await batch
-                    .commit()
-                    .then(() => {
-                      console.log("Batch operation successful");
-                      store.commit("chat/setChatId", chatId);
-                      store.commit("chat/setSelectedUser", userId2);
-                    })
-                    .catch((error) => {
-                      console.error("Batch operation failed:", error);
-                    });
+                  //   console.log("Document data:", docSnap.data());
+                  // } else {
+
+                  //   // doc.data() will be undefined in this case
+                  //   console.log("No such document! to user 1");
+                  // }
+
+                  // if (await docUser2Ref.exists()) {
+
+                  //   console.log("Document data:", docSnap2.data());
+                  // } else {
+
+                  //   // doc.data() will be undefined in this case
+                  //   console.log("No such document! to user 2");
+                  // }
                 }
 
-                createChatWithFirstMessage();
+                checkIfAllNeccessaryDataExist();
+
+                //i will check our users //
+                // if (user1Ref && user2Ref) {
+
+                // }
+                // //create our documant in usersLinksToChat and thet chat
+                // else {
+
+                // }
+
+                // async function createChatWithFirstMessage() {
+                //   const db = firebase.firestore();
+                //   const batch = writeBatch(db);
+
+                //   const chatRef = db.collection("chats").doc(chatId);
+                //   batch.set(chatRef, chatData);
+                //   // Step 1: Add the unique ID to the `chats` array in both users' documents.
+                //   batch.update(user1Ref, {
+                //     chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+                //   });
+
+                //   batch.update(user2Ref, {
+                //     chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+                //   });
+
+                //   // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
+
+                //   // Wait for both update operations to complete before committing the batch.
+
+                //   await batch
+                //     .commit()
+                //     .then(() => {
+                //       console.log("Batch operation successful");
+                //       store.commit("chat/setChatId", chatId);
+                //       store.commit("chat/setSelectedUser", userId2);
+                //     })
+                //     .catch((error) => {
+                //       console.error(
+                //         "Batch operation failed:",
+                //         error,
+                //         user1Ref,
+                //         user2Ref
+                //       );
+                //     });
+                // }
+
+                // createChatWithFirstMessage();
               }
             });
           }
@@ -462,8 +514,6 @@ $custom-c3: rgb(0, 128, 255);
 }
 
 @media (max-width: 600px) {
-
-  
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
@@ -479,7 +529,6 @@ $custom-c3: rgb(0, 128, 255);
         span {
           display: none;
           cursor: pointer;
-
         }
       }
     }

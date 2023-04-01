@@ -83,18 +83,27 @@ export default {
 
       const second = store.state.user.user.uid + us.uid;
 
-      if (store.state.chat.chatIdList.chats.includes(first)) {
-        store.commit("chat/setSelectedUser", us);
-        store.commit("chat/setChatId", first);
-      } else if (store.state.chat.chatIdList.chats.includes(second)) {
-        store.commit("chat/setSelectedUser", us);
-        store.commit("chat/setChatId", second);
+      if (store.state.chat.chatIdList.chat) {
+
+        if (store.state.chat.chatIdList.chats.includes(first)) {
+          store.commit("chat/setSelectedUser", us);
+          store.commit("chat/setChatId", first);
+        } else if (store.state.chat.chatIdList.chats.includes(second)) {
+          store.commit("chat/setSelectedUser", us);
+          store.commit("chat/setChatId", second);
+        } else {
+          const modiffied = us;
+          modiffied.new = true;
+          store.commit("chat/setSelectedUser", modiffied);
+          store.commit("chat/setChatId", null);
+        }
       } else {
-        const modiffied = us;
-        modiffied.new = true;
-        store.commit("chat/setSelectedUser", modiffied);
-        store.commit("chat/setChatId", null);
-      }
+          const modiffied = us;
+          modiffied.new = true;
+          store.commit("chat/setSelectedUser", modiffied);
+          store.commit("chat/setChatId", null);
+        }
+
     }
 
     return {

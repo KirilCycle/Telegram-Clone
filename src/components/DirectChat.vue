@@ -3,7 +3,7 @@
     <message-item
       :removeMessage="deleteMessage"
       v-for="it in chat.messages"
-      :key="it.uid"
+      :key="it.id"
       :message="it"
     ></message-item>
   </div>
