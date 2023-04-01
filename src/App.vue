@@ -29,7 +29,7 @@ import {
   inMemoryPersistence,
   GoogleAuthProvider,
 } from "firebase/auth";
-import {  setDoc } from "firebase/firestore"; 
+import { setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -67,19 +67,18 @@ const db = getFirestore(app);
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
-
     async function checkNeccessaryData() {
-     
       const docRef = doc(db, "usersLinksToChat", user.uid);
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
-      
-        
-
-      } 
+        await setDoc(doc(db, "usersLinksToChat", user.uid), {
+          chats: []
+        });
+      }
     }
 
+    
     checkNeccessaryData();
 
     console.log(user, "USER");
