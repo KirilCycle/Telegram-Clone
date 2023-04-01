@@ -93,7 +93,7 @@ function register() {
           .then((res) => {
         
             updateProfile(auth.currentUser, {
-            photoURL:  `https://robohash.org/${data.user.uid}.png`,
+          photoURL:  `https://robohash.org/${data.user.uid}.png`,
         })
           .then(() => {
             // Profile updated!

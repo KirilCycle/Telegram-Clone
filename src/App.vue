@@ -1,30 +1,36 @@
 <template>
   <my-profile class="profile" v-if="$store.state.user.user"></my-profile>
   <div class="wrap">
-    
     <router-view></router-view>
-   
   </div>
 </template>
 
 <script setup>
-import router,  { routes, } from "./router/router";
+import router, { routes } from "./router/router";
 import TopNavbar from "./components/TopNavbar.vue";
 import store from "./store/store";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // v9 compat packages are API compatible with v8 code
 import firebase from "firebase/compat/app";
+import { doc, getDoc } from "firebase/firestore";
 import "firebase/compat/auth";
-import {ref} from 'firebase/storage'
+import { ref } from "firebase/storage";
 import MyProfile from "./components/MyProfile.vue";
 import "firebase/compat/firestore";
-import {  signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
-import { onMounted, watchEffect, watch, } from "vue";
+import { onMounted, watchEffect, watch } from "vue";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, setPersistence, signInWithRedirect, inMemoryPersistence, GoogleAuthProvider } from "firebase/auth";
-import { getStorage } from 'firebase/storage'
+import {
+  getAuth,
+  setPersistence,
+  signInWithRedirect,
+  inMemoryPersistence,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import {  setDoc } from "firebase/firestore"; 
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -51,9 +57,6 @@ const auth = initializeAuth(app, {
   // No popupRedirectResolver defined
 });
 
-
-
-
 // const auths = getAuth();
 // signOut(auths).then(() => {
 //   // Sign-out successful.
@@ -62,43 +65,50 @@ const auth = initializeAuth(app, {
 // });
 const db = getFirestore(app);
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
-    console.log(user, 'USER')
+
+    async function checkNeccessaryData() {
+     
+      const docRef = doc(db, "usersLinksToChat", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+      
+        
+
+      } 
+    }
+
+    checkNeccessaryData();
+
+    console.log(user, "USER");
     store.commit("user/setUser", user);
     store.commit("user/setAuthData", auth);
     store.commit("user/setAuth", true);
     store.commit("user/setDb", db);
-    router.push({ name:  window.location.hash.replace('#/', '')});
+    router.push({ name: window.location.hash.replace("#/", "") });
     // window.location.hash.replace('#/', '')
-    
   } else {
-    console.log('NOO :(')
+    console.log("NOO :(");
   }
 });
 
-
 const firestore = firebase.firestore();
 
-
-const storage = getStorage(app)
+const storage = getStorage(app);
 
 onMounted(() => {
   store.commit("user/setFirestore", firestore);
-  store.commit("user/setStorage",storage)
-  store.commit("user/setCustomStorageRef", ref)
+  store.commit("user/setStorage", storage);
+  store.commit("user/setCustomStorageRef", ref);
   // console.log(auth.currentUser,store.state.user.isAuth, 'APPP')
 });
 
-
 store.commit("user/setFireBase", firebase);
-
-
-
 </script>
 
 <style>
-
 .profile {
   position: absolute;
   top: 0%;
@@ -112,31 +122,22 @@ store.commit("user/setFireBase", firebase);
   width: 100%;
   height: 100%;
   display: flex;
-
 }
 .profile-container-hidden {
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    min-width: 500px;
-    transform: translateX(-100%);
-    background-color: rgba(0, 0, 0, 0);
-  
-    
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  min-width: 500px;
+  transform: translateX(-100%);
+  background-color: rgba(0, 0, 0, 0);
 }
 .profile-container {
-  
-    min-width: 500px;
-    transform: translateX(0%);
-    background-color: black;
-    
+  min-width: 500px;
+  transform: translateX(0%);
+  background-color: black;
 }
 
-
-
-
-p{ 
+p {
   margin: 0px;
 }
-
 
 .wrap {
   padding: 0px;
@@ -148,14 +149,14 @@ p{
   bottom: 0px;
   padding: 0px;
 }
-input{
+input {
   outline: none;
-  border:none;
-  background-image:none;
-  background-color:transparent;
+  border: none;
+  background-image: none;
+  background-color: transparent;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  box-shadow: none;  
+  box-shadow: none;
 }
 
 *:focus {
@@ -197,7 +198,7 @@ button {
 
 #app {
   padding: 0px;
-  
+
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -207,16 +208,5 @@ button {
 
 body {
   background-color: rgb(17, 17, 17);
-  
 }
-
-
-
-
-
-
-
-
-
-
 </style>
