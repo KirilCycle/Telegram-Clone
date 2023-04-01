@@ -11,7 +11,7 @@
     </button>
     <button
       v-show="inEdit"
-      @click="() => handleChanging(value, profilePhoto)"
+      @click="() => handleChanging(value, newFile)"
       class="logout"
     >
       apply
@@ -206,6 +206,9 @@ export default {
           }
         }
 
+
+        console.log( newFile,`images/${newFile.name + uuidv4()}`, 'REESSS')
+
         const storage = getStorage();
         const auth = getAuth();
 
@@ -223,6 +226,7 @@ export default {
                 })
                   .then(() => {
                     console.log("good", url);
+                     url
                   })
                   .catch((error) => {
                     console.log("huynya", error);
