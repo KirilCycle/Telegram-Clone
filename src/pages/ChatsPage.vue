@@ -36,18 +36,21 @@
       <div class="chat-nav-x">Helllo</div>
       <div class="chat-container-x">
        
-        <div v-if="$store.state.chat.chatId">
-     
-          <div class="chat-wrap">
-            <!-- <direct-chat></direct-chat> -->
-            <!-- <chatisnt-selected-vue></chatisnt-selected-vue> -->
-            <new-chat-vue :user="{displayName: 'prosss'}"></new-chat-vue>
+        
+        
+        <div class="chat-wrap">
+          <!-- <direct-chat></direct-chat> -->
+          
+           
+              <!-- <chatisnt-selected></chatisnt-selected> -->
+            
+              <component :is='currentChatType'> </component>
+          
+            <!-- <new-chat-vue :user="{displayName: 'prosss'}"></new-chat-vue> -->
           </div>
-        </div>
+      
 
-        <div v-else>
-           Select chat
-        </div>
+      
      
       </div>
      
@@ -106,14 +109,15 @@ import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
 import ChatInput from "@/components/ChatInput.vue";
-import NewChatVue from '@/components/NewChat.vue';
-import ChatisntSelectedVue from '@/components/ChatisntSelected.vue';
+import NewChat from '@/components/NewChat.vue';
+import { watchEffect } from 'vue';
+import ChatisntSelected from '@/components/ChatisntSelected.vue';
 
 export default {
   components: {
     DirectChat,
-    NewChatVue,
-    ChatisntSelectedVue,
+    NewChat,
+    ChatisntSelected,
     FoundedChatsList,
     ChatList,
     ChatInput,
@@ -124,6 +128,28 @@ export default {
       value: "",
       serachQ: "",
     };
+  },
+
+  watch: {
+    chatStore() {
+      if (store.state.chat.selectedUser?.new) {
+        this.currentChatType = "NewChat"
+      } else if (store.state.state.chat.chatId) {
+        this.currentChatType =  "DirectChat"
+      } 
+      this.currentChatType = "ChatisntSelected"
+     
+    }
+  },
+  computed: {
+     handleWhichTypeOfChatWasSelected() {
+      if (store.state.chat.selectedUser?.new) {
+        "NewChat"
+      } else if (store.state.state.chat.chatId) {
+        "DirectChat"
+      } 
+      return "ChatisntSelected"
+     }
   },
 
   methods: {
@@ -160,6 +186,7 @@ export default {
         : store.commit("chat/setQuerry", null);
     },
   },
+  
   computed: {
 
     selectedChatAction() {
@@ -306,8 +333,27 @@ export default {
       }
     }
 
+    const currentChatType = ref('ChatisntSelected')
+
+
+    watchEffect(() => {
+
+  
+
+     if (store.state.chat.selectedUser?.new) {
+      currentChatType.value = "NewChat"
+      } else if (store.state.chat.chatId) {
+        currentChatType.value = "DirectChat"
+      }  else {
+        currentChatType.value = "ChatisntSelected"
+      }
+     
+
+    })
+
     return {
       chatList,
+      currentChatType,
       chat,
       sendMessageToFoundedChat,
     };

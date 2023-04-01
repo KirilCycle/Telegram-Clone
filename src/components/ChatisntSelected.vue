@@ -12,6 +12,9 @@
 
 <style lang="scss" scoped>
   .select-chat-alert {
+    position: relative;
+    z-index: 500;
+    padding-top: 70px ;
     h3 {
         font-size: 1.2rem;
         color: #3e3e3e;
