@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
-     
-    <h1 @click="logout">LOOOOOOOOGGGGGGOOOOOUUUUUUTTTT</h1>
+  
+      <div v-if="isLoading" class="waiting-bloor"></div>
       <button v-show="!inEdit" @click="$emit('close')" class="back">
         <span class="material-symbols-outlined"> arrow_back_ios </span>
       </button>
@@ -75,12 +75,97 @@ export default {
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
-      inEdit: true,
+      inEdit: false,
       newFile: null,
+      isLoading: false
     };
   },
   created() {},
   methods: {
+
+    async handleChanging() {
+      //text handle
+      if (this.value.length > 4 && this.newFile) {
+     
+        const symphols = ["@", "#", "$", "!", "+", "|", "/"];
+
+        for (let i = 0; i < this.value.length; i++) {
+          for (let j = 0; j < symphols.length; j++) {
+            if (this.value[i].includes(symphols[j])) {
+              return;
+            }
+          }
+        }
+
+  
+
+        const storage = getStorage();
+        const auth = getAuth();
+
+        const storageRef = ref(storage, `images/${this.newFile.name + uuidv4()}`);
+
+        uploadBytes(storageRef, this.newFile)
+          .then((snapshot) => {
+            storageRef._location.path_, "Uploaded a blob or file!";
+
+            getDownloadURL(storageRef)
+              .then((url) => {
+                updateProfile(auth.currentUser, {
+                  photoURL: url,
+                  displayName: this.value,
+                })
+                  .then(() => {
+                      async function chnagePrewUser(userId, changes) {
+
+                      const db = firebase.firestore();
+
+                      const frankDocRef = doc(db, "usersPrew", userId);
+
+                      await updateDoc(frankDocRef, changes);
+                    }
+
+                    this.isLoading = true
+
+                    chnagePrewUser(auth.currentUser.uid, {
+                      "photoURL": url,
+                      "displayName": this.value,
+                    }).then(() => {
+                      console.log("good", url);
+                      this.isLoading = false
+                    }).catch((er) => console.log(er,'huynya peredelivay'))
+                  })
+                  .catch((error) => {
+                    this.isLoading = false
+                    console.log("huynya", error);
+                  });
+              })
+              .catch((er) => {
+
+                this.isLoading = false 
+                
+              })
+
+          })
+
+          .catch((er) =>   this.isLoading = false );
+      } else {
+        console.log("gimno peredelivay");
+      }
+
+      //photo handle
+    },
+
+
+
+
+    
+
+
+
+
+
+
+
     changeDisplayName() {
       const symphols = ["@", "#", "$", "!", "+", "|", "/"];
 
@@ -197,78 +282,12 @@ export default {
       }
     }
 
-    function handleChanging(newdisplayname, newFile, finishFn) {
-      //text handle
-      if (newdisplayname.length > 4 && newFile) {
-        console.log("LETS GO", newFile);
-        const symphols = ["@", "#", "$", "!", "+", "|", "/"];
-
-        let ready = true;
-
-        for (let i = 0; i < newdisplayname.length; i++) {
-          for (let j = 0; j < symphols.length; j++) {
-            if (newdisplayname[i].includes(symphols[j])) {
-              ready = false;
-
-              return;
-            }
-          }
-        }
-
-        console.log(newFile, `images/${newFile.name + uuidv4()}`, "REESSS");
-
-        const storage = getStorage();
-        const auth = getAuth();
-
-        const storageRef = ref(storage, `images/${newFile.name + uuidv4()}`);
-
-        uploadBytes(storageRef, newFile)
-          .then((snapshot) => {
-            storageRef._location.path_, "Uploaded a blob or file!";
-
-            getDownloadURL(storageRef)
-              .then((url) => {
-                updateProfile(auth.currentUser, {
-                  photoURL: url,
-                  displayName: newdisplayname,
-                })
-                  .then(() => {
-                    async function chnagePrewUser(userId, changes) {
-
-                      const db = firebase.firestore();
-
-                      const frankDocRef = doc(db, "usersPrew", userId);
-
-                      await updateDoc(frankDocRef, changes);
-                    }
-
-                    chnagePrewUser(auth.currentUser.uid, {
-                      "photoURL": url,
-                      "displayName": newdisplayname,
-                    }).then(() => {
-                      console.log("good", url);
-                      finishFn();
-                    }).catch((er) => console.log(er,'huynya peredelivay'))
-                  })
-                  .catch((error) => {
-                    console.log("huynya", error);
-                  });
-              })
-              .catch((er) => console.log("er", er));
-          })
-
-          .catch((er) => console.log(er, "post er"));
-      } else {
-        console.log("gimno peredelivay");
-      }
-
-      //photo handle
-    }
+   
 
     return {
       logout,
       uploadPhoto,
-      handleChanging,
+     
     };
   },
 };
@@ -278,7 +297,13 @@ export default {
 $crazy_color: #00ff44;
 
 
-
+.waiting-bloor {
+  position: absolute;
+  z-index: 200;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.792);
+}
 .wrap {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
