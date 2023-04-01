@@ -1,10 +1,10 @@
 <template>
-  <div ref="msg" class="item">
+  <div ref="msg" class="my-item">
    
   <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
    
     <div
-    v-on:click.right="visible  = true"
+     v-on:click.right="visible  = true"
       @touchend="stop"
       @touchstart="start"
       @touchmove="stop"
@@ -116,6 +116,7 @@ $crazy_color: #8db2fa;
     }
   }
 }
+
 .item {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -172,22 +173,71 @@ $crazy_color: #8db2fa;
   }
 }
 
-.my_item {
-  width: 70%;
-  padding: 10px;
-  color: rgb(255, 255, 255);
-  background: rgb(28, 243, 67);
-  margin-top: 15px;
-  margin: 15px;
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  right: 0px;
-  border-radius: 5px;
 
+
+
+.my-item {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  width: 65%;
+  position: relative;
+  left:30% ;
+  display: flex;
+  flex-direction:row-reverse;
+  
+  
+  .item-body {
+    
+    right: 0px;
+    .item_body_text {
+      text-align:left;
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+    .user-name {
+      font-size: 1rem;
+      position: absolute;
+      font-weight: 500;
+      top: 5px;
+      left: 13px;
+      color: $crazy_color;
+    }
+    word-break: break-all;
+    padding: 13px;
+    color: white;
+    background: rgb(35, 35, 35);
+    display: flex;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    position: relative;
+    right: 0px;
+    margin-left: 10px;
+    border-radius: 10px;
+    width: 70%;
+  }
+  
+  .image-container {
+    margin-top: 15px;
+    width: 100%;
+    background-color: rgb(76, 76, 76);
+    
+    img {
+      max-width: 100%;
+      min-width: 100%;
+    }
+  }
+  
   .time {
     font-size: 0.6rem;
     color: gray;
   }
+  
+
+
+
+
+
 }
+
 </style>

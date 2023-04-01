@@ -6,28 +6,33 @@
       class="conatiner"
       v-if="visible"
     >
+    
+    <div class="msg-prew-wrap">
       <div class="msg-prew">
-        <div class="msg_prev_prof_img_container">
-          <img :src="profileurl" />
+          <div class="msg_prev_prof_img_container">
+            <img :src="profileurl" />
+          </div>
+          <div class="msg_prew_body">
+            <h3>{{ message.userName }}</h3>
+            <p >{{ message.text.slice(0,100) }}</p>
+          </div>
         </div>
-        <div class="msg_prew_body">
-          <h3>{{ message.userName }}</h3>
-          <p >{{ message.text.slice(0,100) }}</p>
+  
+        <div class="modal">
+          <ul class="actions-list">
+            <li v-if="ableTodelete" @click.prevent="remMsg">
+              <span class="material-symbols-outlined"> delete </span>
+              <button>Delete</button>
+            </li>
+            <li @click="setReplyTarger">
+              <span class="material-symbols-outlined"> reply </span>
+              <button>Reply</button>
+            </li>
+          </ul>
         </div>
-      </div>
 
-      <div class="modal">
-        <ul class="actions-list">
-          <li v-if="ableTodelete" @click.prevent="remMsg">
-            <span class="material-symbols-outlined"> delete </span>
-            <button>Delete</button>
-          </li>
-          <li @click="setReplyTarger">
-            <span class="material-symbols-outlined"> reply </span>
-            <button>Reply</button>
-          </li>
-        </ul>
-      </div>
+    </div>
+
     </div>
   </Teleport>
 </template>
@@ -83,6 +88,9 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 
+
+
+
 .msg-prew {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
@@ -90,7 +98,7 @@ $crazy_color: #00ff44;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+
     position: absolute;
     transform: translate(-50%, -50%);
     min-width: 310px;
@@ -98,6 +106,7 @@ $crazy_color: #00ff44;
     top: 30%;
     left: 50%;
     max-height: 150px;
+    max-width: 500px;
 
     display: flex;
     align-items: center;

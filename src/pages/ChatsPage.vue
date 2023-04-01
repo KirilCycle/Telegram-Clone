@@ -224,20 +224,6 @@ export default {
                 store.commit("chat/setSelectedUser", userId2);
               } else {
 
-               
-           
-                //i will check our users // 
-                // if (user1Ref && user2Ref) {
-
-
-
-                // }
-                // //create our documant in usersLinksToChat and thet chat
-                // else {
-
-
-
-                // }
 
                 async function createChatWithFirstMessage() {
                   const db = firebase.firestore();
@@ -301,7 +287,7 @@ $custom-c3: rgb(0, 128, 255);
   height: 100vh;
 }
 .left-bar {
-  width: 300px;
+  width: 310px;
   overflow: hidden;
   resize: horizontal;
   flex-shrink: 0;
@@ -386,7 +372,7 @@ $custom-c3: rgb(0, 128, 255);
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
       &:hover {
-        color: rgb(146, 146, 146);
+      
       }
       cursor: pointer;
       span {
