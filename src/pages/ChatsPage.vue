@@ -32,8 +32,19 @@
     </div>
 
     <div class="right-side">
-      <div class="chat-container">
-        <nav class="chat-nav">
+
+      <div class="chat-nav-x">Helllo</div>
+      <div class="chat-container-x">
+        <div v-if="$store.state.chat.chatId">
+          <div class="chat-wrap">
+            <direct-chat :sendMsg="addNewMessage"></direct-chat>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-block-x"></div>
+     
+      <!-- <div class="chat-container"> -->
+        <!-- <nav class="chat-nav">
           <span class="material-symbols-outlined"> chevron_left </span>
           <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
         </nav>
@@ -60,7 +71,8 @@
 
           <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
         </div>
-      </div>
+      </div> -->
+
     </div>
   </div>
 </template>
@@ -278,6 +290,31 @@ $custom-c1: rgb(20, 20, 20);
 $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
+
+
+.chat-nav-x {
+  width: 100%;
+  background-color: white;
+  height: 10%;
+  max-height: 50px;
+
+}
+
+.chat-container-x {
+ height: 83%;
+ width: 100%;
+ background-color: #ffffff41;
+ overflow-y: scroll;
+} 
+.chat-input-block-x {
+  position: relative;
+  bottom: 0%;
+  height: 12%;
+  width: 100%;
+  background-color: #a2c1fff6;
+}
+
+
 
 .main {
   display: flex;

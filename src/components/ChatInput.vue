@@ -38,9 +38,11 @@ export default {
 <style lang="scss" scoped>
 
 .input-container {
- position: fixed;
-  width: 100%;
-  margin: 0px;
+  
+  position: fixed;
+  
+  width: inherit;
+  max-width: inherit;
 
 
   padding: 0px 10px 0px 10px;
@@ -54,13 +56,16 @@ export default {
   bottom: 0;
   align-items: center;
   box-sizing: border-box;
+  
 
 
   .content {
+    position: relative;
     
     box-sizing: border-box;
-    width: 100px;
-    background-color: red;
+    width: inherit;
+    max-width: inherit;
+    background-color: rgba(125, 125, 125, 0.406);
     justify-content: center;
     align-items: center;
     flex-direction: row;
@@ -70,7 +75,8 @@ export default {
    
 
     input {
-      width: 100%;
+      width: inherit;
+      max-width: 100%;
       height: 100%;
       background-color: #ffffff75;
     }
