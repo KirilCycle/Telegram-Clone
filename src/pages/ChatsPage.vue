@@ -41,7 +41,9 @@
           </div>
         </div>
       </div>
-      <div class="chat-input-block-x"></div>
+      <div class="chat-input-block-x">
+        <div class="input-wrap"></div>
+      </div>
      
       <!-- <div class="chat-container"> -->
         <!-- <nav class="chat-nav">
@@ -301,17 +303,26 @@ $custom-c3: rgb(0, 128, 255);
 }
 
 .chat-container-x {
- height: 83%;
- width: 100%;
+ height: 80%;
+ max-width: 100%;
  background-color: #ffffff41;
  overflow-y: scroll;
 } 
 .chat-input-block-x {
-  position: relative;
-  bottom: 0%;
-  height: 12%;
-  width: 100%;
-  background-color: #a2c1fff6;
+  display: flex;
+  justify-content: center;
+  min-height: 10%;
+  max-block-size: 12%;
+  max-width: 100%;
+  padding: 20px;
+  background-color: #a2c1fff6; 
+
+  .input-wrap {
+    height: 15px;
+    width: 100%;
+    background-color: #fff;
+  }
+
 }
 
 
@@ -319,12 +330,12 @@ $custom-c3: rgb(0, 128, 255);
 .main {
   display: flex;
   justify-content: center;
-  overflow: hidden;
-  width: 100%;
+  overflow-y: hidden ;
+  min-width: 100%;
   height: 100vh;
 }
 .left-bar {
-  width: 310px;
+  width: 320px;
   overflow: hidden;
   resize: horizontal;
   flex-shrink: 0;
@@ -444,7 +455,7 @@ $custom-c3: rgb(0, 128, 255);
 .right-side {
   width: 100%;
   height: 100%;
-  background-color: #0f0f0f;
+  background-color: #857979;
 }
 
 .chat-container {
