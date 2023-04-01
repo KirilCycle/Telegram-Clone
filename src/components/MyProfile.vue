@@ -53,9 +53,7 @@ $crazy_color: #00ff44;
   right: 0px;
   z-index: 120;
   .photo-container {
-  
     border-radius: 50%;
-  
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -87,7 +85,8 @@ v-enter-active,
   position: fixed;
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
   background-color: #151515b8;
-  width: 100%;
+  width: 100vw;
+  position: fixed;
   height: 100%;
   display: flex;
 
@@ -107,7 +106,8 @@ v-enter-active,
     opacity: 0;
   }
   .profile-container {
-    min-width: 500px;
+    min-width: 300px;
+    max-width: 600px;
     transform: translateX(0%);
     background-color: black;
     opacity: 1; /* add opacity property */

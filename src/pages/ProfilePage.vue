@@ -1,24 +1,21 @@
 <template>
   <div class="wrap">
-  
-      <div v-if="isLoading" class="waiting-bloor"></div>
-      <button v-show="!inEdit" @click="$emit('close')" class="back">
-        <span class="material-symbols-outlined"> arrow_back_ios </span>
-      </button>
-      <button v-show="inEdit" @click="cancelChangings" class="back">
-        Cancel
-      </button>
-      <button v-show="!inEdit" @click="inEdit = true" class="logout">
-        Edit profile
-      </button>
-      <button
-        v-show="inEdit"
-        @click="() => handleChanging(value, newFile, cancelChangings)"
-        class="logout"
-      >
-        apply
-      </button>
- 
+    <div v-if="isLoading" class="waiting-bloor"></div>
+    <button v-show="!inEdit" @click="$emit('close')" class="back">
+      <span class="material-symbols-outlined"> arrow_back_ios </span>
+    </button>
+    <button v-show="inEdit" @click="cancelChangings" class="back">
+      Cancel
+    </button>
+    <button v-show="!inEdit" @click="inEdit = true" class="logout">Edit</button>
+    <button
+      v-if="inEdit"
+      @click="() => handleChanging(value, newFile, cancelChangings)"
+      class="logout"
+    >
+      apply
+    </button>
+
     <div class="image-container">
       <img :src="profilePhoto" />
     </div>
@@ -59,7 +56,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
 import { collection } from "firebase/firestore";
-import { doc, getDoc,updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
@@ -77,16 +74,15 @@ export default {
       changedName: false,
       inEdit: false,
       newFile: null,
-      isLoading: false
+      isLoading: false,
     };
   },
   created() {},
   methods: {
-
     async handleChanging() {
-      //text handle
+
+      this.isLoading = true
       if (this.value.length > 4 && this.newFile) {
-     
         const symphols = ["@", "#", "$", "!", "+", "|", "/"];
 
         for (let i = 0; i < this.value.length; i++) {
@@ -97,12 +93,13 @@ export default {
           }
         }
 
-  
-
         const storage = getStorage();
         const auth = getAuth();
 
-        const storageRef = ref(storage, `images/${this.newFile.name + uuidv4()}`);
+        const storageRef = ref(
+          storage,
+          `images/${this.newFile.name + uuidv4()}`
+        );
 
         uploadBytes(storageRef, this.newFile)
           .then((snapshot) => {
@@ -115,8 +112,7 @@ export default {
                   displayName: this.value,
                 })
                   .then(() => {
-                      async function chnagePrewUser(userId, changes) {
-
+                    async function chnagePrewUser(userId, changes) {
                       const db = firebase.firestore();
 
                       const frankDocRef = doc(db, "usersPrew", userId);
@@ -124,47 +120,41 @@ export default {
                       await updateDoc(frankDocRef, changes);
                     }
 
-                    this.isLoading = true
+                
 
                     chnagePrewUser(auth.currentUser.uid, {
-                      "photoURL": url,
-                      "displayName": this.value,
-                    }).then(() => {
-                      console.log("good", url);
-                      this.isLoading = false
-                    }).catch((er) => console.log(er,'huynya peredelivay'))
+                      photoURL: url,
+                      displayName: this.value,
+                    })
+                      .then(() => {
+                        console.log("good", url);
+                        this.isLoading = false;
+                        this.inEdit = false;
+                      })
+                      .catch((er) => console.log(er, "huynya peredelivay"));
                   })
                   .catch((error) => {
-                    this.isLoading = false
+                    this.inEdit = false;
+                    this.isLoading = false;
                     console.log("huynya", error);
                   });
               })
               .catch((er) => {
-
-                this.isLoading = false 
-                
-              })
-
+                this.inEdit = false;
+                this.isLoading = false;
+              });
           })
 
-          .catch((er) =>   this.isLoading = false );
+          .catch((er) => {
+            this.inEdit = false;
+            this.isLoading = false;
+          });
       } else {
         console.log("gimno peredelivay");
       }
 
       //photo handle
     },
-
-
-
-
-    
-
-
-
-
-
-
 
     changeDisplayName() {
       const symphols = ["@", "#", "$", "!", "+", "|", "/"];
@@ -282,12 +272,9 @@ export default {
       }
     }
 
-   
-
     return {
       logout,
       uploadPhoto,
-     
     };
   },
 };
@@ -295,7 +282,6 @@ export default {
 
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
-
 
 .waiting-bloor {
   position: absolute;
@@ -308,13 +294,17 @@ $crazy_color: #00ff44;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 
-
   button {
-    height: auto;
+    min-height: 39px;
+    width: max-content;
     text-align: center;
-    padding: 20px ;
-    
-   }
+    width: 45px;
+
+    span {
+      text-align: left;
+      display: block;
+    }
+  }
 
   .profile-txt-wrp {
     text-align: center;
