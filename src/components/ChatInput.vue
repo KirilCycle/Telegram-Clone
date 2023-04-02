@@ -8,7 +8,7 @@
       <input v-model="value" placeholder="Write a message..." />
 
       <span class="material-symbols-outlined"> keyboard_voice </span>
-      <button  @click="() => sendMsg(value)">
+      <button  @click="send">
         <span class="material-symbols-outlined"> send </span>
       </button>
     </div>
@@ -31,8 +31,10 @@ export default {
   },
   methods: {
     send() {
-      this.sendMsg(this.value);
+      this.sendMsg(this.value)
+      this.value = ''
     },
+
   },
 };
 </script>

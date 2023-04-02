@@ -34,7 +34,9 @@
     <div class="right-side">
 
      
-      <div class="chat-nav-x">Helllo</div>
+      <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
+        <h3>{{navName}}</h3>
+      </div>
 
       <div class="chat-container-x">
        
@@ -201,12 +203,19 @@ export default {
   
   computed: {
 
-    selectedChatAction() {
-      console.log("recalculate")
-        if (store.state.chat.selectedUser?.new) {
-          return this.sendMessageToFoundedChat
-        } 
-        return this.addNewMessage 
+    navName() {
+
+      console.log('perecomput')
+
+      const user = store.state.chat.selectedUser
+
+      if (user?.displayName) {
+          return user.displayName
+      } else {
+        return user.email.replaceAll('@gmail.com','')
+      }
+    
+
     }
 
   },
@@ -270,7 +279,7 @@ export default {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
-            : auth.currentUser.email,
+            : auth.currentUser.email.replace('@gmail.com',''),
           userId: auth.currentUser.uid,
           text: v,
           createdAt: Timestamp.now(),
@@ -381,10 +390,24 @@ $custom-c3: rgb(0, 128, 255);
 
 
 .chat-nav-x {
+  position: relative;
   width: 100%;
-  background-color: white;
+  background-color: $custom-c4;
   height: 10%;
   max-height: 50px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  
+
+  h3 {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: white;
+    position: absolute;
+    left: 10px;
+    top: 30%;
+  }
 
 }
 

@@ -113,6 +113,7 @@ export default {
     }
     p {
       font-size: 0.8rem;
+      white-space: nowrap;
       color: #616161;
     }
   }

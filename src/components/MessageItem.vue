@@ -1,23 +1,38 @@
 <template>
-  <div ref="msg"  :class="{ 'my-item': isMy }"  class="item">
-   
-  <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
-   
+  <div ref="msg" :class="{ 'my-item': isMy }" class="item">
+    <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
+
     <div
-     v-on:click.right="visible  = true"
+      v-on:click.right="visible = true"
       @touchend="stop"
       @touchstart="start"
       @touchmove="stop"
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-      <p class="user-name">{{ message.userName }}</p>
-      <div class="image-container" v-if="photoURL">
-        <img :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`" />
+      <div class="user-name">
+        <p>{{ message.userName }}</p>
       </div>
-      <p :ref="message.id" class="item_body_text">{{ message.text }}</p>
+
+      <div class="image-container" v-if="photoURL">
+        <img
+          :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
+        />
+      </div>
+
+      <div class="item_body_text">
+        <p :ref="message.id">{{ message.text }}</p>
+      </div>
     </div>
-    <message-actions-modal :removeMsg="removeMessage" :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal> 
+    <message-actions-modal
+      :removeMsg="removeMessage"
+      :msgRef="msgRef"
+      v-if="visible"
+      @closed="visible = false"
+      :visible="visible"
+      :profileurl="profilePhotoUrl"
+      :message="message"
+    ></message-actions-modal>
   </div>
 </template>
 
@@ -29,8 +44,7 @@ import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import ProfileImage from "./ProfileImage.vue";
-import MessageActionsModal from './MessageActionsModal.vue';
-
+import MessageActionsModal from "./MessageActionsModal.vue";
 
 export default {
   components: { MessageActionsModal, ProfileImage },
@@ -40,41 +54,36 @@ export default {
     isMy: Boolean,
     removeMessage: Function,
     required: true,
-    
   },
-
 
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
-      profilePhotoUrl: this.message.userPhotoURl?this.message.userPhotoURl: '',
+      profilePhotoUrl: this.message.userPhotoURl
+        ? this.message.userPhotoURl
+        : "",
       removeMessage: this.removeMessage,
-      isMy: this.isMy
-      
+      isMy: this.isMy,
     };
   },
 
-
- 
   setup(props) {
-    
-   const auth = getAuth()
-    
-    const myTimeout = ref(null)
-    
+    const auth = getAuth();
+
+    const myTimeout = ref(null);
+
     function open() {
-      visible.value = true
+      visible.value = true;
     }
-    function start () {
-      myTimeout.value = setTimeout(open, 600) 
+    function start() {
+      myTimeout.value = setTimeout(open, 600);
     }
 
     function stop() {
-      clearTimeout(myTimeout.value)
+      clearTimeout(myTimeout.value);
     }
 
-    const visible = ref(false)
-
+    const visible = ref(false);
 
     return {
       // photoSrc,
@@ -82,14 +91,14 @@ export default {
       open,
       start,
       auth,
-      visible
+      visible,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-$crazy_color: #8db2fa;
+$crazy_color: #ff3d3d;
 
 .message-ations {
   position: absolute;
@@ -123,21 +132,28 @@ $crazy_color: #8db2fa;
   position: relative;
   display: flex;
 
-  
   .item-body {
-    
     left: 0px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+   
+
     .item_body_text {
-      text-align: left;
-      font-size: 0.9rem;
-      margin-top: 15px;
+      font-size: 0.9rem;   
+      margin-top: 3px;
+      p {
+        font-weight: 200;
+      }
     }
     .user-name {
       font-size: 1rem;
-      position: absolute;
       font-weight: 500;
       top: 5px;
+      max-width: 200px;
+      height: 16px;
       left: 13px;
+      white-space: nowrap;
       color: $crazy_color;
     }
     word-break: break-all;
@@ -151,7 +167,10 @@ $crazy_color: #8db2fa;
     right: 0px;
     margin-left: 10px;
     border-radius: 10px;
-    width: 70%;
+    width: max-content;
+    min-width: 100px;
+    max-width: 70%;
+    
   }
 
   .image-container {
@@ -171,31 +190,25 @@ $crazy_color: #8db2fa;
   }
 }
 
-
-
-
 .my-item {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   width: 65%;
   position: relative;
-  left:30% ;
+  left: 30%;
   display: flex;
-  flex-direction:row-reverse;
-  
-  
+  flex-direction: row-reverse;
+
   .item-body {
-    
     right: 0px;
     .item_body_text {
-      text-align:left;
+      text-align: left;
       font-size: 0.9rem;
       margin-top: 0px;
     }
     .user-name {
-     display: none;
-     
+      display: none;
     }
     word-break: break-all;
     padding: 13px;
@@ -208,31 +221,25 @@ $crazy_color: #8db2fa;
     right: 0px;
     margin-left: 10px;
     border-radius: 10px;
-    
+
+    width: auto;
     min-width: 100px;
     max-width: 70%;
   }
-  
+
   .image-container {
     width: 100%;
     background-color: rgb(76, 76, 76);
-    
+
     img {
       max-width: 100%;
       min-width: 100%;
     }
   }
-  
+
   .time {
     font-size: 0.6rem;
     color: gray;
   }
-  
-
-
-
-
-
 }
-
 </style>
