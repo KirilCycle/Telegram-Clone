@@ -40,7 +40,7 @@ export default {
       const db = firebase.firestore();
 
       try {
-        const chatRef = doc(db, "chats", chatId);
+        const chatRef = doc(db, "chatMessages", chatId);
 
         await updateDoc(chatRef, {
           messages: firebase.firestore.FieldValue.arrayRemove(messageId),
