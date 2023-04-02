@@ -29,6 +29,9 @@ export default {
 
 <style lang="scss" scoped>
 .cht-i {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
   width: 100%;
   height: 70px;
   

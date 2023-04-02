@@ -33,7 +33,9 @@
 
     <div class="right-side">
 
+     
       <div class="chat-nav-x">Helllo</div>
+
       <div class="chat-container-x">
        
         
@@ -54,10 +56,18 @@
      
       </div>
      
-      <div class="chat-input-block-x">
+      <div v-if="$store.state.chat.chatId || $store.state.chat.selectedUser " class="chat-input-block-x">
+         
 
-        
-        <chat-input :sendMsg="sendMessageToFoundedChat "></chat-input>
+        <div v-if="$store.state.chat.selectedUser.new">
+          <h2>Target</h2>
+          <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
+        </div>
+        <div v-else>
+          <h2>Def</h2>
+          <chat-input :sendMsg="addNewMessage"></chat-input>
+        </div>
+
 
       </div>
      
@@ -132,6 +142,7 @@ export default {
 
   watch: {
     chatStore() {
+      console.log('watch AAAACCCC')
       if (store.state.chat.selectedUser?.new) {
         this.currentChatType = "NewChat"
       } else if (store.state.state.chat.chatId) {
