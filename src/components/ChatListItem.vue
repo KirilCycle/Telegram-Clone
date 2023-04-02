@@ -1,13 +1,14 @@
 <template>
-  <div @click="$store.commit('chat/setSelectedUser',enotherUser )" v-show="isVisible" >
-      <chat-item :pthUrl="enotherUser.photoURL">
+  <div @click="$store.commit('chat/setSelectedUser',enotherUser )"  >
+      <!-- <chat-item :pthUrl="enotherUser.photoURL">
 
         <div class="txt-container">
-        <h3>{{ chatName }}</h3>
-          <p>{{ item.lastMessag?.text }}</p>
-        </div>
+        <h3>{{ chatName }}</h3> -->
+        <h3>{{}}</h3>
+          <p>{{ chat?.lastMessag?.text }}</p>
+        <!-- </div>
        
-      </chat-item>   
+      </chat-item>    -->
   </div>
 </template>
 
@@ -18,7 +19,7 @@ import ChatItem from "./ChatItem.vue";
 
 export default {
   props: {
-    chatId: String,
+    chat: Object,
   },
   components: {
     ChatItem
@@ -33,13 +34,13 @@ export default {
     };
   },
   computed: {
-    isVisible() {
-      if (!store.state.chat.querry) {
-        return true;
-      } else {
-        return this.chatName.includes(store.state.chat.querry);
-      }
-    },
+    // isVisible() {
+    //   if (!store.state.chat.querry) {
+    //     return true;
+    //   } else {
+    //     return this.chatName.includes(store.state.chat.querry);
+    //   }
+    // },
   },
 
 
@@ -85,7 +86,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchChat();
+   
   },
 };
 </script>

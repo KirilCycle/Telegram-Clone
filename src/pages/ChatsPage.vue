@@ -258,9 +258,11 @@ export default {
         const formated =  Object.values(doc.data()) 
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
-        chatList.value = formated;
+        chatList.value = formated.sort((a,b) =>  b.lastMessag.createdAt.seconds - a.lastMessag.createdAt.seconds )
+
+
         
-         formated.map((el) => console.log(el))
+        
 
         console.log(formated, doc.data(), 'AS MAIN FETCH CHATS')
 

@@ -5,7 +5,7 @@
       @click="() => $store.commit('chat/setChatId', cht.id)"
       v-for="cht in chatList"
       :key="cht.id"
-      :chatId="cht.id"
+      :chat="cht"
     >
   </chat-list-item>
   </TransitionGroup>
@@ -26,14 +26,12 @@ export default {
     required: true,
   },
   watch: {
-    chatList() {
-      console.log("chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@SXXXX", this.chatList[1])
-    },
+   
   },
   data() {
     return {
       db: firebase.firestore(),
-      ours: []
+      
     }
   },
   created() {
