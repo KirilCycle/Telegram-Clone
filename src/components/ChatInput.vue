@@ -38,11 +38,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ $custom-c2: rgb(32, 32, 32);;
 .input-container {
   width: 100%;
   padding: 0px 10px 0px 0px;
-  background-color: #1f1e1ee6;
   backdrop-filter: blur(8px);
+  background-color:  $custom-c2;
   height: 50px;
   display: flex;
   justify-content: center;
@@ -93,6 +94,12 @@ export default {
       -webkit-user-select: none; /* Safari */
       -ms-user-select: none; /* IE 10 and IE 11 */
       user-select: none; /* Standard syntax */
+
+      &:hover {
+        
+      }
+
+      
     }
   }
 }

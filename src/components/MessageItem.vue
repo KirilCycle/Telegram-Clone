@@ -1,5 +1,5 @@
 <template>
-  <div ref="msg" class="my-item">
+  <div ref="msg"  :class="{ 'my-item': isMy }"  class="item">
    
   <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
    
@@ -17,10 +17,7 @@
       </div>
       <p :ref="message.id" class="item_body_text">{{ message.text }}</p>
     </div>
-    
-   <message-actions-modal :removeMsg="removeMessage" :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal>
-    
-    
+    <message-actions-modal :removeMsg="removeMessage" :msgRef="msgRef" v-if="visible" @closed="visible = false" :visible="visible" :profileurl="profilePhotoUrl" :message="message"></message-actions-modal> 
   </div>
 </template>
 
@@ -51,7 +48,8 @@ export default {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
       profilePhotoUrl: this.message.userPhotoURl?this.message.userPhotoURl: '',
-      removeMessage: this.removeMessage
+      removeMessage: this.removeMessage,
+      isMy: this.isMy
       
     };
   },
@@ -145,7 +143,7 @@ $crazy_color: #8db2fa;
     word-break: break-all;
     padding: 13px;
     color: white;
-    background: rgb(35, 35, 35);
+    background: rgb(24, 24, 24);
     display: flex;
     margin-bottom: 15px;
     flex-wrap: wrap;
@@ -193,20 +191,16 @@ $crazy_color: #8db2fa;
     .item_body_text {
       text-align:left;
       font-size: 0.9rem;
-      margin-top: 15px;
+      margin-top: 0px;
     }
     .user-name {
-      font-size: 1rem;
-      position: absolute;
-      font-weight: 500;
-      top: 5px;
-      left: 13px;
-      color: $crazy_color;
+     display: none;
+     
     }
     word-break: break-all;
     padding: 13px;
     color: white;
-    background: rgb(35, 35, 35);
+    background: rgb(73, 119, 197);
     display: flex;
     margin-bottom: 15px;
     flex-wrap: wrap;
@@ -214,11 +208,12 @@ $crazy_color: #8db2fa;
     right: 0px;
     margin-left: 10px;
     border-radius: 10px;
-    width: 70%;
+    
+    min-width: 100px;
+    max-width: 70%;
   }
   
   .image-container {
-    margin-top: 15px;
     width: 100%;
     background-color: rgb(76, 76, 76);
     

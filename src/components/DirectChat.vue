@@ -5,6 +5,7 @@
       v-for="it in chat.messages"
       :key="it.id"
       :message="it"
+      :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
   </div>
 </template>
@@ -31,6 +32,7 @@ export default {
   data() {
     return {
       sendMsg: this.sendMsg,
+      firstPartOfmyId: store.state.user.user.uid.slice(0,10)
     };
   },
   methods: {

@@ -391,7 +391,7 @@ $custom-c3: rgb(0, 128, 255);
 .chat-container-x {
  height: 85%;
  max-width: 100%;
- background-color: #ffffff41;
+ background-color: $custom-c2;
  overflow-y: scroll;
 } 
 
@@ -419,12 +419,11 @@ $custom-c3: rgb(0, 128, 255);
   height:6%;
   max-block-size: 12%;
   max-width: 100%;
-  background-color: #a2c1fff6; 
-
+ 
   .input-wrap {
     height: 100%;
     width: 100%;
-    background-color: #fff;
+  
   }
 
 }

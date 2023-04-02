@@ -92,9 +92,8 @@ $crazy_color: #00ff44;
 
 
 .msg-prew {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+   
+  
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -150,9 +149,7 @@ $crazy_color: #00ff44;
 }
 
 .conatiner {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+
   position: fixed;
   width: 100%;
   height: 100vh;
