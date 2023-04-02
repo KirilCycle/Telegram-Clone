@@ -1,13 +1,13 @@
 <template>
   <TransitionGroup name="list" class="chat-list-wrap" tag="div">
-    <chat-list-item
+    <!-- <chat-list-item
      
       @click="() => $store.commit('chat/setChatId', cht)"
       v-for="cht in chatList.chats"
       :key="cht"
       :chatId="cht"
     >
-  </chat-list-item>
+  </chat-list-item> -->
   </TransitionGroup>
 </template>
 
@@ -39,7 +39,7 @@ export default {
   created() {
     console.log(
       "chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@",
-      this.chatList.chats
+      Object.values(this.chatList)
     );
    
 
@@ -53,17 +53,14 @@ export default {
       console.log('EEEEEEEEEEEEEEEEEEEXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
       console.log('EX')
 
-      
+
       // Retrieve the document using the get() method
       documentRef.onSnapshot((doc) => {
         console.log(doc.data());
       });
     }
 
-    if (this.chatList.chats) {
-      console.log('EX')
-      this.chatList.chats.map((el) => fetchChat(el));
-    }
+   
   },
 };
 </script>

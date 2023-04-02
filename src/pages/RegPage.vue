@@ -69,7 +69,7 @@ function register() {
 
         async function addUsersChatLink() {
           setDoc(doc(db, "usersLinksToChat", data.user.uid), {
-            chats: [],
+           
           });
         }
 
@@ -93,7 +93,7 @@ function register() {
           .then((res) => {
         
             updateProfile(auth.currentUser, {
-          photoURL:  `https://robohash.org/${data.user.uid}.png`,
+            photoURL:  `https://robohash.org/${data.user.uid}.png`,
         })
           .then(() => {
             // Profile updated!

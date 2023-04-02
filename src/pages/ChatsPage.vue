@@ -156,7 +156,7 @@ export default {
     async addNewMessage(text) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
-      const chatRef = doc(db, "chats", store.state.chat.chatId);
+    
       const auth = getAuth();
 
       if (auth.currentUser && text.length < 2000 && text.length > 0) {
@@ -176,9 +176,12 @@ export default {
 
         await updateDoc(chatRefMsg, {
           messages: arrayUnion(message),
-        }),
-          await updateDoc(chatRef, {
-            lastMessage: { text, createdAt: message.createdAt },
+        })
+
+        const user1usersChatRef = doc(db, "usersLinksToChat", auth.currentUser.uid);
+
+          await updateDoc(user1usersChatRef, {
+            [store.state.chat.chatId] : { "lastMessag": { text, createdAt: message.createdAt} },
           });
 
         //set this chat id at the first position on both users
@@ -198,7 +201,6 @@ export default {
       console.log("perecomput");
       const user = store.state.chat.selectedUser;
       if (user) {
-
         if (user?.displayName) {
           return user.displayName;
         } else {
@@ -220,7 +222,7 @@ export default {
 
     const chat = ref("");
 
-    const slectedChatRef = db.collection("chats");
+    const slectedChatRef = db.collection("usersLinksToChat");
 
     if (store.state.chat.chatId) {
       slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
@@ -239,9 +241,11 @@ export default {
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
+        console.log('CHHHHHHANNNNNGEEEESSSSSSSSSSSSS', doc.data())
         // Do something with the document data
         store.commit("chat/setChatIdList", doc.data());
         chatList.value = doc.data();
+
 
         console.log(chatList.value, "cht");
       } else {
@@ -280,10 +284,10 @@ export default {
 
         const chatData = {
           lastMessage: { text: message.text, createdAt: message.createdAt },
-          members: [userId1, userId2],
+          uid: chatId,
         };
 
-        const chatsRef = db.collection("chats");
+        const chatsRef = db.collection("chatMessages");
         const chatDocRef = chatsRef.doc(enotherChatId);
 
         chatDocRef.get().then((doc) => {
@@ -304,7 +308,7 @@ export default {
                   const db = firebase.firestore();
                   const batch = writeBatch(db);
 
-                  const chatRef = db.collection("chats").doc(chatId);
+                  // const chatRef = db.collection("chats").doc(chatId);
 
                   const chatsMsgsRef = db
                     .collection("chatMessages")
@@ -312,14 +316,31 @@ export default {
 
                   batch.set(chatsMsgsRef, { messages: [message] });
 
-                  batch.set(chatRef, chatData);
+                  // batch.set(chatRef, chatData);
                   // Step 1: Add the unique ID to the `chats` array in both users' documents.
-                  batch.update(user1Ref, {
-                    chats: firebase.firestore.FieldValue.arrayUnion(chatId),
-                  });
+                  batch.update(
+                    user1Ref,
+                    {
+                      [chatId]: {
+                        chatId,
+                        lastMessag: {
+                          createdAt: message.createdAt,
+                          text: message.text,
+                        },
+                      },
+                    }
+                    // chats: firebase.firestore.FieldValue.arrayUnion(chatData),
+                  );
 
                   batch.update(user2Ref, {
-                    chats: firebase.firestore.FieldValue.arrayUnion(chatId),
+                    // chats: firebase.firestore.FieldValue.arrayUnion(chatData),
+                    [chatId]: {
+                      chatId,
+                      lastMessag: {
+                        createdAt: message.createdAt,
+                        text: message.text,
+                      },
+                    },
                   });
 
                   // Step 2: Use the unique ID as the name of a new document in the `chats` collection.
