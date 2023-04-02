@@ -82,15 +82,20 @@ export default {
 
       const second = store.state.user.user.uid + us.uid;
 
-      if (store.state.chat.chatIdList.chat) {
+      console.log('handle us ',store.state.chat.chatIdList)
+
+      if (store.state.chat.chatIdList.chats) {
 
         if (store.state.chat.chatIdList.chats.includes(first)) {
           store.commit("chat/setSelectedUser", us);
           store.commit("chat/setChatId", first);
+         
         } else if (store.state.chat.chatIdList.chats.includes(second)) {
           store.commit("chat/setSelectedUser", us);
           store.commit("chat/setChatId", second);
+         
         } else {
+         
           const modiffied = us;
           modiffied.new = true;
           store.commit("chat/setSelectedUser", modiffied);
