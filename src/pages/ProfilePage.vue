@@ -1,5 +1,6 @@
 <template>
   <div class="wrap">
+    <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1>
     <div v-if="isLoading" class="waiting-bloor"></div>
     <button v-show="!inEdit" @click="$emit('close')" class="back">
       <span class="material-symbols-outlined"> arrow_back_ios </span>

@@ -32,36 +32,27 @@
     </div>
 
     <div class="right-side">
-
-     
       <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
-        <h3>{{navName}}</h3>
+        <h3>{{ navName }}</h3>
       </div>
 
       <div class="chat-container-x">
-       
-        
-        
         <div class="chat-wrap">
           <!-- <direct-chat></direct-chat> -->
-          
-           
-              <!-- <chatisnt-selected></chatisnt-selected> -->
-            
-              <component :is='currentChatType'> </component>
-          
-            <!-- <new-chat-vue :user="{displayName: 'prosss'}"></new-chat-vue> -->
-          </div>
-      
 
-      
-     
+          <!-- <chatisnt-selected></chatisnt-selected> -->
+
+          <component :is="currentChatType"> </component>
+
+          <!-- <new-chat-vue :user="{displayName: 'prosss'}"></new-chat-vue> -->
+        </div>
       </div>
-     
-      <div v-if="$store.state.chat.chatId || $store.state.chat.selectedUser " class="chat-input-block-x">
-         
-        <div class="input-wrap">
 
+      <div
+        v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
+        class="chat-input-block-x"
+      >
+        <div class="input-wrap">
           <div v-if="$store.state.chat.selectedUser.new">
             <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
           </div>
@@ -69,13 +60,10 @@
             <chat-input :sendMsg="addNewMessage"></chat-input>
           </div>
         </div>
-
-
-
       </div>
-     
+
       <!-- <div class="chat-container"> -->
-        <!-- <nav class="chat-nav">
+      <!-- <nav class="chat-nav">
           <span class="material-symbols-outlined"> chevron_left </span>
           <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
         </nav>
@@ -103,7 +91,6 @@
           <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
         </div>
       </div> -->
-
     </div>
   </div>
 </template>
@@ -122,9 +109,9 @@ import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
 import ChatInput from "@/components/ChatInput.vue";
-import NewChat from '@/components/NewChat.vue';
-import { watchEffect } from 'vue';
-import ChatisntSelected from '@/components/ChatisntSelected.vue';
+import NewChat from "@/components/NewChat.vue";
+import { watchEffect } from "vue";
+import ChatisntSelected from "@/components/ChatisntSelected.vue";
 
 export default {
   components: {
@@ -145,30 +132,30 @@ export default {
 
   watch: {
     chatStore() {
-      console.log('watch AAAACCCC')
+      console.log("watch AAAACCCC");
       if (store.state.chat.selectedUser?.new) {
-        this.currentChatType = "NewChat"
+        this.currentChatType = "NewChat";
       } else if (store.state.state.chat.chatId) {
-        this.currentChatType =  "DirectChat"
-      } 
-      this.currentChatType = "ChatisntSelected"
-     
-    }
+        this.currentChatType = "DirectChat";
+      }
+      this.currentChatType = "ChatisntSelected";
+    },
   },
   computed: {
-     handleWhichTypeOfChatWasSelected() {
+    handleWhichTypeOfChatWasSelected() {
       if (store.state.chat.selectedUser?.new) {
-        "NewChat"
+        ("NewChat");
       } else if (store.state.state.chat.chatId) {
-        "DirectChat"
-      } 
-      return "ChatisntSelected"
-     }
+        ("DirectChat");
+      }
+      return "ChatisntSelected";
+    },
   },
 
   methods: {
     async addNewMessage(text) {
       const db = firebase.firestore();
+      const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
       const chatRef = doc(db, "chats", store.state.chat.chatId);
       const auth = getAuth();
 
@@ -187,16 +174,17 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-        await updateDoc(chatRef, {
+        await updateDoc(chatRefMsg, {
           messages: arrayUnion(message),
-          lastMessage: {text, createdAt: message.createdAt},
-        });
+        }),
 
-        //set this chat id at the first position on both users 
+        await updateDoc(chatRef, {
+          lastMessage: { text, createdAt: message.createdAt },
+        })
+        
+      
+        //set this chat id at the first position on both users
         //i cnat manipulate with index directly
-
-
-
       }
     },
 
@@ -206,24 +194,19 @@ export default {
         : store.commit("chat/setQuerry", null);
     },
   },
-  
+
   computed: {
-
     navName() {
+      console.log("perecomput");
 
-      console.log('perecomput')
-
-      const user = store.state.chat.selectedUser
+      const user = store.state.chat.selectedUser;
 
       if (user?.displayName) {
-          return user.displayName
+        return user.displayName;
       } else {
-        return user.email.replaceAll('@gmail.com','')
+        return user.email.replaceAll("@gmail.com", "");
       }
-    
-
-    }
-
+    },
   },
   setup(data) {
     const db = firebase.firestore();
@@ -285,7 +268,7 @@ export default {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
-            : auth.currentUser.email.replace('@gmail.com',''),
+            : auth.currentUser.email.replace("@gmail.com", ""),
           userId: auth.currentUser.uid,
           text: v,
           createdAt: Timestamp.now(),
@@ -297,9 +280,8 @@ export default {
         }
 
         const chatData = {
-          lastMessage: message.text,
+          lastMessage: {text:message.text,createdAt: message.createdAt},
           members: [userId1, userId2],
-          messages: [message],
         };
 
         const chatsRef = db.collection("chats");
@@ -319,13 +301,18 @@ export default {
                 store.commit("chat/setChatId", chatId);
                 store.commit("chat/setSelectedUser", userId2);
               } else {
-
-
                 async function createChatWithFirstMessage() {
                   const db = firebase.firestore();
                   const batch = writeBatch(db);
 
                   const chatRef = db.collection("chats").doc(chatId);
+
+                  const chatsMsgsRef = db
+                    .collection("chatMessages")
+                    .doc(chatId);
+
+                  batch.set(chatsMsgsRef, { messages: [message] });
+
                   batch.set(chatRef, chatData);
                   // Step 1: Add the unique ID to the `chats` array in both users' documents.
                   batch.update(user1Ref, {
@@ -360,23 +347,17 @@ export default {
       }
     }
 
-    const currentChatType = ref('ChatisntSelected')
-
+    const currentChatType = ref("ChatisntSelected");
 
     watchEffect(() => {
-
-  
-
-     if (store.state.chat.selectedUser?.new) {
-      currentChatType.value = "NewChat"
+      if (store.state.chat.selectedUser?.new) {
+        currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "DirectChat"
-      }  else {
-        currentChatType.value = "ChatisntSelected"
+        currentChatType.value = "DirectChat";
+      } else {
+        currentChatType.value = "ChatisntSelected";
       }
-     
-
-    })
+    });
 
     return {
       chatList,
@@ -394,7 +375,6 @@ $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
 
-
 .chat-nav-x {
   position: relative;
   width: 100%;
@@ -404,7 +384,6 @@ $custom-c3: rgb(0, 128, 255);
   text-align: left;
   display: flex;
   align-items: center;
-  
 
   h3 {
     font-weight: 500;
@@ -414,16 +393,14 @@ $custom-c3: rgb(0, 128, 255);
     left: 10px;
     top: 30%;
   }
-
 }
 
 .chat-container-x {
- height: 85%;
- max-width: 100%;
- background-color: $custom-c2;
- overflow-y: scroll;
-} 
-
+  height: 85%;
+  max-width: 100%;
+  background-color: $custom-c2;
+  overflow-y: scroll;
+}
 
 .chat-container-x::-webkit-scrollbar {
   display: block;
@@ -440,29 +417,23 @@ $custom-c3: rgb(0, 128, 255);
   border-radius: 20px;
 }
 
-
-
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  height:6%;
+  height: 6%;
   max-block-size: 12%;
   max-width: 100%;
- 
+
   .input-wrap {
     height: 100%;
     width: 100%;
-  
   }
-
 }
-
-
 
 .main {
   display: flex;
   justify-content: center;
-  overflow-y: hidden ;
+  overflow-y: hidden;
   min-width: 100%;
   height: 100vh;
 }
@@ -552,7 +523,6 @@ $custom-c3: rgb(0, 128, 255);
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
       &:hover {
-      
       }
       cursor: pointer;
       span {

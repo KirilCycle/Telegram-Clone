@@ -58,7 +58,7 @@ export default {
 
     const chat = ref("");
 
-    const slectedChatRef = db.collection("chats");
+    const slectedChatRef = db.collection("chatMessages");
 
     console.log(props.chatId, "TEST");
 
