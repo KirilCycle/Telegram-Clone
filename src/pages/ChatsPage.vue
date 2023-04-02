@@ -177,12 +177,10 @@ export default {
         await updateDoc(chatRefMsg, {
           messages: arrayUnion(message),
         }),
+          await updateDoc(chatRef, {
+            lastMessage: { text, createdAt: message.createdAt },
+          });
 
-        await updateDoc(chatRef, {
-          lastMessage: { text, createdAt: message.createdAt },
-        })
-        
-      
         //set this chat id at the first position on both users
         //i cnat manipulate with index directly
       }
@@ -198,13 +196,14 @@ export default {
   computed: {
     navName() {
       console.log("perecomput");
-
       const user = store.state.chat.selectedUser;
+      if (user) {
 
-      if (user?.displayName) {
-        return user.displayName;
-      } else {
-        return user.email.replaceAll("@gmail.com", "");
+        if (user?.displayName) {
+          return user.displayName;
+        } else {
+          return user.email;
+        }
       }
     },
   },
@@ -280,7 +279,7 @@ export default {
         }
 
         const chatData = {
-          lastMessage: {text:message.text,createdAt: message.createdAt},
+          lastMessage: { text: message.text, createdAt: message.createdAt },
           members: [userId1, userId2],
         };
 

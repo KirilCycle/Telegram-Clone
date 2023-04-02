@@ -89,7 +89,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log('cpu action')
         await setDoc(doc(db, "usersPrew", user.uid), {
           uid:user.uid,
-          photoURl:user.photoURL,
+          photoURl:`https://robohash.org/${data.user.uid}.png`,
           displayName: user.displayName,
           email: user.email
 
