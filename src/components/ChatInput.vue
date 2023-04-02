@@ -8,7 +8,14 @@
      
       <input v-model="value" placeholder="Write a message..." />
 
-      <button @click="() =>sendMsg(value)">enter</button>
+      <button @click="() =>sendMsg(value)">
+        <span class="material-symbols-outlined">
+          send
+          </span>
+      </button>
+      <span class="material-symbols-outlined">
+        keyboard_voice
+        </span>
     </div>
   </div>
 </template>
@@ -39,13 +46,9 @@ export default {
 
 .input-container {
   
-  position: fixed;
-  
-  width: inherit;
-  max-width: inherit;
 
-
-  padding: 0px 10px 0px 10px;
+  width: 100%;
+  padding: 0px 10px 0px 0px;
   background-color: #1f1e1ee6;
   backdrop-filter: blur(8px);
   height: 50px;
@@ -61,9 +64,8 @@ export default {
 
   .content {
     position: relative;
-    
     box-sizing: border-box;
-    width: inherit;
+    width: 100%;
     max-width: inherit;
     background-color: rgba(125, 125, 125, 0.406);
     justify-content: center;
@@ -75,10 +77,12 @@ export default {
    
 
     input {
-      width: inherit;
+      width: 100%;
       max-width: 100%;
       height: 100%;
-      background-color: #ffffff75;
+      font-size: 1rem;
+      background-color: #ffffff00;
+      color: white;
     }
 
     button {

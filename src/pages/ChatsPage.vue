@@ -58,15 +58,16 @@
      
       <div v-if="$store.state.chat.chatId || $store.state.chat.selectedUser " class="chat-input-block-x">
          
+        <div class="input-wrap">
 
-        <div v-if="$store.state.chat.selectedUser.new">
-          <h2>Target</h2>
-          <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
+          <div v-if="$store.state.chat.selectedUser.new">
+            <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
+          </div>
+          <div v-else>
+            <chat-input :sendMsg="addNewMessage"></chat-input>
+          </div>
         </div>
-        <div v-else>
-          <h2>Def</h2>
-          <chat-input :sendMsg="addNewMessage"></chat-input>
-        </div>
+
 
 
       </div>
@@ -388,22 +389,40 @@ $custom-c3: rgb(0, 128, 255);
 }
 
 .chat-container-x {
- height: 80%;
+ height: 85%;
  max-width: 100%;
  background-color: #ffffff41;
  overflow-y: scroll;
 } 
+
+
+.chat-container-x::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+
+.chat-container-x::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.648);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.chat-container-x::-webkit-scrollbar-thumb {
+  background: rgba(152, 152, 152, 0.577);
+  border-radius: 20px;
+}
+
+
+
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  min-height: 10%;
+  height:6%;
   max-block-size: 12%;
   max-width: 100%;
-  padding: 20px;
   background-color: #a2c1fff6; 
 
   .input-wrap {
-    height: 15px;
+    height: 100%;
     width: 100%;
     background-color: #fff;
   }
