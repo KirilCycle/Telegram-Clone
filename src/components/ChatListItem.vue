@@ -4,7 +4,7 @@
 
         <div class="txt-container">
         <h3>{{ chatName }}</h3>
-          <p>{{ item.lastMessage?.text }}</p>
+          <p>{{ item.lastMessag?.text }}</p>
         </div>
        
       </chat-item>   
@@ -41,6 +41,7 @@ export default {
       }
     },
   },
+
 
   methods: {
     async fetchChat() {

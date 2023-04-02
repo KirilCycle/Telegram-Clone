@@ -1,13 +1,13 @@
 <template>
   <TransitionGroup name="list" class="chat-list-wrap" tag="div">
-    <!-- <chat-list-item
+    <chat-list-item
      
-      @click="() => $store.commit('chat/setChatId', cht)"
-      v-for="cht in chatList.chats"
-      :key="cht"
-      :chatId="cht"
+      @click="() => $store.commit('chat/setChatId', cht.id)"
+      v-for="cht in chatList"
+      :key="cht.id"
+      :chatId="cht.id"
     >
-  </chat-list-item> -->
+  </chat-list-item>
   </TransitionGroup>
 </template>
 
@@ -27,7 +27,7 @@ export default {
   },
   watch: {
     chatList() {
-      console.log("chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@", this.chatList);
+      console.log("chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@SXXXX", this.chatList[1])
     },
   },
   data() {
@@ -38,8 +38,7 @@ export default {
   },
   created() {
     console.log(
-      "chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@",
-      Object.values(this.chatList)
+    
     );
    
 

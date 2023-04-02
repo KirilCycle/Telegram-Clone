@@ -179,9 +179,20 @@ export default {
         })
 
         const user1usersChatRef = doc(db, "usersLinksToChat", auth.currentUser.uid);
+        const user2usersChatRef = doc(db, "usersLinksToChat", store.state.chat.chatId.replace(auth.currentUser.uid,''));
 
           await updateDoc(user1usersChatRef, {
-            [store.state.chat.chatId] : { "lastMessag": { text, createdAt: message.createdAt} },
+            [store.state.chat.chatId] : { 
+              "lastMessag": { text, createdAt: message.createdAt},
+              "id": store.state.chat.chatId
+           }
+          });
+
+          await updateDoc(user2usersChatRef, {
+            [store.state.chat.chatId] : { 
+              "lastMessag": { text, createdAt: message.createdAt},
+              "id": store.state.chat.chatId
+           }
           });
 
         //set this chat id at the first position on both users
@@ -241,13 +252,18 @@ export default {
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
-        console.log('CHHHHHHANNNNNGEEEESSSSSSSSSSSSS', doc.data())
+      
+
+        
+        const formated =  Object.values(doc.data()) 
         // Do something with the document data
-        store.commit("chat/setChatIdList", doc.data());
-        chatList.value = doc.data();
+        store.commit("chat/setChatIdList", formated);
+        chatList.value = formated;
+        
+         formated.map((el) => console.log(el))
 
+        console.log(formated, doc.data(), 'AS MAIN FETCH CHATS')
 
-        console.log(chatList.value, "cht");
       } else {
         console.log("No such document!");
       }
