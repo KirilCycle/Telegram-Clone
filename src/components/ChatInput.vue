@@ -4,18 +4,13 @@
       <span>
         <span class="material-symbols-outlined"> attach_file </span>
       </span>
-      
-     
+
       <input v-model="value" placeholder="Write a message..." />
 
-      <button @click="() =>sendMsg(value)">
-        <span class="material-symbols-outlined">
-          send
-          </span>
+      <span class="material-symbols-outlined"> keyboard_voice </span>
+      <button  @click="() => sendMsg(value)">
+        <span class="material-symbols-outlined"> send </span>
       </button>
-      <span class="material-symbols-outlined">
-        keyboard_voice
-        </span>
     </div>
   </div>
 </template>
@@ -36,17 +31,14 @@ export default {
   },
   methods: {
     send() {
-        this.sendMsg(this.value)
+      this.sendMsg(this.value);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .input-container {
-  
-
   width: 100%;
   padding: 0px 10px 0px 0px;
   background-color: #1f1e1ee6;
@@ -59,22 +51,30 @@ export default {
   bottom: 0;
   align-items: center;
   box-sizing: border-box;
-  
 
+  span {
+    font-size: 1.9rem;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(169, 169, 169);
+    }
+  }
 
   .content {
     position: relative;
     box-sizing: border-box;
     width: 100%;
     max-width: inherit;
-    background-color: rgba(125, 125, 125, 0.406);
     justify-content: center;
     align-items: center;
     flex-direction: row;
     justify-content: space-around;
     display: flex;
     height: 90%;
-   
 
     input {
       width: 100%;
@@ -88,12 +88,12 @@ export default {
     button {
       width: 35px;
       height: 35px;
-      background-color: #585858;
+      color: rgb(68, 134, 255);
       flex-shrink: 0;
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none; /* IE 10 and IE 11 */
+      user-select: none; /* Standard syntax */
     }
-
-
-
   }
 }
 </style>
