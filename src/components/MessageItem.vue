@@ -128,11 +128,14 @@ $crazy_color: #ff3d3d;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-  width: 65%;
+  min-width:230px;
+  max-width: 900px;
+  width: 500px;
   position: relative;
   display: flex;
 
   .item-body {
+    width: 100%;
     left: 0px;
     display: flex;
     flex-direction: column;
@@ -174,7 +177,7 @@ $crazy_color: #ff3d3d;
   }
 
   .image-container {
-    margin-top: 15px;
+    margin-top: 100%;
     width: 100%;
     background-color: rgb(76, 76, 76);
 
@@ -221,10 +224,10 @@ $crazy_color: #ff3d3d;
     right: 0px;
     margin-left: 10px;
     border-radius: 10px;
-
-    width: auto;
-    min-width: 100px;
-    max-width: 70%;
+    width: 100%;
+    
+    line-height: 19px;
+    
   }
 
   .image-container {

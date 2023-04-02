@@ -4,7 +4,7 @@
 
         <div class="txt-container">
         <h3>{{ chatName }}</h3>
-          <p>{{ item.lastMessage }}</p>
+          <p>{{ item.lastMessage?.text }}</p>
         </div>
        
       </chat-item>   
@@ -51,9 +51,8 @@ export default {
       // Retrieve the document using the get() method
       documentRef.onSnapshot((doc) => {
         this.item = doc.data();
-
+        console.log('EXECUTE', this.item)
         this.enotherUserId = this.chatId.replace(store.state.user.user.uid, "");
-
         this.fethcEnotherUser();
       });
     },
@@ -61,7 +60,7 @@ export default {
     async fethcEnotherUser() {
       const myCollectionRef = this.db.collection("usersPrew");
 
-      console.log('EXECUTE', this.enotherUserId)
+     
 
       const documentRef = myCollectionRef.doc(this.enotherUserId);
 

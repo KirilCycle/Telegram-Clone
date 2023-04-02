@@ -189,8 +189,14 @@ export default {
 
         await updateDoc(chatRef, {
           messages: arrayUnion(message),
-          lastMessage: text,
+          lastMessage: {text, createdAt: message.createdAt},
         });
+
+        //set this chat id at the first position on both users 
+        //i cnat manipulate with index directly
+
+
+
       }
     },
 

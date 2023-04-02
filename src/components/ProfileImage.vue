@@ -13,10 +13,12 @@
 </script>
 
 <style lang="scss" scoped>
+
 .profile-conatainer {
     width: 35px;
+    flex-shrink: 0;
     height: 35px;
-    margin-top: 5px;
+    margin-bottom: 0px ;
     border-radius: 50%;
 
     position: sticky;

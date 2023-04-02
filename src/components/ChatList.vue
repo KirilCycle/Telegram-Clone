@@ -25,11 +25,15 @@ export default {
   },
   watch: {
      chatList() {
-      console.log('chatlist', this.chatList)
+      console.log('chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@', this.chatList)
      }
   },
   created() {
-  console.log(this.serachQ, 'FROM LIST');
+  
+    console.log('chatlist SSSSSSSSSSSSSSSSSSSSSSSSSS@@@@@@@@', this.chatList)
+    this.fetchChats
+    this.chatList, 'FROM LIST'
+
   },
 };
 </script>
