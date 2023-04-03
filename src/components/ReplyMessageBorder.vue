@@ -24,7 +24,7 @@ export default {
         store.commit('chat/setText', null)
     },
     scrllToTarget() {
-        store.state.chat.replyMsgRef.scrollIntoView({block: "center", behavior: "smooth"})  
+         store.state.chat.replyMsgRef .scrollIntoView({block: "center", behavior: "smooth"})  
     }
   },
   props: {
@@ -42,17 +42,18 @@ export default {
    
   cursor: pointer;
   padding: 0px 10px 0px 10px;
+  right: 0%;
+  position: absolute;
   box-sizing: border-box;
   background-color: #1f1e1ee6;
   backdrop-filter: blur(8px);
-  height: 50px;
-  bottom: 49.5px;
-  position: fixed;
+  height: 50px;  
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  bottom: 50px;
 
   span {
     width: 35px;

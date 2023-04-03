@@ -53,12 +53,17 @@
         class="chat-input-block-x"
       >
         <div class="input-wrap">
+          
+       
+
           <div v-if="$store.state.chat.selectedUser.new">
             <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
           </div>
+         
           <div v-else>
             <chat-input :sendMsg="addNewMessage"></chat-input>
           </div>
+        
         </div>
       </div>
 
@@ -112,10 +117,12 @@ import ChatInput from "@/components/ChatInput.vue";
 import NewChat from "@/components/NewChat.vue";
 import { watchEffect } from "vue";
 import ChatisntSelected from "@/components/ChatisntSelected.vue";
+import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
 
 export default {
   components: {
     DirectChat,
+    ReplyMessageBorder,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,

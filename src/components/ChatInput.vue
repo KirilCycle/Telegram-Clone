@@ -1,8 +1,11 @@
 <template>
   <div class="input-container">
+    <div v-if="$store.state.chat.replyMsgRef">
+      <reply-message-border></reply-message-border>
+    </div>
     <div class="content">
       <span>
-        <selected-file-modal  @sendmesimg="sendMsg" ></selected-file-modal>
+        <selected-file-modal @sendmesimg="sendMsg"></selected-file-modal>
 
         <!-- @notready="messageisNotReady = true"
         :notready="messageisNotReady"
@@ -12,7 +15,7 @@
       <input v-model="value" placeholder="Write a message..." />
 
       <span class="material-symbols-outlined"> keyboard_voice </span>
-      <button  @click="send">
+      <button @click="send">
         <span class="material-symbols-outlined"> send </span>
       </button>
     </div>
@@ -21,9 +24,10 @@
 
 <script>
 import store from "@/store/store";
-import SelectedFileModal from './SelectedFileModal.vue';
+import ReplyMessageBorder from "./ReplyMessageBorder.vue";
+import SelectedFileModal from "./SelectedFileModal.vue";
 export default {
-  components: { SelectedFileModal },
+  components: { SelectedFileModal, ReplyMessageBorder },
   props: {
     sendMsg: Function,
     required: true,
@@ -37,30 +41,28 @@ export default {
   },
   methods: {
     send(text, img) {
-      
       if (!img) {
-        this.sendMsg(this.value)
-        this.value = ''
+        this.sendMsg(this.value);
+        this.value = "";
       } else {
-        this.sendMsg(text, img)
-        this.value = ''
+        this.sendMsg(text, img);
+        this.value = "";
       }
-
     },
-
   },
 };
 </script>
 
 <style lang="scss" scoped>
- $custom-c2: rgb(32, 32, 32);;
+$custom-c2: rgb(32, 32, 32);
 .input-container {
   width: 100%;
   padding: 0px 10px 0px 6px;
   backdrop-filter: blur(8px);
-  background-color:  $custom-c2;
+  background-color: $custom-c2;
   height: 50px;
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -111,10 +113,7 @@ export default {
       user-select: none; /* Standard syntax */
 
       &:hover {
-        
       }
-
-      
     }
   }
 }
