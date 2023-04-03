@@ -1,5 +1,5 @@
 <template>
-  <div class="wrp" >
+  <div class="wrp">
     <message-item
       :removeMessage="deleteMessage"
       v-for="it in chat.messages"
@@ -7,6 +7,10 @@
       :message="it"
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
+   
+  </div>
+  <div class="bottom" ref="bottom">
+    <div v-desapeared="disableAutoScroll"></div>
   </div>
 </template>
 
@@ -32,7 +36,7 @@ export default {
   data() {
     return {
       sendMsg: this.sendMsg,
-      firstPartOfmyId: store.state.user.user.uid.slice(0,10)
+      firstPartOfmyId: store.state.user.user.uid.slice(0, 10),
     };
   },
   methods: {
@@ -58,9 +62,18 @@ export default {
 
     const chat = ref("");
 
+    const bottom = ref(null);
+
     const slectedChatRef = db.collection("chatMessages");
 
     console.log(props.chatId, "TEST");
+
+    const shasingBottom = ref(true);
+
+    function disableAutoScroll(v) {
+      shasingBottom.value = v
+    //  console.log( v, 'V_DIR');
+    }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
@@ -71,6 +84,12 @@ export default {
           chat.value = doc.data();
 
           console.log(chat.value, "cht but isnt list juct cht");
+
+          if ( shasingBottom.value ) {
+
+            bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
+          }
+           
         } else {
           console.log("No such document!");
         }
@@ -79,6 +98,8 @@ export default {
 
     return {
       chat,
+      bottom,
+      disableAutoScroll,
     };
   },
 };
@@ -88,10 +109,39 @@ export default {
 nav {
   width: 100%;
   padding: 5px;
-  height: 5%;
+  height: 7%;
   display: flex;
   flex-direction: row;
   background-color: #1d1e2a;
+}
+
+.observer {
+  width: 100%;
+  height: 50px;
+  background-color: #ffffff67;
+  height: 720px;
+ 
+}
+
+.bottom {
+  background-color: rgba(255, 0, 0, 0.538);
+  height: 50px;
+  width: 100%;
+  bottom: 0;
+  position: relative;
+
+  
+   
+  
+
+  div {
+    width: 100%;
+    bottom: 50px;
+    height: 30px;
+    background-color: #ffffff32;
+    position: absolute;
+    z-index: 20;
+  }
 }
 
 .list-enter-active,
@@ -103,7 +153,6 @@ nav {
   opacity: 0;
   transform: translateX(30px);
 }
-
 
 .wrp {
   padding-top: 70px;

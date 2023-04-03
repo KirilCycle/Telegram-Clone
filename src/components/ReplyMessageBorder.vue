@@ -34,6 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$custom-c2: rgb(32, 32, 32);
 .rep-container {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
@@ -41,12 +42,11 @@ export default {
     $crazy_color: #00ff44;
    
   cursor: pointer;
-  padding: 0px 10px 0px 10px;
+  padding: 0px 1px 0px 1px;
   right: 0%;
   position: absolute;
   box-sizing: border-box;
-  background-color: #1f1e1ee6;
-  backdrop-filter: blur(8px);
+  background-color: $custom-c2;
   height: 50px;  
   width: 100%;
   display: flex;

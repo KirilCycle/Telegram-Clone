@@ -16,9 +16,11 @@
       >
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
+   
       <div class="bottom" ref="bottom">
         <div v-desapeared="disableAutoScroll"></div>
       </div>
+   
     </div>
 
     <reply-message-border
@@ -78,15 +80,6 @@ export default {
   setup() {
     let previousDoc = ref(null);
 
-    // let replyTarget = ref(store.state.chat.replyMsgRef);
-
-    // store.state.chat.replyMsgRef.
-
-    // const { messages } = useChat();
-    // const firestore = store.state.user.firebaseSetup.firestore
-
-    // setTimeout(() => {console.log(this.$refs,'FROM DATAAd ') }, 2000)
-
     const bottom = ref(null);
 
     console.log(bottom, "bor");
@@ -105,37 +98,15 @@ export default {
     }
     const db = firebase.firestore();
 
-    // const collectionRef = db.collection("messages");
-
-    // const messagesRef = store.state.user.firestore.collection("messages");
-
-    // query.onSnapshot((snapshot, parameters) => {
-    //  console.log( snapshot.docs, 'docs');
-    //  snapshot.docs
-    //     .map((doc) => ({ id: doc.id, ...doc.data() }))
-    //     .reverse();
-    // });
-
-    //limitToLast(12) наш последний индекс
 
     const messagesQuery = messagesColection
       .orderBy("createdAt", "desc")
       .limit(5);
-    //.limitToLast(10) получить последних
-    //
-    //limit - taking lasts
-    //
-    //  .limitToLast(20)
-
+  
     let query = db
       .collection("messages")
       .orderBy("createdAt", "desc")
-      // .limit(10)
-      // .endBefore('f07c4709-4a87-49b9-a7fb-b1e1f3c5ac09E7iKQQ9OuWY6I1E0W06Bv9WYZ0l1HHUUUUGGaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-      //  .limitToLast('c82e4c2f-e4a0-4799-a7f0-6d89210ef4cfE7iKQQ9OuWY6I1E0W06Bv9WYZ0l1')
-
-
-      //.endBefore начиная с 
+    
 
     const unsubscribe = query.onSnapshot((snapshot, parameters) => {
       messages.value = snapshot.docs
