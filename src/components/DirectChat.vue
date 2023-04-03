@@ -1,5 +1,10 @@
 <template>
   <div class="wrp">
+    <transition name="bounce">
+      <button v-if="!chasingBottom" class="scrl-to-btm-btn">
+        <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+      </button>
+    </transition>
     <message-item
       :removeMessage="deleteMessage"
       v-for="it in chat.messages"
@@ -7,7 +12,6 @@
       :message="it"
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
-   
   </div>
   <div class="bottom" ref="bottom">
     <div v-desapeared="disableAutoScroll"></div>
@@ -56,8 +60,8 @@ export default {
       }
     },
   },
-
   setup(props) {
+    
     const db = firebase.firestore();
 
     const chat = ref("");
@@ -68,11 +72,11 @@ export default {
 
     console.log(props.chatId, "TEST");
 
-    const shasingBottom = ref(true);
+    const chasingBottom = ref(true);
 
     function disableAutoScroll(v) {
-      shasingBottom.value = v
-    //  console.log( v, 'V_DIR');
+      chasingBottom.value = v;
+      //  console.log( v, 'V_DIR');
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
@@ -85,11 +89,9 @@ export default {
 
           console.log(chat.value, "cht but isnt list juct cht");
 
-          if ( shasingBottom.value ) {
-
+          if (chasingBottom.value) {
             bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
           }
-           
         } else {
           console.log("No such document!");
         }
@@ -100,12 +102,52 @@ export default {
       chat,
       bottom,
       disableAutoScroll,
+      chasingBottom,
     };
   },
 };
 </script>
-
 <style lang="scss" scoped>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.scrl-to-btm-btn {
+  &:hover {
+    background-color: #313131;
+  }
+  width: 45px;
+  height: 45px;
+  background-color: rgb(28, 28, 28);
+  border-radius: 22.5px;
+  position: fixed;
+  bottom: 70px;
+  z-index: 30;
+  display: block;
+  right: 5px;
+  color: rgb(68, 134, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 2rem;
+  }
+}
+
 nav {
   width: 100%;
   padding: 5px;
@@ -118,27 +160,20 @@ nav {
 .observer {
   width: 100%;
   height: 50px;
-  background-color: #ffffff67;
   height: 720px;
- 
 }
 
 .bottom {
-  background-color: rgba(255, 0, 0, 0.538);
   height: 50px;
   width: 100%;
   bottom: 0;
   position: relative;
 
-  
-   
-  
-
   div {
     width: 100%;
     bottom: 50px;
     height: 30px;
-    background-color: #ffffff32;
+
     position: absolute;
     z-index: 20;
   }

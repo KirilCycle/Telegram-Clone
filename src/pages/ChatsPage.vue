@@ -424,6 +424,14 @@ $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
 .chat-nav-x {
   position: relative;
   width: 100%;
@@ -457,7 +465,7 @@ $custom-c3: rgb(0, 128, 255);
 }
 
 .chat-container-x::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.648);
+  background: rgba(0, 0, 0, 0.107);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
