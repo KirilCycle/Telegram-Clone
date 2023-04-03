@@ -21,7 +21,7 @@
         </div>
         <div class="modal_manage">
           <button
-            :class="{ 'btn-disabled':notready }"
+            :class="{ 'btn-disabled': notready }"
             :disabled="notready"
             @click="v = false"
           >
@@ -81,7 +81,6 @@ export default {
       v: false,
       filePreview: null,
       photo: null,
-    
     };
   },
   setup(props) {
@@ -90,13 +89,11 @@ export default {
     const auth = getAuth();
 
     async function postMessage(photo, capture, emit) {
-        emit('notready', true)
+      emit("notready", true);
       const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
 
-
       uploadBytes(storageRef, photo)
-        
-      .then((snapshot) => {
+        .then((snapshot) => {
           console.log(storageRef._location.path_, "Uploaded a blob or file!");
           emit("sendmesimg", capture, storageRef._location.path_);
         })
@@ -121,8 +118,14 @@ $padver: 16px;
   box-sizing: border-box;
 }
 .file-upl-content {
+  cursor: pointer;
+  &:hover {
+    span {
+      color: #767676;
+    }
+  }
   width: 20px;
-  overflow: hidden ;
+  overflow: hidden;
   height: 100%;
   display: flex;
   cursor: pointer;
@@ -139,8 +142,11 @@ $padver: 16px;
     width: 15px;
     color: #404661;
     top: 0%;
-    margin: 0% auto ;
+    margin: 0% auto;
     font-size: 2rem;
+    &:hover {
+      color: #767676;
+    }
   }
 
   .file-input {
@@ -167,9 +173,10 @@ $padver: 16px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #232323;
+    background-color: #1c1c1c;
     min-width: 330px;
     min-height: 410px;
+    border-radius: 15px;
 
     .img-container {
       width: 100%;
@@ -188,7 +195,7 @@ $padver: 16px;
       input {
         width: 100%;
         border-radius: 0px;
-        border-bottom: 1px solid #0091ff;
+        border-bottom: 1px solid #52b4ff;
         box-sizing: border-box;
         height: 30px;
         font: 1rem sans-serif;

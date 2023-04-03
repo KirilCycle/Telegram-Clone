@@ -27,6 +27,7 @@
     
     <div class="input-container">
       <div class="input_content">
+      
         <selected-file-modal
           @notready="messageisNotReady = true"
           :notready="messageisNotReady"

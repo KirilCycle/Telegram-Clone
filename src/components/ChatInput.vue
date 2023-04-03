@@ -2,7 +2,11 @@
   <div class="input-container">
     <div class="content">
       <span>
-        <span class="material-symbols-outlined"> attach_file </span>
+        <selected-file-modal  @sendmesimg="sendMsg" ></selected-file-modal>
+
+        <!-- @notready="messageisNotReady = true"
+        :notready="messageisNotReady"
+        @sendmesimg="sendMessage" -->
       </span>
 
       <input v-model="value" placeholder="Write a message..." />
@@ -17,7 +21,9 @@
 
 <script>
 import store from "@/store/store";
+import SelectedFileModal from './SelectedFileModal.vue';
 export default {
+  components: { SelectedFileModal },
   props: {
     sendMsg: Function,
     required: true,
@@ -30,9 +36,13 @@ export default {
     };
   },
   methods: {
-    send() {
-      this.sendMsg(this.value)
-      this.value = ''
+    send(text, img) {
+      if (!img) {
+        this.sendMsg(this.value)
+        this.value = ''
+      } else {
+        this.sendMsg(text, img)
+      }
     },
 
   },
@@ -43,7 +53,7 @@ export default {
  $custom-c2: rgb(32, 32, 32);;
 .input-container {
   width: 100%;
-  padding: 0px 10px 0px 0px;
+  padding: 0px 10px 0px 6px;
   backdrop-filter: blur(8px);
   background-color:  $custom-c2;
   height: 50px;

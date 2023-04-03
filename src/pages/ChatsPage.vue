@@ -153,7 +153,7 @@ export default {
   },
 
   methods: {
-    async addNewMessage(text) {
+    async addNewMessage(text,img) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
     
@@ -173,6 +173,12 @@ export default {
         if (auth.currentUser.photoURL) {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
+
+        if (img) {
+        //   messageisNotReady.value = true;
+          message.imageRef = img;
+        }
+     
 
         await updateDoc(chatRefMsg, {
           messages: arrayUnion(message),
