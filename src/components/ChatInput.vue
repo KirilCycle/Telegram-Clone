@@ -37,12 +37,15 @@ export default {
   },
   methods: {
     send(text, img) {
+      
       if (!img) {
         this.sendMsg(this.value)
         this.value = ''
       } else {
         this.sendMsg(text, img)
+        this.value = ''
       }
+
     },
 
   },

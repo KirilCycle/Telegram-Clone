@@ -14,7 +14,9 @@
         <p>{{ message.userName }}</p>
       </div>
 
-      <img :src="message.imageRef">
+      <div class="img-wrp" v-if="message.imageRef">
+        <img :src="message.imageRef">
+      </div>
 
       <div class="image-container" v-if="photoURL">
         <img
@@ -101,6 +103,17 @@ export default {
 
 <style lang="scss" scoped>
 $crazy_color: #ff3d3d;
+
+.img-wrp {
+  max-width: 100%;
+  min-width: 90%;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+}
 
 .message-ations {
   position: absolute;

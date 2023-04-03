@@ -154,6 +154,7 @@ export default {
 
   methods: {
     async addNewMessage(text,img) {
+    
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
     

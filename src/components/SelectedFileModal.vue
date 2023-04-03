@@ -32,7 +32,7 @@
             :disabled="notready"
             @click="
               () => {
-                postMessage(photo, capture, $emit);
+                postMessage(photo, capture, $emit, reset);
               }
             "
           >
@@ -74,6 +74,11 @@ export default {
         }
       }
     },
+    reset () {
+      this.photo = {};
+      this.preview = '';
+      
+    }
   },
   data() {
     return {
@@ -88,7 +93,7 @@ export default {
 
     const auth = getAuth();
 
-    async function postMessage(photo, capture, emit) {
+    async function postMessage(photo, capture, emit,resetData) {
       emit("notready", true);
       const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
 
@@ -98,10 +103,9 @@ export default {
           getDownloadURL(storageRef)
               .then((url) => {
                 emit("sendmesimg", capture, url);
+                resetData()
               })
 
-          console.log(storageRef._location.path_, "Uploaded a blob or file!");
-          emit("sendmesimg", capture, storageRef._location.path_);
         })
         .catch((er) => console.log(er, "post er"));
     }
