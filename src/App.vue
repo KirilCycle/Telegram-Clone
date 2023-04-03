@@ -77,7 +77,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       if (!docSnap.exists()) {
         console.log('cc action')
         await setDoc(doc(db, "usersLinksToChat", user.uid), {
-         chats:{}
+        
         });
       }
 

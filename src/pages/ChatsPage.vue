@@ -181,16 +181,18 @@ export default {
         const user1usersChatRef = doc(db, "usersLinksToChat", auth.currentUser.uid);
         const user2usersChatRef = doc(db, "usersLinksToChat", store.state.chat.chatId.replace(auth.currentUser.uid,''));
 
+        const lastMsgData = { text, createdAt: message.createdAt, from: message.userName, img: message.userPhotoURl }
+
           await updateDoc(user1usersChatRef, {
             [store.state.chat.chatId] : { 
-              "lastMessag": { text, createdAt: message.createdAt},
+              "lastMsg": lastMsgData,
               "id": store.state.chat.chatId
            }
           });
 
           await updateDoc(user2usersChatRef, {
             [store.state.chat.chatId] : { 
-              "lastMessag": { text, createdAt: message.createdAt},
+              "lastMsg": lastMsgData,
               "id": store.state.chat.chatId
            }
           });
@@ -211,6 +213,9 @@ export default {
     navName() {
       console.log("perecomput");
       const user = store.state.chat.selectedUser;
+
+      console.log(user)
+
       if (user) {
         if (user?.displayName) {
           return user.displayName;
@@ -340,7 +345,7 @@ export default {
                     user1Ref,
                     {
                       [chatId]: {
-                        chatId,
+                        id:chatId,
                         lastMessag: {
                           createdAt: message.createdAt,
                           text: message.text,
@@ -353,7 +358,7 @@ export default {
                   batch.update(user2Ref, {
                     // chats: firebase.firestore.FieldValue.arrayUnion(chatData),
                     [chatId]: {
-                      chatId,
+                      id:chatId,
                       lastMessag: {
                         createdAt: message.createdAt,
                         text: message.text,
