@@ -181,7 +181,7 @@ export default {
         const user1usersChatRef = doc(db, "usersLinksToChat", auth.currentUser.uid);
         const user2usersChatRef = doc(db, "usersLinksToChat", store.state.chat.chatId.replace(auth.currentUser.uid,''));
 
-        const lastMsgData = { text, createdAt: message.createdAt, from: message.userName, img: message.userPhotoURl }
+        const lastMsgData = { text, createdAt: message.createdAt, from: message.userName,  }
 
           await updateDoc(user1usersChatRef, {
             [store.state.chat.chatId] : { 
@@ -339,6 +339,10 @@ export default {
 
                   batch.set(chatsMsgsRef, { messages: [message] });
 
+
+                  const lastMsg = { text:v, createdAt: message.createdAt, from: message.userName, }
+
+
                   // batch.set(chatRef, chatData);
                   // Step 1: Add the unique ID to the `chats` array in both users' documents.
                   batch.update(
@@ -346,10 +350,7 @@ export default {
                     {
                       [chatId]: {
                         id:chatId,
-                        lastMessag: {
-                          createdAt: message.createdAt,
-                          text: message.text,
-                        },
+                        lastMsg,
                       },
                     }
                     // chats: firebase.firestore.FieldValue.arrayUnion(chatData),
@@ -359,10 +360,7 @@ export default {
                     // chats: firebase.firestore.FieldValue.arrayUnion(chatData),
                     [chatId]: {
                       id:chatId,
-                      lastMessag: {
-                        createdAt: message.createdAt,
-                        text: message.text,
-                      },
+                      lastMsg, 
                     },
                   });
 

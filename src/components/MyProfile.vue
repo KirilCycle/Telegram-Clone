@@ -58,8 +58,7 @@ $crazy_color: #00ff44;
     width: 100%;
     overflow: hidden;
     border: 1px solid rgb(57, 57, 57);
-    background-color: $crazy_color;
-  
+   
     img {
       width: 100%;
       min-height: 100%;

@@ -1,14 +1,16 @@
 <template>
   <div @click="$store.commit('chat/setSelectedUser',enotherUser )"  >
-      <!-- <chat-item :pthUrl="enotherUser.photoURL">
+      <chat-item :pthUrl="enotherUser.photoURL">
 
         <div class="txt-container">
-        <h3>{{ chatName }}</h3> -->
-        <h3>{{}}</h3>
-          <p>{{ chat?.lastMessag?.text }}</p>
-        <!-- </div>
+        <h3>{{ chatName }}</h3>
+        <h3>{{chat?.lastMsg
+          ?.from }}</h3>
+          <p>{{ chat?.lastMsg
+            ?.text }}</p>
+        </div>
        
-      </chat-item>    -->
+      </chat-item>   
   </div>
 </template>
 
