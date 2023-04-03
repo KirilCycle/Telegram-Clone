@@ -257,17 +257,11 @@ export default {
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
-      
-
-        
+              
         const formated =  Object.values(doc.data()) 
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
-        chatList.value = formated.sort((a,b) =>  b.lastMessag.createdAt.seconds - a.lastMessag.createdAt.seconds )
-
-
-        
-        
+        chatList.value = formated.sort((a,b) =>  b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds )
 
         console.log(formated, doc.data(), 'AS MAIN FETCH CHATS')
 

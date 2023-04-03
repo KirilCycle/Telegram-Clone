@@ -77,37 +77,37 @@ export default {
       });
     });
 
+
+    function selectedUser (us) {
+      const modiffied = us;
+        modiffied.new = true;
+        store.commit("chat/setSelectedUser", modiffied);
+        store.commit("chat/setChatId", null);
+    }
+
+
     function handle(us) {
       const first = us.uid + store.state.user.user.uid;
 
       const second = store.state.user.user.uid + us.uid;
 
-      console.log('handle us ',store.state.chat.chatIdList)
+      console.log("handle us ", store.state.chat.chatIdList);
 
-      if (store.state.chat.chatIdList.chats) {
-
-        if (store.state.chat.chatIdList.chats.includes(first)) {
+      if (store.state.chat.chatIdList) {
+        if (store.state.chat.chatIdList.find((ch) => ch.id === first)) {
           store.commit("chat/setSelectedUser", us);
           store.commit("chat/setChatId", first);
-         
-        } else if (store.state.chat.chatIdList.chats.includes(second)) {
+        } else if (store.state.chat.chatIdList.find((ch) => ch.id === second)) {
           store.commit("chat/setSelectedUser", us);
           store.commit("chat/setChatId", second);
-         
         } else {
-         
-          const modiffied = us;
-          modiffied.new = true;
-          store.commit("chat/setSelectedUser", modiffied);
-          store.commit("chat/setChatId", null);
-        }
-      } else {
-          const modiffied = us;
-          modiffied.new = true;
-          store.commit("chat/setSelectedUser", modiffied);
-          store.commit("chat/setChatId", null);
+          selectedUser(us)
         }
 
+      
+      } else {
+        selectedUser(us)
+      }
     }
 
     return {
