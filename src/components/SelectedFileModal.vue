@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "@firebase/auth";
 import { uuidv4 } from "@firebase/util";
 
@@ -94,6 +94,12 @@ export default {
 
       uploadBytes(storageRef, photo)
         .then((snapshot) => {
+
+          getDownloadURL(storageRef)
+              .then((url) => {
+                emit("sendmesimg", capture, url);
+              })
+
           console.log(storageRef._location.path_, "Uploaded a blob or file!");
           emit("sendmesimg", capture, storageRef._location.path_);
         })

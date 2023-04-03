@@ -121,8 +121,6 @@ export default {
                       await updateDoc(frankDocRef, changes);
                     }
 
-                
-
                     chnagePrewUser(auth.currentUser.uid, {
                       photoURL: url,
                       displayName: this.value,

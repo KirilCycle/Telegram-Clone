@@ -14,6 +14,8 @@
         <p>{{ message.userName }}</p>
       </div>
 
+      <img :src="message.imageRef">
+
       <div class="image-container" v-if="photoURL">
         <img
           :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
