@@ -215,11 +215,11 @@ $crazy_color: #ff3d3d;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-  width: 65%;
+  max-width: 600px;
   position: relative;
-  left: 30%;
+  width: max-content;
   display: flex;
-  flex-direction: row-reverse;
+ 
 
   .item-body {
     right: 0px;
@@ -232,17 +232,18 @@ $crazy_color: #ff3d3d;
       display: none;
     }
     word-break: break-all;
-    padding: 13px;
+    padding: 8px;
     color: white;
-    background: rgb(73, 119, 197);
+    background: rgb(27, 97, 201);
     display: flex;
     margin-bottom: 15px;
     flex-wrap: wrap;
     position: relative;
     right: 0px;
     margin-left: 10px;
-    border-radius: 10px;
-    width: 100%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    width: auto;
     
     line-height: 19px;
     

@@ -1,7 +1,7 @@
 <template>
   <div class="wrp">
     <transition name="bounce">
-      <button v-if="!chasingBottom" class="scrl-to-btm-btn">
+      <button @click="scrollToBottom" v-if="!chasingBottom" class="scrl-to-btm-btn">
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
     </transition>
@@ -28,6 +28,7 @@ import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import ChatInput from "./ChatInput.vue";
 import MessageItem from "./MessageItem.vue";
+import { onMounted } from "vue";
 
 export default {
   components: { ChatInput, MessageItem },
@@ -79,6 +80,10 @@ export default {
       //  console.log( v, 'V_DIR');
     }
 
+    function scrollToBottom() {
+      bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" })
+    }
+
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
     watchEffect(() => {
@@ -90,7 +95,7 @@ export default {
           console.log(chat.value, "cht but isnt list juct cht");
 
           if (chasingBottom.value) {
-            bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
+            scrollToBottom()
           }
         } else {
           console.log("No such document!");
@@ -103,6 +108,7 @@ export default {
       bottom,
       disableAutoScroll,
       chasingBottom,
+      scrollToBottom,
     };
   },
 };
@@ -134,7 +140,7 @@ export default {
   background-color: rgb(28, 28, 28);
   border-radius: 22.5px;
   position: fixed;
-  bottom: 70px;
+  bottom: 100px;
   z-index: 30;
   display: block;
   right: 5px;
