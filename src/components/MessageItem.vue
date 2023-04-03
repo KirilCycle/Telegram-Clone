@@ -227,6 +227,8 @@ $crazy_color: #ff3d3d;
       text-align: left;
       font-size: 0.9rem;
       margin-top: 0px;
+      padding-left: 6px;
+      padding-right: 13px;
     }
     .user-name {
       display: none;
@@ -234,7 +236,7 @@ $crazy_color: #ff3d3d;
     word-break: break-all;
     padding: 8px;
     color: white;
-    background: rgb(27, 97, 201);
+    background: rgb(84, 175, 213);
     display: flex;
     margin-bottom: 15px;
     flex-wrap: wrap;

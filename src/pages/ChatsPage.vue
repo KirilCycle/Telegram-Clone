@@ -31,20 +31,14 @@
       </div>
     </div>
 
-    <div class="right-side">
+    <div  :class="{ 'right-side-shoved-back':$store.state.chat.selectedUser,'right-side':!$store.state.chat.selectedUser }"      >
       <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
         <h3>{{ navName }}</h3>
       </div>
 
       <div class="chat-container-x">
         <div class="chat-wrap">
-          <!-- <direct-chat></direct-chat> -->
-
-          <!-- <chatisnt-selected></chatisnt-selected> -->
-
           <component :is="currentChatType"> </component>
-
-          <!-- <new-chat-vue :user="{displayName: 'prosss'}"></new-chat-vue> -->
         </div>
       </div>
 
@@ -54,8 +48,6 @@
       >
         <div class="input-wrap">
           
-       
-
           <div v-if="$store.state.chat.selectedUser.new">
             <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
           </div>
@@ -432,13 +424,16 @@ $custom-c3: rgb(0, 128, 255);
 }
 
 
+
 .chat-nav-x {
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 10%;
+  height: 12%;
   max-height: 50px;
   text-align: left;
+  padding-top: 6px;
+  padding-bottom: 6px;
   display: flex;
   align-items: center;
 
@@ -495,7 +490,7 @@ $custom-c3: rgb(0, 128, 255);
   height: 100vh;
 }
 .left-bar {
-  width: 320px;
+  width: 290px;
   overflow: hidden;
   resize: horizontal;
   flex-shrink: 0;
@@ -617,6 +612,12 @@ $custom-c3: rgb(0, 128, 255);
   background-color: #857979;
 }
 
+.right-side-shoved-back {  
+  width: 100%;
+  height: 100%;
+  background-color: #857979;
+}
+
 .chat-container {
   width: 100%;
   overflow-y: scroll;
@@ -670,6 +671,8 @@ $custom-c3: rgb(0, 128, 255);
   color: #ffffff;
 }
 
+
+
 @media (max-width: 600px) {
   .right-side-shoved-back {
     width: 100%;
@@ -679,7 +682,7 @@ $custom-c3: rgb(0, 128, 255);
   .right-side {
     width: 100%;
     position: absolute;
-    transform: translate(120%);
+    transform: translate(-120%);
 
     .chat-container {
       .chat-nav {
@@ -697,4 +700,13 @@ $custom-c3: rgb(0, 128, 255);
     resize: none;
   }
 }
+
+@media (max-width: 925px) {
+  .chat-nav-x {
+    color: #e40f0f;
+  }
+}
+
+
+
 </style>
