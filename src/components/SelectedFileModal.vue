@@ -75,8 +75,11 @@ export default {
       }
     },
     reset () {
+      console.log('reset')
       this.photo = {};
       this.preview = '';
+      this.filePreview = ''
+      this.capture = ''
       
     }
   },

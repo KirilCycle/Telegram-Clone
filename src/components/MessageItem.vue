@@ -30,7 +30,7 @@
     </div>
     <message-actions-modal
       :removeMsg="removeMessage"
-      :msgRef="msgRef"
+      :msgRef="msg"
       v-if="visible"
       @closed="visible = false"
       :visible="visible"
@@ -89,14 +89,17 @@ export default {
 
     const visible = ref(false);
 
+    const msg = ref('msg')
+
     return {
       // photoSrc,
       stop,
+      msg,
       open,
       start,
       auth,
       visible,
-    };
+    }
   },
 };
 </script>
