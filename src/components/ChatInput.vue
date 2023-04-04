@@ -62,7 +62,7 @@ $custom-c2: rgb(32, 32, 32);
   background-color: $custom-c2;
   height: 50px;
   display: flex;
-  position: relative;
+  position: fixed;
   justify-content: center;
   align-items: center;
   flex-direction: column;

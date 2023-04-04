@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
           class="chat-input-block-x"
         >
@@ -71,7 +71,7 @@
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- <div class="chat-container"> -->
         <!-- <nav class="chat-nav">
