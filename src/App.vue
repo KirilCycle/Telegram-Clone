@@ -1,5 +1,5 @@
 <template>
-  <my-profile class="profile" v-if="$store.state.user.user"></my-profile>
+  <!-- <my-profile class="profile" v-if="$store.state.user.user"></my-profile> -->
   <div class="wrap">
     <router-view></router-view>
   </div>
@@ -77,7 +77,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       if (!docSnap.exists()) {
         console.log('cc action')
         await setDoc(doc(db, "usersLinksToChat", user.uid), {
-        
+        // 
         });
       }
 

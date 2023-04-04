@@ -1,6 +1,6 @@
 <template>
     <div class="profile-conatainer">
-        <img :src="profilePhotoUrl" />
+        <img v-if="!v" :src="profilePhotoUrl" />
       </div>
 </template>
 
@@ -8,6 +8,12 @@
     export default {
         props: {
             profilePhotoUrl: String,
+            visible: Boolean,
+        },
+        data() {
+          return {
+            v: this.visible 
+          }
         }
     }
 </script>

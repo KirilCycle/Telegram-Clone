@@ -471,8 +471,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 7%;
-  max-height: 50px;
+  height: 8%;
   text-align: left;
   
   display: flex;
@@ -480,6 +479,7 @@ v-enter-active,
 
   span {
     display: none;
+    max-height: 90%;
   }
 
   @media (max-width: 798px) {
@@ -506,6 +506,7 @@ v-enter-active,
   max-width: 100%;
   background-color: $custom-c2;
   overflow-y: scroll;
+  
 }
 
 .chat-container-x::-webkit-scrollbar {
@@ -621,6 +622,7 @@ v-enter-active,
         margin: 0% auto;
       }
     }
+   
     .left_bar_srch_wrap_settings_active {
       width: 35px;
       color: $custom-c3;
@@ -664,10 +666,12 @@ v-enter-active,
   width: 100%;
   height: 100%;
   background-color: #857979;
+  overflow-y: hidden ;
 }
 
 .right-side-shoved-back {
   width: 100%;
+  overflow-y: hidden ;
   height: 100%;
   background-color: #857979;
 }
@@ -677,33 +681,7 @@ v-enter-active,
   overflow-y: scroll;
   height: 100%;
   background-color: $custom-c4;
-  .chat-nav {
-    position: fixed;
-    top: 0px;
-    flex-shrink: 0;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 5px 0px 5px 15px;
-    z-index: 100;
-    height: 9%;
-    max-height: 60px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: $custom-c2;
-    font-size: 0.9rem;
-    color: #e2e2e2;
-
-    span {
-      display: none;
-    }
-
-    .chat-wrap {
-      width: 100%;
-      overflow-y: scroll;
-      height: 80vh;
-    }
-  }
+  
 }
 
 .chat-container::-webkit-scrollbar {
@@ -751,14 +729,46 @@ v-enter-active,
     width: 60%;
     position: relative;
     resize: none;
-    background-color: #090909;
+    background-color: rgb(11, 11, 11);
 
+    
     .left_bar_srch-wrap {
+      input {
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+        padding-left: 10px;
+        font-size: 1.1rem;
+      }
+
+      .left_bar_srch_wrap_settings {
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        display: flex;
+        padding-right: 5px;
+        justify-content: center;
+        align-items: center;
+         
+        span {
+          font-size: 1.6rem;
+        }
+      }
+      .left_bar_srch_wrap_settings_active {
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        display: flex;
+        padding-right: 5px;
+        justify-content: center;
+        align-items: center;
+
+        span {
+          font-size: 1.6rem;
+        }
+
+      }
+
+
     }
-    input {
-      border-top-left-radius: 25px;
-      border-bottom-left-radius: 25px;
-    }
+
   }
 }
 

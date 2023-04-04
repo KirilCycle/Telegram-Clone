@@ -1,7 +1,6 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <profile-image :profilePhotoUrl="profilePhotoUrl"></profile-image>
-
+    <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image>
     <div
       v-on:click.right="visible = true"
       @touchend="stop"
@@ -13,17 +12,14 @@
       <div class="user-name">
         <p>{{ message.userName }}</p>
       </div>
-
       <div class="img-wrp" v-if="message.imageRef">
         <img :src="message.imageRef">
       </div>
-
       <div class="image-container" v-if="photoURL">
         <img
           :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
         />
       </div>
-
       <div class="item_body_text">
         <p :ref="message.id">{{ message.text }}</p>
       </div>
@@ -56,6 +52,7 @@ export default {
   props: {
     message: Object,
     isMy: Boolean,
+    next: Object,
     removeMessage: Function,
     required: true,
   },
@@ -68,6 +65,7 @@ export default {
         : "",
       removeMessage: this.removeMessage,
       isMy: this.isMy,
+      next: this.next
     };
   },
 
