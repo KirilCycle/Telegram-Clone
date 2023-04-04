@@ -13,11 +13,13 @@
       :next="chat.messages[index + 1]"
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
+    <div class="bottom" ref="bottom">
+      <div v-desapeared="disableAutoScroll"></div>
+    </div>
+    <chat-input :sendMsg="addNewMessage"></chat-input>
   </div>
-  <div class="bottom" ref="bottom">
-    <div v-desapeared="disableAutoScroll"></div>
-  </div>
-  <chat-input :sendMsg="addNewMessage"></chat-input>
+ 
+  
 
 </template>
 
@@ -134,6 +136,8 @@ export default {
     transform: scale(1);
   }
 }
+
+
 .scrl-to-btm-btn {
   &:hover {
     background-color: #313131;
