@@ -23,7 +23,7 @@
           <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
-      <div v-show="!isSearch" class="chat-list">
+      <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
         <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
       <div v-if="isSearch">
@@ -31,8 +31,18 @@
       </div>
     </div>
 
-    <div  :class="{ 'right-side-shoved-back':$store.state.chat.selectedUser,'right-side':!$store.state.chat.selectedUser }"      >
+   
+    <Transition> 
+
+ 
+    <div
+      :class="{
+        'right-side-shoved-back': chatHided,
+        'right-side': !chatHided,
+      }"
+    >
       <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
+        <span @click="chatHided = false" class="material-symbols-outlined"> chevron_left </span>
         <h3>{{ navName }}</h3>
       </div>
 
@@ -47,17 +57,16 @@
         class="chat-input-block-x"
       >
         <div class="input-wrap">
-          
           <div v-if="$store.state.chat.selectedUser.new">
             <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
           </div>
-         
+
           <div v-else>
             <chat-input :sendMsg="addNewMessage"></chat-input>
           </div>
-        
         </div>
       </div>
+    
 
       <!-- <div class="chat-container"> -->
       <!-- <nav class="chat-nav">
@@ -89,6 +98,8 @@
         </div>
       </div> -->
     </div>
+  </Transition>
+
   </div>
 </template>
 
@@ -126,6 +137,7 @@ export default {
       isSearch: false,
       value: "",
       serachQ: "",
+      chatHided: false
     };
   },
 
@@ -152,11 +164,10 @@ export default {
   },
 
   methods: {
-    async addNewMessage(text,img) {
-    
+    async addNewMessage(text, img) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
-    
+
       const auth = getAuth();
 
       if (auth.currentUser && text.length < 2000 && text.length > 0) {
@@ -175,33 +186,44 @@ export default {
         }
 
         if (img) {
-        //   messageisNotReady.value = true;
+          //   messageisNotReady.value = true;
           message.imageRef = img;
         }
-     
 
         await updateDoc(chatRefMsg, {
           messages: arrayUnion(message),
-        })
+        });
 
-        const user1usersChatRef = doc(db, "usersLinksToChat", auth.currentUser.uid);
-        const user2usersChatRef = doc(db, "usersLinksToChat", store.state.chat.chatId.replace(auth.currentUser.uid,''));
+        const user1usersChatRef = doc(
+          db,
+          "usersLinksToChat",
+          auth.currentUser.uid
+        );
+        const user2usersChatRef = doc(
+          db,
+          "usersLinksToChat",
+          store.state.chat.chatId.replace(auth.currentUser.uid, "")
+        );
 
-        const lastMsgData = { text, createdAt: message.createdAt, from: message.userName,  }
+        const lastMsgData = {
+          text,
+          createdAt: message.createdAt,
+          from: message.userName,
+        };
 
-          await updateDoc(user1usersChatRef, {
-            [store.state.chat.chatId] : { 
-              "lastMsg": lastMsgData,
-              "id": store.state.chat.chatId
-           }
-          });
+        await updateDoc(user1usersChatRef, {
+          [store.state.chat.chatId]: {
+            lastMsg: lastMsgData,
+            id: store.state.chat.chatId,
+          },
+        });
 
-          await updateDoc(user2usersChatRef, {
-            [store.state.chat.chatId] : { 
-              "lastMsg": lastMsgData,
-              "id": store.state.chat.chatId
-           }
-          });
+        await updateDoc(user2usersChatRef, {
+          [store.state.chat.chatId]: {
+            lastMsg: lastMsgData,
+            id: store.state.chat.chatId,
+          },
+        });
 
         //set this chat id at the first position on both users
         //i cnat manipulate with index directly
@@ -220,7 +242,7 @@ export default {
       console.log("perecomput");
       const user = store.state.chat.selectedUser;
 
-      console.log(user)
+      console.log(user);
 
       if (user) {
         if (user?.displayName) {
@@ -263,14 +285,14 @@ export default {
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
-              
-        const formated =  Object.values(doc.data()) 
+        const formated = Object.values(doc.data());
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
-        chatList.value = formated.sort((a,b) =>  b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds )
+        chatList.value = formated.sort(
+          (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
+        );
 
-        console.log(formated, doc.data(), 'AS MAIN FETCH CHATS')
-
+        console.log(formated, doc.data(), "AS MAIN FETCH CHATS");
       } else {
         console.log("No such document!");
       }
@@ -339,9 +361,11 @@ export default {
 
                   batch.set(chatsMsgsRef, { messages: [message] });
 
-
-                  const lastMsg = { text:v, createdAt: message.createdAt, from: message.userName, }
-
+                  const lastMsg = {
+                    text: v,
+                    createdAt: message.createdAt,
+                    from: message.userName,
+                  };
 
                   // batch.set(chatRef, chatData);
                   // Step 1: Add the unique ID to the `chats` array in both users' documents.
@@ -349,7 +373,7 @@ export default {
                     user1Ref,
                     {
                       [chatId]: {
-                        id:chatId,
+                        id: chatId,
                         lastMsg,
                       },
                     }
@@ -359,8 +383,8 @@ export default {
                   batch.update(user2Ref, {
                     // chats: firebase.firestore.FieldValue.arrayUnion(chatData),
                     [chatId]: {
-                      id:chatId,
-                      lastMsg, 
+                      id: chatId,
+                      lastMsg,
                     },
                   });
 
@@ -388,6 +412,12 @@ export default {
       }
     }
 
+
+    function resetSelectedChat () {
+      store.commit('chat/setSelectedUser', null)
+      store.commit('chat/setChatId', null)
+    }
+
     const currentChatType = ref("ChatisntSelected");
 
     watchEffect(() => {
@@ -405,6 +435,7 @@ export default {
       currentChatType,
       chat,
       sendMessageToFoundedChat,
+      resetSelectedChat
     };
   },
 };
@@ -416,12 +447,26 @@ $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
+v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+
+
 
 
 
@@ -437,12 +482,24 @@ $custom-c3: rgb(0, 128, 255);
   display: flex;
   align-items: center;
 
+  span {
+    display: none; 
+  }
+
+  @media (max-width: 900px)  {
+    span {
+      color: #2b7cff;
+      font-size: 1.8rem;
+      display: block;
+    }
+  }
+
   h3 {
     font-weight: 500;
     font-size: 1.1rem;
     color: white;
     position: absolute;
-    left: 10px;
+    left: 32px;
     top: 30%;
   }
 }
@@ -612,7 +669,7 @@ $custom-c3: rgb(0, 128, 255);
   background-color: #857979;
 }
 
-.right-side-shoved-back {  
+.right-side-shoved-back {
   width: 100%;
   height: 100%;
   background-color: #857979;
@@ -671,8 +728,6 @@ $custom-c3: rgb(0, 128, 255);
   color: #ffffff;
 }
 
-
-
 @media (max-width: 600px) {
   .right-side-shoved-back {
     width: 100%;
@@ -706,7 +761,4 @@ $custom-c3: rgb(0, 128, 255);
     color: #e40f0f;
   }
 }
-
-
-
 </style>
