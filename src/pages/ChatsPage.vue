@@ -31,45 +31,46 @@
       </div>
     </div>
 
-   
-    <Transition> 
-
- 
-    <div
-      :class="{
-        'right-side-shoved-back': chatHided,
-        'right-side': !chatHided,
-      }"
-    >
-      <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
-        <span @click="chatHided = false" class="material-symbols-outlined"> chevron_left </span>
-        <h3>{{ navName }}</h3>
-      </div>
-
-      <div class="chat-container-x">
-        <div class="chat-wrap">
-          <component :is="currentChatType"> </component>
-        </div>
-      </div>
-
+    <Transition>
       <div
-        v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
-        class="chat-input-block-x"
+        :class="{
+          'right-side-shoved-back': chatHided,
+          'right-side': !chatHided,
+        }"
       >
-        <div class="input-wrap">
-          <div v-if="$store.state.chat.selectedUser.new">
-            <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
-          </div>
+        <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
+          <button>
+            <span @click="chatHided = false" class="material-symbols-outlined">
+              chevron_left
+            </span>
+          </button>
 
-          <div v-else>
-            <chat-input :sendMsg="addNewMessage"></chat-input>
+          <h3>{{ navName }}</h3>
+        </div>
+
+        <div class="chat-container-x">
+          <div class="chat-wrap">
+            <component :is="currentChatType"> </component>
           </div>
         </div>
-      </div>
-    
 
-      <!-- <div class="chat-container"> -->
-      <!-- <nav class="chat-nav">
+        <div
+          v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
+          class="chat-input-block-x"
+        >
+          <div class="input-wrap">
+            <div v-if="$store.state.chat.selectedUser.new">
+              <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
+            </div>
+
+            <div v-else>
+              <chat-input :sendMsg="addNewMessage"></chat-input>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="chat-container"> -->
+        <!-- <nav class="chat-nav">
           <span class="material-symbols-outlined"> chevron_left </span>
           <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
         </nav>
@@ -97,9 +98,8 @@
           <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
         </div>
       </div> -->
-    </div>
-  </Transition>
-
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -137,7 +137,7 @@ export default {
       isSearch: false,
       value: "",
       serachQ: "",
-      chatHided: false
+      chatHided: false,
     };
   },
 
@@ -174,7 +174,10 @@ export default {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
-            : auth.currentUser.email.slice(0,auth.currentUser.email.indexOf('@')),
+            : auth.currentUser.email.slice(
+                0,
+                auth.currentUser.email.indexOf("@")
+              ),
           userId: auth.currentUser.uid,
           text,
           createdAt: Timestamp.now(),
@@ -248,8 +251,7 @@ export default {
         if (user?.displayName) {
           return user.displayName;
         } else {
-         
-          return user.email.slice(0,user.email.indexOf('@'))
+          return user.email.slice(0, user.email.indexOf("@"));
         }
       }
     },
@@ -413,10 +415,9 @@ export default {
       }
     }
 
-
-    function resetSelectedChat () {
-      store.commit('chat/setSelectedUser', null)
-      store.commit('chat/setChatId', null)
+    function resetSelectedChat() {
+      store.commit("chat/setSelectedUser", null);
+      store.commit("chat/setChatId", null);
     }
 
     const currentChatType = ref("ChatisntSelected");
@@ -436,7 +437,7 @@ export default {
       currentChatType,
       chat,
       sendMessageToFoundedChat,
-      resetSelectedChat
+      resetSelectedChat,
     };
   },
 };
@@ -466,30 +467,25 @@ v-enter-active,
   opacity: 0;
 }
 
-
-
-
-
-
 .chat-nav-x {
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 12%;
+  height: 7%;
   max-height: 50px;
   text-align: left;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  
   display: flex;
   align-items: center;
 
   span {
-    display: none; 
+    display: none;
   }
 
-  @media (max-width: 900px)  {
+  @media (max-width: 798px) {
     span {
       color: #2b7cff;
+      cursor: pointer;
       font-size: 1.8rem;
       display: block;
     }
@@ -729,16 +725,16 @@ v-enter-active,
   color: #ffffff;
 }
 
-
 @media (max-width: 798px) {
-
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
     transform: translate(0%);
+    overflow-x: hidden;
   }
   .right-side {
     width: 40%;
+    overflow-x: hidden;
     transform: translate(0%);
 
     .chat-container {
@@ -758,16 +754,13 @@ v-enter-active,
     background-color: #090909;
 
     .left_bar_srch-wrap {
-
     }
     input {
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
     }
-
   }
-
- }
+}
 
 @media (max-width: 600px) {
   .right-side-shoved-back {
@@ -797,13 +790,11 @@ v-enter-active,
     background-color: #090909;
 
     .left_bar_srch-wrap {
-
     }
     input {
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
     }
-
   }
 }
 

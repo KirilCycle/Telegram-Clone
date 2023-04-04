@@ -199,6 +199,7 @@ nav {
 .wrp {
   padding-top: 70px;
   position: relative;
+  overflow-x: hidden;
 }
 
 .chat {
