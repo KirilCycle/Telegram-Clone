@@ -730,7 +730,7 @@ v-enter-active,
 }
 
 
-@media (max-width: 744px) {
+@media (max-width: 798px) {
 
   .right-side-shoved-back {
     width: 100%;
@@ -738,9 +738,8 @@ v-enter-active,
     transform: translate(0%);
   }
   .right-side {
-    width: 100%;
-    position: absolute;
-    transform: translate(-120%);
+    width: 40%;
+    transform: translate(0%);
 
     .chat-container {
       .chat-nav {
@@ -753,7 +752,7 @@ v-enter-active,
   }
 
   .left-bar {
-    width: 100%;
+    width: 60%;
     position: relative;
     resize: none;
     background-color: #090909;
