@@ -56,7 +56,7 @@ export default {
             this.chatName = us.displayName;
           }
           // console.log(this.enotherUser, 'us');
-          this.chatName = us.email?.replace("@gmail.com", "");
+          this.chatName = us.email.slice(0,us.email.indexOf('@'));
           
       console.log(    this.enotherUser, 'US');
 

@@ -7,9 +7,10 @@
     </transition>
     <message-item
       :removeMessage="deleteMessage"
-      v-for="it in chat.messages"
+      v-for="(it, index) in chat.messages"
       :key="it.id"
       :message="it"
+      :next="chat.messages[index + 1]"
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
   </div>

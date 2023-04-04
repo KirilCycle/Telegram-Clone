@@ -265,5 +265,62 @@ $crazy_color: #ff3d3d;
     font-size: 0.6rem;
     color: gray;
   }
+
+
 }
+
+
+@media (max-width: 910px) {
+
+  .my-item {
+    background-color: #ffffff74;
+    width:min-content;
+    display: flex;
+    max-width: 500px;
+    .item-body {
+      right: 0px;
+      .item_body_text {
+        text-align: left;
+        font-size: 0.9rem;
+        margin-top: 0px;
+        padding-left: 6px;
+        padding-right: 13px;
+      }
+      .user-name {
+        display: none;
+      }
+      word-break: break-all;
+      padding: 8px;
+      color: white;
+      background: rgb(7, 14, 16);
+      display: flex;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      position: relative;
+      right: 0px;
+      margin-left: 10px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      width: max-content;
+     
+      line-height: 19px;
+      
+    }
+
+  }  
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
 </style>

@@ -174,7 +174,7 @@ export default {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
-            : auth.currentUser.email,
+            : auth.currentUser.email.slice(0,auth.currentUser.email.indexOf('@')),
           userId: auth.currentUser.uid,
           text,
           createdAt: Timestamp.now(),
@@ -248,7 +248,8 @@ export default {
         if (user?.displayName) {
           return user.displayName;
         } else {
-          return user.email;
+         
+          return user.email.slice(0,user.email.indexOf('@'))
         }
       }
     },
@@ -728,6 +729,47 @@ v-enter-active,
   color: #ffffff;
 }
 
+
+@media (max-width: 744px) {
+
+  .right-side-shoved-back {
+    width: 100%;
+    position: absolute;
+    transform: translate(0%);
+  }
+  .right-side {
+    width: 100%;
+    position: absolute;
+    transform: translate(-120%);
+
+    .chat-container {
+      .chat-nav {
+        span {
+          display: none;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .left-bar {
+    width: 100%;
+    position: relative;
+    resize: none;
+    background-color: #090909;
+
+    .left_bar_srch-wrap {
+
+    }
+    input {
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+    }
+
+  }
+
+ }
+
 @media (max-width: 600px) {
   .right-side-shoved-back {
     width: 100%;
@@ -753,6 +795,16 @@ v-enter-active,
     width: 100%;
     position: relative;
     resize: none;
+    background-color: #090909;
+
+    .left_bar_srch-wrap {
+
+    }
+    input {
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+    }
+
   }
 }
 
