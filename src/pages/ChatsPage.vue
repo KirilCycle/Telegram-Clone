@@ -38,7 +38,7 @@
           'right-side': !chatHided,
         }"
       >
-        <div v-show="$store.state.chat.selectedUser" class="chat-nav-x">
+        <div v-if="$store.state.chat.selectedUser" class="chat-nav-x">
           <button>
             <span @click="chatHided = false" class="material-symbols-outlined">
               chevron_left
@@ -46,7 +46,7 @@
           </button>
           
           <div class="chat_nav_img_wrap">
-            <img :src="$store.state.chat.selectedUser.photoURL">
+            <img :src="$store.state.chat?.selectedUser?.photoURL">
           </div>
 
           <h3>{{ navName }}</h3>
@@ -548,6 +548,7 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
+  position: fixed;
   height: 6%;
   max-block-size: 12%;
   max-width: 100%;
