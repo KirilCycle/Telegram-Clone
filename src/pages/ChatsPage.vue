@@ -44,6 +44,10 @@
               chevron_left
             </span>
           </button>
+          
+          <div class="chat_nav_img_wrap">
+            <img :src="$store.state.chat.selectedUser.photoURL">
+          </div>
 
           <h3>{{ navName }}</h3>
         </div>
@@ -473,7 +477,6 @@ v-enter-active,
   background-color: $custom-c4;
   height: 8%;
   text-align: left;
-  
   display: flex;
   align-items: center;
 
@@ -481,6 +484,24 @@ v-enter-active,
     display: none;
     max-height: 90%;
   }
+
+  .chat_nav_img_wrap{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+    }
+
+  }
+
+
+
 
   @media (max-width: 798px) {
     span {
@@ -496,7 +517,7 @@ v-enter-active,
     font-size: 1.1rem;
     color: white;
     position: absolute;
-    left: 32px;
+    left: 82px;
     top: 30%;
   }
 }

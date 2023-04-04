@@ -71,12 +71,12 @@ $crazy_color: #00ff44;
 
 v-enter-active,
 .v-leave-active {
-  transition: opacity 0.3s ease;
+transition: opacity 0.3s ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-  opacity: 0;
+opacity: 0;
 }
 
 .bloor {
