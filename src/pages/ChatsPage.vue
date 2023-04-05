@@ -488,6 +488,11 @@ v-enter-active,
 
   span {
     display: none;
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
     max-height: 90%;
   }
 
@@ -563,6 +568,11 @@ v-enter-active,
  
 }
 .left-bar {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
   width: 290px;
   overflow: hidden;
   resize: horizontal;
@@ -852,6 +862,7 @@ v-enter-active,
     input {
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
+      
     }
   }
 }

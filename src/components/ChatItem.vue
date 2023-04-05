@@ -1,5 +1,5 @@
 <template>
-  <div class="cht-i" :class="{ active: isActive, 'text-danger': hasError }">
+  <div class="cht-i" :class="{ 'active': id  === $store.state.chat.chatId,  }">
     <div class="img-conatiner">
       <div class="img-wrap">
         <img
@@ -14,28 +14,35 @@
 </template>
 
 <script>
+import store from '@/store/store';
 export default {
   data() {
     return {
-        pthUrl: this.pthUrl
+        pthUrl: this.pthUrl,
+        id: this.id,
+        active: this.id  === store.state.chat.chatId
     }
   },
   props: {
     pthUrl: String,
+    id: String,
     required: true,
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
 .cht-i {
+  
+  cursor: pointer;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   width: 100%;
-  height: 70px;
+  height: 72px;
   overflow: hidden;
-  
+ 
   display: flex;
   &:hover{
     background-color: #ffffff3b;
@@ -53,8 +60,8 @@ export default {
 
     .img-wrap {
       margin: 0% auto;
-      width: 50px;
-      height: 50px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
       overflow: hidden;
 
@@ -72,6 +79,26 @@ export default {
 
 }
 
-
+.active {
  
+  @extend .cht-i ;
+  
+  
+  background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+  
+  
+}
+
+@media (max-width: 600px) {
+  .active {
+ 
+    
+    
+    
+    background-image: none
+    
+    
+  }
+}
+
 </style>

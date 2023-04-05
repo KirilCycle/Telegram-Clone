@@ -6,6 +6,7 @@
       v-for="cht in chatList"
       :key="cht.id"
       :chat="cht"
+       
     >
   </chat-list-item>
   </TransitionGroup>

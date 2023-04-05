@@ -154,7 +154,7 @@ $crazy_color: #00ff44;
   width: 100%;
   height: 100vh;
   overflow-y: hidden;
-  z-index: 100;
+  z-index: 500;
   backdrop-filter: blur(7px);
   background-color: #000000ce;
 

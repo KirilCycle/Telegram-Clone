@@ -145,7 +145,7 @@ $crazy_color: #ff3d3d;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-  min-width:230px;
+  min-width:130px;
   max-width: 900px;
   width: 500px;
   position: relative;
@@ -177,7 +177,7 @@ $crazy_color: #ff3d3d;
       color: $crazy_color;
     }
     word-break: break-all;
-    padding: 13px;
+    padding: 8px;
     color: white;
     background: rgb(24, 24, 24);
     display: flex;
@@ -187,8 +187,10 @@ $crazy_color: #ff3d3d;
     right: 0px;
     margin-left: 10px;
     border-radius: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     width: max-content;
-    min-width: 100px;
+    min-width: 50px;
     max-width: 70%;
     
   }
@@ -279,7 +281,6 @@ $crazy_color: #ff3d3d;
 @media (max-width: 910px) {
 
   .my-item {
-    background-color: #ffffff74;
     width:min-content;
     display: flex;
     max-width: 500px;
@@ -298,7 +299,6 @@ $crazy_color: #ff3d3d;
       word-break: break-all;
       padding: 8px;
       color: white;
-      background: rgb(7, 14, 16);
       display: flex;
       margin-bottom: 15px;
       flex-wrap: wrap;
@@ -315,6 +315,21 @@ $crazy_color: #ff3d3d;
 
   }  
 
+  @media (max-width: 400px)  {
+    .my-item {
+      width:min-content;
+      display: flex;
+      max-width: 450px;
+    }
+  }
+
+  @media (max-width: 340px)  {
+    .my-item {
+      width:min-content;
+      display: flex;
+      max-width: 400px;
+    }
+  }
 
 
 
