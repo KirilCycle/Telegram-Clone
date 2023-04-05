@@ -56,7 +56,8 @@ export default {
 <style lang="scss" scoped>
 $custom-c2: rgb(32, 32, 32);
 .input-container {
-  width: 100%;
+  max-width: inherit;
+  
   padding: 0px 10px 0px 6px;
   backdrop-filter: blur(8px);
   background-color: $custom-c2;
@@ -83,10 +84,10 @@ $custom-c2: rgb(32, 32, 32);
   }
 
   .content {
-    position: relative;
+   
     box-sizing: border-box;
-    width: 100%;
-    max-width: inherit;
+    width: inherit;
+    
     justify-content: center;
     align-items: center;
     flex-direction: row;

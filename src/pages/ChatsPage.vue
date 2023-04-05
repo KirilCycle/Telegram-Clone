@@ -2,6 +2,7 @@
   <div class="main">
     
     <div class="left-bar">
+     
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <button class="menu-btn-wrap">
           <button class="menu-btn">
@@ -25,6 +26,7 @@
         </button>
       </div>
      
+
       <div @click="chatHided = true" v-show="!isSearch"  class="chat-list" >
         <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
@@ -699,12 +701,14 @@ v-enter-active,
 .right-side {
   width: 100%;
   height: 100%;
+  position: relative;
   background-color: #857979;
   overflow-y: hidden ;
 }
 
 .right-side-shoved-back {
   width: 100%;
+  position: relative;
   overflow-y: hidden ;
   height: 100%;
   background-color: #857979;
@@ -743,12 +747,14 @@ v-enter-active,
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
+    height: 100vh;
     transform: translate(0%);
     overflow-x: hidden;
   }
   .right-side {
     width: 40%;
     overflow-x: hidden;
+    height: 100vh;
     transform: translate(0%);
 
     .chat-container {
