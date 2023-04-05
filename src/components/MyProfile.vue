@@ -9,7 +9,7 @@
     <Transition>
       <div v-if="v" class="bloor">
         <div :class="'profile-container'">
-          <profile-page @close="v = false"></profile-page>
+          <profile-page  @close="v = false"></profile-page>
         </div>
       </div>
     </Transition>
@@ -97,13 +97,7 @@ opacity: 0;
     opacity: 0; /* add opacity property */
   }
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
+
   .profile-container {
     min-width: 300px;
     max-width: 600px;
