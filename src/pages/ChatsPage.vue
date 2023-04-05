@@ -50,11 +50,9 @@
               chevron_left
             </span>
           </button>
-          
-          <div class="chat_nav_img_wrap">
-            <img :src="$store.state.chat?.selectedUser?.photoURL">
-          </div>
 
+          <selected-chat-nav></selected-chat-nav>
+          
           <h3>{{ navName }}</h3>
         </div>
 
@@ -131,6 +129,7 @@ import NewChat from "@/components/NewChat.vue";
 import { watchEffect } from "vue";
 import ChatisntSelected from "@/components/ChatisntSelected.vue";
 import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
+import SelectedChatNav from '@/components/SelectedChatNav.vue';
 
 export default {
   components: {
@@ -141,6 +140,7 @@ export default {
     FoundedChatsList,
     ChatList,
     ChatInput,
+    SelectedChatNav,
   },
   data() {
     return {
@@ -491,20 +491,7 @@ v-enter-active,
     max-height: 90%;
   }
 
-  .chat_nav_img_wrap{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-
-    img {
-      width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-  }
+ 
 
 
 
@@ -839,6 +826,7 @@ v-enter-active,
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     position: absolute;
+    display: none;
     transform: translate(-120%);
 
     .chat-container {
