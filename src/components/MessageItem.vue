@@ -1,6 +1,7 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image>
+    <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
+   
     <div
       v-on:click.right="visible = true"
       @touchend="stop"
@@ -9,9 +10,9 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-      <div class="user-name">
+      <!-- <div class="user-name">
         <p>{{ message.userName }}</p>
-      </div>
+      </div> -->
       <div class="img-wrp" v-if="message.imageRef">
         <img :src="message.imageRef">
       </div>
@@ -209,6 +210,7 @@ $crazy_color: #ff3d3d;
   }
 }
 
+
 .my-item {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -267,6 +269,12 @@ $crazy_color: #ff3d3d;
 
 }
 
+@media (max-width: 1115px) {
+  .my-item {
+    right: 0%;
+
+  }
+}
 
 @media (max-width: 910px) {
 

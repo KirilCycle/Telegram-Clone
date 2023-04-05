@@ -481,7 +481,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 8%;
+  height: 9%;
   text-align: left;
   display: flex;
   align-items: center;

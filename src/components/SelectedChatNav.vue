@@ -42,11 +42,13 @@ transition: opacity 0.3s ease;
 opacity: 0;
 }
 
+
 .chat_nav_img_wrap {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   overflow: hidden;
+  left: 30px;
   position: relative;
 
   img {
@@ -55,4 +57,10 @@ opacity: 0;
     object-fit: cover;
   }
 }
+
+@media (max-width: 798px) {
+  .chat_nav_img_wrap {
+    left: 0px;
+  }
+ }
 </style>
