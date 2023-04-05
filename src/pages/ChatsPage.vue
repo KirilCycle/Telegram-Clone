@@ -59,9 +59,9 @@
         </div>
 
         <div class="chat-container-x">
-          <div class="chat-wrap">
+        
             <component :is="currentChatType"> </component>
-          </div>
+         
         </div>
 
         <!-- <div
@@ -700,7 +700,7 @@ v-enter-active,
 
 .right-side {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: relative;
   background-color: #857979;
   overflow-y: hidden ;
@@ -710,7 +710,7 @@ v-enter-active,
   width: 100%;
   position: relative;
   overflow-y: hidden ;
-  height: 100%;
+  height: 100vh;
   background-color: #857979;
 }
 
@@ -747,14 +747,14 @@ v-enter-active,
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
-    height: 100%;
+    height: 100vh;
     transform: translate(0%);
     overflow-x: hidden;
   }
   .right-side {
     width: 40%;
     overflow-x: hidden;
-    height: 100%;
+    height: 100vh;
     transform: translate(0%);
 
     .chat-container {
