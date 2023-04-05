@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <button class="menu-btn-wrap">
@@ -23,12 +24,15 @@
           <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
-      <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
+     
+      <div @click="chatHided = true" v-show="!isSearch"  class="chat-list" >
         <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
+     
       <div v-if="isSearch" @click="chatHided = true">
         <founded-chats-list></founded-chats-list>
       </div>
+     
     </div>
 
     <Transition>
@@ -523,7 +527,7 @@ v-enter-active,
 }
 
 .chat-container-x {
-  height: 85%;
+  height: 89%;
   max-width: 100%;
   background-color: $custom-c2;
   overflow-y: scroll;
@@ -562,9 +566,12 @@ v-enter-active,
 .main {
   display: flex;
   justify-content: center;
-  overflow-y: hidden;
+  background-color: #fff;
   min-width: 100%;
-  height: 100vh;
+  position: relative;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+ 
 }
 .left-bar {
   width: 290px;
@@ -573,9 +580,10 @@ v-enter-active,
   flex-shrink: 0;
   background-color: $custom-c1;
   display: flex;
-  min-height: 100%;
-  max-height: 100%;
   flex-direction: column;
+
+
+
 
   .left_bar_srch-wrap {
     flex-shrink: 0;
@@ -662,10 +670,14 @@ v-enter-active,
     }
   }
   .chat-list {
-    overflow-y: auto;
+
     overflow-x: hidden;
-    min-height: 95vh;
-    max-height: 95vh;
+   
+  }
+
+  .chat-list-hided {
+    overflow-x: hidden;
+   
   }
 
   .chat-list::-webkit-scrollbar {
@@ -726,6 +738,8 @@ v-enter-active,
 }
 
 @media (max-width: 798px) {
+
+
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
@@ -749,6 +763,11 @@ v-enter-active,
 
   .left-bar {
     width: 60%;
+    min-height: none;
+    max-height: none;
+    height: none;
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
     position: relative;
     resize: none;
     background-color: rgb(11, 11, 11);
@@ -795,13 +814,24 @@ v-enter-active,
 }
 
 @media (max-width: 600px) {
+
+  .chat-list-hided {
+    display: none;
+  }
   .right-side-shoved-back {
     width: 100%;
+    min-height: 100%;
     position: absolute;
+    z-index: 200;
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
     transform: translate(0%);
   }
   .right-side {
     width: 100%;
+    z-index: 200;
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
     position: absolute;
     transform: translate(-120%);
 
@@ -817,6 +847,8 @@ v-enter-active,
 
   .left-bar {
     width: 100%;
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
     position: relative;
     resize: none;
     background-color: #090909;
