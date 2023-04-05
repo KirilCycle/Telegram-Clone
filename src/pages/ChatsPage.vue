@@ -747,14 +747,14 @@ v-enter-active,
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
-    height: 100vh;
+    height: 100%;
     transform: translate(0%);
     overflow-x: hidden;
   }
   .right-side {
     width: 40%;
     overflow-x: hidden;
-    height: 100vh;
+    height: 100%;
     transform: translate(0%);
 
     .chat-container {
