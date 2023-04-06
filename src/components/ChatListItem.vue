@@ -1,12 +1,14 @@
 <template>
   <div v-show="isVisible" @click="$store.commit('chat/setSelectedUser', enotherUser)">
-    <chat-item :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">
+    
+    <chat-item :time="time" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">
       <div class="txt-container">
         <h3>{{ chatName }}</h3>
 
         <p>{{ chat?.lastMsg?.text }}</p>
       </div>
     </chat-item>
+  
   </div>
 </template>
 
@@ -26,6 +28,8 @@ export default {
     return {
       loading: true,
       db: firebase.firestore(),
+     
+      
     };
   },
   computed: {
@@ -36,6 +40,16 @@ export default {
         return this.chatName.includes(store.state.chat.querry);
       }
     },
+    time() {
+      let date = new Date( this.chat.lastMsg?.createdAt.seconds * 1000);
+
+      let hours = date.getHours();
+
+      let minutes = + date.getMinutes();
+
+      return `${hours}:${minutes}` 
+     
+    }
   },
 
   methods: {
@@ -71,6 +85,7 @@ export default {
   created() {
     this.fethcEnotherUser()
   },
+
 };
 </script>
 

@@ -203,7 +203,7 @@ nav {
 }
 
 .wrp {
-  padding-top: 70px;
+  padding-top: 30px;
   position: relative;
   overflow-x: hidden;
 }

@@ -21,9 +21,12 @@
           :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
         />
       </div>
+      
       <div class="item_body_text">
         <p :ref="message.id">{{ message.text }}</p>
+        <label>15:00</label>
       </div>
+
     </div>
     <message-actions-modal
       :removeMsg="removeMessage"
@@ -39,10 +42,7 @@
 
 <script>
 import { ref } from "vue";
-import { getStorage, getDownloadURL } from "firebase/storage";
 import store from "@/store/store";
-import { doc, updateDoc, deleteField } from "firebase/firestore";
-import { deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import ProfileImage from "./ProfileImage.vue";
 import MessageActionsModal from "./MessageActionsModal.vue";
@@ -176,21 +176,24 @@ $crazy_color: #ff3d3d;
       white-space: nowrap;
       color: $crazy_color;
     }
-    word-break: break-all;
     padding: 8px;
     color: white;
     background: rgb(24, 24, 24);
-    display: flex;
-    margin-bottom: 15px;
+    margin-bottom: 7px;
     flex-wrap: wrap;
     position: relative;
     right: 0px;
     margin-left: 10px;
-    border-radius: 10px;
+
+    display: inline-block;
+    max-width: 500px;
+    word-break: break-all;
+   
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
     width: max-content;
-    min-width: 50px;
+    min-width: 80px;
     max-width: 70%;
     
   }
@@ -225,31 +228,35 @@ $crazy_color: #ff3d3d;
 
   .item-body {
     right: 0px;
+    padding-right: 10px;
     .item_body_text {
       text-align: left;
       font-size: 0.9rem;
       margin-top: 0px;
       padding-left: 6px;
-      padding-right: 13px;
+      padding-right: 35px;
     }
     .user-name {
       display: none;
     }
-    word-break: break-all;
     padding: 8px;
     color: white;
     background: rgb(84, 175, 213);
-    display: flex;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
+    margin-bottom: 7px;
     position: relative;
+
+    display: inline-block;
+    max-width: 500px;
+    word-break: break-all;
+    
     right: 0px;
     margin-left: 10px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     width: auto;
-    
     line-height: 19px;
+
+    p {}
     
   }
 
@@ -263,9 +270,13 @@ $crazy_color: #ff3d3d;
     }
   }
 
+  label {
+    font-size: 0.7rem;
+    position: absolute;
+    right: 8px;
+    color: rgb(223, 222, 222);
+  }
   .time {
-    font-size: 0.6rem;
-    color: gray;
   }
 
 
