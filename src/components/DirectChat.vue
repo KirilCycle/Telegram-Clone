@@ -16,7 +16,7 @@
     <div class="bottom" ref="bottom">
       <div v-desapeared="disableAutoScroll"></div>
     </div>
-    <chat-input :sendMsg="addNewMessage"></chat-input>
+    <!-- <chat-input :sendMsg="addNewMessage"></chat-input> -->
   </div>
  
   

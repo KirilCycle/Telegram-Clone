@@ -62,7 +62,7 @@
          
         </div>
 
-        <!-- <div
+        <div
           v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
           class="chat-input-block-x"
         >
@@ -75,7 +75,7 @@
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
           </div>
-        </div> -->
+        </div>
 
         <!-- <div class="chat-container"> -->
         <!-- <nav class="chat-nav">
@@ -521,7 +521,7 @@ v-enter-active,
 }
 
 .chat-container-x {
-  height: 89%;
+  height: 84%;
   max-width: 100%;
   background-color: $custom-c2;
   overflow-y: scroll;
@@ -546,10 +546,10 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  position: fixed;
-  height: 6%;
-  max-block-size: 12%;
-  max-width: 100%;
+  height: 10%;
+  position: relative;
+  width: 100%;
+  max-width: inherit;
 
   .input-wrap {
     height: 100%;

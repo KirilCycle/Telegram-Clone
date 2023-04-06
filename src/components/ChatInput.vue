@@ -62,7 +62,7 @@ $custom-c2: rgb(32, 32, 32);
   background-color: $custom-c2;
   height: 50px;
   display: flex;
-  position: fixed;
+  position: relative;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -85,7 +85,7 @@ $custom-c2: rgb(32, 32, 32);
   .content {
    
     box-sizing: border-box;
-    width: inherit;
+    width: 100%;
     
     justify-content: center;
     align-items: center;
@@ -96,7 +96,6 @@ $custom-c2: rgb(32, 32, 32);
 
     input {
       width: 100%;
-      max-width: 100%;
       height: 100%;
       font-size: 1rem;
       background-color: #ffffff00;

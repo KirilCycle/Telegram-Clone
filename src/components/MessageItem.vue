@@ -162,6 +162,8 @@ $crazy_color: #ff3d3d;
     .item_body_text {
       font-size: 0.9rem;   
       margin-top: 3px;
+      padding-left: 6px;
+      padding-right: 35px;
       p {
         font-weight: 200;
       }
@@ -209,9 +211,12 @@ $crazy_color: #ff3d3d;
     }
   }
 
-  .time {
-    font-size: 0.6rem;
-    color: gray;
+  label {
+    font-size: 0.7rem;
+    position: absolute;
+    right: 8px;
+    color: rgb(223, 222, 222);
+    bottom: 4px;
   }
 }
 
@@ -311,7 +316,7 @@ $crazy_color: #ff3d3d;
       padding: 8px;
       color: white;
       display: flex;
-      margin-bottom: 15px;
+    
       flex-wrap: wrap;
       position: relative;
       right: 0px;
@@ -326,19 +331,19 @@ $crazy_color: #ff3d3d;
 
   }  
 
-  @media (max-width: 400px)  {
+  @media (max-width: 500px)  {
     .my-item {
       width:min-content;
       display: flex;
-      max-width: 450px;
+      max-width: 350px;
     }
   }
 
-  @media (max-width: 340px)  {
+  @media (max-width: 440px)  {
     .my-item {
       width:min-content;
       display: flex;
-      max-width: 400px;
+      max-width: 320px;
     }
   }
 
