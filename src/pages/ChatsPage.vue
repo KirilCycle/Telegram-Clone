@@ -825,14 +825,14 @@ v-enter-active,
     width: 100%;
     min-height: 100%;
     position: absolute;
-    z-index: 200;
+    z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     transform: translate(0%);
   }
   .right-side {
     width: 100%;
-    z-index: 200;
+    z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     position: absolute;

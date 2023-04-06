@@ -179,12 +179,14 @@ $padver: 16px;
   background-color: #1e1e1ebb;
   width: 100%;
   display: block;
+  z-index: 120;
   height: 100%;
 
   .modal {
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 121;
     transform: translate(-50%, -50%);
     background-color: #1c1c1c;
     min-width: 330px;

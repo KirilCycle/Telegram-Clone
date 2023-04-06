@@ -117,6 +117,11 @@ $crazy_color: #ff3d3d;
 
 }
 
+%no-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
 .message-ations {
   position: absolute;
   width: 120px;
@@ -142,31 +147,35 @@ $crazy_color: #ff3d3d;
 }
 
 .item {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  
   min-width:130px;
   max-width: 900px;
   width: 500px;
   position: relative;
   display: flex;
+  
 
   .item-body {
     width: 100%;
+   
     left: 0px;
     display: flex;
     flex-direction: column;
     text-align: left;
+    margin-top: 0px;
+        padding-left: 6px;
+        padding-right: 35px;
    
 
     .item_body_text {
       font-size: 0.9rem;   
-      margin-top: 3px;
+      margin-top: 0px;
       padding-left: 6px;
       padding-right: 35px;
       p {
         font-weight: 200;
       }
+
     }
     .user-name {
       font-size: 1rem;
@@ -221,15 +230,12 @@ $crazy_color: #ff3d3d;
 }
 
 
+
 .my-item {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
   max-width: 600px;
   position: relative;
   width: max-content;
   display: flex;
- 
 
   .item-body {
     right: 0px;
@@ -277,8 +283,8 @@ $crazy_color: #ff3d3d;
 
   label {
     font-size: 0.7rem;
-    position: absolute;
-    right: 8px;
+    margin-left: 10px;
+    
     color: rgb(223, 222, 222);
   }
   .time {
@@ -307,7 +313,7 @@ $crazy_color: #ff3d3d;
         font-size: 0.9rem;
         margin-top: 0px;
         padding-left: 6px;
-        padding-right: 13px;
+        padding-right: 35px;
       }
       .user-name {
         display: none;
