@@ -223,13 +223,30 @@ $crazy_color: #ff3d3d;
   label {
     font-size: 0.7rem;
     position: absolute;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
     right: 8px;
     color: rgb(223, 222, 222);
     bottom: 4px;
   }
 }
 
+@media (pointer: coarse) {
+//tch sreen
+.my-item  {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
 
+.item {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+}
 
 .my-item {
   max-width: 600px;
@@ -284,8 +301,10 @@ $crazy_color: #ff3d3d;
   label {
     font-size: 0.7rem;
     margin-left: 10px;
-    
     color: rgb(223, 222, 222);
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
   }
   .time {
   }

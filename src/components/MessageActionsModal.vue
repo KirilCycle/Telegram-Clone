@@ -148,6 +148,8 @@ $crazy_color: #00ff44;
     }
 }
 
+
+
 .conatiner {
 
   position: fixed;
@@ -205,4 +207,23 @@ $crazy_color: #00ff44;
     }
   }
 }
+
+
+@media (pointer: coarse) {
+  //tch sreen
+  
+.conatiner {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  
+  .msg-prew {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  
+  }
+
 </style>

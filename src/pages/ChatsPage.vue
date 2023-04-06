@@ -44,7 +44,7 @@
           'right-side': !chatHided,
         }"
       >
-        <div v-if="$store.state.chat.selectedUser" class="chat-nav-x">
+        <div @touchmove.prevent="() => {}" v-if="$store.state.chat.selectedUser" class="chat-nav-x">
           <button>
             <span @click="chatHided = false" class="material-symbols-outlined">
               chevron_left
@@ -57,9 +57,7 @@
         </div>
 
         <div class="chat-container-x">
-        
             <component :is="currentChatType"> </component>
-         
         </div>
 
         <div
@@ -766,6 +764,7 @@ v-enter-active,
 
   .left-bar {
     width: 60%;
+    
     min-height: none;
     max-height: none;
     height: none;

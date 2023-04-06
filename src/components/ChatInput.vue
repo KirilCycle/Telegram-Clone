@@ -1,5 +1,5 @@
 <template>
-  <div class="input-container">
+  <div @touchmove.prevent="() => {}" class="input-container">
     <div v-if="$store.state.chat.replyMsgRef">
       <reply-message-border></reply-message-border>
     </div>
@@ -83,6 +83,8 @@ $custom-c2: rgb(32, 32, 32);
   }
 
   .content {
+    user-select: none; /* supported by Chrome and Opera */
+  
    
     box-sizing: border-box;
     width: 100%;
@@ -103,6 +105,10 @@ $custom-c2: rgb(32, 32, 32);
     }
 
     button {
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
       width: 35px;
       height: 35px;
       color: rgb(68, 134, 255);

@@ -15,13 +15,19 @@ import { getAnalytics } from "firebase/analytics";
 import firebase from "firebase/compat/app";
 import { doc, getDoc } from "firebase/firestore";
 import "firebase/compat/auth";
-import { ref } from "firebase/storage";
+// import { ref } from "firebase/storage";
+import {  ref, set } from "firebase/database";
 import MyProfile from "./components/MyProfile.vue";
 import "firebase/compat/firestore";
 import { signOut } from "firebase/auth";
+import {onBeforeUnmount } from 'vue'
+import {  updateDoc } from "firebase/firestore";
+import { getDatabase, onValue } from 'firebase/database';
+
+
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
 import { onMounted, watchEffect, watch } from "vue";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection } from "firebase/firestore";
 import {
   getAuth,
   setPersistence,
@@ -31,6 +37,7 @@ import {
 } from "firebase/auth";
 import { setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -57,7 +64,6 @@ const auth = initializeAuth(app, {
   // No popupRedirectResolver defined
 });
 
-
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 
 // const auths = getAuth();
@@ -71,39 +77,32 @@ const db = getFirestore(app);
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     async function checkNeccessaryData() {
-
-      console.log('v action')
+      console.log("v action");
       const docRef = doc(db, "usersLinksToChat", user.uid);
       const docSnap = await getDoc(docRef);
 
-      
+   
+
       if (!docSnap.exists()) {
-        console.log('cc action')
+        console.log("cc action");
         await setDoc(doc(db, "usersLinksToChat", user.uid), {
-        // 
+          //
         });
       }
-
 
       const prewuserSnapRef = doc(db, "usersPrew", user.uid);
       const prewuserSnap = await getDoc(prewuserSnapRef);
 
       if (!prewuserSnap.exists()) {
-        console.log('cpu action')
+        console.log("cpu action");
         await setDoc(doc(db, "usersPrew", user.uid), {
-          uid:user.uid,
-          photoURl:`https://robohash.org/${user.uid}.png`,
+          uid: user.uid,
+          photoURl: `https://robohash.org/${user.uid}.png`,
           displayName: user.displayName,
-          email: user.email
-
+          email: user.email,
         });
       }
-
-
-
-
     }
-
 
     checkNeccessaryData();
 
@@ -132,11 +131,58 @@ onMounted(() => {
 
 store.commit("user/setFireBase", firebase);
 
-
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
-document.documentElement.style.setProperty('--vh', `${vh}px`);
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+
+
+
+// const firestoreDb = firebase.firestore();
+// const oldRealTimeDb = getDatabase(app);
+
+
+// const usersRef = firestoreDb.collection('users'); // Get a reference to the Users collection;
+// // const onlineRef = oldRealTimeDb.ref('.info/connected'); // Get a reference to the list of connections
+// const onlineRef  = ref(oldRealTimeDb, '.info/connected');
+
+const userId = '5SEC8Idp9mPbOD4C0kEQSPMfDdA2'
+
+
+
+
+const firestoreDb = getFirestore(app);
+const realTimeDb = getDatabase(app);
+
+const userDocRef = doc(firestoreDb, "usersPrew", userId);
+
+const onlineRef = ref(realTimeDb, ".info/connected");
+const userStatusRef = ref(realTimeDb, `/status/${userId}`);
+
+onValue(onlineRef, (snapshot) => {
+  if (snapshot.val() === true) {
+    onDisconnect(userStatusRef).set(false).then(() => {
+      // Set the online key of the user's document to true
+      updateDoc(userDocRef, { online: 'true' });
+
+      // Let's also create a key in our real-time database
+      // The value is set to 'online'
+      set(userStatusRef, true);
+    });
+
+    // Set the online key of the user's document to true immediately
+    updateDoc(userDocRef, { online: 'true' });
+  } else {
+    // Set the online key of the user's document to false
+    updateDoc(userDocRef, { online: 'false'});
+
+    // Let's also update the key in our real-time database
+    // The value is set to 'offline'
+    set(userStatusRef, 'false');
+  }
+});
+
 
 
 
@@ -201,7 +247,6 @@ textarea:focus,
 input:focus {
   outline: none;
 }
-
 
 button {
   border: none;

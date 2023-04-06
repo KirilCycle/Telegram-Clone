@@ -1,5 +1,6 @@
 <template>
   <div class="wrp">
+    
     <transition name="bounce">
       <button @click="scrollToBottom" v-if="!chasingBottom" class="scrl-to-btm-btn">
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
@@ -177,7 +178,7 @@ nav {
 }
 
 .bottom {
-  height: 50px;
+  height: 39px;
   width: 100%;
   bottom: 0;
   position: relative;
@@ -207,6 +208,19 @@ nav {
   position: relative;
   overflow-x: hidden;
 }
+
+@media (pointer: coarse) {
+  //tch sreen
+  
+.wrp {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  
+
+  
+  }
 
 .chat {
   width: 100%;
