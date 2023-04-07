@@ -24,8 +24,7 @@ export default {
   methods: {
     reset() {
         store.commit('chat/setReplyMsgRef', null)
-        store.commit('chat/setFrom',null)
-        store.commit('chat/setText', null)
+        store.commit('chat/setReplyTarget',null)
     },
     scrllToTarget() {
          store.state.chat.replyMsgRef .scrollIntoView({block: "center", behavior: "smooth"})  

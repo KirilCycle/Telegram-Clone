@@ -309,6 +309,7 @@ $crazy_color: #ff3d3d;
     }
     p {
       color: #d7d7d7;
+      font-size: 0.8rem;
     }
   }
 

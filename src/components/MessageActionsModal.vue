@@ -24,7 +24,7 @@
               <span class="material-symbols-outlined"> delete </span>
               <button>Delete</button>
             </li>
-            <li @click="setReplyTarger">
+            <li @click="setReplyTarget">
               <span class="material-symbols-outlined"> reply </span>
               <button>Reply</button>
             </li>
@@ -63,12 +63,14 @@ export default {
     show() {
        console.log(this.message)
     },
-    setReplyTarger () {
+    setReplyTarget () {
         store.commit('chat/setReplyMsgRef', this.msgRef)
         store.commit('chat/setReplyTarget',
          {
            text: this.message.text,
-           from: this.message.userName
+           from: this.message.userName,
+          ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
+
          }
         )
         console.log(store.state.chat.replyMsgRef, 'FROM REDUX')
