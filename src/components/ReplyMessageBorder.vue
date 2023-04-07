@@ -4,6 +4,10 @@
  
       <span class="material-symbols-outlined"> reply </span>
  
+      <div v-if="$store.state.chat.replyTarget.img" >
+         <small-chat-image :src="$store.state.chat.replyTarget.img"></small-chat-image>
+      </div>
+     
       <div class="text-container">
         <h3>{{$store.state.chat.replyTarget.from}}</h3>
         <p>{{$store.state.chat.replyTarget.text.slice(0,29)}}</p>
@@ -17,7 +21,9 @@
 
 <script>
 import store from '@/store/store';
+import SmallChatImage from './SmallChatImage.vue';
 export default {
+  components: { SmallChatImage },
   data() {
     
   },
@@ -57,6 +63,8 @@ $custom-c2: rgb(32, 32, 32);
   align-items: center;
   justify-content: space-between;
   bottom: 50px;
+
+  
 
   span {
     width: 35px;

@@ -1,7 +1,7 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
     <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
-   
+
     <div
       v-on:click.right="visible = true"
       @touchend="stop"
@@ -14,25 +14,29 @@
         <p>{{ message.userName }}</p>
       </div> -->
       <div class="img-wrp" v-if="message.imageRef">
-        <img :src="message.imageRef">
+        <img :src="message.imageRef" />
       </div>
       <div class="image-container" v-if="photoURL">
         <img
           :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
         />
       </div>
-      
+
       <div class="reply-block" v-if="message.replyData">
-         <h3>{{message.replyData.from}}</h3>
-         <p>{{message.replyData.text}}</p>
+        <div v-if="message.replyData.img">
+        
+            <small-chat-image :src="message.replyData.img"></small-chat-image>
+         
+        </div>
+
+        <h3>{{ message.replyData.from }}</h3>
+        <p>{{ message.replyData.text }}</p>
       </div>
-      
 
       <div class="item_body_text">
         <p :ref="message.id">{{ message.text }}</p>
         <label>15:00</label>
       </div>
-
     </div>
     <message-actions-modal
       :removeMsg="removeMessage"
@@ -52,9 +56,10 @@ import store from "@/store/store";
 import { getAuth } from "firebase/auth";
 import ProfileImage from "./ProfileImage.vue";
 import MessageActionsModal from "./MessageActionsModal.vue";
+import SmallChatImage from "./SmallChatImage.vue";
 
 export default {
-  components: { MessageActionsModal, ProfileImage },
+  components: { MessageActionsModal, ProfileImage, SmallChatImage },
 
   props: {
     message: Object,
@@ -72,7 +77,7 @@ export default {
         : "",
       removeMessage: this.removeMessage,
       isMy: this.isMy,
-      next: this.next
+      next: this.next,
     };
   },
 
@@ -94,7 +99,7 @@ export default {
 
     const visible = ref(false);
 
-    const msg = ref('msg')
+    const msg = ref("msg");
 
     return {
       // photoSrc,
@@ -104,7 +109,7 @@ export default {
       start,
       auth,
       visible,
-    }
+    };
   },
 };
 </script>
@@ -120,7 +125,6 @@ $crazy_color: #ff3d3d;
     width: 100%;
     height: 100%;
   }
-
 }
 
 %no-select {
@@ -153,35 +157,31 @@ $crazy_color: #ff3d3d;
 }
 
 .item {
-  
-  min-width:130px;
+  min-width: 130px;
   max-width: 900px;
   width: 500px;
   position: relative;
   display: flex;
-  
 
   .item-body {
     width: 100%;
-   
+
     left: 0px;
     display: flex;
     flex-direction: column;
     text-align: left;
     margin-top: 0px;
-        padding-left: 6px;
-        padding-right: 35px;
-   
+    padding-left: 6px;
+    padding-right: 35px;
 
     .item_body_text {
-      font-size: 0.9rem;   
+      font-size: 0.9rem;
       margin-top: 0px;
       padding-left: 6px;
       padding-right: 35px;
       p {
         font-weight: 200;
       }
-
     }
     .user-name {
       font-size: 1rem;
@@ -205,14 +205,13 @@ $crazy_color: #ff3d3d;
     display: inline-block;
     max-width: 500px;
     word-break: break-all;
-   
+
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
     width: max-content;
     min-width: 80px;
     max-width: 70%;
-    
   }
 
   .image-container {
@@ -239,19 +238,18 @@ $crazy_color: #ff3d3d;
 }
 
 @media (pointer: coarse) {
-//tch sreen
-.my-item  {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
+  //tch sreen
+  .my-item {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
 
-.item {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
-
+  .item {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
 }
 
 .my-item {
@@ -282,7 +280,7 @@ $crazy_color: #ff3d3d;
     display: inline-block;
     max-width: 500px;
     word-break: break-all;
-    
+
     right: 0px;
     margin-left: 10px;
     border-top-right-radius: 20px;
@@ -290,8 +288,8 @@ $crazy_color: #ff3d3d;
     width: auto;
     line-height: 19px;
 
-    p {}
-    
+    p {
+    }
   }
   .reply-block {
     max-width: 93%;
@@ -305,7 +303,7 @@ $crazy_color: #ff3d3d;
     border-left: #fff 3px solid;
     h3 {
       font-size: 0.9rem;
-       line-height: normal;
+      line-height: normal;
     }
     p {
       color: #d7d7d7;
@@ -333,21 +331,17 @@ $crazy_color: #ff3d3d;
   }
   .time {
   }
-
-
 }
 
 @media (max-width: 1115px) {
   .my-item {
     right: 0%;
-
   }
 }
 
 @media (max-width: 910px) {
-
   .my-item {
-    width:min-content;
+    width: min-content;
     display: flex;
     max-width: 500px;
     .item-body {
@@ -366,7 +360,7 @@ $crazy_color: #ff3d3d;
       padding: 8px;
       color: white;
       display: flex;
-    
+
       flex-wrap: wrap;
       position: relative;
       right: 0px;
@@ -374,40 +368,25 @@ $crazy_color: #ff3d3d;
       border-top-right-radius: 20px;
       border-bottom-right-radius: 20px;
       width: max-content;
-     
+
       line-height: 19px;
-      
     }
+  }
 
-  }  
-
-  @media (max-width: 500px)  {
+  @media (max-width: 500px) {
     .my-item {
-      width:min-content;
+      width: min-content;
       display: flex;
       max-width: 350px;
     }
   }
 
-  @media (max-width: 440px)  {
+  @media (max-width: 440px) {
     .my-item {
-      width:min-content;
+      width: min-content;
       display: flex;
       max-width: 320px;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
 </style>

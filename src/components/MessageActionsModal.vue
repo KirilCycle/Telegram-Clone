@@ -30,7 +30,6 @@
             </li>
           </ul>
         </div>
-
     </div>
 
     </div>
@@ -39,8 +38,6 @@
 
 <script>
 import store from "@/store/store";
-import { deleteDoc } from "firebase/firestore";
-import { doc } from "firebase/firestore";
 import ProfileImage from "@/components/ProfileImage.vue";
 
 
