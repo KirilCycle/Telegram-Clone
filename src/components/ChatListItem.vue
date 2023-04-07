@@ -1,12 +1,13 @@
 <template>
   <div v-show="isVisible" @click="$store.commit('chat/setSelectedUser', enotherUser)">
     
-    <chat-item :time="time" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">
-     
+    <chat-item :time="time" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">     
+      <template v-slot:name>
         <h3>{{ chatName }}</h3>
-
-        <p>{{ chat?.lastMsg?.text }}</p>
-     
+      </template>
+      <template v-slot:last_msg>
+        <p> {{ chat?.lastMsg?.text }}</p>
+      </template>
     </chat-item>
   
   </div>
@@ -103,16 +104,6 @@ export default {
     overflow: hidden;
   }
 
-  h3 {
-    font-size: 1.1rem;
-    font-weight: 550;
-  
-  }
-  p {
-    font-size: 0.95rem;
-    white-space: nowrap;
-    font-weight: 550;
-
-  }
+ 
 }
 </style>

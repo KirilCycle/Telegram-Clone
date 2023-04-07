@@ -6,7 +6,14 @@
       </div>
     </div>
     <div class="chatitem_info_container">
-      <slot></slot>
+    
+      <div class="name">
+        <slot name="name"></slot>
+      </div>
+     <div class="last">
+       <slot name="last_msg"></slot>
+     </div>
+    
     </div>
     <p class="time">{{ time }}</p>
   </div>
@@ -53,13 +60,16 @@ export default {
   flex-direction: row;
   align-items: center;
 
-  h3 {
-    color: white;
-  }
+  .name {
 
-  p {
-    color: gray;
-  }
+    color: white;
+  } 
+
+   .last {
+     color: gray;
+   }
+
+  
 
   .img-conatiner {
     padding-left: 5px;
@@ -90,6 +100,18 @@ export default {
     overflow: hidden;
 
    
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 550;
+       
+    }
+    p {
+      font-size: 0.95rem;
+      white-space: nowrap;
+      font-weight: 550;
+       
+    }
+
 
   }
 
@@ -106,6 +128,7 @@ export default {
   @extend .cht-i;
   background-color: rgb(96, 173, 255);
  
+  
   color: #ffffff;
 
   &:hover {
@@ -116,7 +139,7 @@ export default {
   }
 
   .chatitem_info_container {
-    p { color: white}
+    .last { color: white}
   }
 
  

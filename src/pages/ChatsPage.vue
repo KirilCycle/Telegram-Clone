@@ -802,7 +802,6 @@ v-enter-active,
 
   .left-bar {
     width: 60%;
-    
     min-height: none;
     max-height: none;
     height: none;
@@ -818,6 +817,7 @@ v-enter-active,
         border-top-left-radius: 30px;
         border-bottom-left-radius: 30px;
         padding-left: 10px;
+        height: 40px;
         font-size: 1.1rem;
       }
 
@@ -828,6 +828,9 @@ v-enter-active,
         padding-right: 5px;
         justify-content: center;
         align-items: center;
+        height: 40px;
+        width: 40px;
+        transform: translate(-3px);
          
         span {
           font-size: 1.6rem;
@@ -840,6 +843,8 @@ v-enter-active,
         padding-right: 5px;
         justify-content: center;
         align-items: center;
+        height: 40px;
+        width: 40px;
 
         span {
           font-size: 1.6rem;
@@ -895,11 +900,11 @@ v-enter-active,
     background-color: #090909;
 
     .left_bar_srch-wrap {
-    }
-    input {
-      border-top-left-radius: 25px;
-      border-bottom-left-radius: 25px;
-      
+      input {
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        height: 40px;
+      }
     }
   }
 }
