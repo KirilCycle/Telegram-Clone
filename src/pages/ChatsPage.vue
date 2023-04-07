@@ -592,7 +592,7 @@ v-enter-active,
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 
