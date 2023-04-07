@@ -66,7 +66,7 @@
         >
           <div class="input-wrap">
             <div v-if="$store.state.chat.selectedUser.new">
-              <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
+              <chat-input  :sendMsg="sendMessageToFoundedChat"></chat-input>
             </div>
 
             <div v-else>
@@ -484,7 +484,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 8%;
+  height: 10%;
   text-align: left;
   display: flex;
   align-items: center;
@@ -521,7 +521,7 @@ v-enter-active,
 }
 
 .chat-container-x {
-  height: 84%;
+  height: 82%;
   max-width: 100%;
   background-color: $custom-c2;
   overflow-y: scroll;
@@ -552,15 +552,23 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  height: 8%;
   background-color: $custom-c2;
   position: relative;
+ 
   width: 100%;
+  height: 100%;
   max-width: inherit;
 
   .input-wrap {
     height: 100%;
+   
     width: 100%;
+
+    div {
+      height: 100%;
+     
+    }
+
   }
 }
 
@@ -574,13 +582,13 @@ v-enter-active,
  .chat-input-block-x {
   display: flex;
   justify-content: center;
-  height: 10%;
+  height: 100%;
   position: relative;
   width: 100%;
   max-width: inherit;
 
   .input-wrap {
-    height: 100%;
+    height: 8%;
     width: 100%;
   }
 }

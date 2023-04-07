@@ -1,6 +1,6 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
-    <div v-if="$store.state.chat.replyMsgRef">
+    <div  v-if="$store.state.chat.replyMsgRef">
       <reply-message-border></reply-message-border>
     </div>
 
@@ -64,9 +64,12 @@ $custom-c2: rgb(32, 32, 32);
   padding: 0px 10px 0px 6px;
   backdrop-filter: blur(8px);
   background-color: $custom-c2;
-  height: 50px;
+  height: 100%;
   display: flex;
+
+  /*
   position: relative;
+*/
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -95,7 +98,7 @@ $custom-c2: rgb(32, 32, 32);
     flex-direction: row;
     justify-content: space-around;
     display: flex;
-    height: 90%;
+    height: 100%;
 
     input {
       width: 100%;
