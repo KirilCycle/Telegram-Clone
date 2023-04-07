@@ -3,6 +3,7 @@ import router from "@/router/router";
 export const chatModule = {
   state: () => ({
     replyMsgRef: null,
+    replyTarget: null, 
     text: null,
     from: null,
     chatId: null,
@@ -11,6 +12,9 @@ export const chatModule = {
     chatIdList: [],
   }),
   getters: {
+    getReplyTarget(state) {
+      return state.replyTarget;
+   },
     getChatIdList(state) {
        return state.chatIdList;
     },
@@ -34,6 +38,9 @@ export const chatModule = {
     },
   },
   mutations: {
+    setReplyTarget( state, target) {
+      state.replyTarget = target
+    },
     setChatIdList(state, chats) {
       state.chatIdList = chats
     },
@@ -58,6 +65,9 @@ export const chatModule = {
   },
 
   actions: {
+    setReplyTarget({commit, target}) {
+          commit('setReplyTarget', target)
+    },
     setChatIdList({state,commit,chts}) {
       commit('setChatIdList',chts)
     },

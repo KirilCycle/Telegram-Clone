@@ -1,8 +1,10 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
+   
     <div v-if="$store.state.chat.replyMsgRef">
       <reply-message-border></reply-message-border>
     </div>
+   
     <div class="content">
       <span>
         <selected-file-modal @sendmesimg="sendMsg"></selected-file-modal>
@@ -42,7 +44,7 @@ export default {
   methods: {
     send(text, img) {
       if (!img) {
-        this.sendMsg(this.value);
+        this.sendMsg(this.value,null ,store.state.chat.replyTarget);
         this.value = "";
       } else {
         this.sendMsg(text, img);

@@ -22,6 +22,12 @@
         />
       </div>
       
+      <div class="reply-block" v-if="message.replyData">
+         <h3>{{message.replyData.from}}</h3>
+         <p>{{message.replyData.text}}</p>
+      </div>
+      
+
       <div class="item_body_text">
         <p :ref="message.id">{{ message.text }}</p>
         <label>15:00</label>
@@ -286,6 +292,24 @@ $crazy_color: #ff3d3d;
 
     p {}
     
+  }
+  .reply-block {
+    max-width: 93%;
+    max-height: 38px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 7px;
+    padding-left: 2px;
+    overflow: hidden;
+    height: min-content;
+    border-left: #fff 3px solid;
+    h3 {
+      font-size: 0.9rem;
+       line-height: normal;
+    }
+    p {
+      color: #d7d7d7;
+    }
   }
 
   .image-container {

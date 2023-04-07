@@ -1,13 +1,17 @@
 <template>
   <div class="rep-container">
     <div @click="scrllToTarget" class="target-info">
+ 
       <span class="material-symbols-outlined"> reply </span>
+ 
       <div class="text-container">
-        <h3>{{$store.state.chat.from.slice(0,30)}}</h3>
-        <p>{{$store.state.chat.text.slice(0,29)}}</p>
+        <h3>{{$store.state.chat.replyTarget.from}}</h3>
+        <p>{{$store.state.chat.replyTarget.text.slice(0,29)}}</p>
       </div>
     </div>
+
     <span class="material-symbols-outlined" @click="reset"> close </span>
+ 
   </div>
 </template>
 
@@ -39,10 +43,10 @@ $custom-c2: rgb(32, 32, 32);
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
-    $crazy_color: #00ff44;
+    $crazy_color:  rgb(68, 134, 255);;
    
   cursor: pointer;
-  padding: 0px 1px 0px 1px;
+  padding: 0px 10px 0px 1px;
   right: 0%;
   position: absolute;
   box-sizing: border-box;
