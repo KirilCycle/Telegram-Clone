@@ -560,7 +560,7 @@ v-enter-active,
   max-width: inherit;
 
   .input-wrap {
-    height: 100%;
+    height: 8%;
    
     width: 100%;
 

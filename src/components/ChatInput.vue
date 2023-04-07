@@ -107,7 +107,7 @@ $custom-c2: rgb(32, 32, 32);
       color: white;
     }
 
-    @media (min-width: 1300px) {
+    @media (min-width: 1700px) {
       input {
         padding-left: 15px;
         background-color:rgb(39, 39, 39);
