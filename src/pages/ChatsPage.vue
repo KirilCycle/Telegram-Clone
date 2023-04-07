@@ -541,7 +541,7 @@ v-enter-active,
 
 .chat-container-x::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.107);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.123);
 }
 
 .chat-container-x::-webkit-scrollbar-thumb {
@@ -552,15 +552,15 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  background-color: $custom-c2;
+  background-color: green;
   position: relative;
  
   width: 100%;
-  height: 100%;
+  height: 8%;
   max-width: inherit;
 
   .input-wrap {
-    height: 8%;
+    height: 100%;
     width: 100%;
 
     div {
@@ -580,15 +580,10 @@ v-enter-active,
  }
 
  .chat-input-block-x {
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  position: relative;
-  width: 100%;
-  max-width: inherit;
 
+  
   .input-wrap {
-    height: 8%; 
+    
     max-width: 1400px;
   }
 }

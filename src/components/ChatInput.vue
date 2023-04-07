@@ -83,8 +83,6 @@ $custom-c2: rgb(32, 32, 32);
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
     cursor: pointer;
-
-   
   }
 
   .content {
