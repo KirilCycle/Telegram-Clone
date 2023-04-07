@@ -98,21 +98,27 @@ export default {
 
     }
 
+    const msg = ref(null);
+
+    const pivotTouch = ref(30)
+
     function touchMoveHandle(e) {
       clearTimeout(myTimeout.value);
       
-      const touch = e.touches[0];
-      const deltaX = touch.clientX 
       
-      console.log(e.touches[0].clientX, deltaX)
+      let elementwidth = msg.value.offsetWidth
       
-      $refs.msg.style.transform = `translateX(${e.touches[0].clientX}px)`
+      let elementPosition = msg.value.clientX
+      
+      
+      // msg.value.style.transform = `translateX(${ msg.value.offsetWidth  }px)`
+      console.log( elementPosition  );
       
     }
 
     const visible = ref(false);
 
-    const msg = ref("msg");
+  
 
     return {
       // photoSrc,

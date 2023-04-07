@@ -460,6 +460,8 @@ $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
 
+
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -482,7 +484,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 9%;
+  height: 50px;
   text-align: left;
   display: flex;
   align-items: center;
@@ -497,6 +499,12 @@ v-enter-active,
     max-height: 90%;
   }
 
+  @media (min-width: 1000px) {
+    .chat-nav-x  {
+      height: 65px;
+    }
+
+  }
  
 
 
@@ -526,7 +534,13 @@ v-enter-active,
   max-width: 100%;
   background-color: $custom-c2;
   overflow-y: scroll;
-  
+}
+
+@media (min-width: 1400px) {
+  .chat-container-x {
+    max-width: 1400px;
+    margin: 0% auto;
+  }
 }
 
 .chat-container-x::-webkit-scrollbar {
@@ -540,7 +554,7 @@ v-enter-active,
 }
 
 .chat-container-x::-webkit-scrollbar-thumb {
-  background: rgba(152, 152, 152, 0.577);
+  background: rgba(152, 152, 152, 0.169);
   border-radius: 20px;
 }
 
@@ -548,6 +562,7 @@ v-enter-active,
   display: flex;
   justify-content: center;
   height: 10%;
+  background-color: $custom-c2;
   position: relative;
   width: 100%;
   max-width: inherit;
@@ -558,16 +573,24 @@ v-enter-active,
   }
 }
 
+@media (min-width: 1400px) {
+  .chat-input-block-x  {
+    max-width: 1400px;
+    margin: 0% auto;
+  }
+ }
+
 .main {
   display: flex;
   justify-content: center;
-  background-color: #fff;
+  background-color: $custom-c2;
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-  height: calc(var(--vh, 1vh) * 100);
  
 }
+
+
 .left-bar {
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
@@ -691,7 +714,7 @@ v-enter-active,
   }
 
   .chat-list-wrap::-webkit-scrollbar-thumb {
-    background: rgba(152, 152, 152, 0.577);
+    background: rgba(152, 152, 152, 0.343);
     border-radius: 20px;
   }
 }
@@ -700,7 +723,7 @@ v-enter-active,
   width: 100%;
   height: 100vh;
   position: relative;
-  background-color: #857979;
+ 
   overflow-y: hidden ;
 }
 
@@ -709,7 +732,7 @@ v-enter-active,
   position: relative;
   overflow-y: hidden ;
   height: 100vh;
-  background-color: #857979;
+ 
 }
 
 .chat-container {

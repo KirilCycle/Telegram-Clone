@@ -148,7 +148,8 @@ export default {
   background-color: rgb(28, 28, 28);
   border-radius: 22.5px;
   position: fixed;
-  bottom: 100px;
+  bottom: 20%;
+  cursor: pointer;
   z-index: 30;
   display: block;
   right: 5px;

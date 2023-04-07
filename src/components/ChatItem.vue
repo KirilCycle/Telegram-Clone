@@ -34,6 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 .cht-i {
+  border-radius: 10px;
   cursor: pointer;
   position: relative;
   -webkit-user-select: none; /* Safari */
@@ -45,7 +46,7 @@ export default {
 
   display: flex;
   &:hover {
-    background-color: #ffffff3b;
+    background-color: #b3b3b330;
     .time {
       color: white;
     }
@@ -89,13 +90,21 @@ export default {
 
 .active {
   @extend .cht-i;
+  background-color: rgb(44, 146, 255);
+ 
+  color: #ffffff;
 
-  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+  &:hover {
+    background-color: rgb(44, 146, 255);
+  }
+
 }
 
 @media (max-width: 600px) {
   .active {
-    background-image: none;
+    background-color: none;
+    border-radius: 0px;
+
   }
 }
 </style>

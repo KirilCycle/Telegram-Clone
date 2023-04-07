@@ -81,9 +81,7 @@ $custom-c2: rgb(32, 32, 32);
     user-select: none; /* Standard syntax */
     cursor: pointer;
 
-    &:hover {
-      color: rgb(169, 169, 169);
-    }
+   
   }
 
   .content {
@@ -103,8 +101,16 @@ $custom-c2: rgb(32, 32, 32);
       width: 100%;
       height: 100%;
       font-size: 1rem;
-      background-color: #ffffff00;
       color: white;
+    }
+
+    @media (min-width: 1300px) {
+      input {
+        padding-left: 15px;
+        background-color:rgb(39, 39, 39);
+        border-radius: 10px;
+        width: 90%;
+      }
     }
 
     button {
