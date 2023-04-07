@@ -6,7 +6,7 @@
       v-on:click.right="visible = true"
       @touchend="stop"
       @touchstart="start"
-      @touchmove="stop"
+      @touchmove="(e) => touchMoveHandle(e)"
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
@@ -95,6 +95,19 @@ export default {
 
     function stop() {
       clearTimeout(myTimeout.value);
+
+    }
+
+    function touchMoveHandle(e) {
+      clearTimeout(myTimeout.value);
+      
+      const touch = e.touches[0];
+      const deltaX = touch.clientX 
+      
+      console.log(e.touches[0].clientX, deltaX)
+      
+      $refs.msg.style.transform = `translateX(${e.touches[0].clientX}px)`
+      
     }
 
     const visible = ref(false);
@@ -104,6 +117,7 @@ export default {
     return {
       // photoSrc,
       stop,
+      touchMoveHandle,
       msg,
       open,
       start,
@@ -133,6 +147,7 @@ $crazy_color: #ff3d3d;
   user-select: none; /* Standard syntax */
 }
 .message-ations {
+
   position: absolute;
   width: 120px;
   height: auto;
@@ -253,6 +268,8 @@ $crazy_color: #ff3d3d;
 }
 
 .my-item {
+  transform: translateX(0px);
+  transition: transform 0.2s ease-out;
   max-width: 600px;
   position: relative;
   width: max-content;
