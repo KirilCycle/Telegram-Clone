@@ -484,7 +484,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 50px;
+  height: 8%;
   text-align: left;
   display: flex;
   align-items: center;
@@ -499,17 +499,8 @@ v-enter-active,
     max-height: 90%;
   }
 
-  @media (min-width: 1000px) {
-    .chat-nav-x  {
-      height: 65px;
-    }
 
-  }
  
-
-
-
-
   @media (max-width: 798px) {
     span {
       color: #2b7cff;
@@ -561,7 +552,7 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  height: 10%;
+  height: 8%;
   background-color: $custom-c2;
   position: relative;
   width: 100%;
@@ -580,6 +571,20 @@ v-enter-active,
   }
  }
 
+ .chat-input-block-x {
+  display: flex;
+  justify-content: center;
+  height: 10%;
+  position: relative;
+  width: 100%;
+  max-width: inherit;
+
+  .input-wrap {
+    height: 100%;
+    width: 100%;
+  }
+}
+
 .main {
   display: flex;
   justify-content: center;
@@ -587,7 +592,7 @@ v-enter-active,
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
- 
+
 }
 
 

@@ -288,5 +288,9 @@ button {
 
 body {
   background-color: rgb(17, 17, 17);
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }
+
 </style>
