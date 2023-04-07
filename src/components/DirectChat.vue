@@ -172,22 +172,18 @@ nav {
   background-color: #1d1e2a;
 }
 
-.observer {
-  width: 100%;
-  height: 50px;
-  height: 720px;
-}
 
 .bottom {
-  height: 39px;
+  height: 49px;
   width: 100%;
   bottom: 0;
   position: relative;
+  z-index: -1;
 
   div {
     width: 100%;
     bottom: 50px;
-    height: 30px;
+    height: 50px;
 
     position: absolute;
     z-index: 20;
@@ -208,6 +204,7 @@ nav {
   padding-top: 30px;
   position: relative;
   overflow-x: hidden;
+ 
 }
 
 @media (pointer: coarse) {
