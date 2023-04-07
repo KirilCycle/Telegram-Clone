@@ -62,8 +62,7 @@ $custom-c2: rgb(32, 32, 32);
 .input-container {
   width: 100%;
   padding: 0px 10px 0px 6px;
-  backdrop-filter: blur(8px);
-  background-color: $custom-c2;
+  
   height: 100%;
   display: flex;
 

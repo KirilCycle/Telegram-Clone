@@ -552,7 +552,7 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
-  background-color: green;
+ 
   position: relative;
  
   width: 100%;
@@ -575,6 +575,9 @@ v-enter-active,
   .chat-input-block-x  {
     max-width: 1400px;
     margin: 0% auto;
+
+    border-top: 1px solid rgba(101, 101, 101, 0.667);
+ 
     
   }
  }
@@ -731,13 +734,14 @@ v-enter-active,
   width: 100%;
   height: 100vh;
   position: relative;
- 
+  background-color: #1e1e1e;
   overflow-y: hidden ;
 }
 
 .right-side-shoved-back {
   width: 100%;
   position: relative;
+  background-color: #1e1e1e;
   overflow-y: hidden ;
   height: 100vh;
  

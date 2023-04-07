@@ -87,15 +87,17 @@ export default {
   .chatitem_info_container {
     text-align: left;
     max-width: 100%;
-
     overflow: hidden;
+
+   
 
   }
 
   .time {
     position: absolute;
-    right: 4px;
+    right: 12px;
     top: 18px;
+    font-size: 0.85rem;
     color: rgb(78, 78, 78);
   }
 }

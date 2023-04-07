@@ -104,13 +104,14 @@ export default {
   }
 
   h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 550;
   
   }
   p {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     white-space: nowrap;
+    font-weight: 550;
 
   }
 }
