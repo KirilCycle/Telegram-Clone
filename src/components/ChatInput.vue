@@ -103,6 +103,7 @@ $custom-c2: rgb(32, 32, 32);
     input {
       width: 100%;
       height: 100%;
+      max-height: 50px;
       font-size: 1rem;
       color: white;
     }

@@ -561,7 +561,6 @@ v-enter-active,
 
   .input-wrap {
     height: 8%;
-   
     width: 100%;
 
     div {
@@ -576,6 +575,7 @@ v-enter-active,
   .chat-input-block-x  {
     max-width: 1400px;
     margin: 0% auto;
+    
   }
  }
 
@@ -588,8 +588,8 @@ v-enter-active,
   max-width: inherit;
 
   .input-wrap {
-    height: 8%;
-    width: 100%;
+    height: 8%; 
+    max-width: 1400px;
   }
 }
 

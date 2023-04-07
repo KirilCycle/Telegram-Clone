@@ -43,7 +43,6 @@ export default {
   width: 100%;
   height: 70px;
   overflow: hidden;
-
   display: flex;
   &:hover {
     background-color: #b3b3b330;
@@ -53,6 +52,14 @@ export default {
   }
   flex-direction: row;
   align-items: center;
+
+  h3 {
+    color: white;
+  }
+
+  p {
+    color: gray;
+  }
 
   .img-conatiner {
     padding-left: 5px;
@@ -76,8 +83,13 @@ export default {
       }
     }
   }
+
   .chatitem_info_container {
     text-align: left;
+    max-width: 100%;
+
+    overflow: hidden;
+
   }
 
   .time {
@@ -90,13 +102,22 @@ export default {
 
 .active {
   @extend .cht-i;
-  background-color: rgb(44, 146, 255);
+  background-color: rgb(96, 173, 255);
  
   color: #ffffff;
 
   &:hover {
-    background-color: rgb(44, 146, 255);
+    background-color: rgb(96, 173, 255);
   }
+  .time { 
+    color: white
+  }
+
+  .chatitem_info_container {
+    p { color: white}
+  }
+
+ 
 
 }
 

@@ -2,11 +2,11 @@
   <div v-show="isVisible" @click="$store.commit('chat/setSelectedUser', enotherUser)">
     
     <chat-item :time="time" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">
-      <div class="txt-container">
+     
         <h3>{{ chatName }}</h3>
 
         <p>{{ chat?.lastMsg?.text }}</p>
-      </div>
+     
     </chat-item>
   
   </div>
@@ -106,12 +106,12 @@ export default {
   h3 {
     font-size: 1rem;
     font-weight: 550;
-    color: white;
+  
   }
   p {
     font-size: 0.8rem;
     white-space: nowrap;
-    color: #616161;
+
   }
 }
 </style>
