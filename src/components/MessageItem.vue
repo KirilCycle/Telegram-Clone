@@ -3,7 +3,7 @@
     <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
 
     <div
-      v-on:click.right="handleSelectMsg"
+      v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
       @touchstart="start"
       @touchmove="(e) => touchMoveHandle(e)"
@@ -85,9 +85,13 @@ export default {
   },
 
   methods: {
-     handleSelectMsg () {
+     handleSelectMsg (e) {
       
         store.commit('message/setReplyMsgRef', this.$refs.msg)
+        store.commit('message/setClickCoords', {
+          x: e.clientX,
+          y: e.clientY
+        } )
         store.commit('message/setReplyTarget',
          {
            text: this.message.text,
@@ -96,7 +100,7 @@ export default {
 
          }
         )
-        console.log(store.state.message.replyMsgRef, 'FROM REDUX')
+        console.log(store.state.message, 'FROM REDUX')
 
     }
   },

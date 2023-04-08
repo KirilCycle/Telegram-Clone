@@ -1,7 +1,7 @@
 <template>
   
 
-  <message-actions ></message-actions>
+  <message-actions  v-if="$store.state.message.replyMsgRef"  ></message-actions>
 
   
   <div class="main">
@@ -167,7 +167,7 @@ export default {
       this.currentChatType = "ChatisntSelected";
     },
 
-    
+
   },
   computed: {
     handleWhichTypeOfChatWasSelected() {
