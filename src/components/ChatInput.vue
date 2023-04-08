@@ -1,6 +1,7 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
-    <div  v-if="$store.state.message.replyMsgRef">
+    
+    <div class="reply-border-wrap"  v-if="$store.state.message.replyMsgRef">
       <reply-message-border></reply-message-border>
     </div>
 
@@ -59,10 +60,30 @@ export default {
 
 <style lang="scss" scoped>
 $custom-c2: rgb(32, 32, 32);
+
+.reply-border-wrap {
+ width: 100%;
+ height: 50px;
+ position: absolute;
+ bottom: 42px;
+ background: $custom-c2;
+
+ @media (min-width: 1000px) {
+  height: 50px;
+  bottom: 72px;
+}
+
+
+ 
+ @media (min-width: 1400px) {
+  height: 60px;
+  bottom: 75px;
+ }
+
+}
 .input-container {
   width: 100%;
   padding: 0px 10px 0px 6px;
-  
   height: 100%;
   display: flex;
 

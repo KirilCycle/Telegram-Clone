@@ -7,15 +7,12 @@
       <div v-if="$store.state.message.replyTarget.img" >
          <small-chat-image :src="$store.state.message.replyTarget.img"></small-chat-image>
       </div>
-     
       <div class="text-container">
         <h3>{{$store.state.message.replyTarget.from}}</h3>
         <p>{{$store.state.message.replyTarget.text.slice(0,29)}}</p>
       </div>
     </div>
-
     <span class="material-symbols-outlined" @click="reset"> close </span>
- 
   </div>
 </template>
 
@@ -55,15 +52,12 @@ $custom-c2: rgb(32, 32, 32);
   right: 0%;
   position: absolute;
   box-sizing: border-box;
-  background-color: $custom-c2;
-  height: 50px;  
+  height: 100%;  
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  bottom: 50px;
-
   
 
   span {
