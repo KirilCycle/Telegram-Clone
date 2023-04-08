@@ -131,6 +131,8 @@ export default {
   
   color: #ffffff;
 
+  
+
   &:hover {
     background-color: rgb(96, 173, 255);
   }
@@ -148,9 +150,18 @@ export default {
 
 @media (max-width: 600px) {
   .active {
-    background-color: none;
+    background-color:rgba(255, 255, 255, 0);
     border-radius: 0px;
+   
+      .time { 
+        color: rgb(78, 78, 78);
+      }
+  
+      
+         
+      
+    }
 
-  }
+  
 }
 </style>

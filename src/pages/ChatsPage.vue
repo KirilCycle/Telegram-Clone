@@ -455,7 +455,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$custom-c1: rgb(20, 20, 20);
+$custom-c1: rgb(34, 34, 34);
 $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
@@ -488,6 +488,7 @@ v-enter-active,
   text-align: left;
   display: flex;
   align-items: center;
+  max-height: 75px;
 
   span {
     display: none;
@@ -552,9 +553,7 @@ v-enter-active,
 .chat-input-block-x {
   display: flex;
   justify-content: center;
- 
   position: relative;
- 
   width: 100%;
   height: 8%;
   max-width: inherit;
@@ -575,10 +574,8 @@ v-enter-active,
   .chat-input-block-x  {
     max-width: 1400px;
     margin: 0% auto;
-
+  
     border-top: 1px solid rgba(101, 101, 101, 0.667);
- 
-    
   }
  }
 
@@ -625,6 +622,7 @@ v-enter-active,
     box-sizing: border-box;
     padding: 5px;
     height: 10%;
+    max-height: 75px;
     display: flex;
     flex-direction: row;
     align-items: center;

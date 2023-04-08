@@ -140,8 +140,9 @@ $crazy_color: #ff3d3d;
 .img-wrp {
   max-width: 100%;
   min-width: 90%;
-
+  
   img {
+    border-radius: 5px;
     width: 100%;
     height: 100%;
   }
@@ -183,6 +184,29 @@ $crazy_color: #ff3d3d;
   width: 500px;
   position: relative;
   display: flex;
+
+  .reply-block {
+    max-width: 93%;
+    max-height: 38px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 7px;
+    padding-left: 2px;
+    overflow: hidden;
+    height: min-content;
+    border-left: #fff 3px solid;
+    h3 {
+      font-size: 0.9rem;
+      line-height: normal;
+    }
+    p {
+      color: #d7d7d7;
+      font-size: 0.8rem;
+    }
+  }
+
+
+
 
   .item-body {
     width: 100%;
