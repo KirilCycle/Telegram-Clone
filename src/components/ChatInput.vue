@@ -65,19 +65,18 @@ $custom-c2: rgb(32, 32, 32);
  width: 100%;
  height: 50px;
  position: absolute;
- bottom: 42px;
- background: $custom-c2;
+ 
+ bottom: 100%;
+ background:$custom-c2;
 
  @media (min-width: 1000px) {
-  height: 50px;
-  bottom: 72px;
+  
 }
 
 
  
  @media (min-width: 1400px) {
-  height: 60px;
-  bottom: 75px;
+   
  }
 
 }
@@ -87,9 +86,9 @@ $custom-c2: rgb(32, 32, 32);
   height: 100%;
   display: flex;
 
-  /*
+  
   position: relative;
-*/
+
   justify-content: center;
   align-items: center;
   flex-direction: column;
