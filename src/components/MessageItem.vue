@@ -3,7 +3,7 @@
     <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
 
     <div
-      v-on:click.right="visible = true"
+      v-on:click.right="handleSelectMsg"
       @touchend="stop"
       @touchstart="start"
       @touchmove="(e) => touchMoveHandle(e)"
@@ -40,7 +40,7 @@
     </div>
 
 
-    <message-actions-modal
+    <!-- <message-actions-modal
       :removeMsg="removeMessage"
       :msgRef="msg"
       v-if="visible"
@@ -48,7 +48,7 @@
       :visible="visible"
       :profileurl="profilePhotoUrl"
       :message="message"
-    ></message-actions-modal>
+    ></message-actions-modal> -->
   
   </div>
 </template>
@@ -84,6 +84,23 @@ export default {
     };
   },
 
+  methods: {
+     handleSelectMsg () {
+      
+        store.commit('message/setReplyMsgRef', this.$refs.msg)
+        store.commit('message/setReplyTarget',
+         {
+           text: this.message.text,
+           from: this.message.userName,
+          ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
+
+         }
+        )
+        console.log(store.state.message.replyMsgRef, 'FROM REDUX')
+
+    }
+  },
+
   setup(props) {
     const auth = getAuth();
 
@@ -108,12 +125,9 @@ export default {
     function touchMoveHandle(e) {
       clearTimeout(myTimeout.value);
       
-      
       let elementwidth = msg.value.offsetWidth
       
       let elementPosition = msg.value.clientX
-      
-      
       // msg.value.style.transform = `translateX(${ msg.value.offsetWidth  }px)`
       console.log( elementPosition  );
       
@@ -125,6 +139,7 @@ export default {
 
     return {
       // photoSrc,
+     
       stop,
       touchMoveHandle,
       msg,

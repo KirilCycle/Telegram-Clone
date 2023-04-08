@@ -1,7 +1,8 @@
 export const messageModule = {
   state: () => ({
     replyMsgRef: null,
-     replyTarget: null, 
+    replyTarget: null,
+    clickCoords: null 
   }),
   getters: {
     getReplyTarget(state) {
@@ -10,6 +11,11 @@ export const messageModule = {
      getReplyMsgRef(state) {
       return state.replyMsgRef;
     },
+
+    getClickCoords(state) {
+      return state.clickCoords
+    }
+
   },
   mutations: {
     setReplyTarget(state, target) {
@@ -18,6 +24,9 @@ export const messageModule = {
         setReplyMsgRef(state, ref) {
       state.replyMsgRef = ref;
     },
+    setClickCoords(state, coords) {
+     state.coords = coords
+    }
   },
 
   actions: {
@@ -27,6 +36,12 @@ export const messageModule = {
      setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);
     },
+
+    setClickCoords({ state, commit, coords }) {
+      commit("setClickCoords",coords)
+    },
+
+
   },
   namespaced: true,
 };

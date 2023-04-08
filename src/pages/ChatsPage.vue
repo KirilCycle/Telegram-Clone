@@ -1,8 +1,11 @@
 <template>
+  
+
+  <message-actions ></message-actions>
+
+  
   <div class="main">
-    
     <div class="left-bar">
-     
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <button class="menu-btn-wrap">
           <button class="menu-btn">
@@ -25,16 +28,14 @@
           <span class="material-symbols-outlined"> language </span>
         </button>
       </div>
-     
 
-      <div @click="chatHided = true" v-show="!isSearch"  class="chat-list" >
+      <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
         <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
       </div>
-     
+
       <div v-if="isSearch" @click="chatHided = true">
         <founded-chats-list></founded-chats-list>
       </div>
-     
     </div>
 
     <Transition>
@@ -44,7 +45,11 @@
           'right-side': !chatHided,
         }"
       >
-        <div @touchmove.prevent="() => {}" v-if="$store.state.chat.selectedUser" class="chat-nav-x">
+        <div
+          @touchmove.prevent="() => {}"
+          v-if="$store.state.chat.selectedUser"
+          class="chat-nav-x"
+        >
           <button>
             <span @click="chatHided = false" class="material-symbols-outlined">
               chevron_left
@@ -52,12 +57,12 @@
           </button>
 
           <selected-chat-nav></selected-chat-nav>
-          
+
           <h3>{{ navName }}</h3>
         </div>
 
         <div class="chat-container-x">
-            <component :is="currentChatType"> </component>
+          <component :is="currentChatType"> </component>
         </div>
 
         <div
@@ -66,7 +71,7 @@
         >
           <div class="input-wrap">
             <div v-if="$store.state.chat.selectedUser.new">
-              <chat-input  :sendMsg="sendMessageToFoundedChat"></chat-input>
+              <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
             </div>
 
             <div v-else>
@@ -127,7 +132,8 @@ import NewChat from "@/components/NewChat.vue";
 import { watchEffect } from "vue";
 import ChatisntSelected from "@/components/ChatisntSelected.vue";
 import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
-import SelectedChatNav from '@/components/SelectedChatNav.vue';
+import SelectedChatNav from "@/components/SelectedChatNav.vue";
+import MessageActions from "@/components/MessageActions.vue";
 
 export default {
   components: {
@@ -139,6 +145,7 @@ export default {
     ChatList,
     ChatInput,
     SelectedChatNav,
+    MessageActions,
   },
   data() {
     return {
@@ -159,6 +166,8 @@ export default {
       }
       this.currentChatType = "ChatisntSelected";
     },
+
+    
   },
   computed: {
     handleWhichTypeOfChatWasSelected() {
@@ -202,7 +211,7 @@ export default {
         }
 
         if (replyData) {
-          message.replyData = replyData
+          message.replyData = replyData;
         }
         await updateDoc(chatRefMsg, {
           messages: arrayUnion(message),
@@ -460,8 +469,6 @@ $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
 
-
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -500,8 +507,6 @@ v-enter-active,
     max-height: 90%;
   }
 
-
- 
   @media (max-width: 798px) {
     span {
       color: #2b7cff;
@@ -564,26 +569,21 @@ v-enter-active,
 
     div {
       height: 100%;
-     
     }
-
   }
 }
 
 @media (min-width: 1400px) {
-  .chat-input-block-x  {
+  .chat-input-block-x {
     max-width: 1400px;
     margin: 0% auto;
-  
+
     border-top: 1px solid rgba(101, 101, 101, 0.667);
   }
- }
+}
 
- .chat-input-block-x {
-
-  
+.chat-input-block-x {
   .input-wrap {
-    
     max-width: 1400px;
   }
 }
@@ -598,7 +598,6 @@ v-enter-active,
   height: calc(var(--vh, 1vh) * 100);
 }
 
-
 .left-bar {
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
@@ -612,9 +611,6 @@ v-enter-active,
   background-color: $custom-c1;
   display: flex;
   flex-direction: column;
-
-
-
 
   .left_bar_srch-wrap {
     flex-shrink: 0;
@@ -684,7 +680,7 @@ v-enter-active,
         margin: 0% auto;
       }
     }
-   
+
     .left_bar_srch_wrap_settings_active {
       width: 35px;
       color: $custom-c3;
@@ -702,14 +698,11 @@ v-enter-active,
     }
   }
   .chat-list {
-
     overflow-x: hidden;
-   
   }
 
   .chat-list-hided {
     overflow-x: hidden;
-   
   }
 
   .chat-list::-webkit-scrollbar {
@@ -733,16 +726,15 @@ v-enter-active,
   height: 100vh;
   position: relative;
   background-color: #1e1e1e;
-  overflow-y: hidden ;
+  overflow-y: hidden;
 }
 
 .right-side-shoved-back {
   width: 100%;
   position: relative;
   background-color: #1e1e1e;
-  overflow-y: hidden ;
+  overflow-y: hidden;
   height: 100vh;
- 
 }
 
 .chat-container {
@@ -750,7 +742,6 @@ v-enter-active,
   overflow-y: scroll;
   height: 100%;
   background-color: $custom-c4;
-  
 }
 
 .chat-container::-webkit-scrollbar {
@@ -773,8 +764,6 @@ v-enter-active,
 }
 
 @media (max-width: 798px) {
-
-
   .right-side-shoved-back {
     width: 100%;
     position: absolute;
@@ -809,7 +798,6 @@ v-enter-active,
     resize: none;
     background-color: rgb(11, 11, 11);
 
-    
     .left_bar_srch-wrap {
       input {
         border-top-left-radius: 30px;
@@ -829,7 +817,7 @@ v-enter-active,
         height: 40px;
         width: 40px;
         transform: translate(-3px);
-         
+
         span {
           font-size: 1.6rem;
         }
@@ -847,17 +835,12 @@ v-enter-active,
         span {
           font-size: 1.6rem;
         }
-
       }
-
-
     }
-
   }
 }
 
 @media (max-width: 600px) {
-
   .chat-list-hided {
     display: none;
   }
