@@ -38,7 +38,9 @@
         <label>15:00</label>
       </div>
     </div>
-    <message-actions-modal
+
+
+    <!-- <message-actions-modal
       :removeMsg="removeMessage"
       :msgRef="msg"
       v-if="visible"
@@ -46,7 +48,8 @@
       :visible="visible"
       :profileurl="profilePhotoUrl"
       :message="message"
-    ></message-actions-modal>
+    ></message-actions-modal> -->
+  
   </div>
 </template>
 

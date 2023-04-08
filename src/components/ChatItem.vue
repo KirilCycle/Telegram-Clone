@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cht-i {
+.cht-i{
   border-radius: 10px;
   cursor: pointer;
   position: relative;
@@ -63,10 +63,25 @@ export default {
   .name {
 
     color: white;
+
+    
+      font-size: 0.9rem;
+      font-weight: 550;
+       
+    
+    
+
+
   } 
 
    .last {
      color: gray;
+     font-size: 0.9rem;
+     white-space: nowrap;
+     font-weight: 550;
+       
+    
+
    }
 
   
@@ -99,18 +114,7 @@ export default {
     max-width: 100%;
     overflow: hidden;
 
-   
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 550;
-       
-    }
-    p {
-      font-size: 0.95rem;
-      white-space: nowrap;
-      font-weight: 550;
-       
-    }
+
 
 
   }
