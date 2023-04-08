@@ -61,8 +61,8 @@ export default {
        console.log(this.message)
     },
     setReplyTarget () {
-        store.commit('chat/setReplyMsgRef', this.msgRef)
-        store.commit('chat/setReplyTarget',
+        store.commit('message/setReplyMsgRef', this.msgRef)
+        store.commit('message/setReplyTarget',
          {
            text: this.message.text,
            from: this.message.userName,
@@ -70,7 +70,7 @@ export default {
 
          }
         )
-        console.log(store.state.chat.replyMsgRef, 'FROM REDUX')
+        console.log(store.state.message.replyMsgRef, 'FROM REDUX')
     }
   },
   data() {

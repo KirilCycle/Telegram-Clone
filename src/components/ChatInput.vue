@@ -1,6 +1,6 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
-    <div  v-if="$store.state.chat.replyMsgRef">
+    <div  v-if="$store.state.message.replyMsgRef">
       <reply-message-border></reply-message-border>
     </div>
 
@@ -43,15 +43,15 @@ export default {
   methods: {
     send(text, img) {
       if (!img) {
-        this.sendMsg(this.value, null, store.state.chat.replyTarget);
+        this.sendMsg(this.value, null, store.state.message.replyTarget);
         this.value = "";
       } else {
         this.sendMsg(text, img);
         this.value = "";
       }
 
-      store.commit("chat/setReplyMsgRef", null);
-      store.commit("chat/setReplyTarget", null);
+      store.commit("message/setReplyMsgRef", null);
+      store.commit("message/setReplyTarget", null);
     },
   },
 };

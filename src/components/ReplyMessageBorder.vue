@@ -4,13 +4,13 @@
  
       <span class="material-symbols-outlined"> reply </span>
  
-      <div v-if="$store.state.chat.replyTarget.img" >
-         <small-chat-image :src="$store.state.chat.replyTarget.img"></small-chat-image>
+      <div v-if="$store.state.message.replyTarget.img" >
+         <small-chat-image :src="$store.state.message.replyTarget.img"></small-chat-image>
       </div>
      
       <div class="text-container">
-        <h3>{{$store.state.chat.replyTarget.from}}</h3>
-        <p>{{$store.state.chat.replyTarget.text.slice(0,29)}}</p>
+        <h3>{{$store.state.message.replyTarget.from}}</h3>
+        <p>{{$store.state.message.replyTarget.text.slice(0,29)}}</p>
       </div>
     </div>
 
@@ -29,11 +29,11 @@ export default {
   },
   methods: {
     reset() {
-        store.commit('chat/setReplyMsgRef', null)
-        store.commit('chat/setReplyTarget',null)
+        store.commit('message/setReplyMsgRef', null)
+        store.commit('message/setReplyTarget',null)
     },
     scrllToTarget() {
-         store.state.chat.replyMsgRef .scrollIntoView({block: "center", behavior: "smooth"})  
+         store.state.message.replyMsgRef .scrollIntoView({block: "center", behavior: "smooth"})  
     }
   },
   props: {

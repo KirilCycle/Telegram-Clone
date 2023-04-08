@@ -56,12 +56,7 @@ export const chatModule = {
     setReplyMsgRef(state, ref) {
       state.replyMsgRef = ref;
     },
-    setText(state, txt) {
-      state.text = txt;
-    },
-    setFrom(state, from) {
-      state.from = from;
-    },
+ 
   },
 
   actions: {
