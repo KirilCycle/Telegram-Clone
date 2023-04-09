@@ -97,11 +97,18 @@ export default {
 
                   // const chatRef = db.collection("chats").doc(chatId);
 
-                  const chatsMsgsRef = db
-                    .collection("chatMessages")
-                    .doc(chatId);
+                  // const chatsMsgsRef = db
+                  //   .collection("chatMessages")
+                  //   .doc(chatId);
 
-                  batch.set(chatsMsgsRef, { messages: [message] });
+                  // batch.set(chatsMsgsRef, { messages: [message] });
+
+
+                  const messagesRef = db
+                    .collection("chatMessages")
+                    .doc(chatId)
+                    .collection("messages");
+                    batch.set(messagesRef.doc(), message);
 
                   const lastMsg = {
                     text: v,

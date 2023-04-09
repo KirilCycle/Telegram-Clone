@@ -9,14 +9,14 @@
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
     </transition>
-    <!-- <message-item
+    <message-item
       :removeMessage="deleteMessage"
-      v-for="(it, index) in chat.messages"
+      v-for="it  in chat"
       :key="it.id"
       :message="it"
-      :next="chat.messages[index + 1]"
       :isMy="it.userId.includes(firstPartOfmyId)"
-    ></message-item> -->
+    ></message-item>
+    
     <div class="bottom" ref="bottom">
       <div v-desapeared="disableAutoScroll"></div>
     </div>
@@ -70,18 +70,13 @@ export default {
   setup(props) {
     const db = firebase.firestore();
 
-    const chat = ref("");
+    const chat = ref([]);
 
     const bottom = ref(null);
 
     // const slectedChatRef = db.collection("chatMessages");
 
-    const messagesRef = db
-      .collection("chatMessages")
-      .doc(store.state.chat.chatId)
-      .collection("messages");
-
-      let query = messagesRef.orderBy("createdAt", "desc").limit(20);
+   
 
 
     console.log(props.chatId, "TEST");
@@ -98,15 +93,31 @@ export default {
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
-
-    watchEffect(() => {
     
-       query.onSnapshot((snapshot, parameters) => {
+    watchEffect(() => {
+      const messagesRef = db
+      .collection("chatMessages")
+      .doc(store.state.chat.chatId)
+      .collection("messages");
+
+
+      let query = messagesRef.orderBy("createdAt", "desc").limit(20);
+    
+      query.onSnapshot((snapshot, parameters) => {
         chat.value = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
-        .reverse();
-      console.log(chat.value , "docs");
-    });
+        .reverse()
+        if (chasingBottom.value) {
+            scrollToBottom()
+          }
+        else {
+          console.log("No such document!");
+        }
+         console.log(chat.value , "docs");
+    })
+
+    
+  
 
 
 

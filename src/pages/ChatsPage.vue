@@ -1,7 +1,7 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
 
-  <button class="test" @click="test"></button>
+  <!-- <button class="test" @click="test"></button> -->
 
   <div class="main">
     <div class="left-bar">
@@ -181,7 +181,6 @@ export default {
     async test() {
       const db = firebase.firestore();
       const batch = writeBatch(db);
-
 
       const messagesRef = db
         .collection("rooms")
@@ -401,22 +400,22 @@ export default {
                   const batch = writeBatch(db);
 
                   // const chatRef = db.collection("chats").doc(chatId);
-
                   // const chatsMsgsRef = db
                   //   .collection("chatMessages")
                   //   .doc(chatId);
+                  // const chatsMsgsRef = db
+                  //   .collection("chatMessages")
+                  //   .doc(store.state.chat.chatId);
+                  // batch.set(chatsMsgsRef);
+                  // const messageRef = chatsMsgsRef.collection("messages");
+                  // const newMessageRef = messageRef.doc("1221321313customid");
+                  // batch.set(newMessageRef, message);
 
-                  const chatsMsgsRef = db
+                  const messagesRef = db
                     .collection("chatMessages")
-                    .doc(store.state.chat.chatId);
-
-                  batch.set(chatsMsgsRef);
-
-                  const messageRef = chatsMsgsRef.collection("messages");
-
-                  const newMessageRef = messageRef.doc("1221321313customid");
-
-                  batch.set(newMessageRef, message);
+                    .doc(store.state.chat.chatId)
+                    .collection("messagessXXXXXX");
+                    batch.set(messagesRef.doc(), message);
 
                   const lastMsg = {
                     text: v,
