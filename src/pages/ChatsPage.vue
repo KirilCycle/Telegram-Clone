@@ -178,11 +178,7 @@ export default {
   methods: {
     async addNewMessage(text, img, replyData) {
       const db = firebase.firestore();
-      const chatRefMsg = doc(
-        db,
-        "chatMessages",
-        store.state.chat.chatId
-      )
+      const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
 
       const auth = getAuth();
 
@@ -218,11 +214,9 @@ export default {
           .doc(store.state.chat.chatId)
           .collection("messages");
 
-         console.log( chatRefMsg,'AS SEND');
+        console.log(chatRefMsg, "AS SEND");
 
-         chatRefMsg.add(message).then((res) => 
-         console.log('res',res)
-         )
+        chatRefMsg.add(message).then((res) => console.log("res", res));
 
         const user1usersChatRef = doc(
           db,
@@ -385,11 +379,16 @@ export default {
 
                   // const chatRef = db.collection("chats").doc(chatId);
 
+                  // const chatsMsgsRef = db
+                  //   .collection("chatMessages")
+                  //   .doc(chatId);
+
                   const chatsMsgsRef = db
                     .collection("chatMessages")
-                    .doc(chatId);
+                    .doc(store.state.chat.chatId)
+                    .collection("messages");
 
-                  batch.set(chatsMsgsRef, { messages: [message] });
+                  batch.update(chatsMsgsRef, message );
 
                   const lastMsg = {
                     text: v,
