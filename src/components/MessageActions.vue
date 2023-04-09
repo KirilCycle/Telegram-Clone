@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div @click="close" class="msg-action-wrap">
+    <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <div class="emoji-container"></div>
 
@@ -83,27 +83,24 @@ export default {
   },
 
   mounted() {
-    let x = store.state.message.coords.x;
-    let y = store.state.message.coords.y;
+   
+    let x = store.state.message?.coords?.x;
+    let y = store.state.message?.coords?.y;
 
-    console.log(
-      store.state.message.coords.x,
-      store.state.message.coords.y,
-      "AAA",
-      window.innerHeight - y < 250
-    );
-
-    if (window.innerHeight - y < 220) {
+    if (y && window.innerHeight - y < 220) {
       y -= 160;
     }
 
-    this.$refs.modal.style.transform = `translate(${x}px, ${y}px)`;
+    if (x && y) {
+      this.$refs.modal.style.transform = `translate(${x}px, ${y}px)`;
+    }
 
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
 .msg-action-wrap {
   width: 100%;
   height: 100%;
@@ -173,4 +170,21 @@ export default {
     }
   }
 }
+
+@media (pointer: coarse) {
+  .msg-action-wrap {
+    background-color: rgba(0, 0, 0, 0.778);
+  } 
+
+  .msg-actions {
+    position: absolute;
+    top: 50%;  
+    left: 50%;       
+    transform: translate(-50%, -50%);    
+  }
+
+  
+}
+
+
 </style>
