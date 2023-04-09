@@ -2,7 +2,18 @@
   <Teleport to="body">
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
-        <div class="emoji-container"></div>
+        <div class="emoji-container">
+          <ul>
+            <li>😂</li>
+            <li>😘</li>
+            <li>👍</li>
+            <li>😍</li>
+            <li>🐳</li>
+          </ul>
+
+          <div class="emoji_container_circl"></div>
+          <div class="emoji_container_smll_circl"></div>
+        </div>
 
         <ul class="actions-list">
           <li @click="prepareToReply">
@@ -30,10 +41,10 @@
 
 <script>
 import store from "@/store/store";
-import { updateDoc, } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { doc, setDoc } from "firebase/firestore";
-import {  deleteDoc } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
 
 export default {
   data() {
@@ -41,6 +52,7 @@ export default {
       ableToDelete:
         store.state.message.selectedMsgData.userId ===
         store.state.user.user.uid,
+      emoji: ["😂", "😘", "☺️", "👍", "😍", " 🐳"],
     };
   },
   methods: {
@@ -62,24 +74,26 @@ export default {
       ) {
         const db = firebase.firestore();
 
-          const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
+        const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
 
-          // const messagesRef = db
-          //           .collection("chatMessages")
-          //           .doc(chatId)
-          //           .collection("messages");
-          //           batch.set(messagesRef.doc(), message);
+        // const messagesRef = db
+        //           .collection("chatMessages")
+        //           .doc(chatId)
+        //           .collection("messages");
+        //           batch.set(messagesRef.doc(), message);
 
+        const res = db
+          .collection("chatMessages")
+          .doc(store.state.chat.chatId)
+          .collection("messages")
+          .doc(store.state.message.selectedMsgData.id)
+          .delete();
 
-          const res =  db.collection('chatMessages').doc( store.state.chat.chatId).collection('messages').doc( store.state.message.selectedMsgData.id).delete();
-          
-        console.log(  res);
-          
-          // delete();
+        console.log(res);
 
-          // deleteDoc(doc(db, "chatMessages", "messages"))
-          
-      
+        // delete();
+
+        // deleteDoc(doc(db, "chatMessages", "messages"))
       }
     },
 
@@ -89,7 +103,6 @@ export default {
   },
 
   mounted() {
-   
     let x = store.state.message?.coords?.x;
     let y = store.state.message?.coords?.y;
 
@@ -100,18 +113,15 @@ export default {
     if (x && y) {
       this.$refs.modal.style.transform = `translate(${x}px, ${y}px)`;
     }
-
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .msg-action-wrap {
   width: 100%;
   height: 100%;
   position: fixed;
-
 }
 
 .msg-actions {
@@ -133,8 +143,24 @@ export default {
     background-color: #353535;
     border-radius: 30px;
 
-    &::after {
-      content: "after";
+    .emoji_container_circl {
+      width: 25px;
+      height: 25px;
+      border-radius: 12.5px;
+      position: absolute;
+      right: 5px;
+      bottom: -7px;
+      background-color: #353535;
+    }
+
+    .emoji_container_smll_circl {
+      width: 12px;
+      height: 12px;
+      position: absolute;
+      right: 14px;
+      border-radius: 6px;
+      bottom: -23px;
+      background-color: #353535;
     }
   }
 
@@ -181,18 +207,14 @@ export default {
   .msg-action-wrap {
     background-color: rgba(0, 0, 0, 0.778);
     z-index: 200;
-  } 
+  }
 
   .msg-actions {
     position: absolute;
-    top: 50%;  
+    top: 50%;
     z-index: 201;
-    left: 50%;       
-    transform: translate(-50%, -50%);    
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-
-  
 }
-
-
 </style>
