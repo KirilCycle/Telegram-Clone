@@ -1,9 +1,6 @@
 <template>
-  
+  <message-actions v-if="$store.state.message.visible"></message-actions>
 
-  <message-actions  v-if="$store.state.message.visible"  ></message-actions>
-
-  
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
@@ -166,8 +163,6 @@ export default {
       }
       this.currentChatType = "ChatisntSelected";
     },
-
-
   },
   computed: {
     handleWhichTypeOfChatWasSelected() {
@@ -183,7 +178,11 @@ export default {
   methods: {
     async addNewMessage(text, img, replyData) {
       const db = firebase.firestore();
-      const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
+      const chatRefMsg = doc(
+        db,
+        "chatMessages",
+        store.state.chat.chatId
+      )
 
       const auth = getAuth();
 
@@ -213,9 +212,17 @@ export default {
         if (replyData) {
           message.replyData = replyData;
         }
-        await updateDoc(chatRefMsg, {
-          messages: arrayUnion(message),
-        });
+
+        const chatRefMsg = db
+          .collection("chatMessages")
+          .doc(store.state.chat.chatId)
+          .collection("messages");
+
+         console.log( chatRefMsg,'AS SEND');
+
+         chatRefMsg.add(message).then((res) => 
+         console.log('res',res)
+         )
 
         const user1usersChatRef = doc(
           db,

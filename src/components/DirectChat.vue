@@ -9,14 +9,14 @@
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
     </transition>
-    <message-item
+    <!-- <message-item
       :removeMessage="deleteMessage"
       v-for="(it, index) in chat.messages"
       :key="it.id"
       :message="it"
       :next="chat.messages[index + 1]"
       :isMy="it.userId.includes(firstPartOfmyId)"
-    ></message-item>
+    ></message-item> -->
     <div class="bottom" ref="bottom">
       <div v-desapeared="disableAutoScroll"></div>
     </div>
