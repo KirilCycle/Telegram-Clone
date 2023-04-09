@@ -20,7 +20,7 @@
                 <button>Coppy Text</button>
             </li>
             <!-- v-if="$store.state.user.user.uid === "  -->
-            <li class="delete-action">
+            <li v-if="ableToDelete" class="delete-action">
               <span class="material-symbols-outlined"> delete </span>
               <button>Delete</button>
             </li>
@@ -34,7 +34,9 @@
 import store from "@/store/store";
 export default {
   data() {
-    return {};
+    return {
+      ableToDelete: store.state.message.selectedMsgData.userId === store.state.user.user.uid
+    };
 
   },
   methods: {
@@ -53,6 +55,9 @@ export default {
          }
         )
 
+    },
+    deleteMsg() {
+      
     }
   },
 
