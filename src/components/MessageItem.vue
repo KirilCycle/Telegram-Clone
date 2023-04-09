@@ -5,7 +5,7 @@
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
-      @touchstart="start"
+      @touchstart="(e) => start(e, handleTouch)"
       @touchmove="(e) => touchMoveHandle(e)"
       @contextmenu.prevent="messageActions"
       class="item-body"
@@ -85,6 +85,25 @@ export default {
   },
 
   methods: {
+    handleTouch(e) {
+ 
+      console.log('TOCUB')
+
+      store.commit('message/setReplyMsgRef', this.$refs.msg)
+        // store.commit('message/setClickCoords', {
+        //   x: e.clientX,
+        //   y: e.clientY
+        // } )
+
+
+        store.commit('message/setSelectdMsg', this.message)
+     
+
+        console.log(store.state.message.selectedMsgData, 'SELECTED')
+
+      store.commit('message/setVisible', true)
+
+    },
      handleSelectMsg (e) {
       
 
@@ -122,11 +141,9 @@ export default {
 
     const myTimeout = ref(null);
 
-    function open() {
-      visible.value = true;
-    }
-    function start() {
-      myTimeout.value = setTimeout(open, 600);
+
+    function start(e, execute) {
+      myTimeout.value = setTimeout(() => execute(e), 600);
     }
 
     function stop() {
