@@ -3,26 +3,27 @@
     <div class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <ul class="actions-list">
-          <li>
+          <li @click="prepareToReply">
             <span class="material-symbols-outlined"> reply </span>
             <button>Reply</button>
           </li>
           <li>
-            <span class="material-symbols-outlined"> delete </span>
-            <button>Delete</button>
-          </li>
-          <li>
-            <span class="material-symbols-outlined">
-                forward
+              <span class="material-symbols-outlined">
+                  forward
                 </span>
-            <button>Forward</button>
-          </li>
-          <li>
-            <span class="material-symbols-outlined">
-                file_copy
+                <button>Forward</button>
+            </li>
+            <li>
+                <span class="material-symbols-outlined">
+                    file_copy
                 </span>
-            <button>Coppy Text</button>
-          </li>
+                <button>Coppy Text</button>
+            </li>
+            <!-- v-if="$store.state.user.user.uid === "  -->
+            <li class="delete-action">
+              <span class="material-symbols-outlined"> delete </span>
+              <button>Delete</button>
+            </li>
         </ul>
       </div>
     </div>
@@ -34,6 +35,25 @@ import store from "@/store/store";
 export default {
   data() {
     return {};
+
+  },
+  methods: {
+    prepareToReply() {
+    
+      const msgData = store.state.message.selectedMsgData
+
+      console.log(msgData, 'SSS');
+
+      store.commit('message/setReplyTarget',
+         {
+           text: msgData.text,
+           from: msgData.userName,
+          ...( msgData.imageRef?  {  img:  msgData.imageRef } : {} )
+
+         }
+        )
+
+    }
   },
 
   mounted() {
@@ -79,7 +99,7 @@ export default {
       font-family: Avenir, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       color: #fff;
-      padding: 9px 11px 9px 11px;
+      padding: 5px 12px 5px 12px;
       box-sizing: border-box;
       display: flex;
       border-radius: 3px;
@@ -90,6 +110,7 @@ export default {
       button {
         height: 100%;
         padding: 10px;
+        cursor: pointer;
       }
 
       span {
@@ -101,6 +122,10 @@ export default {
         background-color: rgb(41, 41, 41);
       }
     }
+    .delete-action {
+      color: #e02b2b;
+    }
+
   }
 }
 </style>

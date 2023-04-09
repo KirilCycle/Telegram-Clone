@@ -92,14 +92,24 @@ export default {
           x: e.clientX,
           y: e.clientY
         } )
-        store.commit('message/setReplyTarget',
-         {
-           text: this.message.text,
-           from: this.message.userName,
-          ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
 
-         }
-        )
+
+        store.commit('message/setSelectdMsg', this.message)
+
+        console.log(store.state.message.selectedMsgData, 'SELECTED')
+
+        //
+
+        // store.commit('message/setReplyTarget',
+        //  {
+        //    text: this.message.text,
+        //    from: this.message.userName,
+        //   ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
+
+        //  }
+        // )
+
+
         console.log(store.state.message, 'FROM REDUX')
 
     }

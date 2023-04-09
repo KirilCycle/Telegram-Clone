@@ -2,7 +2,8 @@ export const messageModule = {
   state: () => ({
     replyMsgRef: null,
     replyTarget: null,
-    clickCoords: null 
+    clickCoords: null, 
+    selectedMsgData: null,
   }),
   getters: {
     getReplyTarget(state) {
@@ -14,6 +15,9 @@ export const messageModule = {
 
     getClickCoords(state) {
       return state.clickCoords
+    },
+    getSelectedMsgItem(state) {
+      return state.selectedMsgData
     }
 
   },
@@ -26,10 +30,16 @@ export const messageModule = {
     },
     setClickCoords(state, coords) {
      state.coords = coords
+    },
+    setSelectdMsg(state, data) {
+      state.selectedMsgData = data
     }
   },
 
   actions: {
+    setSelectdMsg({state, commit, data }){
+        commit("setSelectdMsg", data);
+    },
     setReplyTarget({ state,commit, target }) {
       commit("setReplyTarget", target);
     },

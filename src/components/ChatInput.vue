@@ -1,7 +1,7 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
     
-    <div class="reply-border-wrap"  v-if="$store.state.message.replyMsgRef">
+    <div class="reply-border-wrap"  v-if="$store.state.message.replyTarget">
       <reply-message-border></reply-message-border>
     </div>
 
