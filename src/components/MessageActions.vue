@@ -8,22 +8,18 @@
             <button>Reply</button>
           </li>
           <li>
-              <span class="material-symbols-outlined">
-                  forward
-                </span>
-                <button>Forward</button>
-            </li>
-            <li>
-                <span class="material-symbols-outlined">
-                    file_copy
-                </span>
-                <button>Coppy Text</button>
-            </li>
-            <!-- v-if="$store.state.user.user.uid === "  -->
-            <li v-if="ableToDelete" class="delete-action">
-              <span class="material-symbols-outlined"> delete </span>
-              <button>Delete</button>
-            </li>
+            <span class="material-symbols-outlined"> forward </span>
+            <button>Forward</button>
+          </li>
+          <li>
+            <span class="material-symbols-outlined"> file_copy </span>
+            <button>Coppy Text</button>
+          </li>
+          <!-- v-if="$store.state.user.user.uid === "  -->
+          <li v-if="ableToDelete" @click="deleteMsg" class="delete-action">
+            <span class="material-symbols-outlined"> delete </span>
+            <button>Delete</button>
+          </li>
         </ul>
       </div>
     </div>
@@ -32,33 +28,52 @@
 
 <script>
 import store from "@/store/store";
+import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import firebase from "firebase/compat/app";
+import { doc, setDoc } from "firebase/firestore";
+
 export default {
   data() {
     return {
-      ableToDelete: store.state.message.selectedMsgData.userId === store.state.user.user.uid
+      ableToDelete:
+        store.state.message.selectedMsgData.userId ===
+        store.state.user.user.uid,
     };
-
   },
   methods: {
     prepareToReply() {
-    
-      const msgData = store.state.message.selectedMsgData
+      const msgData = store.state.message.selectedMsgData;
 
-      console.log(msgData, 'SSS');
+      console.log(msgData, "SSS");
 
-      store.commit('message/setReplyTarget',
-         {
-           text: msgData.text,
-           from: msgData.userName,
-          ...( msgData.imageRef?  {  img:  msgData.imageRef } : {} )
-
-         }
-        )
-
+      store.commit("message/setReplyTarget", {
+        text: msgData.text,
+        from: msgData.userName,
+        ...(msgData.imageRef ? { img: msgData.imageRef } : {}),
+      });
     },
-    deleteMsg() {
-      
-    }
+
+
+    async deleteMsg() {
+      '1'
+      if (
+        store.state.message.selectedMsgData.userId === store.state.user.user.uid
+      ) {
+        const db = firebase.firestore();
+
+        try {
+          const chatRef = doc(db, "chatMessages",  store.state.chat.chatId);
+
+          await updateDoc(chatRef, {
+            messages: firebase.firestore.FieldValue.arrayRemove(store.state.message.selectedMsgData),
+          });
+
+          console.log("Message deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting message:", error);
+        }
+      }
+    },
   },
 
   mounted() {
@@ -130,7 +145,6 @@ export default {
     .delete-action {
       color: #e02b2b;
     }
-
   }
 }
 </style>
