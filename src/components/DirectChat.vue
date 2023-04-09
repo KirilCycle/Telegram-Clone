@@ -1,8 +1,11 @@
 <template>
   <div class="wrp">
-    
     <transition name="bounce">
-      <button @click="scrollToBottom" v-if="!chasingBottom" class="scrl-to-btm-btn">
+      <button
+        @click="scrollToBottom"
+        v-if="!chasingBottom"
+        class="scrl-to-btm-btn"
+      >
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
     </transition>
@@ -19,9 +22,6 @@
     </div>
     <!-- <chat-input :sendMsg="addNewMessage"></chat-input> -->
   </div>
- 
-  
-
 </template>
 
 <script>
@@ -68,14 +68,21 @@ export default {
     },
   },
   setup(props) {
-    
     const db = firebase.firestore();
 
     const chat = ref("");
 
     const bottom = ref(null);
 
-    const slectedChatRef = db.collection("chatMessages");
+    // const slectedChatRef = db.collection("chatMessages");
+
+    const messagesRef = db
+      .collection("chatMessages")
+      .doc(store.state.chat.chatId)
+      .collection("messages");
+
+      let query = messagesRef.orderBy("createdAt", "desc").limit(20);
+
 
     console.log(props.chatId, "TEST");
 
@@ -87,26 +94,44 @@ export default {
     }
 
     function scrollToBottom() {
-      bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" })
+      bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
     watchEffect(() => {
-      slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
-        if (doc.exists) {
-          // Do something with the document data
-          chat.value = doc.data();
+    
+       query.onSnapshot((snapshot, parameters) => {
+        chat.value = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .reverse();
+      console.log(chat.value , "docs");
+    });
 
-          console.log(chat.value, "cht but isnt list juct cht");
 
-          if (chasingBottom.value) {
-            scrollToBottom()
-          }
-        } else {
-          console.log("No such document!");
-        }
-      });
+
+      // messagesRef.get().then((querySnapshot) => {
+      //   const messages = [];
+      //   querySnapshot.forEach((doc) => {
+      //     messages.push(doc.data());
+      //   });
+      //   console.log(messages);
+      // });
+
+      // slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
+      //   if (doc.exists) {
+      //     // Do something with the document data
+      //     chat.value = doc.data();
+
+      //     console.log(chat.value, "cht but isnt list juct cht");
+
+      //     if (chasingBottom.value) {
+      //       scrollToBottom()
+      //     }
+      //   } else {
+      //     console.log("No such document!");
+      //   }
+      // });
     });
 
     return {
@@ -137,7 +162,6 @@ export default {
     transform: scale(1);
   }
 }
-
 
 .scrl-to-btm-btn {
   &:hover {
@@ -172,7 +196,6 @@ nav {
   background-color: #1d1e2a;
 }
 
-
 .bottom {
   height: 49px;
   width: 100%;
@@ -204,21 +227,17 @@ nav {
   padding-top: 30px;
   position: relative;
   overflow-x: hidden;
- 
 }
 
 @media (pointer: coarse) {
   //tch sreen
-  
-.wrp {
+
+  .wrp {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
   }
-  
-
-  
-  }
+}
 
 .chat {
   width: 100%;
