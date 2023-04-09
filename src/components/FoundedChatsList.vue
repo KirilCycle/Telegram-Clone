@@ -7,7 +7,7 @@
         v-for="us in founded"
         :key="us.uid"
       >
-        <div class="text-container">
+      <template v-slot:name>
           <h3>
             {{
               us.displayName
@@ -15,10 +15,14 @@
                 : us.email.replace("@gmail.com", "")
             }}
           </h3>
-          <p>
-            {{ us.email }}
-          </p>
-        </div>
+          </template>
+          <template v-slot:last_msg>
+            <p>
+              {{ us.email }}
+            </p>
+          </template>
+
+       
       </chat-item>
     </div>
   </div>
