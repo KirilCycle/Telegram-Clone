@@ -30,9 +30,10 @@
 
 <script>
 import store from "@/store/store";
-import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { updateDoc, } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { doc, setDoc } from "firebase/firestore";
+import {  deleteDoc } from "firebase/firestore";
 
 export default {
   data() {
@@ -61,19 +62,24 @@ export default {
       ) {
         const db = firebase.firestore();
 
-        try {
           const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
 
-          await updateDoc(chatRef, {
-            messages: firebase.firestore.FieldValue.arrayRemove(
-              store.state.message.selectedMsgData
-            ),
-          });
+          // const messagesRef = db
+          //           .collection("chatMessages")
+          //           .doc(chatId)
+          //           .collection("messages");
+          //           batch.set(messagesRef.doc(), message);
 
-          console.log("Message deleted successfully!");
-        } catch (error) {
-          console.error("Error deleting message:", error);
-        }
+
+          const res =  db.collection('chatMessages').doc( store.state.chat.chatId).collection('messages').doc( store.state.message.selectedMsgData.id).delete();
+          
+        console.log(  res);
+          
+          // delete();
+
+          // deleteDoc(doc(db, "chatMessages", "messages"))
+          
+      
       }
     },
 

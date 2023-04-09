@@ -215,7 +215,6 @@ export default {
           userId: auth.currentUser.uid,
           text,
           createdAt: Timestamp.now(),
-          id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         if (auth.currentUser.photoURL) {
@@ -366,7 +365,7 @@ export default {
           userId: auth.currentUser.uid,
           text: v,
           createdAt: Timestamp.now(),
-          id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
+          
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         if (auth.currentUser.photoURL) {
