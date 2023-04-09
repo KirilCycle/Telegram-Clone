@@ -1,6 +1,8 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
 
+  <button class="test" @click="test"></button>
+
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
@@ -176,6 +178,27 @@ export default {
   },
 
   methods: {
+    async test() {
+      const db = firebase.firestore();
+      const batch = writeBatch(db);
+
+
+      const messagesRef = db
+        .collection("rooms")
+        .doc("chatIds")
+        .collection("messages");
+      batch.set(messagesRef.doc(), { a: "54" });
+
+      await batch
+        .commit()
+        .then(() => {
+          console.log("Batch operation successful");
+        })
+        .catch((error) => {
+          console.error("Batch operation failed:", error);
+        });
+    },
+
     async addNewMessage(text, img, replyData) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
@@ -385,10 +408,15 @@ export default {
 
                   const chatsMsgsRef = db
                     .collection("chatMessages")
-                    .doc(store.state.chat.chatId)
-                    .collection("messages");
+                    .doc(store.state.chat.chatId);
 
-                  batch.update(chatsMsgsRef, message );
+                  batch.set(chatsMsgsRef);
+
+                  const messageRef = chatsMsgsRef.collection("messages");
+
+                  const newMessageRef = messageRef.doc("1221321313customid");
+
+                  batch.set(newMessageRef, message);
 
                   const lastMsg = {
                     text: v,
@@ -474,6 +502,14 @@ $custom-c1: rgb(34, 34, 34);
 $custom-c2: rgb(32, 32, 32);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
+
+.test {
+  width: 500px;
+  height: 500px;
+  z-index: 300;
+  position: absolute;
+  background-color: #e40f0f;
+}
 
 .fade-enter-active,
 .fade-leave-active {
