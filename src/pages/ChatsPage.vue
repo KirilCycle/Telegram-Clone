@@ -496,6 +496,9 @@ v-enter-active,
   display: flex;
   align-items: center;
   max-height: 75px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 
   span {
     display: none;

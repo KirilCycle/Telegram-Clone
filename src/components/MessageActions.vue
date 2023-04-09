@@ -105,7 +105,7 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
-  background-color: #4646462e;
+
 }
 
 .msg-actions {
@@ -174,11 +174,13 @@ export default {
 @media (pointer: coarse) {
   .msg-action-wrap {
     background-color: rgba(0, 0, 0, 0.778);
+    z-index: 200;
   } 
 
   .msg-actions {
     position: absolute;
     top: 50%;  
+    z-index: 201;
     left: 50%;       
     transform: translate(-50%, -50%);    
   }
