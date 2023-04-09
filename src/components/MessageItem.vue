@@ -87,6 +87,7 @@ export default {
   methods: {
      handleSelectMsg (e) {
       
+
         store.commit('message/setReplyMsgRef', this.$refs.msg)
         store.commit('message/setClickCoords', {
           x: e.clientX,
@@ -95,6 +96,7 @@ export default {
 
 
         store.commit('message/setSelectdMsg', this.message)
+        store.commit('message/setVisible', true)
 
         console.log(store.state.message.selectedMsgData, 'SELECTED')
 
@@ -149,11 +151,8 @@ export default {
 
     const visible = ref(false);
 
-  
-
     return {
       // photoSrc,
-     
       stop,
       touchMoveHandle,
       msg,

@@ -2,56 +2,63 @@ export const messageModule = {
   state: () => ({
     replyMsgRef: null,
     replyTarget: null,
-    clickCoords: null, 
+    clickCoords: null,
     selectedMsgData: null,
+    visible: false,
   }),
   getters: {
     getReplyTarget(state) {
       return state.replyTarget;
     },
-     getReplyMsgRef(state) {
+    setVisible(state) {
+      return state.visible;
+    },
+    getReplyMsgRef(state) {
       return state.replyMsgRef;
     },
 
     getClickCoords(state) {
-      return state.clickCoords
+      return state.clickCoords;
     },
     getSelectedMsgItem(state) {
-      return state.selectedMsgData
-    }
-
+      return state.selectedMsgData;
+    },
   },
   mutations: {
+    setVisible(state, v) {
+      state.visible = v;
+    },
     setReplyTarget(state, target) {
       state.replyTarget = target;
     },
-        setReplyMsgRef(state, ref) {
+    setReplyMsgRef(state, ref) {
       state.replyMsgRef = ref;
     },
     setClickCoords(state, coords) {
-     state.coords = coords
+      state.coords = coords;
     },
     setSelectdMsg(state, data) {
-      state.selectedMsgData = data
-    }
+      state.selectedMsgData = data;
+    },
   },
 
   actions: {
-    setSelectdMsg({state, commit, data }){
-        commit("setSelectdMsg", data);
+    setVisible({ state, commit, v }) {
+      commit("setVisible", v);
     },
-    setReplyTarget({ state,commit, target }) {
+    setSelectdMsg({ state, commit, data }) {
+      commit("setSelectdMsg", data);
+    },
+    setReplyTarget({ state, commit, target }) {
       commit("setReplyTarget", target);
     },
-     setReplyMsgRef({ state, commit, ref }) {
+    setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);
     },
 
     setClickCoords({ state, commit, coords }) {
-      commit("setClickCoords",coords)
+      commit("setClickCoords", coords);
     },
-
-
   },
   namespaced: true,
 };

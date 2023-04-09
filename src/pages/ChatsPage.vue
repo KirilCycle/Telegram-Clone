@@ -1,7 +1,7 @@
 <template>
   
 
-  <message-actions  v-if="$store.state.message.replyMsgRef"  ></message-actions>
+  <message-actions  v-if="$store.state.message.visible"  ></message-actions>
 
   
   <div class="main">

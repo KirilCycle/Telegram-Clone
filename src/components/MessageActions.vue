@@ -1,7 +1,9 @@
 <template>
   <Teleport to="body">
-    <div class="msg-action-wrap">
+    <div @click="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
+        <div class="emoji-container"></div>
+
         <ul class="actions-list">
           <li @click="prepareToReply">
             <span class="material-symbols-outlined"> reply </span>
@@ -53,19 +55,19 @@ export default {
       });
     },
 
-
     async deleteMsg() {
-      '1'
       if (
         store.state.message.selectedMsgData.userId === store.state.user.user.uid
       ) {
         const db = firebase.firestore();
 
         try {
-          const chatRef = doc(db, "chatMessages",  store.state.chat.chatId);
+          const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
 
           await updateDoc(chatRef, {
-            messages: firebase.firestore.FieldValue.arrayRemove(store.state.message.selectedMsgData),
+            messages: firebase.firestore.FieldValue.arrayRemove(
+              store.state.message.selectedMsgData
+            ),
           });
 
           console.log("Message deleted successfully!");
@@ -74,19 +76,29 @@ export default {
         }
       }
     },
+
+    close() {
+      store.commit("message/setVisible", false);
+    },
   },
 
   mounted() {
+    let x = store.state.message.coords.x;
+    let y = store.state.message.coords.y;
+
     console.log(
       store.state.message.coords.x,
       store.state.message.coords.y,
-      "AAA"
+      "AAA",
+      window.innerHeight - y < 250
     );
 
-    // this.$refs.modal.style.transform  = `translate(${store.state.message.coords.x}}px,${store.state.message.coords.y}px)`
+    if (window.innerHeight - y < 220) {
+      y -= 160;
+    }
 
-    this.$refs.modal.style.transform = `translate(${store.state.message.coords.x}px, ${store.state.message.coords.y}px)`;
-    // this.$refs.modal.style.transform = `translateY(${ -store.state.message.coords.y  }px)`
+    this.$refs.modal.style.transform = `translate(${x}px, ${y}px)`;
+
   },
 };
 </script>
@@ -103,11 +115,25 @@ export default {
   top: 0%;
   width: 200px;
   border-radius: 5px;
-  background-color: #353535f1;
+  background-color: #353535;
   position: absolute;
-  backdrop-filter: blur(4px);
   height: min-content;
+  display: flex;
+  justify-content: center;
   padding: 5px;
+
+  .emoji-container {
+    width: 270px;
+    height: 35px;
+    position: absolute;
+    top: -49px;
+    background-color: #353535;
+    border-radius: 30px;
+
+    &::after {
+      content: "after";
+    }
+  }
 
   .actions-list {
     width: 100%;
