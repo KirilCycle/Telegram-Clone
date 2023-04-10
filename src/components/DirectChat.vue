@@ -92,6 +92,11 @@ export default {
       bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
 
+    let page = ref(0);
+
+    const lastVisible = ref(null);
+    const firts = ref(null);
+
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
     watchEffect(() => {
@@ -100,7 +105,32 @@ export default {
         .doc(store.state.chat.chatId)
         .collection("messages");
 
-      let query = messagesRef.orderBy("createdAt", "desc").limit(20);
+      let query = null;
+
+      // const db = firebase.firestore();
+      // const lastVisible = chat.value[chat.value.length - 1];
+      // const firts = chat.value[0];
+
+      if (page.value > 0) {
+        //in case we saw a top observer
+        console.log("a");
+
+        // const lastVisible = chat.value[chat.value.length - 1];
+        // const firts = chat.value[0];
+
+        // query = messagesRef.orderBy("createdAt", "desc").limit(10)
+
+        query =  messagesRef.orderBy("createdAt")
+        .limitToLast(20)
+        .endBefore(lastVisible.value.createdAt)
+      } else {
+        console.log("b");
+
+        query = messagesRef.orderBy("createdAt", "desc").limit(20);
+        // query = messagesRef.orderBy("createdAt", "desc").limit(10)
+      }
+
+    
 
       query.onSnapshot((snapshot, parameters) => {
         chat.value = snapshot.docs
@@ -116,36 +146,34 @@ export default {
     });
 
     function fetchPrev() {
-
       console.log("more");
+     
 
-      const db = firebase.firestore();
+       lastVisible.value = chat.value[chat.value.length - 4];
+       firts.value = chat.value[0];
 
-      const lastVisible = chat.value[chat.value.length - 1];
+      page.value += 1;
 
-      const firts = chat.value[0];
-
-      console.log("last", lastVisible);
-
+      console.log(page.value);
       // Construct a new query starting at this document,
       // get the next 25 cities.
 
-      const messagesRef = db
-        .collection("chatMessages")
-        .doc(store.state.chat.chatId)
-        .collection("messages");
+      // const messagesRef = db
+      //   .collection("chatMessages")
+      //   .doc(store.state.chat.chatId)
+      //   .collection("messages");
 
-      let query = messagesRef
-        .orderBy("createdAt")
-        .limitToLast(3)
-        .endBefore(firts.createdAt)
+      // let query = messagesRef
+      //   .orderBy("createdAt")
+      //   .limitToLast(3)
+      //   .endBefore(firts.createdAt)
 
-      query.onSnapshot((snapshot, parameters) => {
-        let test = snapshot.docs.reverse()
-        .map((doc) => ( chat.value.unshift({ id: doc.id, ...doc.data() })) ) 
+      // query.onSnapshot((snapshot, parameters) => {
+      //   let test = snapshot.docs.reverse()
+      //   .map((doc) => ( chat.value.unshift({ id: doc.id, ...doc.data() })) )
 
-        console.log(test, "TEST");
-      });
+      //   console.log(test, "TEST");
+      // });
     }
 
     return {
