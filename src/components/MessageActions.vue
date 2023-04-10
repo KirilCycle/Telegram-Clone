@@ -3,14 +3,14 @@
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <div class="emoji-container">
-          <ul>
+          <!-- <ul>
             <li>😂</li>
             <li>😘</li>
             <li>👍</li>
             <li>😍</li>
             <li>🐳</li>
             <li></li>
-          </ul>
+          </ul> -->
 
           <div class="emoji_container_circl"></div>
           <div class="emoji_container_smll_circl"></div>
@@ -77,24 +77,27 @@ export default {
 
         const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
 
-        // const messagesRef = db
-        //           .collection("chatMessages")
-        //           .doc(chatId)
-        //           .collection("messages");
-        //           batch.set(messagesRef.doc(), message);
+      
+        try {
+          
+          console.log('EXECUTE FN')
 
-        const res = db
-          .collection("chatMessages")
-          .doc(store.state.chat.chatId)
-          .collection("messages")
-          .doc(store.state.message.selectedMsgData.id)
-          .delete();
+        let res =  db.collection("chatMessages")
+            .doc(store.state.chat.chatId)
+            .collection("messages")
+            .doc(store.state.message.selectedMsgData.id)
+            
+            res.delete()
+            
 
-        console.log(res);
+      
+          console.log(store.state.chat.chatId,  ' msg =>' ,store.state.message.selectedMsgData.id );
 
-        // delete();
+        } catch (e) {
+          console.log(e);
+        }
 
-        // deleteDoc(doc(db, "chatMessages", "messages"))
+      
       }
     },
 
