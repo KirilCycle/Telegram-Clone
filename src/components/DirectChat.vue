@@ -1,5 +1,6 @@
 <template>
   <div class="wrp">
+    <div v-observer="fetchPrev"></div>
     <transition name="bounce">
       <button
         @click="scrollToBottom"
@@ -11,12 +12,12 @@
     </transition>
     <message-item
       :removeMessage="deleteMessage"
-      v-for="it  in chat"
+      v-for="it in chat"
       :key="it.id"
       :message="it"
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
-    
+
     <div class="bottom" ref="bottom">
       <div v-desapeared="disableAutoScroll"></div>
     </div>
@@ -34,6 +35,7 @@ import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import ChatInput from "./ChatInput.vue";
 import MessageItem from "./MessageItem.vue";
+import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 
 export default {
@@ -66,6 +68,41 @@ export default {
         console.error("Error deleting message:", error);
       }
     },
+    fetchPrev() {
+      console.log("more");
+
+      const db = firebase.firestore();
+
+      const lastVisible = this.chat[this.chat.length - 1];
+
+      const firts = this.chat[0];
+     
+     
+
+      console.log("last", lastVisible);
+
+      // Construct a new query starting at this document,
+      // get the next 25 cities.
+
+      const messagesRef = db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages");
+
+      let query = messagesRef
+        .orderBy("createdAt")
+        .limit(5)
+        .endBefore(firts.createdAt)
+
+        
+      query.onSnapshot((snapshot, parameters) => {
+        let test = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .reverse();
+
+        console.log(test, "TEST");
+      });
+    },
   },
   setup(props) {
     const db = firebase.firestore();
@@ -75,9 +112,6 @@ export default {
     const bottom = ref(null);
 
     // const slectedChatRef = db.collection("chatMessages");
-
-   
-
 
     console.log(props.chatId, "TEST");
 
@@ -93,33 +127,26 @@ export default {
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
-    
+
     watchEffect(() => {
       const messagesRef = db
-      .collection("chatMessages")
-      .doc(store.state.chat.chatId)
-      .collection("messages");
-
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages");
 
       let query = messagesRef.orderBy("createdAt", "desc").limit(20);
-    
+
       query.onSnapshot((snapshot, parameters) => {
         chat.value = snapshot.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
-        .reverse()
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .reverse();
         if (chasingBottom.value) {
-            scrollToBottom()
-          }
-        else {
+          scrollToBottom();
+        } else {
           console.log("No such document!");
         }
-         console.log(chat.value , "docs");
-    })
-
-    
-  
-
-
+        console.log(chat.value, "docs");
+      });
 
       // messagesRef.get().then((querySnapshot) => {
       //   const messages = [];
