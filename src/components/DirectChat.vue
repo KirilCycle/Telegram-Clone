@@ -137,10 +137,20 @@ export default {
     
 
       query.onSnapshot((snapshot, parameters) => {
-        chat.value = snapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .reverse();
+        
+        if (page.value > 0) {
+          chat.value = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            
+        }
           
+          else {
+            chat.value = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .reverse() 
+          }
+
+
         if (chasingBottom.value) {
           scrollToBottom();
         } else {
@@ -156,7 +166,7 @@ export default {
 
       //  lastVisible.value = chat.value[chat.value.length - 1];
        
-      firts.value = page.value > 0 ? chat.value[chat.value.length - 1]  :chat.value[0] 
+      firts.value = chat.value[0] 
 
       page.value += 1;
 
