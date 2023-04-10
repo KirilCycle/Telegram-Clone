@@ -37,6 +37,7 @@ import ChatInput from "./ChatInput.vue";
 import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
+import { limitToFirst, limitToLast } from "firebase/database";
 
 export default {
   components: { ChatInput, MessageItem },
@@ -67,41 +68,6 @@ export default {
       } catch (error) {
         console.error("Error deleting message:", error);
       }
-    },
-    fetchPrev() {
-      console.log("more");
-
-      const db = firebase.firestore();
-
-      const lastVisible = this.chat[this.chat.length - 1];
-
-      const firts = this.chat[0];
-     
-     
-
-      console.log("last", lastVisible);
-
-      // Construct a new query starting at this document,
-      // get the next 25 cities.
-
-      const messagesRef = db
-        .collection("chatMessages")
-        .doc(store.state.chat.chatId)
-        .collection("messages");
-
-      let query = messagesRef
-        .orderBy("createdAt")
-        .limit(5)
-        .endBefore(firts.createdAt)
-
-        
-      query.onSnapshot((snapshot, parameters) => {
-        let test = snapshot.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .reverse();
-
-        console.log(test, "TEST");
-      });
     },
   },
   setup(props) {
@@ -147,33 +113,44 @@ export default {
         }
         console.log(chat.value, "docs");
       });
-
-      // messagesRef.get().then((querySnapshot) => {
-      //   const messages = [];
-      //   querySnapshot.forEach((doc) => {
-      //     messages.push(doc.data());
-      //   });
-      //   console.log(messages);
-      // });
-
-      // slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
-      //   if (doc.exists) {
-      //     // Do something with the document data
-      //     chat.value = doc.data();
-
-      //     console.log(chat.value, "cht but isnt list juct cht");
-
-      //     if (chasingBottom.value) {
-      //       scrollToBottom()
-      //     }
-      //   } else {
-      //     console.log("No such document!");
-      //   }
-      // });
     });
+
+    function fetchPrev() {
+
+      console.log("more");
+
+      const db = firebase.firestore();
+
+      const lastVisible = chat.value[chat.value.length - 1];
+
+      const firts = chat.value[0];
+
+      console.log("last", lastVisible);
+
+      // Construct a new query starting at this document,
+      // get the next 25 cities.
+
+      const messagesRef = db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages");
+
+      let query = messagesRef
+        .orderBy("createdAt")
+        .limitToLast(3)
+        .endBefore(firts.createdAt)
+
+      query.onSnapshot((snapshot, parameters) => {
+        let test = snapshot.docs.reverse()
+        .map((doc) => ( chat.value.unshift({ id: doc.id, ...doc.data() })) ) 
+
+        console.log(test, "TEST");
+      });
+    }
 
     return {
       chat,
+      fetchPrev,
       bottom,
       disableAutoScroll,
       chasingBottom,
