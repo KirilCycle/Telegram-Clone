@@ -118,11 +118,11 @@ export default {
         // const firts = chat.value[0];
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
 
-      console.log('prepare');
+        console.log('prepare');
 
       
           query =  messagesRef.orderBy("createdAt")
-          .limitToLast(20)
+          .limitToLast(40)
           .endBefore(firts.value.createdAt)
        
 
@@ -130,7 +130,7 @@ export default {
         console.log("b");
 
        
-        query = messagesRef.orderBy("createdAt","desc").limit(20);
+        query = messagesRef.orderBy("createdAt","desc").limit(40);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
@@ -166,7 +166,7 @@ export default {
 
       //  lastVisible.value = chat.value[chat.value.length - 1];
        
-      firts.value = chat.value[0] 
+      firts.value = chat.value[19] 
 
       page.value += 1;
 
