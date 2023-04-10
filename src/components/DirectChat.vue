@@ -114,19 +114,23 @@ export default {
       if (page.value > 0) {
         //in case we saw a top observer
         console.log("a");
-
         // const lastVisible = chat.value[chat.value.length - 1];
         // const firts = chat.value[0];
-
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
 
-        query =  messagesRef.orderBy("createdAt")
-        .limitToLast(20)
-        .endBefore(lastVisible.value.createdAt)
+      console.log('prepare');
+
+      
+          query =  messagesRef.orderBy("createdAt")
+          .limitToLast(20)
+          .endBefore(firts.value.createdAt)
+       
+
       } else {
         console.log("b");
 
-        query = messagesRef.orderBy("createdAt", "desc").limit(20);
+       
+        query = messagesRef.orderBy("createdAt","desc").limit(20);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
@@ -136,6 +140,7 @@ export default {
         chat.value = snapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
           .reverse();
+          
         if (chasingBottom.value) {
           scrollToBottom();
         } else {
@@ -149,8 +154,9 @@ export default {
       console.log("more");
      
 
-       lastVisible.value = chat.value[chat.value.length - 4];
-       firts.value = chat.value[0];
+      //  lastVisible.value = chat.value[chat.value.length - 1];
+       
+      firts.value = page.value > 0 ? chat.value[chat.value.length - 1]  :chat.value[0] 
 
       page.value += 1;
 
