@@ -77,25 +77,34 @@ export default {
 
     const bottom = ref(null);
 
+    let page = ref(0);
+
+    const lastVisible = ref(null);
+    const firts = ref(null);
     // const slectedChatRef = db.collection("chatMessages");
 
     console.log(props.chatId, "TEST");
 
     const chasingBottom = ref(true);
-
-    function disableAutoScroll(v) {
-      chasingBottom.value = v;
-      //  console.log( v, 'V_DIR');
-    }
-
     function scrollToBottom() {
       bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
 
-    let page = ref(0);
+    function disableAutoScroll(v) {
+      if (chat.value.length > 0 && page.value == 0) {
+       
+        bottom.value?.scrollIntoView({  block: "end" });
+        // console.log('disable')
+        // chasingBottom.value = v;
+      } else {
+         console.log('disable')
+        chasingBottom.value = v;
+      }
+      
+      //  console.log( v, 'V_DIR');
+    }
 
-    const lastVisible = ref(null);
-    const firts = ref(null);
+
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
@@ -118,55 +127,65 @@ export default {
         // const firts = chat.value[0];
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
 
-        console.log('prepare');
+        console.log("prepare");
 
-      
-          query =  messagesRef.orderBy("createdAt")
+        query = messagesRef
+          .orderBy("createdAt")
           .limitToLast(40)
-          .endBefore(firts.value.createdAt)
-       
-
+          .endBefore(firts.value.createdAt);
       } else {
         console.log("b");
 
-       
-        query = messagesRef.orderBy("createdAt","desc").limit(40);
+     
+
+        query = messagesRef.orderBy("createdAt", "desc").limit(40);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
-    
-
       query.onSnapshot((snapshot, parameters) => {
-        
         if (page.value > 0) {
+          chat.value = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+
+        } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
-            
+            .reverse()
         }
-          
-          else {
-            chat.value = snapshot.docs
-            .map((doc) => ({ id: doc.id, ...doc.data() }))
-            .reverse() 
-          }
+
+     
+     
+     
+        
 
 
-        if (chasingBottom.value) {
-          scrollToBottom();
-        } else {
-          console.log("No such document!");
-        }
         console.log(chat.value, "docs");
       });
     });
 
+
+
+    function scrollControll () {
+      
+      if (chasingBottom.value) {
+          scrollToBottom();
+          console.log("scroll");
+        } else {
+          console.log("disable scroll");
+        }
+
+
+    }
+
     function fetchPrev() {
       console.log("more");
-     
 
-      //  lastVisible.value = chat.value[chat.value.length - 1];
-       
-      firts.value = chat.value[19] 
+      //lastVisible.value = chat.value[chat.value.length - 1];
+
+      firts.value = chat.value[19];
 
       page.value += 1;
 
