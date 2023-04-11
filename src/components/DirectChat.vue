@@ -92,6 +92,7 @@ export default {
 
     function disableAutoScroll(v) {
       chasingBottom.value = v;
+    console.log(  'scroll d');
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
@@ -126,18 +127,27 @@ export default {
 
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0) {
-
           chat.value = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
+
+          if (chasingBottom.value) {
+            scrollToBottom()
+          }
+
         } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
+          
+            if (chasingBottom.value) {
+            scrollToBottom()
+          }
+
         }
 
-    console.log(chat.value, 'docs');
+        console.log(chat.value, 'docs');
 
         if ( chat.value.length < 40   ) {
           disablePrevFetch.value = true
