@@ -94,12 +94,15 @@ export default {
       if (chat.value.length > 0 && page.value == 0) {
        
         bottom.value?.scrollIntoView({  block: "end" });
+        
+      
+      }
         // console.log('disable')
         // chasingBottom.value = v;
-      } else {
-         console.log('disable')
-        chasingBottom.value = v;
-      }
+      // } else {
+      //    console.log('disable')
+      //    chasingBottom.value = v;
+      // }
       
       //  console.log( v, 'V_DIR');
     }
@@ -148,7 +151,6 @@ export default {
             id: doc.id,
             ...doc.data(),
           }));
-
 
         } else {
           chat.value = snapshot.docs
