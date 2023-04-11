@@ -83,6 +83,9 @@ export default {
 
     const lastVisible = ref(null);
     const firts = ref(null);
+
+    const chatWasFetched = ref(null)
+
     // const slectedChatRef = db.collection("chatMessages");
 
     console.log(props.chatId, "TEST");
@@ -178,8 +181,11 @@ export default {
     }
 
     function firstScroll() {
-      bottom.value?.scrollIntoView({ block: "end" });
-      console.log("firts scroll");
+      if (!chatWasFetched.value) {
+        bottom.value?.scrollIntoView({ block: "end" });
+        console.log("firts scroll");
+        chatWasFetched.value = true
+      }
     }
 
     return {

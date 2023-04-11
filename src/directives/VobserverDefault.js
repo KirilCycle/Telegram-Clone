@@ -9,9 +9,7 @@ export default {
       
   
       let callback = function (entries, observer) {
-  
-          binding.value();
-        
+          binding.value();        
       };
   
      
