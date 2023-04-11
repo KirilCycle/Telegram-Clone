@@ -1,5 +1,5 @@
 export default {
-  beforeMount(el, binding) {
+  beforeMount(el, binding ) {
     let options = {
       root: document.querySelector("#scrollArea"),
       rootMargin: "0px",

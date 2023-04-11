@@ -10,6 +10,8 @@
         <span class="material-symbols-outlined"> keyboard_arrow_down </span>
       </button>
     </transition>
+
+    <div v-observerdef="firstScroll" v-if="chat.length > 0"></div>
     <message-item
       :removeMessage="deleteMessage"
       v-for="it in chat"
@@ -91,23 +93,8 @@ export default {
     }
 
     function disableAutoScroll(v) {
-      if (chat.value.length > 0 && page.value == 0) {
-       
-        bottom.value?.scrollIntoView({  block: "end" });
-        
-      
-      }
-        // console.log('disable')
-        // chasingBottom.value = v;
-      // } else {
-      //    console.log('disable')
-      //    chasingBottom.value = v;
-      // }
-      
-      //  console.log( v, 'V_DIR');
+      chasingBottom.value = v;
     }
-
-
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
@@ -139,8 +126,6 @@ export default {
       } else {
         console.log("b");
 
-     
-
         query = messagesRef.orderBy("createdAt", "desc").limit(40);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
@@ -151,36 +136,15 @@ export default {
             id: doc.id,
             ...doc.data(),
           }));
-
         } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
-            .reverse()
+            .reverse();
         }
-
-     
-     
-     
-        
-
 
         console.log(chat.value, "docs");
       });
     });
-
-
-
-    function scrollControll () {
-      
-      if (chasingBottom.value) {
-          scrollToBottom();
-          console.log("scroll");
-        } else {
-          console.log("disable scroll");
-        }
-
-
-    }
 
     function fetchPrev() {
       console.log("more");
@@ -213,9 +177,15 @@ export default {
       // });
     }
 
+    function firstScroll() {
+      bottom.value?.scrollIntoView({ block: "end" });
+      console.log("firts scroll");
+    }
+
     return {
       chat,
       fetchPrev,
+      firstScroll,
       bottom,
       disableAutoScroll,
       chasingBottom,
