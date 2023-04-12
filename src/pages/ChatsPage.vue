@@ -6,13 +6,17 @@
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
-        <button class="menu-btn-wrap">
+       
+        <!-- <button class="menu-btn-wrap">
           <button class="menu-btn">
             <span></span>
             <span></span>
             <span></span>
           </button>
-        </button>
+        </button> -->
+       
+        <settings></settings>
+
         <input
           placeholder="Search"
           @input="(e) => serachChat(e.target.value)"
@@ -133,6 +137,7 @@ import ChatisntSelected from "@/components/ChatisntSelected.vue";
 import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
 import SelectedChatNav from "@/components/SelectedChatNav.vue";
 import MessageActions from "@/components/MessageActions.vue";
+import Settings from "@/components/Settings.vue";
 
 export default {
   components: {
@@ -142,6 +147,7 @@ export default {
     ChatisntSelected,
     FoundedChatsList,
     ChatList,
+    Settings,
     ChatInput,
     SelectedChatNav,
     MessageActions,
