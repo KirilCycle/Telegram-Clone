@@ -496,8 +496,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$custom-c1: rgb(34, 34, 34);
-$custom-c2: rgb(32, 32, 32);
+$custom-c1: rgb(28, 28, 28);
+$custom-c2: rgb(43, 43, 43);
 $custom-c4: rgb(23, 23, 23);
 $custom-c3: rgb(0, 128, 255);
 
@@ -697,23 +697,30 @@ v-enter-active,
 
     input {
       background-color: $custom-c2;
-      height: 35px;
+      height: 43px;
       width: 90%;
       padding-right: 5px;
+      padding-left: 10px;
       margin-left: 5px;
       font-size: 0.9rem;
       color: #e7e7e7;
-      padding-left: 3px;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
+      border-top-left-radius: 25px;
+      border-bottom-left-radius: 25px;
+
+      &::placeholder {
+        color: #838383;
+        font-size: 1rem;
+        font-weight: 540;
     }
 
+    } 
+
     .left_bar_srch_wrap_settings {
-      width: 35px;
-      height: 35px;
+      width: 43px;
+      height: 43px;
       background-color: $custom-c2;
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
       &:hover {
         color: rgb(146, 146, 146);
       }
@@ -725,12 +732,12 @@ v-enter-active,
     }
 
     .left_bar_srch_wrap_settings_active {
-      width: 35px;
+      width: 43px;
       color: $custom-c3;
-      height: 35px;
+      height: 43px;
       background-color: $custom-c2;
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
       &:hover {
       }
       cursor: pointer;
