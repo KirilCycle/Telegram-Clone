@@ -299,7 +299,7 @@ $def-gray: #828282;
 
 
 .edit-panel {
-  width: 320px;
+  width: 310px;
   position: absolute;
   left: 310px;
   height: 100%;
