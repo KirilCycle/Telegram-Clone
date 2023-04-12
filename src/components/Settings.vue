@@ -116,7 +116,7 @@
     z-index: 120;
     position: fixed;
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-    width: 320px;
+    width: 310px;
     position: fixed;
     height: 100%;
     display: flex;

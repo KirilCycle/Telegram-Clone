@@ -8,7 +8,7 @@
           <span class="material-symbols-outlined"> arrow_back </span>
         </button>
         <h1 class="settings">Settings</h1>
-        <button @click="showEditComponent" class="edit">
+        <button @click="() => handleEditComponent(-310, true)" class="edit">
           <span class="material-symbols-outlined"> edit </span>
         </button>
       </nav>
@@ -44,7 +44,7 @@
       </div>
  
     <div  ref="edit" class="edit-panel">
-      <edit-settings ></edit-settings>
+      <edit-settings @close=" () => handleEditComponent(0, false)" ></edit-settings>
     </div>
 
   </div>
@@ -89,12 +89,9 @@ export default {
   created() {},
   methods: {
 
-    async showEditComponent () {
-      this.inEdit = true
-
-    
-        this.$refs.edit.style.transform = `translateX(${-310}px)`;
-      
+    async handleEditComponent (pos,state) {
+      this.inEdit = state
+      this.$refs.edit.style.transform = `translateX(${pos}px)`;
     },
 
     async handleChanging() {
@@ -297,7 +294,7 @@ export default {
 
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
-$custom-c4: rgb(23, 23, 23);
+$custom-c4: rgb(31, 31, 31);
 $def-gray: #828282;
 
 
@@ -306,7 +303,6 @@ $def-gray: #828282;
   position: absolute;
   left: 310px;
   height: 100%;
-  background-color: #00ff44;
   transform: translateX(0);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
@@ -377,12 +373,11 @@ h3 {
   position: absolute;
   bottom: 3px;
   left: 20px;
-  z-index: 50;
   font-size: 1rem;
 }
 h2 {
   color: #ffffff;
-  z-index: 50;
+ 
   position: absolute;
   bottom: 23px;
   left: 20px;
@@ -410,17 +405,8 @@ h2 {
   -webkit-font-smoothing: antialiased;
   height: 100%;
   border-right: 0.1em solid rgb(63, 63, 63);
-  
-  button {
-    min-height: 39px;
-    width: max-content;
-    text-align: center;
-
-    span {
-      text-align: left;
-      display: block;
-    }
-  }
+  background-color: $custom-c4;
+ 
 
   .profile-txt-wrp {
     text-align: center;
@@ -503,19 +489,7 @@ h2 {
     color: $def-gray;
   }
 
-  .image-container {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #fff;
-
-    img {
-      width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-  }
+ 
 
   h2 {
     margin-top: 10px;
