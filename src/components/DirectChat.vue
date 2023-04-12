@@ -20,10 +20,10 @@
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
 
-    <div  v-if="page > 0" class="bottom" ref="bottom">
+    <div v-if="page > 0" class="bottom" ref="bottom">
       <div v-observer="fetchNext"></div>
     </div>
-   
+
     <div v-else class="bottom" ref="bottom">
       <div v-desapeared="disableAutoScroll"></div>
     </div>
@@ -43,7 +43,7 @@ import ChatInput from "./ChatInput.vue";
 import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
-import { limitToFirst, limitToLast } from "firebase/database";
+import { limitToFirst, limitToLast, startAfter } from "firebase/database";
 
 export default {
   components: { ChatInput, MessageItem },
@@ -83,11 +83,12 @@ export default {
     let page = ref(0);
     const lastVisible = ref(null);
     const firts = ref(null);
-    const disablePrevFetch = ref(null)
-    const chatWasFetched = ref(null)
+    const disablePrevFetch = ref(null);
+    const chatWasFetched = ref(null);
     // const slectedChatRef = db.collection("chatMessages");
     console.log(props.chatId, "TEST");
 
+    const getMessagesType = ref('prev')
 
     const chasingBottom = ref(true);
     function scrollToBottom() {
@@ -96,7 +97,7 @@ export default {
 
     function disableAutoScroll(v) {
       chasingBottom.value = v;
-    console.log(  'scroll d');
+      console.log("scroll d");
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
@@ -113,15 +114,42 @@ export default {
       // const lastVisible = chat.value[chat.value.length - 1];
       // const firts = chat.value[0];
 
-      if (page.value > 0 ) {
+      if (page.value > 0) {
         //in case we saw a top observer
-     
-      
+
+
+        switch(  getMessagesType.value) {
+
+          case 'prev' :
+
           query = messagesRef
-            .orderBy("createdAt")
-            .limitToLast(40)
-            .endBefore(firts.value.createdAt);
-         
+          .orderBy("createdAt")
+          .limitToLast(40)
+          .endBefore(firts.value.createdAt);
+
+          break
+
+          case 'next' : 
+
+          query = messagesRef
+          .orderBy("createdAt")
+          .startAfter(firts.value.createdAt)
+          .limit(40)
+
+        }
+
+        // query = messagesRef
+        //   .orderBy("createdAt")
+        //   .limitToLast(40)
+        //   .endBefore(firts.value.createdAt);
+
+        // let next = messagesRef
+        //   .orderBy("createdAt")
+        //   .startAfter(firts.value.createdAt)
+        //   .limit(40)
+        
+
+
       } else {
         console.log("b");
 
@@ -137,54 +165,53 @@ export default {
           }));
 
           if (chasingBottom.value) {
-            scrollToBottom()
+            scrollToBottom();
           }
-
         } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
-            if (chasingBottom.value) {
-            scrollToBottom()
+          if (chasingBottom.value) {
+            scrollToBottom();
           }
-
         }
 
-        console.log(chat.value, 'docs');
+        console.log(chat.value, "docs");
 
-        if ( chat.value.length < 40   ) {
-          disablePrevFetch.value = true
+        if (chat.value.length < 40) {
+          disablePrevFetch.value = true;
         } else {
-          disablePrevFetch.value = null
+          disablePrevFetch.value = null;
         }
-
       });
     });
 
     function fetchPrev() {
       console.log("more");
 
+   
+
       if (!disablePrevFetch.value) {
+        getMessagesType.value = 'prev'
         firts.value = chat.value[19];
         page.value += 1;
         console.log(page.value);
       }
-
-    
     }
 
     function fetchNext() {
-     
-     console.log("less");
-     page.value -= 1
-     
+      console.log("less");
+      getMessagesType.value = 'next'
+      firts.value = chat.value[19];
+      page.value -= 1;
+
     }
 
     function firstScroll() {
       if (!chatWasFetched.value) {
         bottom.value?.scrollIntoView({ block: "end" });
         console.log("firts scroll");
-        chatWasFetched.value = true
+        chatWasFetched.value = true;
       }
     }
 
