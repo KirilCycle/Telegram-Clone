@@ -20,7 +20,11 @@
       :isMy="it.userId.includes(firstPartOfmyId)"
     ></message-item>
 
-    <div class="bottom" ref="bottom">
+    <div  v-if="page > 0" class="bottom" ref="bottom">
+      <div v-observer="fetchNext"></div>
+    </div>
+   
+    <div v-else class="bottom" ref="bottom">
       <div v-desapeared="disableAutoScroll"></div>
     </div>
     <!-- <chat-input :sendMsg="addNewMessage"></chat-input> -->
@@ -140,7 +144,6 @@ export default {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
-          
             if (chasingBottom.value) {
             scrollToBottom()
           }
@@ -161,18 +164,20 @@ export default {
     function fetchPrev() {
       console.log("more");
 
-    
-
       if (!disablePrevFetch.value) {
-
         firts.value = chat.value[19];
-  
         page.value += 1;
-  
         console.log(page.value);
       }
 
     
+    }
+
+    function fetchNext() {
+     
+     console.log("less");
+     page.value -= 1
+     
     }
 
     function firstScroll() {
@@ -187,6 +192,8 @@ export default {
       chat,
       fetchPrev,
       firstScroll,
+      fetchNext,
+      page,
       bottom,
       disableAutoScroll,
       chasingBottom,
