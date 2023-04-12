@@ -14,6 +14,8 @@
       <h2>Sexy pro</h2>
       <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>  
     </user-image>
+
+
   </div>
 </template>
 
@@ -254,6 +256,31 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 $custom-c4: rgb(23, 23, 23);
+
+img {
+  background: #46464600;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+h3 {
+  color: #c8c8c8;
+  position: absolute;
+  bottom: 3px;
+  left: 7px;
+  z-index: 50;
+  font-size: 1rem;
+}
+h2 {
+  color: #ffffff;
+  z-index: 50;
+  position: absolute;
+  bottom: 23px;
+  left: 7px;
+  font-size: 1.5rem;
+}
+
 .settings-nav {
   width: 100%;
   background-color: $custom-c4;

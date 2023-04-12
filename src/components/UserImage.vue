@@ -1,13 +1,8 @@
 <template>
     <div class="photo-container">
-      
-        <slot>
-
-        </slot>
-        <!-- <img :src="$store.state.chat?.selectedUser?.photoURL" />
+        <img :src="$store.state.chat?.selectedUser?.photoURL" />
         <h2>Sexy pro</h2>
         <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>
-      -->
         <div class="bottom-img-shadow"></div>
       </div>
 </template>
@@ -49,5 +44,16 @@
       left: 7px;
       font-size: 1.5rem;
     }
+  }
+
+
+  .bottom-img-shadow {
+    width: 100%;
+    position: absolute;
+    height: 30px;
+    background-color: #ff343400;
+    box-shadow: rgba(0, 0, 2, 10) 0px 32px 70px 40px;
+    bottom: -30px;
+    
   }
 </style>

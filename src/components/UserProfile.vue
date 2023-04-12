@@ -16,7 +16,7 @@
     
     <user-image>
       <img :src="$store.state.chat?.selectedUser?.photoURL" />
-      <h2>Sexy pro</h2>
+      <h2>Sexy pros</h2>
       <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>
     </user-image>
 
