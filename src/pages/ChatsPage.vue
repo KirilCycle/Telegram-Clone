@@ -537,7 +537,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   background-color: $custom-c4;
-  height: 10%;
+  height: 8%;
   text-align: left;
   display: flex;
   align-items: center;
@@ -576,7 +576,7 @@ v-enter-active,
 }
 
 .chat-container-x {
-  height: 82%;
+  height: 84%;
   max-width: 100%;
   background-color: $custom-c2;
   overflow-y: scroll;

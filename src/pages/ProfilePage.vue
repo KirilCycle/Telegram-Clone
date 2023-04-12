@@ -1,20 +1,51 @@
 <template>
   <div class="wrap">
     <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
-    <nav class="settings-nav">
-      <button @click="$emit('close')" class="back">
-        <span class="material-symbols-outlined"> arrow_back_ios </span>
-      </button>
 
-      <button @click="inEdit = true" class="logout">Edit</button>
-    </nav>
 
-    <user-image>
-      <img :src="$store.state.chat?.selectedUser?.photoURL" />
-      <h2>Sexy pro</h2>
-      <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>  
-    </user-image>
-
+      <nav class="settings-nav">
+        <button @click="$emit('close')" class="back">
+          <span class="material-symbols-outlined"> arrow_back </span>
+        </button>
+        <h1 class="settings">Settings</h1>
+        <button @click="showEditComponent" class="edit">
+          <span class="material-symbols-outlined"> edit </span>
+        </button>
+      </nav>
+  
+      <user-image>
+        <img :src="$store.state.user.user?.photoURL" />
+        <h2>Sexy pro</h2>
+        <h3>{{ $store.state.user.user.email }}</h3>
+      </user-image>
+  
+      <div class="user-info-container">
+        <div class="username">
+          <div class="ico">
+            <p>@</p>
+          </div>
+  
+          <div class="user_info_container_text_wrap">
+            <p class="info-text">{{ $store.state.user.user.username }}</p>
+            <p>Username</p>
+          </div>
+        </div>
+  
+        <div class="bio">
+          <div class="ico">
+            <p>i</p>
+          </div>
+  
+          <div class="user_info_container_text_wrap">
+            <p class="info-text">{{ $store.state.user.user.bio }}</p>
+            <p>Bio</p>
+          </div>
+        </div>
+      </div>
+ 
+    <div  ref="edit" class="edit-panel">
+      <edit-settings ></edit-settings>
+    </div>
 
   </div>
 </template>
@@ -34,11 +65,13 @@ import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import UserImage from "@/components/UserImage.vue";
+import EditSettings from '@/components/EditSettings.vue';
 
 export default {
- components: {
-    UserImage
- },
+  components: {
+    UserImage,
+    EditSettings,
+  },
   data() {
     return {
       user: store.state.user.user,
@@ -55,6 +88,15 @@ export default {
   },
   created() {},
   methods: {
+
+    async showEditComponent () {
+      this.inEdit = true
+
+    
+        this.$refs.edit.style.transform = `translateX(${-310}px)`;
+      
+    },
+
     async handleChanging() {
       this.isLoading = true;
       if (this.value.length > 4 && this.newFile) {
@@ -256,19 +298,85 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 $custom-c4: rgb(23, 23, 23);
+$def-gray: #828282;
+
+
+.edit-panel {
+  width: 320px;
+  position: absolute;
+  left: 310px;
+  height: 100%;
+  background-color: #00ff44;
+  transform: translateX(0);
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.user-info-container {
+  height: auto;
+  padding: 15px 10px 15px 10px;
+  background-color: #2b2b2b;
+  width: 100%;
+  box-sizing: border-box;
+
+  %item-patt {
+    width: 100%;
+    height: 60px;
+    border-radius: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+  }
+  .ico {
+    width: 50px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #808080;
+  }
+
+  .user_info_container_text_wrap {
+    width: 80%;
+    height: 100%;
+    margin-top: 10px;
+
+    .info-text {
+      color: #ffffff;
+      font-size: 1.1rem;
+    }
+
+    p {
+      color: #808080;
+      font-size: 1rem;
+    }
+  }
+  .username {
+    @extend %item-patt;
+  }
+  .bio {
+    @extend %item-patt;
+  }
+}
+
+.settings {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 550;
+  margin: 0% auto;
+}
 
 img {
   background: #46464600;
   min-width: 100%;
-  max-width: 100%;
-  min-height: 100%;
-  max-height: 100%;
+  height: auto;
 }
 h3 {
   color: #c8c8c8;
   position: absolute;
   bottom: 3px;
-  left: 7px;
+  left: 20px;
   z-index: 50;
   font-size: 1rem;
 }
@@ -277,16 +385,18 @@ h2 {
   z-index: 50;
   position: absolute;
   bottom: 23px;
-  left: 7px;
+  left: 20px;
   font-size: 1.5rem;
 }
 
 .settings-nav {
   width: 100%;
   background-color: $custom-c4;
-  height: 10%;
+  height: 8%;
   position: relative;
   top: 0px;
+  display: flex;
+  align-items: center;
 }
 .waiting-bloor {
   position: absolute;
@@ -300,12 +410,11 @@ h2 {
   -webkit-font-smoothing: antialiased;
   height: 100%;
   border-right: 0.1em solid rgb(63, 63, 63);
-
+  
   button {
     min-height: 39px;
     width: max-content;
     text-align: center;
-    width: 45px;
 
     span {
       text-align: left;
@@ -326,6 +435,7 @@ h2 {
   }
 
   .profile-edit-container {
+
     position: relative;
     display: flex;
     width: 100%;
@@ -382,15 +492,15 @@ h2 {
     top: 10px;
     left: 10px;
     height: 10px;
-    color: $crazy_color;
+    color: $def-gray;
   }
 
-  .logout {
+  .edit {
     position: absolute;
     top: 10px;
     right: 10px;
     height: 10px;
-    color: $crazy_color;
+    color: $def-gray;
   }
 
   .image-container {
