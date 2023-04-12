@@ -1,50 +1,19 @@
 <template>
   <div class="wrap">
-    <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1>
-    <div v-if="isLoading" class="waiting-bloor"></div>
-    <button v-show="!inEdit" @click="$emit('close')" class="back">
-      <span class="material-symbols-outlined"> arrow_back_ios </span>
-    </button>
-    <button v-show="inEdit" @click="cancelChangings" class="back">
-      Cancel
-    </button>
-    <button v-show="!inEdit" @click="inEdit = true" class="logout">Edit</button>
-    <button
-      v-if="inEdit"
-      @click="() => handleChanging(value, newFile, cancelChangings)"
-      class="logout"
-    >
-      apply
-    </button>
+    <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
+    <nav class="settings-nav">
+      <button @click="$emit('close')" class="back">
+        <span class="material-symbols-outlined"> arrow_back_ios </span>
+      </button>
 
-    <div class="image-container">
-      <img :src="profilePhoto" />
-    </div>
+      <button @click="inEdit = true" class="logout">Edit</button>
+    </nav>
 
-    <h2 v-if="!inEdit">
-      {{ $store.state.user.user.displayName }}
-    </h2>
-    <div v-if="!inEdit" class="profile-txt-wrp">
-      <h3>
-        {{ $store.state.user.user.email }}
-      </h3>
-    </div>
-    <div v-else class="profile-edit-container">
-      <span class="pht-settings">
-        <input
-          class="file-input"
-          v-if="inEdit"
-          type="file"
-          @change="(e) => showPrewiePhoto(e, profilePhoto)"
-        />
-        <h3>Set new photo</h3>
-
-        <span class="material-symbols-outlined"> add_a_photo </span>
-      </span>
-      <input v-model="value" class="displayname" />
-    </div>
-
-    <p class="value-alert" v-if="wrongVal">u cant use @,#,!,$,+,|,|</p>
+    <user-image>
+      <img :src="$store.state.chat?.selectedUser?.photoURL" />
+      <h2>Sexy pro</h2>
+      <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>  
+    </user-image>
   </div>
 </template>
 
@@ -62,8 +31,12 @@ import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import UserImage from "@/components/UserImage.vue";
 
 export default {
+ components: {
+    UserImage
+ },
   data() {
     return {
       user: store.state.user.user,
@@ -81,8 +54,7 @@ export default {
   created() {},
   methods: {
     async handleChanging() {
-
-      this.isLoading = true
+      this.isLoading = true;
       if (this.value.length > 4 && this.newFile) {
         const symphols = ["@", "#", "$", "!", "+", "|", "/"];
 
@@ -281,7 +253,14 @@ export default {
 
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
-
+$custom-c4: rgb(23, 23, 23);
+.settings-nav {
+  width: 100%;
+  background-color: $custom-c4;
+  height: 10%;
+  position: relative;
+  top: 0px;
+}
 .waiting-bloor {
   position: absolute;
   z-index: 200;
@@ -292,6 +271,8 @@ $crazy_color: #00ff44;
 .wrap {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
+  border-right: 0.1em solid rgb(63, 63, 63);
 
   button {
     min-height: 39px;
@@ -365,7 +346,6 @@ $crazy_color: #00ff44;
     color: white;
   }
 
-  margin-top: 70px;
   display: flex;
   align-items: center;
   flex-direction: column;

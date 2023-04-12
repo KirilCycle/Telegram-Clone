@@ -653,7 +653,7 @@ v-enter-active,
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  width: 290px;
+  width: 310px;
   overflow: hidden;
   resize: horizontal;
   flex-shrink: 0;
@@ -673,33 +673,7 @@ v-enter-active,
     align-items: center;
     background-color: $custom-c1;
 
-    .menu-btn-wrap {
-      cursor: pointer;
-      border-radius: 5px;
-      width: 35px;
-      height: 35px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        background-color: #4040406b;
-      }
-      .menu-btn {
-        width: 35px;
-        height: 10px;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-
-        span {
-          width: 45%;
-          height: 2px;
-          background-color: #8b8b8b;
-        }
-      }
-    }
+   
 
     input {
       background-color: $custom-c2;
@@ -946,9 +920,5 @@ v-enter-active,
   }
 }
 
-@media (max-width: 925px) {
-  .chat-nav-x {
-    color: #e40f0f;
-  }
-}
+
 </style>

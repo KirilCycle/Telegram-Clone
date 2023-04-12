@@ -9,11 +9,13 @@
   
     <teleport to="body">
       <Transition>
+       
         <div v-if="v" class="bloor">
           <div :class="'profile-container'">
             <profile-page  @close="v = false"></profile-page>
           </div>
         </div>
+       
       </Transition>
     </teleport>
   </template>
@@ -23,7 +25,7 @@
   import { getAuth } from 'firebase/auth';
   import  { ref } from 'vue';
   export  default {
-    components: { ProfilePage },
+    components: { ProfilePage  },
     data() {
       return {
         v: false,
@@ -102,7 +104,7 @@
   
   v-enter-active,
   .v-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.1s ease;
   }
   
   .v-enter-from,
@@ -113,27 +115,24 @@
   .bloor {
     z-index: 120;
     position: fixed;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    background-color: #151515b8;
-    width: 100vw;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    width: 320px;
     position: fixed;
     height: 100%;
     display: flex;
   
     .profile-container-hidden {
-      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-      min-width: 500px;
+      transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+      min-width: 300px;
       transform: translateX(-10%);
       background-color: rgba(0, 0, 0, 0);
       opacity: 0; /* add opacity property */
     }
-  
-  
     .profile-container {
-      min-width: 300px;
-      max-width: 600px;
+      min-width: 310px;
+      max-width: 310px;
       transform: translateX(0%);
-      background-color: black;
+      background-color: rgb(32, 32, 32);
       opacity: 1; /* add opacity property */
     }
   }

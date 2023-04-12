@@ -6,18 +6,32 @@
       </button>
       <h3>User Info</h3>
     </nav>
-    <div class="photo-container">
+    
+    <!-- <div class="photo-container">
       <img :src="$store.state.chat?.selectedUser?.photoURL" />
       <h2>Sexy pro</h2>
       <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>
       <div class="bottom-img-shadow"></div>
-    </div>
+    </div> -->
+    
+    <user-image>
+      <img :src="$store.state.chat?.selectedUser?.photoURL" />
+      <h2>Sexy pro</h2>
+      <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>
+    </user-image>
+
   </div>
 </template>
 
 <script>
 import store from "@/store/store";
+import UserImage from "./UserImage.vue";
+
 export default {
+  components: {
+    UserImage
+  },
+
   data() {
     return {
       v: false,
