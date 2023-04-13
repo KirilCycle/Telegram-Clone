@@ -18,11 +18,19 @@
       <div class="inputs_wrp">
         <div class="inpt-container">
           <p>First Name</p>
-          <input v-model="firtsName" />
+          <input class="default-inpt" v-model="firtsName" />
         </div>
         <div class="inpt-container">
           <p>Username</p>
-          <input v-model="username" />
+          <input
+            class="default-inpt"
+            :class="{
+              'input-username-wrong': usernameWrongData || usernameExist,
+              'input-username-ok': usernameAvaible,
+            }"
+            v-on:input="handleUsername"
+            v-model="username"
+          />
         </div>
         <div class="inpt-container">
           <p>Bio</p>
@@ -42,12 +50,9 @@
       </div>
     </div>
 
-    <button class="save-changes-btn">
-      <span class="material-symbols-outlined">
-        done
-        </span>
+    <button @click="commitProfileChanges" class="save-changes-btn">
+      <span class="material-symbols-outlined"> done </span>
     </button>
-
   </div>
 </template>
 
@@ -62,9 +67,65 @@ export default {
       firtsName: this.$store.state.user.user.displayName,
       username: this.$store.state.user.user.username,
       bio: this.$store.state.user.user.bio,
+
+      firtsNameTmp: this.$store.state.user.user.displayName,
+      usernameTmp: this.$store.state.user.user.username,
+      bioTmp: this.$store.state.user.user.bio,
+
+      uploadedPhoto: null,
+
+      checkUsername: false,
+      usernameWrongData: false,
+      usernameExist: false,
+      usernameAvaible: false
     };
   },
   methods: {
+    handleUsername() {
+      console.log("username changes");
+
+      const wrongSymphols = [
+        "@",
+        "#",
+        "$",
+        "!",
+        "+",
+        "|",
+        "/",
+        ">",
+        "<",
+        "*",
+        "&",
+        "%",
+        "?",
+      ];
+
+      let ready = true;
+
+   console.log(  this.username
+);
+      for (let i = 0; i < this.username.length; i++) {
+        for (let j = 0; j < wrongSymphols.length; j++) {
+          if (this.username[i].includes(wrongSymphols[j])) {
+          
+            
+            ready = false;
+
+            break;
+          }
+        }
+      }
+
+      if (ready) {
+        this.usernameWrongData = false;
+        console.log("withou wrong data");
+      } else {
+        console.log("Huynya predelivay");
+        this.usernameWrongData = true;
+
+       console.log( this.usernameWrongData);
+      }
+    },
     handleTextArea(v) {
       console.log("handleTextArea", v);
 
@@ -74,6 +135,18 @@ export default {
       el.style.height = el.scrollHeight + "px";
 
       console.log(this.bio);
+    },
+    async commitProfileChanges() {
+      console.log("commit action");
+
+      let somethingChanged =
+        this.uploadedPhoto ||
+        this.firtsName !== this.firtsNameTmp ||
+        this.username !== this.usernameTmp ||
+        this.bio !== this.bioTmp;
+
+      if (somethingChanged) {
+      }
     },
   },
 };
@@ -97,14 +170,14 @@ $def-gray: #828282;
 
   p {
     position: absolute;
-    top: 0px;
+    top: 5px;
     z-index: 900;
     left: 10px;
-    margin: 4px;
-    font-size: 0.9rem;
+
+    font-size: 0.7rem;
     background-color: $custom-c4;
     color: gray;
-    max-height: 1.1rem;
+    max-height: 0.8rem;
   }
 }
 
@@ -121,7 +194,7 @@ $def-gray: #828282;
   input {
     margin-top: 15px;
     margin-bottom: 15px;
-    padding: 7px 0px 3px 5px;
+    padding: 0px 0px 0px 5px;
     width: 100%;
     height: 50px;
     border-radius: 15px;
@@ -132,6 +205,14 @@ $def-gray: #828282;
     color: white;
     &:focus {
       border: 1px solid rgb(53, 107, 255);
+    }
+  }
+
+  .input-username-wrong {
+  
+    border: 1px solid red;
+    &:focus {
+      border: 1px solid red;
     }
   }
 
@@ -240,5 +321,4 @@ $def-gray: #828282;
   bottom: 10px;
   background-color: #2897ff;
 }
-
 </style>
