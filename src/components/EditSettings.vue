@@ -1,5 +1,5 @@
-<template>
-  <div class="edit-wrap">
+<template> 
+  <div v-if="$store.state.user.user" class="edit-wrap">
     <nav class="edti-nav">
       <button @click="() => $emit('close')">
         <span class="material-symbols-outlined"> arrow_back </span>
@@ -65,9 +65,18 @@
 </template>
 
 <script>
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
+import store from "@/store/store";
+import { reactive } from 'vue';
+
 
 export default {
   props: {
@@ -75,6 +84,9 @@ export default {
   },
   data() {
     return {
+      
+     
+
       profilePhoto: this.$store.state.user.user.photoURL,
       uploadedPhoto: null,
 
@@ -94,6 +106,7 @@ export default {
       shortLength: false,
     };
   },
+
   computed: {
     usernameState() {
       if (this.usernameExist) {
@@ -239,28 +252,46 @@ export default {
         this.bio !== this.bioTmp;
 
       if (somethingChanged) {
-
         const db = firebase.firestore();
+        const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid);
 
-
-        const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid)
-
-        const newData =  {
-          ...(this.firtsName !== this.firtsNameTmp) && {displayName: this.firtsName },
-          ...(this.username !== this.usernameTmp) && {username: this.username },
-          ...(this.bio !== this.bioTmp) && {bio: this.bio },
-          ...(this.uploadedPhot) && {bio: 'res' },
-         
-        }
+        const newData = {
+          ...(this.firtsName !== this.firtsNameTmp && {
+            displayName: this.firtsName,
+          }),
+          ...(this.username !== this.usernameTmp && {
+            username: this.username,
+          }),
+          ...(this.bio !== this.bioTmp && { bio: this.bio }),
+        };
 
         // To update age and favorite color:
-        // await updateDoc(userDoc, {
- 
-        // });
+        await updateDoc(userDoc, newData).then((res) =>
+          console.log(res, "UPDATED")
+        );
 
-        console.log("ENOTHER DATA",newData);
+        console.log("ENOTHER DATA", newData);
       }
     },
+  },
+
+  setup() {
+
+    const db = firebase.firestore();
+
+    const data = reactive({})
+
+  
+    const unsub = onSnapshot(doc(db, "usersPrew", store.state.user.user.uid ), (doc) => {
+
+      store.commit('user/setUser', doc.data() )   
+    
+   });
+
+  
+
+
+
   },
 };
 </script>
