@@ -16,13 +16,22 @@
       </div>
 
       <div class="inputs_wrp">
-        <input>
-
-        <input>
+        <div class="inpt-container">
+       
+          <input/>
+       
+        </div>
+        <div class="inpt-container">
+       
+          <input/>
+          
+        </div>
+        <div class="inpt-container">
         <textarea
           ref="textarea"
           v-on:input="(e) => handleTextArea(e.target.value, this)"
         />
+      </div>
       </div>
     </div>
   </div>
@@ -40,14 +49,12 @@ export default {
   },
   methods: {
     handleTextArea(v) {
+      console.log("handleTextArea", v);
 
-     console.log(   'handleTextArea', v);
+      let el = this.$refs.textarea;
 
-     let el = this.$refs.textarea 
-
-      el.style.height = "42px";
+      el.style.height = "45px";
       el.style.height = el.scrollHeight + "px";
-      
     },
   },
 };
@@ -60,56 +67,71 @@ $def-gray: #828282;
   width: 100%;
   height: 100%;
   background-color: $custom-c4;
-  position: relative;
   z-index: 25;
-  
+
   box-sizing: border-box;
+}
+
+
+
+    
+.inpt-container {
+  position: relative;
+ 
+  width: 100%;
+  box-sizing: border-box;
+ 
 }
 
 .inputs_wrp {
   width: 100%;
-  
-  padding: 20px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
+  justify-content: center;
+
 
   input {
     margin-top: 15px;
     margin-bottom: 15px;
-    padding: 3px  0px 3px 5px;
+    padding: 3px 0px 3px 5px;
     width: 100%;
     height: 45px;
     border-radius: 10px;
+    box-sizing: border-box;
     border: 1px solid gray;
+
     font-size: 1rem;
     color: white;
     &:focus {
-        border: 1px solid rgb(53, 107, 255);
+      border: 1px solid rgb(53, 107, 255);
     }
 
+   
   }
 
   textarea {
-
-  
-
+    padding: 3px 0px 3px 5px;
+    box-sizing: border-box;
     resize: none;
     overflow: hidden;
     margin-top: 15px;
     margin-bottom: 15px;
+    color: white;
     width: 100%;
+    height: 45px;
     border-radius: 10px;
     border: 1px solid gray;
     background: none;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.3125rem;
-    padding-top: calc(1rem - var(--border-width));
-    padding-bottom: calc(1rem - var(--border-width));
+
+    &:focus {
+      border: 1px solid rgb(53, 107, 255);
+    }
   }
-
-
 }
 
 .edit-content {
