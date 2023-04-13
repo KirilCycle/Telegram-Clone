@@ -57,6 +57,9 @@
 </template>
 
 <script>
+import { collection, query, where, getDocs } from "firebase/firestore";
+import firebase from "firebase/compat/app";
+
 export default {
   props: {
     v: Boolean,
@@ -77,7 +80,7 @@ export default {
       checkUsername: false,
       usernameWrongData: false,
       usernameExist: false,
-      usernameAvaible: false
+      usernameAvaible: false,
     };
   },
   methods: {
@@ -102,15 +105,11 @@ export default {
 
       let ready = true;
 
-   console.log(  this.username
-);
+      console.log(this.username);
       for (let i = 0; i < this.username.length; i++) {
         for (let j = 0; j < wrongSymphols.length; j++) {
           if (this.username[i].includes(wrongSymphols[j])) {
-          
-            
             ready = false;
-
             break;
           }
         }
@@ -118,12 +117,36 @@ export default {
 
       if (ready) {
         this.usernameWrongData = false;
-        console.log("withou wrong data");
+        console.log("withou wrong data", this.username);
+
+        const username = this.username
+
+        async function findUser() {
+          const db = firebase.firestore();
+
+          const q = query(
+            collection(db, "usersPrew"),
+            where("username", "==", username)
+          );
+
+          const querySnapshot = await getDocs(q);
+
+          querySnapshot.docs
+          .forEach((doc) => {
+               // doc.data() is never undefined for query doc snapshots
+             console.log(doc.id, " => ", doc.data());
+             });
+
+         console.log( querySnapshot.docs[0].data(), 'RES');
+
+        }
+
+        findUser();
       } else {
         console.log("Huynya predelivay");
         this.usernameWrongData = true;
 
-       console.log( this.usernameWrongData);
+        console.log(this.usernameWrongData);
       }
     },
     handleTextArea(v) {
@@ -209,7 +232,6 @@ $def-gray: #828282;
   }
 
   .input-username-wrong {
-  
     border: 1px solid red;
     &:focus {
       border: 1px solid red;
