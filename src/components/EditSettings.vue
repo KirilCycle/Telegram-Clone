@@ -18,18 +18,19 @@
       <div class="inputs_wrp">
         <div class="inpt-container">
           <p>First Name</p>
-          <input/>
+          <input v-model="firtsName"/>
        
         </div>
         <div class="inpt-container">
           <p>Username</p>
-          <input/>
+          <input v-model="username"/>
           
         </div>
         <div class="inpt-container">
           <p>Bio</p>
         <textarea
           ref="textarea"
+          :value="bio"
           v-on:input="(e) => handleTextArea(e.target.value, this)"
         />
       </div>
@@ -46,6 +47,9 @@ export default {
   data() {
     return {
       v: this.v,
+      firtsName: this.$store.state.user.user.displayName,
+      username: this.$store.state.user.user.username,
+      bio: this.$store.state.user.user.bio
     };
   },
   methods: {
