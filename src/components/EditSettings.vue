@@ -18,24 +18,36 @@
       <div class="inputs_wrp">
         <div class="inpt-container">
           <p>First Name</p>
-          <input v-model="firtsName"/>
-       
+          <input v-model="firtsName" />
         </div>
         <div class="inpt-container">
           <p>Username</p>
-          <input v-model="username"/>
-          
+          <input v-model="username" />
         </div>
         <div class="inpt-container">
           <p>Bio</p>
-        <textarea
-          ref="textarea"
-          :value="bio"
-          v-on:input="(e) => handleTextArea(e.target.value, this)"
-        />
-      </div>
+          <textarea
+            ref="textarea"
+            :value="bio"
+            v-on:input="(e) => handleTextArea(e.target.value, this)"
+          />
+        </div>
+
+        <div class="info-about-bio-wrap">
+          <p>
+            Any details such as age, occupation or city. Example: 23 y.o.
+            designer from San Francisco
+          </p>
+        </div>
       </div>
     </div>
+
+    <button class="save-changes-btn">
+      <span class="material-symbols-outlined">
+        done
+        </span>
+    </button>
+
   </div>
 </template>
 
@@ -49,7 +61,7 @@ export default {
       v: this.v,
       firtsName: this.$store.state.user.user.displayName,
       username: this.$store.state.user.user.username,
-      bio: this.$store.state.user.user.bio
+      bio: this.$store.state.user.user.bio,
     };
   },
   methods: {
@@ -60,6 +72,8 @@ export default {
 
       el.style.height = "45px";
       el.style.height = el.scrollHeight + "px";
+
+      console.log(this.bio);
     },
   },
 };
@@ -76,14 +90,10 @@ $def-gray: #828282;
   box-sizing: border-box;
 }
 
-
-
-    
 .inpt-container {
   position: relative;
   width: 100%;
   box-sizing: border-box;
- 
 
   p {
     position: absolute;
@@ -96,8 +106,6 @@ $def-gray: #828282;
     color: gray;
     max-height: 1.1rem;
   }
-
-
 }
 
 .inputs_wrp {
@@ -113,10 +121,10 @@ $def-gray: #828282;
   input {
     margin-top: 15px;
     margin-bottom: 15px;
-    padding: 3px 0px 3px 5px;
+    padding: 7px 0px 3px 5px;
     width: 100%;
-    height: 45px;
-    border-radius: 10px;
+    height: 50px;
+    border-radius: 15px;
     box-sizing: border-box;
     border: 1px solid gray;
 
@@ -125,8 +133,6 @@ $def-gray: #828282;
     &:focus {
       border: 1px solid rgb(53, 107, 255);
     }
-
-   
   }
 
   textarea {
@@ -138,8 +144,8 @@ $def-gray: #828282;
     margin-bottom: 15px;
     color: white;
     width: 100%;
-    height: 45px;
-    border-radius: 10px;
+    height: 50px;
+    border-radius: 15px;
     border: 1px solid gray;
     background: none;
     font-size: 1rem;
@@ -151,6 +157,11 @@ $def-gray: #828282;
   }
 }
 
+.info-about-bio-wrap {
+  max-width: 100%;
+  padding: 5px;
+  color: gray;
+}
 .edit-content {
   width: 100%;
 
@@ -215,4 +226,19 @@ $def-gray: #828282;
     margin: 0% auto;
   }
 }
+
+.save-changes-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background-color: #2897ff;
+}
+
 </style>
