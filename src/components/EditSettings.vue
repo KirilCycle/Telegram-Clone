@@ -247,13 +247,14 @@ export default {
       console.log(this.bio);
     },
     async commitProfileChanges() {
+      this.usernameAvaible = false;
       let somethingChanged =
         this.uploadedPhoto ||
         this.firtsName !== this.firtsNameTmp ||
         this.username !== this.usernameTmp ||
         this.bio !== this.bioTmp;
 
-      if (somethingChanged) {
+      if (somethingChanged && !this.usernameExist && !this.usernameWrongData && !this.shortLength) {
         const db = firebase.firestore();
         const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid);
 
@@ -273,8 +274,10 @@ export default {
         );
 
         console.log("ENOTHER DATA", newData);
+      } else {
+        alert('wrong data')
       }
-    },
+    }, 
   },
 
   setup() {
