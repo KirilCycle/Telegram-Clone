@@ -21,11 +21,11 @@
           <input class="default-inpt" v-model="firtsName" />
         </div>
         <div class="inpt-container">
-          <p>Username</p>
+          <p>{{usernameState}}</p>
           <input
             class="default-inpt"
             :class="{
-              'input-username-wrong': usernameWrongData || usernameExist,
+              'input-username-wrong': usernameWrongData || usernameExist || shortLength,
               'input-username-ok': usernameAvaible,
             }"
             v-on:input="handleUsername"
@@ -81,85 +81,123 @@ export default {
       usernameWrongData: false,
       usernameExist: false,
       usernameAvaible: false,
+      shortLength: false
     };
   },
+  computed: {
+    usernameState() {
+      
+      if (this.usernameExist) {
+        return 'Usernam exist'
+      }
+      else if (this.usernameWrongData) {
+        return 'U use wrong syphols like @, #, $'
+      }
+      else if (this.usernameAvaible) {
+        return 'Avaible'     
+      }
+      else if (this.shortLength) {
+        return "we require more than 3 symphol"
+      } else if (this.checkUsername) {
+        return 'Checking'
+      }
+       else {
+        return 'Username'
+      }
+      
+    },
+  },
   methods: {
-  async  handleUsername() {
+    async handleUsername() {
+      
+      this.checkUsername = false
+      this.usernameExist = false;
+      if (this.username.length > 3) {
 
-    this.usernameExist = false
-    
-
-      console.log("username changes", this);
-
-      let data = this
-
-      const wrongSymphols = [
-        "@",
-        "#",
-        "$",
-        "!",
-        "+",
-        "|",
-        "/",
-        ">",
-        "<",
-        "*",
-        "&",
-        "%",
-        "?",
-      ];
-
-      let ready = true;
-
-      console.log(this.username);
-      for (let i = 0; i < this.username.length; i++) {
-        for (let j = 0; j < wrongSymphols.length; j++) {
-          if (this.username[i].includes(wrongSymphols[j])) {
-            ready = false;
-            break;
+        this.shortLength = false
+        console.log("username changes", this);
+  
+        let data = this;
+  
+        const wrongSymphols = [
+          "@",
+          "#",
+          "$",
+          "!",
+          "+",
+          "|",
+          '=',
+          ';',
+          "/",
+          ">",
+          "<",
+          "*",
+          "&",
+          "%",
+          "?",
+        ];
+  
+        let ready = true;
+  
+        console.log(this.username);
+        for (let i = 0; i < this.username.length; i++) {
+          for (let j = 0; j < wrongSymphols.length; j++) {
+            if (this.username[i].includes(wrongSymphols[j])) {
+              ready = false;
+              break;
+            }
           }
         }
-      }
-
-      if (ready) {
-        this.usernameWrongData = false;
-        console.log("withou wrong data", this.username);
-        
-        
-        const username = this.username
-
-        async function findUser() {
-          const db = firebase.firestore();
-
-          const q = query(
-            collection(db, "usersPrew"),
-            where("username", "==", username)
-          );
-
-          const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.docs[0]?.data()) {
-            
-               console.log(data, 'as THIS')
-               data.usernameExist = true
-
-            } else {
-
-              //everything okey 
-
-
-
-            }
+  
+        if (ready) {
+          this.usernameWrongData = false;
+          console.log("withou wrong data", this.username);
+  
+          const username = this.username;
+  
+          async function findUser() {
+             data.checkUsername = true
+            const db = firebase.firestore();
+  
+            const q = query(
+              collection(db, "usersPrew"),
+              where("username", "==", username)
+            );
+  
+            const querySnapshot = await getDocs(q);
+  
+            let res = await querySnapshot.docs[0]?.data()
+  
+            if (res) {
+               
+             if ( res.username === data.$store.state.user.user.username) {
+              data.usernameAvaible = false
+              data.checkUsername = false
               
-
+             } else {
+               data.usernameExist = true;
+               data.checkUsername = false
+               data.usernameAvaible = false 
+            
+             }
+             
+            } else {
+              //everything okey
+              data.checkUsername = false
+              data.usernameAvaible = true
+            }
+          }
+  
+          findUser();
+        } else {
+          console.log("Huynya predelivay");
+          this.usernameWrongData = true;
+  
+          console.log(this.usernameWrongData);
         }
-
-        findUser();
       } else {
-        console.log("Huynya predelivay");
-        this.usernameWrongData = true;
-
-        console.log(this.usernameWrongData);
+        this.usernameAvaible = false
+        this.shortLength = true
       }
     },
     handleTextArea(v) {
@@ -250,6 +288,15 @@ $def-gray: #828282;
       border: 1px solid red;
     }
   }
+
+
+  .input-username-ok {
+    border: 1px solid rgb(0, 255, 47);
+    &:focus {
+      border: 1px solid rgb(0, 255, 47);
+    }
+  }
+
 
   textarea {
     padding: 3px 0px 3px 5px;
