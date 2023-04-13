@@ -239,6 +239,8 @@ export default {
 
       let el = this.$refs.textarea;
 
+      this.bio = v
+
       el.style.height = "45px";
       el.style.height = el.scrollHeight + "px";
 
