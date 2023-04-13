@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div v-if="$store.state.user.user" class="edit-wrap">
     <nav class="edti-nav">
       <button @click="() => $emit('close')">
@@ -75,8 +75,7 @@ import {
 import firebase from "firebase/compat/app";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import store from "@/store/store";
-import { reactive } from 'vue';
-
+import { reactive } from "vue";
 
 export default {
   props: {
@@ -84,9 +83,6 @@ export default {
   },
   data() {
     return {
-      
-     
-
       profilePhoto: this.$store.state.user.user.photoURL,
       uploadedPhoto: null,
 
@@ -112,7 +108,7 @@ export default {
       if (this.usernameExist) {
         return "Usernam exist";
       } else if (this.usernameWrongData) {
-        return "U use wrong syphols like @, #, $";
+        return "Invalid data (idi gulay)";
       } else if (this.usernameAvaible) {
         return "Avaible";
       } else if (this.shortLength) {
@@ -139,6 +135,7 @@ export default {
           "#",
           "$",
           "!",
+          " ",
           "+",
           "|",
           "=",
@@ -239,7 +236,7 @@ export default {
 
       let el = this.$refs.textarea;
 
-      this.bio = v
+      this.bio = v;
 
       el.style.height = "45px";
       el.style.height = el.scrollHeight + "px";
@@ -254,9 +251,12 @@ export default {
         this.username !== this.usernameTmp ||
         this.bio !== this.bioTmp;
 
-      if (somethingChanged && !this.usernameExist && !this.usernameWrongData && !this.shortLength) {
-        const db = firebase.firestore();
-        const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid);
+      if (
+        somethingChanged &&
+        !this.usernameWrongData &&
+        !this.shortLength
+      ) {
+
 
         const newData = {
           ...(this.firtsName !== this.firtsNameTmp && {
@@ -268,35 +268,60 @@ export default {
           ...(this.bio !== this.bioTmp && { bio: this.bio }),
         };
 
-        // To update age and favorite color:
-        await updateDoc(userDoc, newData).then((res) =>
-          console.log(res, "UPDATED")
+
+        const db = firebase.firestore();
+        const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid);
+
+        const q = query(
+          collection(db, "usersPrew"),
+          where("username", "==", this.username)
         );
 
-        console.log("ENOTHER DATA", newData);
+        const querySnapshot = await getDocs(q);
+
+        
+        let res = await querySnapshot.docs[0]?.data();
+
+
+        if (res) {
+          if (res.username === this.$store.state.user.user.username ) {
+            await updateDoc(userDoc, newData).then((res) =>
+            console.log(res, "UPDATED")
+          );
+  
+          console.log("ENOTHER DATA", newData);
+          }  else {
+            alert('wrong data')
+          }
+        } else {
+
+          await updateDoc(userDoc, newData).then((res) =>
+            console.log(res, "UPDATED")
+          );
+  
+          console.log("ENOTHER DATA", newData);
+        }
+
+       
+
+        // To update age and favorite color:
       } else {
-        alert('wrong data')
+        alert("wrong data");
       }
-    }, 
+    },
   },
 
   setup() {
-
     const db = firebase.firestore();
 
-    const data = reactive({})
+    const data = reactive({});
 
-  
-    const unsub = onSnapshot(doc(db, "usersPrew", store.state.user.user.uid ), (doc) => {
-
-      store.commit('user/setUser', doc.data() )   
-    
-   });
-
-  
-
-
-
+    const unsub = onSnapshot(
+      doc(db, "usersPrew", store.state.user.user.uid),
+      (doc) => {
+        store.commit("user/setUser", doc.data());
+      }
+    );
   },
 };
 </script>
