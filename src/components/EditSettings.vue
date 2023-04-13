@@ -84,8 +84,14 @@ export default {
     };
   },
   methods: {
-    handleUsername() {
-      console.log("username changes");
+  async  handleUsername() {
+
+    this.usernameExist = false
+    
+
+      console.log("username changes", this);
+
+      let data = this
 
       const wrongSymphols = [
         "@",
@@ -118,7 +124,8 @@ export default {
       if (ready) {
         this.usernameWrongData = false;
         console.log("withou wrong data", this.username);
-
+        
+        
         const username = this.username
 
         async function findUser() {
@@ -131,13 +138,19 @@ export default {
 
           const querySnapshot = await getDocs(q);
 
-          querySnapshot.docs
-          .forEach((doc) => {
-               // doc.data() is never undefined for query doc snapshots
-             console.log(doc.id, " => ", doc.data());
-             });
+            if (querySnapshot.docs[0]?.data()) {
+            
+               console.log(data, 'as THIS')
+               data.usernameExist = true
 
-         console.log( querySnapshot.docs[0].data(), 'RES');
+            } else {
+
+              //everything okey 
+
+
+
+            }
+              
 
         }
 
