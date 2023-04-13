@@ -17,16 +17,17 @@
 
       <div class="inputs_wrp">
         <div class="inpt-container">
-       
+          <p>First Name</p>
           <input/>
        
         </div>
         <div class="inpt-container">
-       
+          <p>Username</p>
           <input/>
           
         </div>
         <div class="inpt-container">
+          <p>Bio</p>
         <textarea
           ref="textarea"
           v-on:input="(e) => handleTextArea(e.target.value, this)"
@@ -68,7 +69,6 @@ $def-gray: #828282;
   height: 100%;
   background-color: $custom-c4;
   z-index: 25;
-
   box-sizing: border-box;
 }
 
@@ -77,10 +77,23 @@ $def-gray: #828282;
     
 .inpt-container {
   position: relative;
- 
   width: 100%;
   box-sizing: border-box;
  
+
+  p {
+    position: absolute;
+    top: 0px;
+    z-index: 900;
+    left: 10px;
+    margin: 4px;
+    font-size: 0.9rem;
+    background-color: $custom-c4;
+    color: gray;
+    max-height: 1.1rem;
+  }
+
+
 }
 
 .inputs_wrp {
@@ -91,7 +104,7 @@ $def-gray: #828282;
   align-items: center;
   box-sizing: border-box;
   justify-content: center;
-
+  padding: 15px;
 
   input {
     margin-top: 15px;
