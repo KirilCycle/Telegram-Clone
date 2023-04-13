@@ -9,8 +9,14 @@
 
     <div class="edit-content">
       <div class="image-container">
-        <img :src="$store.state.user.user?.photoURL" />
+        <img :src="profilePhoto" />
+
         <div class="img-bloor">
+          <input
+            class="file-input"
+            type="file"
+            v-on:change="(e) => showPrewiePhoto(e)"
+          />
           <span class="material-symbols-outlined"> add_a_photo </span>
         </div>
       </div>
@@ -20,12 +26,14 @@
           <p>First Name</p>
           <input class="default-inpt" v-model="firtsName" />
         </div>
+
         <div class="inpt-container">
-          <p>{{usernameState}}</p>
+          <p>{{ usernameState }}</p>
           <input
             class="default-inpt"
             :class="{
-              'input-username-wrong': usernameWrongData || usernameExist || shortLength,
+              'input-username-wrong':
+                usernameWrongData || usernameExist || shortLength,
               'input-username-ok': usernameAvaible,
             }"
             v-on:input="handleUsername"
@@ -59,6 +67,7 @@
 <script>
 import { collection, query, where, getDocs } from "firebase/firestore";
 import firebase from "firebase/compat/app";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 export default {
   props: {
@@ -66,6 +75,9 @@ export default {
   },
   data() {
     return {
+      profilePhoto: this.$store.state.user.user.photoURL,
+      uploadedPhoto: null,
+
       v: this.v,
       firtsName: this.$store.state.user.user.displayName,
       username: this.$store.state.user.user.username,
@@ -75,50 +87,40 @@ export default {
       usernameTmp: this.$store.state.user.user.username,
       bioTmp: this.$store.state.user.user.bio,
 
-      uploadedPhoto: null,
-
       checkUsername: false,
       usernameWrongData: false,
       usernameExist: false,
       usernameAvaible: false,
-      shortLength: false
+      shortLength: false,
     };
   },
   computed: {
     usernameState() {
-      
       if (this.usernameExist) {
-        return 'Usernam exist'
-      }
-      else if (this.usernameWrongData) {
-        return 'U use wrong syphols like @, #, $'
-      }
-      else if (this.usernameAvaible) {
-        return 'Avaible'     
-      }
-      else if (this.shortLength) {
-        return "we require more than 3 symphol"
+        return "Usernam exist";
+      } else if (this.usernameWrongData) {
+        return "U use wrong syphols like @, #, $";
+      } else if (this.usernameAvaible) {
+        return "Avaible";
+      } else if (this.shortLength) {
+        return "we require more than 3 symphol";
       } else if (this.checkUsername) {
-        return 'Checking'
+        return "Checking";
+      } else {
+        return "Username";
       }
-       else {
-        return 'Username'
-      }
-      
     },
   },
   methods: {
     async handleUsername() {
-      
-      this.checkUsername = false
+      this.checkUsername = false;
       this.usernameExist = false;
       if (this.username.length > 3) {
-
-        this.shortLength = false
+        this.shortLength = false;
         console.log("username changes", this);
-  
+
         let data = this;
-  
+
         const wrongSymphols = [
           "@",
           "#",
@@ -126,8 +128,8 @@ export default {
           "!",
           "+",
           "|",
-          '=',
-          ';',
+          "=",
+          ";",
           "/",
           ">",
           "<",
@@ -136,9 +138,9 @@ export default {
           "%",
           "?",
         ];
-  
+
         let ready = true;
-  
+
         console.log(this.username);
         for (let i = 0; i < this.username.length; i++) {
           for (let j = 0; j < wrongSymphols.length; j++) {
@@ -148,58 +150,77 @@ export default {
             }
           }
         }
-  
+
         if (ready) {
           this.usernameWrongData = false;
           console.log("withou wrong data", this.username);
-  
+
           const username = this.username;
-  
+
           async function findUser() {
-             data.checkUsername = true
+            data.checkUsername = true;
             const db = firebase.firestore();
-  
+
             const q = query(
               collection(db, "usersPrew"),
               where("username", "==", username)
             );
-  
+
             const querySnapshot = await getDocs(q);
-  
-            let res = await querySnapshot.docs[0]?.data()
-  
+
+            let res = await querySnapshot.docs[0]?.data();
+
             if (res) {
-               
-             if ( res.username === data.$store.state.user.user.username) {
-              data.usernameAvaible = false
-              data.checkUsername = false
-              
-             } else {
-               data.usernameExist = true;
-               data.checkUsername = false
-               data.usernameAvaible = false 
-            
-             }
-             
+              if (res.username === data.$store.state.user.user.username) {
+                data.usernameAvaible = false;
+                data.checkUsername = false;
+              } else {
+                data.usernameExist = true;
+                data.checkUsername = false;
+                data.usernameAvaible = false;
+              }
             } else {
               //everything okey
-              data.checkUsername = false
-              data.usernameAvaible = true
+              data.checkUsername = false;
+              data.usernameAvaible = true;
             }
           }
-  
+
           findUser();
         } else {
           console.log("Huynya predelivay");
           this.usernameWrongData = true;
-  
+
           console.log(this.usernameWrongData);
         }
       } else {
-        this.usernameAvaible = false
-        this.shortLength = true
+        this.usernameAvaible = false;
+        this.shortLength = true;
       }
     },
+
+    showPrewiePhoto(e) {
+      if (e.target.files[0]) {
+        const uploadedTarget = e.target.files[0];
+
+        if (
+          uploadedTarget.name.includes(".png") ||
+          uploadedTarget.name.includes(".jpg") ||
+          uploadedTarget.name.includes(".jpeg") ||
+          uploadedTarget.name.includes(".svg")
+        ) {
+          this.profilePhoto = URL.createObjectURL(uploadedTarget);
+
+          this.newFile = uploadedTarget;
+
+          console.log(this.newFile);
+          // selectedPhoto.value = e.target.files[0]
+        } else {
+          alert("wrog format");
+        }
+      }
+    },
+
     handleTextArea(v) {
       console.log("handleTextArea", v);
 
@@ -211,8 +232,6 @@ export default {
       console.log(this.bio);
     },
     async commitProfileChanges() {
-      console.log("commit action");
-
       let somethingChanged =
         this.uploadedPhoto ||
         this.firtsName !== this.firtsNameTmp ||
@@ -220,6 +239,26 @@ export default {
         this.bio !== this.bioTmp;
 
       if (somethingChanged) {
+
+        const db = firebase.firestore();
+
+
+        const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid)
+
+        const newData =  {
+          ...(this.firtsName !== this.firtsNameTmp) && {displayName: this.firtsName },
+          ...(this.username !== this.usernameTmp) && {username: this.username },
+          ...(this.bio !== this.bioTmp) && {bio: this.bio },
+          ...(this.uploadedPhot) && {bio: 'res' },
+         
+        }
+
+        // To update age and favorite color:
+        // await updateDoc(userDoc, {
+ 
+        // });
+
+        console.log("ENOTHER DATA",newData);
       }
     },
   },
@@ -289,14 +328,12 @@ $def-gray: #828282;
     }
   }
 
-
   .input-username-ok {
     border: 1px solid rgb(0, 255, 47);
     &:focus {
       border: 1px solid rgb(0, 255, 47);
     }
   }
-
 
   textarea {
     padding: 3px 0px 3px 5px;
@@ -355,6 +392,17 @@ $def-gray: #828282;
         transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
         &:hover {
           transform: scale(1.3, 1.3);
+        }
+      }
+
+      .file-input {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+
+        &:hover ~ .img-bloor {
+          background-color: red;
         }
       }
     }
