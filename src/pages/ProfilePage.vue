@@ -36,8 +36,8 @@
               <p>Are you sure you want to log out?</p>
 
               <div class="logoout_modal_btns_wrp">
-                <button>LOG OUT</button>
-                <button>CANCEL</button>
+                <button @click="logout">LOG OUT</button>
+                <button @click="handleCancel">CANCEL</button>
               </div>
             </div>
           </div>
@@ -109,6 +109,17 @@ export default {
     async handleEditComponent(pos, state) {
       this.inEdit = state;
       this.$refs.edit.style.transform = `translateX(${pos}px)`;
+    },
+
+    logout() {
+      const auth = getAuth();
+      signOut(auth)
+      location.reload()
+    },
+
+    handleCancel() {
+      this.logoutV = false
+      this.moreContentV = false
     },
 
     async handleChanging() {
@@ -578,11 +589,10 @@ h2 {
 
     .logoout_modal_btns_wrp {
       width: 100%;
-      height: max-content; 
+      height: max-content;
       display: flex;
       flex-direction: row-reverse;
-       
-    
+
       button {
         width: 32%;
         height: 35px;
@@ -591,26 +601,20 @@ h2 {
         font-size: 1rem;
         margin-right: 10px;
         border-radius: 5px;
-
         cursor: pointer;
 
         &:hover {
-          background-color: rgba(45, 108, 255, 0.055);;
+          transition: 0.3s ease-in-out;
+          background-color: rgba(45, 108, 255, 0.055);
         }
-        
-
       }
-
-      
     }
-    .logoout_modal_btns_wrp :last-child  {
+    .logoout_modal_btns_wrp :last-child {
       &:hover {
-        background-color:   rgba(255, 0, 0, 0.056);
+        background-color: rgba(255, 0, 0, 0.056);
       }
       color: red;
-      
-  }
-
+    }
   }
 }
 </style>
