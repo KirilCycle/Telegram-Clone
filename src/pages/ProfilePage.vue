@@ -323,14 +323,10 @@ $def-gray: #828282;
   width: 100%;
   height: 100%;
   object-fit: cover;
- 
+
   
 }
-   
-
-
-
-
+  
 .user-info-container {
   height: auto;
   padding: 15px 10px 15px 10px;

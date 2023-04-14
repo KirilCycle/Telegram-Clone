@@ -24,9 +24,7 @@
 
       <div class="reply-block" v-if="message.replyData">
         <div v-if="message.replyData.img">
-        
-            <small-chat-image :src="message.replyData.img"></small-chat-image>
-         
+          <small-chat-image :src="message.replyData.img"></small-chat-image>
         </div>
 
         <h3>{{ message.replyData.from }}</h3>
@@ -35,10 +33,9 @@
 
       <div class="item_body_text">
         <p :ref="message.id">{{ message.text }}</p>
-        <label>15:00</label>
+        <label>{{ time }}</label>
       </div>
     </div>
-
 
     <!-- <message-actions-modal
       :removeMsg="removeMessage"
@@ -49,7 +46,6 @@
       :profileurl="profilePhotoUrl"
       :message="message"
     ></message-actions-modal> -->
-  
   </div>
 </template>
 
@@ -84,56 +80,59 @@ export default {
     };
   },
 
+  computed: {
+    time() {
+      let date = new Date(this.message?.createdAt.seconds * 1000);
+
+      let hours = date.getHours();
+
+      let minutes = +date.getMinutes();
+
+      return `${hours}:${minutes}`;
+    },
+  },
+
   methods: {
     handleTouch(e) {
- 
-      console.log('TOCUB')
+      console.log("TOCUB");
 
-      store.commit('message/setReplyMsgRef', this.$refs.msg)
-        // store.commit('message/setClickCoords', {
-        //   x: e.clientX,
-        //   y: e.clientY
-        // } )
+      store.commit("message/setReplyMsgRef", this.$refs.msg);
+      // store.commit('message/setClickCoords', {
+      //   x: e.clientX,
+      //   y: e.clientY
+      // } )
 
+      store.commit("message/setSelectdMsg", this.message);
 
-        store.commit('message/setSelectdMsg', this.message)
-     
+      console.log(store.state.message.selectedMsgData, "SELECTED");
 
-        console.log(store.state.message.selectedMsgData, 'SELECTED')
-
-      store.commit('message/setVisible', true)
-
+      store.commit("message/setVisible", true);
     },
-     handleSelectMsg (e) {
-      
+    handleSelectMsg(e) {
+      store.commit("message/setReplyMsgRef", this.$refs.msg);
+      store.commit("message/setClickCoords", {
+        x: e.clientX,
+        y: e.clientY,
+      });
 
-        store.commit('message/setReplyMsgRef', this.$refs.msg)
-        store.commit('message/setClickCoords', {
-          x: e.clientX,
-          y: e.clientY
-        } )
+      store.commit("message/setSelectdMsg", this.message);
+      store.commit("message/setVisible", true);
 
+      console.log(store.state.message.selectedMsgData, "SELECTED");
 
-        store.commit('message/setSelectdMsg', this.message)
-        store.commit('message/setVisible', true)
+      //
 
-        console.log(store.state.message.selectedMsgData, 'SELECTED')
+      // store.commit('message/setReplyTarget',
+      //  {
+      //    text: this.message.text,
+      //    from: this.message.userName,
+      //   ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
 
-        //
+      //  }
+      // )
 
-        // store.commit('message/setReplyTarget',
-        //  {
-        //    text: this.message.text,
-        //    from: this.message.userName,
-        //   ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
-
-        //  }
-        // )
-
-
-        console.log(store.state.message, 'FROM REDUX')
-
-    }
+      console.log(store.state.message, "FROM REDUX");
+    },
   },
 
   setup(props) {
@@ -141,29 +140,26 @@ export default {
 
     const myTimeout = ref(null);
 
-
     function start(e, execute) {
       myTimeout.value = setTimeout(() => execute(e), 600);
     }
 
     function stop() {
       clearTimeout(myTimeout.value);
-
     }
 
     const msg = ref(null);
 
-    const pivotTouch = ref(30)
+    const pivotTouch = ref(30);
 
     function touchMoveHandle(e) {
       clearTimeout(myTimeout.value);
-      
-      let elementwidth = msg.value.offsetWidth
-      
-      let elementPosition = msg.value.clientX
+
+      let elementwidth = msg.value.offsetWidth;
+
+      let elementPosition = msg.value.clientX;
       // msg.value.style.transform = `translateX(${ msg.value.offsetWidth  }px)`
-      console.log( elementPosition  );
-      
+      console.log(elementPosition);
     }
 
     const visible = ref(false);
@@ -188,7 +184,7 @@ $crazy_color: #ff3d3d;
 .img-wrp {
   max-width: 100%;
   min-width: 90%;
-  
+
   img {
     border-radius: 5px;
     width: 100%;
@@ -202,7 +198,6 @@ $crazy_color: #ff3d3d;
   user-select: none; /* Standard syntax */
 }
 .message-ations {
-
   position: absolute;
   width: 120px;
   height: auto;
@@ -252,9 +247,6 @@ $crazy_color: #ff3d3d;
       font-size: 0.8rem;
     }
   }
-
-
-
 
   .item-body {
     width: 100%;
