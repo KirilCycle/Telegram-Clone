@@ -2,56 +2,33 @@
   <div class="wrap">
     <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
 
+    <nav class="settings-nav">
+      <button @click="$emit('close')" class="back">
+        <span class="material-symbols-outlined"> arrow_back </span>
+      </button>
+      <h1 class="settings">Settings</h1>
+      <button @click="() => handleEditComponent(-310, true)" class="edit">
+        <span class="material-symbols-outlined"> edit </span>
+      </button>
+    </nav>
 
-      <nav class="settings-nav">
-        <button @click="$emit('close')" class="back">
-          <span class="material-symbols-outlined"> arrow_back </span>
-        </button>
-        <h1 class="settings">Settings</h1>
-        <button @click="() => handleEditComponent(-310, true)" class="edit">
-          <span class="material-symbols-outlined"> edit </span>
-        </button>
-      </nav>
-  
-      <user-image>
-     
-        <div class="profile-img-wrap">
-          <img class="profile-img" :src="$store.state.user.user?.photoURL" />
-        </div>
-   
-         <h2>Sexy pro</h2>
-         <h3>{{ $store.state.user.user.email }}</h3>
-      
-      </user-image>
-  
-      <div class="user-info-container">
-        <div class="username">
-          <div class="ico">
-            <p>@</p>
-          </div>
-  
-          <div class="user_info_container_text_wrap">
-            <p class="info-text">{{ $store.state.user.user.username }}</p>
-            <p>Username</p>
-          </div>
-        </div>
-  
-        <div class="bio">
-          <div class="ico">
-            <p>i</p>
-          </div>
-  
-          <div class="user_info_container_text_wrap">
-            <p class="info-text">{{ $store.state.user.user.bio }}</p>
-            <p>Bio</p>
-          </div>
-        </div>
+    <user-image>
+      <div class="profile-img-wrap">
+        <img class="profile-img" :src="$store.state.user.user?.photoURL" />
       </div>
- 
-    <div  ref="edit" class="edit-panel">
-      <edit-settings @close=" () => handleEditComponent(0, false)" ></edit-settings>
-    </div>
+      <div class="profile_img_wrap_text_wrp">
+        <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
+        <h3 class="email" >{{ $store.state.user.user.email }}</h3>
+      </div>
+    </user-image>
 
+    <profile-user-info></profile-user-info>
+
+    <div ref="edit" class="edit-panel">
+      <edit-settings
+        @close="() => handleEditComponent(0, false)"
+      ></edit-settings>
+    </div>
   </div>
 </template>
 
@@ -70,12 +47,14 @@ import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import UserImage from "@/components/UserImage.vue";
-import EditSettings from '@/components/EditSettings.vue';
+import EditSettings from "@/components/EditSettings.vue";
+import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 
 export default {
   components: {
     UserImage,
     EditSettings,
+    ProfileUserInfo,
   },
   data() {
     return {
@@ -93,9 +72,8 @@ export default {
   },
   created() {},
   methods: {
-
-    async handleEditComponent (pos,state) {
-      this.inEdit = state
+    async handleEditComponent(pos, state) {
+      this.inEdit = state;
       this.$refs.edit.style.transform = `translateX(${pos}px)`;
     },
 
@@ -302,20 +280,18 @@ $crazy_color: #00ff44;
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #828282;
 
-
 .edit-panel {
   width: 310px;
   position: absolute;
   left: 310px;
   height: 100%;
+
   transform: translateX(0);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
 
-
 .profile-img-wrap {
-  
-  width: 100%; 
+  width: 100%;
   height: 100%;
   position: relative;
 }
@@ -323,56 +299,18 @@ $def-gray: #828282;
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  
 }
-  
-.user-info-container {
-  height: auto;
-  padding: 15px 10px 15px 10px;
-  background-color: #2b2b2b;
-  width: 100%;
-  box-sizing: border-box;
 
-  %item-patt {
-    width: 100%;
-    height: 60px;
-    border-radius: 5px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
+.profile_img_wrap_text_wrp {
+  .fisrt-name {
+    color: #ffffff;
+    position: absolute;
+    z-index: 50;
   }
-  .ico {
-    width: 50px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: 600;
-    color: #808080;
-  }
-
-  .user_info_container_text_wrap {
-    width: 80%;
-    height: 100%;
-    margin-top: 10px;
-
-    .info-text {
-      color: #ffffff;
-      font-size: 0.9rem;
-    }
-
-    p {
-      color: #808080;
-      font-size: 0.8rem;
-    }
-  }
-  .username {
-    @extend %item-patt;
-  }
-  .bio {
-    @extend %item-patt;
+  .email {
+    color: #909090;
+    position: absolute;
+    z-index: 50;
   }
 }
 
@@ -397,7 +335,7 @@ h3 {
 }
 h2 {
   color: #ffffff;
- 
+
   position: absolute;
   bottom: 23px;
   left: 20px;
@@ -421,12 +359,11 @@ h2 {
   background-color: rgba(0, 0, 0, 0.792);
 }
 .wrap {
+  background-color: rgb(22, 22, 22);
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   height: 100%;
   border-right: 0.1em solid rgb(63, 63, 63);
-  background-color: $custom-c4;
- 
 
   .profile-txt-wrp {
     text-align: center;
@@ -441,7 +378,6 @@ h2 {
   }
 
   .profile-edit-container {
-
     position: relative;
     display: flex;
     width: 100%;
