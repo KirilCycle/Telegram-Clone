@@ -58,9 +58,12 @@
       </div>
     </div>
 
-    <button @click="commitProfileChanges" class="save-changes-btn">
+    <transition name="bounce">
+    <button v-show="somethingChanged"  ref="commit"  @click="commitProfileChanges" class="save-changes-btn">
       <span class="material-symbols-outlined"> done </span>
     </button>
+    </transition>
+
   </div>
 </template>
 
@@ -102,6 +105,8 @@ export default {
       usernameExist: false,
       usernameAvaible: false,
       shortLength: false,
+
+     
     };
   },
 
@@ -114,19 +119,40 @@ export default {
       } else if (this.usernameAvaible) {
         return "Avaible";
       } else if (this.shortLength) {
-        return "we require more than 3 symphol";
+        return "we require more than 3 symphol and less than 27";
       } else if (this.checkUsername) {
         return "Checking";
       } else {
         return "Username";
       }
     },
+
+    somethingChanged() {
+      let somethingChanged = 
+        this.uploadedPhoto ||
+        this.firtsName !== this.firtsNameTmp ||
+        this.username !== this.usernameTmp ||
+        this.bio !== this.bioTmp
+
+        if (somethingChanged) {
+          return true
+        }  else {
+          
+          return false
+        }
+    }
+
+  },
+  watch: {
+
+   
+
   },
   methods: {
     async handleUsername() {
       this.checkUsername = false;
       this.usernameExist = false;
-      if (this.username.length > 3) {
+      if (this.username.length > 3  && this.username.length < 27) {
         this.shortLength = false;
         console.log("username changes", this);
 
@@ -202,6 +228,7 @@ export default {
         } else {
           console.log("Huynya predelivay");
           this.usernameWrongData = true;
+          this.usernameAvaible = false
 
           console.log(this.usernameWrongData);
         }
@@ -310,9 +337,9 @@ export default {
 
           if (res) {
             if (res.username === this.$store.state.user.user.username) {
-              // await updateDoc(userDoc, newData).then((res) =>
-              //   console.log(res, "UPDATED SAME USERNAME")
-              // );
+              await updateDoc(userDoc, newData).then((res) =>
+                console.log(res, "UPDATED SAME USERNAME")
+              );
 
               console.log("ENOTHER DATA", newData);
             } else {
@@ -321,7 +348,7 @@ export default {
           } else {
             await updateDoc(userDoc, newData).then((res) =>
               console.log(res, "UPDATED")
-            );
+            ).catch((er) => console.log(er))
 
             console.log("ENOTHER DATA", newData);
           }
@@ -350,6 +377,24 @@ export default {
 <style lang="scss" scoped>
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #828282;
+
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .edit-wrap {
   width: 100%;
   height: 100%;

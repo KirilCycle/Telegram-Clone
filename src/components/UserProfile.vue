@@ -6,16 +6,24 @@
       </button>
       <h3>User Info</h3>
     </nav>
-    
+
     <user-image>
       <div class="profile-img-wrap">
-        <img class="profile-img" :src="$store.state.chat?.selectedUser?.photoURL" />
+        <img
+          class="profile-img"
+          :src="$store.state.chat?.selectedUser?.photoURL"
+        />
       </div>
-      <h2 class="fisrtname">{{$store.state.chat?.selectedUser?.displayName}}</h2>
+      <h2 class="fisrtname">
+        {{ $store.state.chat?.selectedUser?.displayName }}
+      </h2>
     </user-image>
 
-    <profile-user-info :bio="$store.state.chat?.selectedUser?.bio" :username="$store.state.chat?.selectedUser?.username"></profile-user-info>
-
+    <profile-user-info
+      v-if="rerender"
+      :bio="$store.state.chat?.selectedUser?.bio"
+      :username="$store.state.chat?.selectedUser?.username"
+    ></profile-user-info>
   </div>
 </template>
 
@@ -23,16 +31,69 @@
 import store from "@/store/store";
 import UserImage from "./UserImage.vue";
 import ProfileUserInfo from "./ProfileUserInfo.vue";
+import { watchEffect } from "vue";
+import { ref } from "vue";
 
 export default {
   components: {
     UserImage,
-    ProfileUserInfo
+    ProfileUserInfo,
   },
 
   data() {
     return {
       v: false,
+    };
+  },
+
+  watch: {
+    store(newValue) {
+      console.log("AAAAA");
+    },
+  },
+
+  setup() {
+    //i know this is horrible solution, but only it is works (i will make rerender particular component to get actual data from store, in addition )
+    //
+    // wont work
+    //
+    // rerender.value = false
+    // rerender.value = true
+    //
+    // wont work
+    //
+    // rerender.value = false
+    // setTimeout(() => {
+    // rerender.value = true;
+    // });
+    //
+    //
+    //
+    //
+
+    const rerender = ref(true);
+
+    function setrerender() {
+      rerender.value = false;
+      back();
+    }
+
+    function back() {
+      setTimeout(() => {
+        rerender.value = true;
+      });
+    }
+
+    watchEffect(() => {
+      setrerender();
+
+      rerender.value = false;
+
+      console.log(store.state.chat?.selectedUser?.username, "AAAAAAA CHANGES");
+    });
+
+    return {
+      rerender,
     };
   },
 };
@@ -140,6 +201,5 @@ nav {
   background-color: #ff343400;
   box-shadow: rgba(0, 0, 2, 10) 0px 32px 70px 40px;
   bottom: -30px;
-  
 }
 </style>
