@@ -288,6 +288,8 @@ body {
   background-color: rgb(17, 17, 17);
   min-height: 100vh;
   /* mobile viewport bug fix */
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
   min-height: -webkit-fill-available;
 }
 </style>

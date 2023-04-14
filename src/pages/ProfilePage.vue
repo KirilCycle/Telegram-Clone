@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div @click="moreContentV = false" class="wrap">
     <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
 
     <nav class="settings-nav">
@@ -9,14 +9,39 @@
       <h1 class="settings">Settings</h1>
 
       <div class="settings_nav_right_side">
-        <button @click="() => handleEditComponent(-310, true)" class="settings-btn">
+        <button
+          @click="() => handleEditComponent(-310, true)"
+          class="settings-btn"
+        >
           <span class="material-symbols-outlined"> edit </span>
         </button>
-        <button  class="settings-btn">
-          <span class="material-symbols-outlined">
-            more_vert
-            </span>
+
+        <button @click.stop="moreContentV = true" class="settings-btn">
+          <span class="material-symbols-outlined"> more_vert </span>
+
+          <div v-if="moreContentV" class="more-content">
+            <ul class="more_list">
+              <li @click="logoutV = true">
+                <span class="material-symbols-outlined"> logout </span>
+                <p>Logout</p>
+              </li>
+            </ul>
+          </div>
         </button>
+
+        <teleport to="body">
+          <div v-if="logoutV" class="logout-alert">
+            <div class="logout-modal">
+              <h2>Messanger Name</h2>
+              <p>Are you sure you want to log out?</p>
+
+              <div class="logoout_modal_btns_wrp">
+                <button>LOG OUT</button>
+                <button>CANCEL</button>
+              </div>
+            </div>
+          </div>
+        </teleport>
       </div>
     </nav>
 
@@ -73,9 +98,10 @@ export default {
         : store.state.user.user.email,
       wrongVal: false,
       changedName: false,
-      inEdit: false,
       newFile: null,
       isLoading: false,
+      logoutV: false,
+      moreContentV: false,
     };
   },
   created() {},
@@ -371,20 +397,43 @@ h2 {
   .settings-btn {
     color: $def-gray;
     margin: 12px;
+    cursor: pointer;
   }
+}
 
-  .settings-btn {
-    color: $def-gray;
-    margin: 12px;
+.more-content {
+  width: 180px;
+  height: max-content;
+  position: absolute;
+  z-index: 55;
+  right: 15px;
+  background-color: #272727d3;
+  top: 45px;
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 7px 2px 7px 2px;
+  li {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: space-around;
+    font-size: 1rem;
+    height: 30px;
+
+    p {
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.451);
+    }
   }
 }
-.waiting-bloor {
-  position: absolute;
-  z-index: 200;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.792);
-}
+
 .wrap {
   background-color: rgb(22, 22, 22);
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -492,6 +541,76 @@ h2 {
     span {
       color: $crazy_color;
     }
+  }
+}
+
+.logout-alert {
+  width: 100%;
+  height: 100%;
+  background-color: #00000089;
+  position: absolute;
+  z-index: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .logout-modal {
+    width: 315px;
+    height: 150px;
+    background: #1f1f1f;
+    border-radius: 10px;
+    padding: 15px;
+    position: relative;
+    box-sizing: border-box;
+
+    h2 {
+      font-size: 1.3rem;
+      color: white;
+      position: static;
+    }
+
+    p {
+      font-size: 1rem;
+      color: white;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .logoout_modal_btns_wrp {
+      width: 100%;
+      height: max-content; 
+      display: flex;
+      flex-direction: row-reverse;
+       
+    
+      button {
+        width: 32%;
+        height: 35px;
+        font-weight: 550;
+        color: rgb(45, 108, 255);
+        font-size: 1rem;
+        margin-right: 10px;
+        border-radius: 5px;
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgba(45, 108, 255, 0.055);;
+        }
+        
+
+      }
+
+      
+    }
+    .logoout_modal_btns_wrp :last-child  {
+      &:hover {
+        background-color:   rgba(255, 0, 0, 0.056);
+      }
+      color: red;
+      
+  }
+
   }
 }
 </style>
