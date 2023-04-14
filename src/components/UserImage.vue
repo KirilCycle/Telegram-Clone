@@ -13,8 +13,8 @@
 
 <style lang="scss" scoped>
 .photo-container {
-    width: 100%;
-    height: 200px;
+    width: 310px;
+    height: 300px;
     background-color: #ffffff00;
     position: relative;
     overflow: hidden;

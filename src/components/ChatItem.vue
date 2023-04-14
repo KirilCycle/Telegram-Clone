@@ -96,8 +96,9 @@ export default {
 
     .img-wrap {
       margin: 0% auto;
-      width: 65px;
-      height: 65px;
+      width: 52px;
+      border: 1px solid rgb(66, 66, 66);
+      height: 52px;
       border-radius: 50%;
       overflow: hidden;
 

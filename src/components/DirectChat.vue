@@ -103,6 +103,9 @@ export default {
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
     watchEffect(() => {
+
+    
+
       const messagesRef = db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
@@ -121,6 +124,8 @@ export default {
         switch(  getMessagesType.value) {
 
           case 'prev' :
+
+         console.log( 'prev case', firts.value);
 
           query = messagesRef
           .orderBy("createdAt")
@@ -147,8 +152,6 @@ export default {
         //   .orderBy("createdAt")
         //   .startAfter(firts.value.createdAt)
         //   .limit(40)
-        
-
 
       } else {
         console.log("b");
@@ -158,16 +161,22 @@ export default {
       }
 
       query.onSnapshot((snapshot, parameters) => {
-        if (page.value > 0) {
-          chat.value = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+        if (page.value > 0 ) {
+    
+          console.log(   'page.vale > 0',);
+         
+        
+            chat.value = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+          
 
-          if (chasingBottom.value) {
-            scrollToBottom();
-          }
+
+         
+        
         } else {
+          console.log(   'page.vale > 0 else ');
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
@@ -189,11 +198,9 @@ export default {
     function fetchPrev() {
       console.log("more");
 
-   
-
       if (!disablePrevFetch.value) {
-        getMessagesType.value = 'prev'
         firts.value = chat.value[19];
+        getMessagesType.value = 'prev'
         page.value += 1;
         console.log(page.value);
       }

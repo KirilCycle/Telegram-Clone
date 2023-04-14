@@ -14,9 +14,14 @@
       </nav>
   
       <user-image>
-        <img :src="$store.state.user.user?.photoURL" />
-        <h2>Sexy pro</h2>
-        <h3>{{ $store.state.user.user.email }}</h3>
+     
+        <div class="profile-img-wrap">
+          <img class="profile-img" :src="$store.state.user.user?.photoURL" />
+        </div>
+   
+         <h2>Sexy pro</h2>
+         <h3>{{ $store.state.user.user.email }}</h3>
+      
       </user-image>
   
       <div class="user-info-container">
@@ -307,6 +312,25 @@ $def-gray: #828282;
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
 
+
+.profile-img-wrap {
+  
+  width: 100%; 
+  height: 100%;
+  position: relative;
+}
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+ 
+  
+}
+   
+
+
+
+
 .user-info-container {
   height: auto;
   padding: 15px 10px 15px 10px;
@@ -340,12 +364,12 @@ $def-gray: #828282;
 
     .info-text {
       color: #ffffff;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
     }
 
     p {
       color: #808080;
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
   }
   .username {
@@ -488,8 +512,6 @@ h2 {
     height: 10px;
     color: $def-gray;
   }
-
- 
 
   h2 {
     margin-top: 10px;
