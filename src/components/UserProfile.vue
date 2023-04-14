@@ -7,17 +7,11 @@
       <h3>User Info</h3>
     </nav>
     
-    <!-- <div class="photo-container">
-      <img :src="$store.state.chat?.selectedUser?.photoURL" />
-      <h2>Sexy pro</h2>
-      <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>
-      <div class="bottom-img-shadow"></div>
-    </div> -->
-    
     <user-image>
-      <img :src="$store.state.chat?.selectedUser?.photoURL" />
-      <h2>Sexy pros</h2>
-      <h3>{{ $store.state.chat?.selectedUser?.email }}</h3>
+      <div class="profile-img-wrap">
+        <img class="profile-img" :src="$store.state.chat?.selectedUser?.photoURL" />
+      </div>
+      <h2 class="fisrtname">{{$store.state.chat?.selectedUser?.displayName}}</h2>
     </user-image>
 
   </div>
@@ -43,6 +37,17 @@ export default {
 <style lang="scss" scoped>
 $custom-c4: rgb(23, 23, 23);
 $def-gray: #828282;
+
+.profile-img-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 nav {
   width: 100%;
@@ -84,7 +89,8 @@ nav {
   border-left: 1px solid rgb(65, 65, 65);
   position: absolute;
   z-index: 150;
-  min-width: 320px;
+  min-width: 310px;
+  max-width: 310px;
   right: 0px;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
@@ -93,7 +99,7 @@ nav {
 
 .photo-container {
   width: 100%;
-  height: 330px;
+  height: 300px;
   background-color: #ffffff00;
   position: relative;
   overflow: hidden;
@@ -117,7 +123,7 @@ nav {
     color: #ffffff;
     z-index: 50;
     position: absolute;
-    bottom: 23px;
+    bottom: 5px;
     left: 7px;
     font-size: 1.5rem;
   }

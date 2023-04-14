@@ -3,18 +3,6 @@
         <li>
           <div class="ico">
             <span class="material-symbols-outlined">
-              person
-              </span>
-          </div>
-  
-          <div class="user_info_container_text_wrap">
-            <p class="info-text">{{ $store.state.user.user.displayName }}</p>
-            <p>FirtsName</p>
-          </div>
-        </li>
-        <li>
-          <div class="ico">
-            <span class="material-symbols-outlined">
               info
               </span>
           </div>
@@ -25,7 +13,7 @@
           </div>
         </li>
   
-        <li >
+        <li>
           <div class="ico">
             <span class="material-symbols-outlined">
               alternate_email
@@ -37,12 +25,16 @@
             <p>Bio</p>
           </div>
         </li>
+
       </ul>
 </template>
 
 <script>
     export default {
-        
+        props: {
+          username: String,
+          firstName: String
+        }
     }
 </script>
 
