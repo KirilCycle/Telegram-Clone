@@ -55,7 +55,7 @@
       </div>
     </user-image>
 
-    <profile-user-info></profile-user-info>
+    <profile-user-info :bio="$store.state.user.user.bio" :username="$store.state.user.user.username"></profile-user-info>
 
     <div ref="edit" class="edit-panel">
       <edit-settings

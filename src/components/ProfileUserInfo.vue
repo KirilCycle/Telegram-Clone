@@ -8,7 +8,7 @@
           </div>
   
           <div class="user_info_container_text_wrap">
-            <p class="info-text">{{ $store.state.user.user.username }}</p>
+            <p class="info-text">{{ username  }}</p>
             <p>Username</p>
           </div>
         </li>
@@ -21,7 +21,7 @@
           </div>
   
           <div class="user_info_container_text_wrap">
-            <p class="info-text">{{ $store.state.user.user.bio }}</p>
+            <p class="info-text">{{ bio}}</p>
             <p>Bio</p>
           </div>
         </li>
@@ -33,7 +33,13 @@
     export default {
         props: {
           username: String,
-          firstName: String
+          bio: String
+        },
+        data() {
+          return {
+            username: this.username,
+            bio: this.bio
+          }
         }
     }
 </script>

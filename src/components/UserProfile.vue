@@ -14,16 +14,20 @@
       <h2 class="fisrtname">{{$store.state.chat?.selectedUser?.displayName}}</h2>
     </user-image>
 
+    <profile-user-info :bio="$store.state.chat?.selectedUser?.bio" :username="$store.state.chat?.selectedUser?.username"></profile-user-info>
+
   </div>
 </template>
 
 <script>
 import store from "@/store/store";
 import UserImage from "./UserImage.vue";
+import ProfileUserInfo from "./ProfileUserInfo.vue";
 
 export default {
   components: {
-    UserImage
+    UserImage,
+    ProfileUserInfo
   },
 
   data() {
