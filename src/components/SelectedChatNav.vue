@@ -44,8 +44,8 @@ opacity: 0;
 
 
 .chat_nav_img_wrap {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   left: 30px;

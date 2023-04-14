@@ -3,13 +3,21 @@
     <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
 
     <nav class="settings-nav">
-      <button @click="$emit('close')" class="back">
+      <button @click="$emit('close')" class="settings-btn">
         <span class="material-symbols-outlined"> arrow_back </span>
       </button>
       <h1 class="settings">Settings</h1>
-      <button @click="() => handleEditComponent(-310, true)" class="edit">
-        <span class="material-symbols-outlined"> edit </span>
-      </button>
+
+      <div class="settings_nav_right_side">
+        <button @click="() => handleEditComponent(-310, true)" class="settings-btn">
+          <span class="material-symbols-outlined"> edit </span>
+        </button>
+        <button  class="settings-btn">
+          <span class="material-symbols-outlined">
+            more_vert
+            </span>
+        </button>
+      </div>
     </nav>
 
     <user-image>
@@ -18,7 +26,7 @@
       </div>
       <div class="profile_img_wrap_text_wrp">
         <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
-        <h3 class="email" >{{ $store.state.user.user.email }}</h3>
+        <h3 class="email">{{ $store.state.user.user.email }}</h3>
       </div>
     </user-image>
 
@@ -278,14 +286,14 @@ export default {
 <style lang="scss" scoped>
 $crazy_color: #00ff44;
 $custom-c4: rgb(31, 31, 31);
-$def-gray: #828282;
+$def-gray: #b2b2b2;
 
 .edit-panel {
   width: 310px;
   position: absolute;
   left: 310px;
   height: 100%;
-
+  z-index: 60;
   transform: translateX(0);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
@@ -350,6 +358,25 @@ h2 {
   top: 0px;
   display: flex;
   align-items: center;
+  justify-content: center;
+
+  .settings_nav_right_side {
+    width: 80px;
+    height: 100%;
+    margin-right: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .settings-btn {
+    color: $def-gray;
+    margin: 12px;
+  }
+
+  .settings-btn {
+    color: $def-gray;
+    margin: 12px;
+  }
 }
 .waiting-bloor {
   position: absolute;
@@ -428,22 +455,6 @@ h2 {
   display: flex;
   align-items: center;
   flex-direction: column;
-
-  .back {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    height: 10px;
-    color: $def-gray;
-  }
-
-  .edit {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    height: 10px;
-    color: $def-gray;
-  }
 
   h2 {
     margin-top: 10px;
