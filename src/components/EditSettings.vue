@@ -76,6 +76,8 @@ import firebase from "firebase/compat/app";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import store from "@/store/store";
 import { reactive } from "vue";
+import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { uuidv4 } from "@firebase/util";
 
 export default {
   props: {
@@ -221,9 +223,9 @@ export default {
         ) {
           this.profilePhoto = URL.createObjectURL(uploadedTarget);
 
-          this.newFile = uploadedTarget;
+          this.uploadedPhoto = uploadedTarget;
 
-          console.log(this.newFile);
+          
           // selectedPhoto.value = e.target.files[0]
         } else {
           alert("wrog format");
@@ -251,24 +253,7 @@ export default {
         this.username !== this.usernameTmp ||
         this.bio !== this.bioTmp;
 
-      if (
-        somethingChanged &&
-        !this.usernameWrongData &&
-        !this.shortLength
-      ) {
-
-
-        const newData = {
-          ...(this.firtsName !== this.firtsNameTmp && {
-            displayName: this.firtsName,
-          }),
-          ...(this.username !== this.usernameTmp && {
-            username: this.username,
-          }),
-          ...(this.bio !== this.bioTmp && { bio: this.bio }),
-        };
-
-
+      if (somethingChanged && !this.usernameWrongData && !this.shortLength) {
         const db = firebase.firestore();
         const userDoc = doc(db, "usersPrew", this.$store.state.user.user.uid);
 
@@ -279,34 +264,70 @@ export default {
 
         const querySnapshot = await getDocs(q);
 
-        
         let res = await querySnapshot.docs[0]?.data();
 
-
-        if (res) {
-          if (res.username === this.$store.state.user.user.username ) {
-            await updateDoc(userDoc, newData).then((res) =>
-            console.log(res, "UPDATED")
-          );
-  
-          console.log("ENOTHER DATA", newData);
-          }  else {
-            alert('wrong data')
-          }
-        } else {
-
-          await updateDoc(userDoc, newData).then((res) =>
-            console.log(res, "UPDATED")
-          );
-  
-          console.log("ENOTHER DATA", newData);
-        }
+        let newData = {};
 
        
+        if (this.uploadedPhoto) {
+
+          const storage = getStorage();
+
+          const storageRef = ref(
+            storage,
+            `images/${this.uploadedPhoto.name + uuidv4()}`
+          );
+
+          uploadBytes(storageRef, this.uploadedPhoto).then((snapshot) => {
+            console.log(storageRef._location.path_, "Uploaded a blob or file!");
+
+            getDownloadURL(storageRef).then((url) => {
+              newData = {
+                ...(this.firtsName !== this.firtsNameTmp && {
+                  displayName: this.firtsName,
+                }),
+                ...(this.username !== this.usernameTmp && {
+                  username: this.username,
+                }),
+                ...(this.bio !== this.bioTmp && { bio: this.bio }),
+                photoURL: url
+              };
+
+            updateDoc(userDoc, newData).then((res) =>
+               console.log(res, "UPDATED p"))
+            });
+          });
+        } else {
+          newData = {
+            ...(this.firtsName !== this.firtsNameTmp && {
+              displayName: this.firtsName,
+            }),
+            ...(this.username !== this.usernameTmp && {
+              username: this.username,
+            }),
+            ...(this.bio !== this.bioTmp && { bio: this.bio }),
+          };
+
+          if (res) {
+            if (res.username === this.$store.state.user.user.username) {
+              // await updateDoc(userDoc, newData).then((res) =>
+              //   console.log(res, "UPDATED SAME USERNAME")
+              // );
+
+              console.log("ENOTHER DATA", newData);
+            } else {
+              alert("wrong data");
+            }
+          } else {
+            await updateDoc(userDoc, newData).then((res) =>
+              console.log(res, "UPDATED")
+            );
+
+            console.log("ENOTHER DATA", newData);
+          }
+        }
 
         // To update age and favorite color:
-      } else {
-        alert("wrong data");
       }
     },
   },
