@@ -18,10 +18,6 @@
     background-color: #ffffff00;
     position: relative;
     overflow: hidden;
-   
-
-  
-  
   }
 
 

@@ -7,8 +7,6 @@
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
        
-       
-       
         <settings></settings>
 
         <input
@@ -497,6 +495,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+@import '@/styles/colors';
 $custom-c1: rgb(28, 28, 28);
 $custom-c2: rgb(43, 43, 43);
 $custom-c4: rgb(23, 23, 23);
@@ -652,7 +652,7 @@ v-enter-active,
   overflow: hidden;
   resize: horizontal;
   flex-shrink: 0;
-  background-color: $custom-c1;
+  background-color: $chat-list-main;
   display: flex;
   flex-direction: column;
 
@@ -673,7 +673,7 @@ v-enter-active,
     input {
       background-color: $custom-c2;
       height: 43px;
-      width: 90%;
+      width: 60%;
       padding-right: 5px;
       padding-left: 10px;
       margin-left: 5px;
