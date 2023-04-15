@@ -55,7 +55,7 @@ export  default {
     border-radius: 50%;
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow-x:hidden;
     border: 1px solid rgb(57, 57, 57);
    
     img {
@@ -86,6 +86,8 @@ opacity: 0;
   width: 100vw;
   position: fixed;
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden ;
   display: flex;
 
   .profile-container-hidden {
