@@ -47,18 +47,19 @@
   </script>
   
   <style lang="scss" scoped>
-  $crazy_color: #00ff44;
+@import '@/styles/colors';
   
   .menu-btn-wrap {
     cursor: pointer;
     border-radius: 5px;
-    width: 35px;
-    height: 35px;
+    width: 43px;
+    height: 43px;
+    border-radius: 21.5px;
     display: flex;
     align-items: center;
     justify-content: center;
     &:hover {
-      background-color: #4040406b;
+      background-color: $hover;
     }
     .menu-btn {
       width: 35px;

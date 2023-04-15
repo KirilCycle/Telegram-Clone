@@ -652,7 +652,7 @@ v-enter-active,
   overflow: hidden;
   resize: horizontal;
   flex-shrink: 0;
-  background-color: $chat-list-main;
+  background-color: $content-main;
   display: flex;
   flex-direction: column;
 
@@ -666,7 +666,7 @@ v-enter-active,
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: $custom-c1;
+    background-color: $content-main;
 
    
 
