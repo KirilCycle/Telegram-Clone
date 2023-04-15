@@ -90,25 +90,30 @@ firebase.auth().onAuthStateChanged(function (user) {
       const prewuserSnapRef = doc(db, "usersPrew", user.uid);
       const prewuserSnap = await getDoc(prewuserSnapRef);
 
+      function wordGenerator() {
+
+        const words = ['Guffy','Sniper','Big', 'Cold','Master','RockStar','Dangerous','Hot','Sexy','Nice']
+
+        return words[Math.floor(Math.random() * 10) + 1]
+      }
+
       if (!prewuserSnap.exists()) {
         console.log("cpu action");
         await setDoc(doc(db, "usersPrew", user.uid), {
           uid: user.uid,
           photoURl: `https://robohash.org/${user.uid}.png`,
-          displayName: user.displayName,
           email: user.email,
-          username: user.email.slice(0, user.email.indexOf("@"))
+          username: user.email.slice(0, user.email.indexOf("@")) + wordGenerator()
         });
       }
     }
 
-    checkNeccessaryData();
-
+    
     async function setUserToStore() {
-
+      
       const prewuserSnapRef = doc(db, "usersPrew", user.uid);
       const prewuserSnap = await getDoc(prewuserSnapRef);
-  
+      
       console.log(prewuserSnap.data(), "USER");
       store.commit("user/setUser", prewuserSnap.data());
       store.commit("user/setAuthData", auth);
@@ -116,12 +121,14 @@ firebase.auth().onAuthStateChanged(function (user) {
       store.commit("user/setDb", db);
       router.push({ name: window.location.hash.replace("#/", "") });
     }
-
-    setUserToStore()
-
+    
+    
+    checkNeccessaryData().then((res) =>  setUserToStore())
+    
     // window.location.hash.replace('#/', '')
   } else {
-    console.log("NOO :(");
+
+    console.log("NOO :(")
   }
 });
 
@@ -150,40 +157,9 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 // // const onlineRef = oldRealTimeDb.ref('.info/connected'); // Get a reference to the list of connections
 // const onlineRef  = ref(oldRealTimeDb, '.info/connected');
 
-const userId = "5SEC8Idp9mPbOD4C0kEQSPMfDdA2";
 
-const firestoreDb = getFirestore(app);
-const realTimeDb = getDatabase(app);
 
-const userDocRef = doc(firestoreDb, "usersPrew", userId);
 
-const onlineRef = ref(realTimeDb, ".info/connected");
-const userStatusRef = ref(realTimeDb, `/status/${userId}`);
-
-onValue(onlineRef, (snapshot) => {
-  if (snapshot.val() === true) {
-    onDisconnect(userStatusRef)
-      .set(false)
-      .then(() => {
-        // Set the online key of the user's document to true
-        updateDoc(userDocRef, { online: "true" });
-
-        // Let's also create a key in our real-time database
-        // The value is set to 'online'
-        set(userStatusRef, true);
-      });
-
-    // Set the online key of the user's document to true immediately
-    updateDoc(userDocRef, { online: "true" });
-  } else {
-    // Set the online key of the user's document to false
-    updateDoc(userDocRef, { online: "false" });
-
-    // Let's also update the key in our real-time database
-    // The value is set to 'offline'
-    set(userStatusRef, "false");
-  }
-});
 </script>
 
 <style>

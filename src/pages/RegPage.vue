@@ -58,69 +58,19 @@ function handleVisible() {
 }
 
 function register() {
-
-  
   if (email.value.length > 7 && password.value.length > 7) {
-    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then((data) => {
-        const db = firebase.firestore();
+    createUserWithEmailAndPassword(getAuth(), email.value, password.value).then(
+      (data) => {
 
         const auth = getAuth()
 
-        async function addUsersChatLink() {
-          setDoc(doc(db, "usersLinksToChat", data.user.uid), {
-           
-          });
-        }
-
-        async function addUserPrew() {
-          setDoc(doc(db, "usersPrew", data.user.uid), {
-            uid: data.user.uid,
-            email: data.user.email,
-            displayName: data.user.displayName,
-            photoURL: `https://robohash.org/${data.user.uid}.png`,
-          });
-        }
-
-      
-
-
-        const first = addUserPrew();
-        const second = addUsersChatLink();
-
-
-        Promise.all([first, second])
-          .then((res) => {
-        
-            updateProfile(auth.currentUser, {
-            photoURL:  `https://robohash.org/${data.user.uid}.png`,
-        })
-          .then(() => {
-            // Profile updated!
-            // ...
-          })
-          .catch((error) => {
-            // An error occurred
-            // ...
-          });
-
-            
-            store.commit("user/setAuth", true);
-            console.log(store.state.user.isAuth);
-            router.push({ name: "chat" });
-          })
-          .catch((er) => console.log(er, 's'))
-          .catch((er) => {
-            console.log(er, 's')
-            wrongData.value = true;
-          });
-      })
-      .catch((er) => {
-        console.log(er, 's')
-        wrongData.value = true;
-      });
+        store.commit("user/setUser", auth.currentUser);
+        store.commit("user/setAuth", true);
+        console.log(store.state.user.isAuth);
+        router.push({ name: "chat" });
+      }
+    );
   } else {
-    
     wrongValues.value = true;
   }
 }

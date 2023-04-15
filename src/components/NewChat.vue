@@ -9,7 +9,6 @@
         }`
       }}
     </h2>
-    <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
   </div>
 </template>
 

@@ -295,7 +295,9 @@ export default {
         if (user?.displayName) {
           return user.displayName;
         } else {
-          return user.email.slice(0, user.email.indexOf("@"));
+
+        
+          return user.email?  user.email.slice(0, user.email.indexOf("@")) : 'loading'
         }
       }
     },
@@ -367,7 +369,7 @@ export default {
           userId: auth.currentUser.uid,
           text: v,
           createdAt: Timestamp.now(),
-          
+          id: uuidv4() + auth.currentUser.uid.replaceAll(" ", ""),
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         if (auth.currentUser.photoURL) {
@@ -401,21 +403,18 @@ export default {
                   const batch = writeBatch(db);
 
                   // const chatRef = db.collection("chats").doc(chatId);
+
                   // const chatsMsgsRef = db
                   //   .collection("chatMessages")
                   //   .doc(chatId);
-                  // const chatsMsgsRef = db
-                  //   .collection("chatMessages")
-                  //   .doc(store.state.chat.chatId);
-                  // batch.set(chatsMsgsRef);
-                  // const messageRef = chatsMsgsRef.collection("messages");
-                  // const newMessageRef = messageRef.doc("1221321313customid");
-                  // batch.set(newMessageRef, message);
+
+                  // batch.set(chatsMsgsRef, { messages: [message] });
+
 
                   const messagesRef = db
                     .collection("chatMessages")
-                    .doc(store.state.chat.chatId)
-                    .collection("messagessXXXXXX");
+                    .doc(chatId)
+                    .collection("messages");
                     batch.set(messagesRef.doc(), message);
 
                   const lastMsg = {

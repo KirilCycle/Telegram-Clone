@@ -4,7 +4,6 @@
       <div class="ico">
         <span class="material-symbols-outlined"> alternate_email </span>
       </div>
-
       <div class="user_info_container_text_wrap">
         <p class="info-text">{{ username }}</p>
         <p>Username</p>
