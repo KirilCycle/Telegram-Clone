@@ -6,7 +6,6 @@
   <div class="main">
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
-       
         <settings></settings>
 
         <input
@@ -65,7 +64,6 @@
           class="chat-input-block-x"
         >
           <div class="input-wrap">
-          
             <div v-if="$store.state.chat.selectedUser.new">
               <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
             </div>
@@ -73,7 +71,6 @@
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
-          
           </div>
         </div>
 
@@ -293,9 +290,9 @@ export default {
         if (user?.displayName) {
           return user.displayName;
         } else {
-
-        
-          return user.email?  user.email.slice(0, user.email.indexOf("@")) : 'loading'
+          return user.email
+            ? user.email.slice(0, user.email.indexOf("@"))
+            : "loading";
         }
       }
     },
@@ -408,12 +405,11 @@ export default {
 
                   // batch.set(chatsMsgsRef, { messages: [message] });
 
-
                   const messagesRef = db
                     .collection("chatMessages")
                     .doc(chatId)
                     .collection("messages");
-                    batch.set(messagesRef.doc(), message);
+                  batch.set(messagesRef.doc(), message);
 
                   const lastMsg = {
                     text: v,
@@ -495,11 +491,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-@import '@/styles/colors';
+@import "@/styles/colors";
 $custom-c1: rgb(28, 28, 28);
 $custom-c2: rgb(43, 43, 43);
 $custom-c4: rgb(23, 23, 23);
+
 $custom-c3: rgb(0, 128, 255);
 
 .test {
@@ -531,7 +527,7 @@ v-enter-active,
 .chat-nav-x {
   position: relative;
   width: 100%;
-  background-color: $custom-c4;
+  background-color: $content-main;
   height: 8%;
   text-align: left;
   display: flex;
@@ -563,7 +559,7 @@ v-enter-active,
   h3 {
     font-weight: 500;
     font-size: 1.1rem;
-    color: white;
+    color: $text-main;
     position: absolute;
     left: 82px;
     top: 30%;
@@ -655,6 +651,7 @@ v-enter-active,
   background-color: $content-main;
   display: flex;
   flex-direction: column;
+  border-right: 1px solid rgba(128, 128, 128, 0.237);
 
   .left_bar_srch-wrap {
     flex-shrink: 0;
@@ -668,8 +665,6 @@ v-enter-active,
     align-items: center;
     background-color: $content-main;
 
-   
-
     input {
       background-color: $custom-c2;
       height: 43px;
@@ -678,17 +673,17 @@ v-enter-active,
       padding-left: 10px;
       margin-left: 5px;
       font-size: 0.9rem;
-      color: #e7e7e7;
+      color: $text-main;
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
+
 
       &::placeholder {
         color: #838383;
         font-size: 1rem;
         font-weight: 540;
+      }
     }
-
-    } 
 
     .left_bar_srch_wrap_settings {
       width: 43px;
@@ -782,11 +777,7 @@ v-enter-active,
   background: rgba(152, 152, 152, 0.577);
   border-radius: 20px;
 }
-.chatitem {
-  cursor: pointer;
-  font-size: 1rem;
-  color: #ffffff;
-}
+
 
 @media (max-width: 798px) {
   .right-side-shoved-back {
@@ -821,7 +812,6 @@ v-enter-active,
     height: calc(var(--vh, 1vh) * 100);
     position: relative;
     resize: none;
-    background-color: rgb(11, 11, 11);
 
     .left_bar_srch-wrap {
       input {
@@ -830,6 +820,7 @@ v-enter-active,
         padding-left: 10px;
         height: 40px;
         font-size: 1.1rem;
+        width: 80%;
       }
 
       .left_bar_srch_wrap_settings {
@@ -903,7 +894,6 @@ v-enter-active,
     height: calc(var(--vh, 1vh) * 100);
     position: relative;
     resize: none;
-    background-color: #090909;
 
     .left_bar_srch-wrap {
       input {
@@ -915,5 +905,13 @@ v-enter-active,
   }
 }
 
-
+@media (max-width: 400px) {
+  .left-bar {
+    .left_bar_srch-wrap {
+      input {
+        width: 65%;
+      }
+    }
+  }
+}
 </style>

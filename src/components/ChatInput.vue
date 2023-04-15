@@ -1,7 +1,6 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
-    
-    <div class="reply-border-wrap"  v-if="$store.state.message.replyTarget">
+    <div class="reply-border-wrap" v-if="$store.state.message.replyTarget">
       <reply-message-border></reply-message-border>
     </div>
 
@@ -59,26 +58,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$custom-c2: rgb(32, 32, 32);
+@import "@/styles/colors";
 
 .reply-border-wrap {
- width: 100%;
- height: 50px;
- position: absolute;
- 
- bottom: 100%;
- background:$custom-c2;
-
- @media (min-width: 1000px) {
-  
-}
-
-
- 
- @media (min-width: 1400px) {
-   
- }
-
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  bottom: 100%;
+  background: $content-main;
 }
 .input-container {
   width: 100%;
@@ -86,7 +73,7 @@ $custom-c2: rgb(32, 32, 32);
   height: 100%;
   display: flex;
 
-  
+  background: $content-main;
   position: relative;
 
   justify-content: center;
@@ -122,13 +109,13 @@ $custom-c2: rgb(32, 32, 32);
       height: 100%;
       max-height: 50px;
       font-size: 1rem;
-      color: white;
+      color: $text-main;
     }
 
     @media (min-width: 1700px) {
       input {
         padding-left: 15px;
-        background-color:rgb(39, 39, 39);
+
         border-radius: 10px;
         width: 90%;
       }
@@ -141,7 +128,7 @@ $custom-c2: rgb(32, 32, 32);
       -ms-user-select: none; /* Internet Explorer/Edge */
       width: 35px;
       height: 35px;
-      color: rgb(68, 134, 255);
+      color: $second;
       flex-shrink: 0;
       -webkit-user-select: none; /* Safari */
       -ms-user-select: none; /* IE 10 and IE 11 */

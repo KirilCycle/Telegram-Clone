@@ -30,10 +30,16 @@
         </button>
 
         <teleport to="body">
-          <div v-if="logoutV" @click="() => {
-            moreContentV = false
-            logoutV = false
-          }" class="logout-alert">
+          <div
+            v-if="logoutV"
+            @click="
+              () => {
+                moreContentV = false;
+                logoutV = false;
+              }
+            "
+            class="logout-alert"
+          >
             <div class="logout-modal">
               <h2>Messanger Name</h2>
               <p>Are you sure you want to log out?</p>
@@ -58,7 +64,10 @@
       </div>
     </user-image>
 
-    <profile-user-info :bio="$store.state.user.user.bio" :username="$store.state.user.user.username"></profile-user-info>
+    <profile-user-info
+      :bio="$store.state.user.user.bio"
+      :username="$store.state.user.user.username"
+    ></profile-user-info>
 
     <div ref="edit" class="edit-panel">
       <edit-settings
@@ -116,13 +125,13 @@ export default {
 
     logout() {
       const auth = getAuth();
-      signOut(auth)
-      location.reload()
+      signOut(auth);
+      location.reload();
     },
 
     handleCancel() {
-      this.logoutV = false
-      this.moreContentV = false
+      this.logoutV = false;
+      this.moreContentV = false;
     },
 
     async handleChanging() {
@@ -327,6 +336,7 @@ export default {
 $crazy_color: #00ff44;
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #b2b2b2;
+@import "@/styles/colors";
 
 .edit-panel {
   width: 310px;
@@ -351,14 +361,21 @@ $def-gray: #b2b2b2;
 
 .profile_img_wrap_text_wrp {
   .fisrt-name {
-    color: #ffffff;
-    position: absolute;
     z-index: 50;
+    font-size: 1.2rem;
+    font-weight: 650;
+    color: $text-main;
+    position: absolute;
+    bottom: 23px;
+    left: 20px;
   }
   .email {
-    color: #909090;
+    color: #c8c8c8;
     position: absolute;
-    z-index: 50;
+    bottom: 3px;
+    left: 20px;
+    font-size: 1rem;
+    z-index: 10;
   }
 }
 
@@ -374,25 +391,11 @@ img {
   min-width: 100%;
   height: auto;
 }
-h3 {
-  color: #c8c8c8;
-  position: absolute;
-  bottom: 3px;
-  left: 20px;
-  font-size: 1rem;
-}
-h2 {
-  color: #ffffff;
 
-  position: absolute;
-  bottom: 23px;
-  left: 20px;
-  font-size: 1.5rem;
-}
 
 .settings-nav {
   width: 100%;
-  background-color: $custom-c4;
+  background-color: $content-main;
   height: 8%;
   position: relative;
   top: 0px;
@@ -449,7 +452,7 @@ h2 {
 }
 
 .wrap {
-  background-color: rgb(22, 22, 22);
+  background-color: $content-main-dark;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   height: 100%;

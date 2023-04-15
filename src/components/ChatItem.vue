@@ -6,14 +6,12 @@
       </div>
     </div>
     <div class="chatitem_info_container">
-    
       <div class="name">
         <slot name="name"></slot>
       </div>
-     <div class="last">
-       <slot name="last_msg"></slot>
-     </div>
-    
+      <div class="last">
+        <slot name="last_msg"></slot>
+      </div>
     </div>
     <p class="time">{{ time }}</p>
   </div>
@@ -40,7 +38,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cht-i{
+@import "@/styles/colors";
+.cht-i {
   border-radius: 10px;
   cursor: pointer;
   position: relative;
@@ -54,37 +53,25 @@ export default {
   &:hover {
     background-color: #b3b3b330;
     .time {
-      color: white;
+      color: $text-main;
     }
   }
   flex-direction: row;
   align-items: center;
 
   .name {
+    color: $text-main;
 
-    color: white;
+    font-size: 0.9rem;
+    font-weight: 550;
+  }
 
-    
-      font-size: 0.9rem;
-      font-weight: 550;
-       
-    
-    
-
-
-  } 
-
-   .last {
-     color: gray;
-     font-size: 0.9rem;
-     white-space: nowrap;
-     font-weight: 550;
-       
-    
-
-   }
-
-  
+  .last {
+    color: gray;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    font-weight: 550;
+  }
 
   .img-conatiner {
     padding-left: 5px;
@@ -114,10 +101,6 @@ export default {
     text-align: left;
     max-width: 100%;
     overflow: hidden;
-
-
-
-
   }
 
   .time {
@@ -132,41 +115,31 @@ export default {
 .active {
   @extend .cht-i;
   background-color: rgb(96, 173, 255);
- 
-  
-  color: #ffffff;
 
-  
+  color: $text-main;
 
   &:hover {
     background-color: rgb(96, 173, 255);
   }
-  .time { 
-    color: white
+  .time {
+    color: $text-main;
   }
 
   .chatitem_info_container {
-    .last { color: white}
+    .last {
+      color: $text-main;
+    }
   }
-
- 
-
 }
 
 @media (max-width: 600px) {
   .active {
-    background-color:rgba(255, 255, 255, 0);
+    background-color: rgba(255, 255, 255, 0);
     border-radius: 0px;
-   
-      .time { 
-        color: rgb(78, 78, 78);
-      }
-  
-      
-         
-      
-    }
 
-  
+    .time {
+      color: rgb(78, 78, 78);
+    }
+  }
 }
 </style>

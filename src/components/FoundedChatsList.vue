@@ -122,11 +122,15 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
+@import "@/styles/colors";
+
+
 h3 {
   font-size: 0.9rem;
   font-weight: 550;
-  color: white;
+  color:  $text-main;
 }
 p {
   font-size: 0.8rem;

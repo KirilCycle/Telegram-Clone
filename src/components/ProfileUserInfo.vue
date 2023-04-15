@@ -40,11 +40,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$custom-c4: rgb(31, 31, 31);
+@import "@/styles/colors";
 .user-info-container {
   height: auto;
   padding: 15px 10px 15px 10px;
-  background-color: $custom-c4;
+  background-color: $content-main;
   width: 100%;
   box-sizing: border-box;
 
@@ -77,7 +77,7 @@ $custom-c4: rgb(31, 31, 31);
     margin-top: 10px;
 
     .info-text {
-      color: #ffffff;
+      color: $text-main;
       font-size: 0.9rem;
     }
 
