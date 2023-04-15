@@ -30,7 +30,10 @@
         </button>
 
         <teleport to="body">
-          <div v-if="logoutV" class="logout-alert">
+          <div v-if="logoutV" @click="() => {
+            moreContentV = false
+            logoutV = false
+          }" class="logout-alert">
             <div class="logout-modal">
               <h2>Messanger Name</h2>
               <p>Are you sure you want to log out?</p>

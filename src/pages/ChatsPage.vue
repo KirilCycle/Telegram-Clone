@@ -7,13 +7,7 @@
     <div class="left-bar">
       <div class="left_bar_srch-wrap" placeholder="search chat">
        
-        <!-- <button class="menu-btn-wrap">
-          <button class="menu-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </button> -->
+       
        
         <settings></settings>
 
@@ -73,6 +67,7 @@
           class="chat-input-block-x"
         >
           <div class="input-wrap">
+          
             <div v-if="$store.state.chat.selectedUser.new">
               <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
             </div>
@@ -80,6 +75,7 @@
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
+          
           </div>
         </div>
 

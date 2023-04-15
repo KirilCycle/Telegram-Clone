@@ -353,7 +353,6 @@ export default {
             console.log("ENOTHER DATA", newData);
           }
         }
-
         // To update age and favorite color:
       }
     },

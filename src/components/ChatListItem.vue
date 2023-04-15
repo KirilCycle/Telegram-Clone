@@ -38,7 +38,10 @@ export default {
       if (!store.state.chat.querry) {
         return true;
       } else {
-        return this.chatName.includes(store.state.chat.querry);
+        if (this.chatName) {
+          return this.chatName.includes(store.state.chat.querry);
+        }
+        return true
       }
     },
     time() {
