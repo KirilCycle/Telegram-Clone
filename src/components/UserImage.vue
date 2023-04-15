@@ -26,8 +26,8 @@
     position: absolute;
     height: 2px;
     background-color: #000000cb;
-    box-shadow: rgba(0, 0, 4, 12) 0px 32px 70px 40px;
-    bottom: -10px;
+    box-shadow: rgba(0, 0, 7, 12) 0px 32px 70px 40px;
+    bottom: -2px;
     
   }
 </style>

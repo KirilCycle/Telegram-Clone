@@ -7,7 +7,7 @@
 
   <teleport to="body">
     <Transition>
-      <div v-if="v" class="bloor">
+      <div v-show="v" class="bloor">
         <div :class="'profile-container'">
           <profile-page  @close="v = false"></profile-page>
         </div>
@@ -30,7 +30,6 @@ export  default {
   },
   setup() {
 
-
     const auth = getAuth()
 
     const photo = ref(auth.currentUser.photoURL)
@@ -43,7 +42,7 @@ export  default {
 </script>
 
 <style lang="scss" scoped>
-$crazy_color: #00ff44;
+
 
 .profile {
   position: fixed;

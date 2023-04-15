@@ -666,7 +666,7 @@ v-enter-active,
     background-color: $content-main;
 
     input {
-      background-color: $custom-c2;
+      background-color: rgba(123, 123, 123, 0.132);
       height: 43px;
       width: 60%;
       padding-right: 5px;
@@ -688,7 +688,7 @@ v-enter-active,
     .left_bar_srch_wrap_settings {
       width: 43px;
       height: 43px;
-      background-color: $custom-c2;
+      background-color: rgba(123, 123, 123, 0.132);
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
       &:hover {
@@ -705,7 +705,7 @@ v-enter-active,
       width: 43px;
       color: $custom-c3;
       height: 43px;
-      background-color: $custom-c2;
+      background-color: rgba(123, 123, 123, 0.132);
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
       &:hover {

@@ -44,6 +44,7 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
+import { useDark, useToggle } from '@vueuse/core'
 
 export default {
   components: { ChatInput, MessageItem },
@@ -222,8 +223,13 @@ export default {
       }
     }
 
+
+    const isDark = useDark()
+    const toggleDark = useToggle()
+
     return {
       chat,
+      toggleDark,
       fetchPrev,
       firstScroll,
       fetchNext,
@@ -237,6 +243,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import '@/styles/colors.scss';
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
@@ -261,7 +268,7 @@ export default {
   }
   width: 45px;
   height: 45px;
-  background-color: rgb(28, 28, 28);
+  background-color: $content-main;
   border-radius: 22.5px;
   position: fixed;
   bottom: 20%;
@@ -277,6 +284,10 @@ export default {
   span {
     font-size: 2rem;
   }
+}
+
+.dark .scrl-to-btm-btn {
+  background-color: $content-main-l;
 }
 
 nav {

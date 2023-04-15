@@ -333,7 +333,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$crazy_color: #00ff44;
+
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #b2b2b2;
 @import "@/styles/colors";
@@ -363,8 +363,8 @@ $def-gray: #b2b2b2;
   .fisrt-name {
     z-index: 50;
     font-size: 1.2rem;
-    font-weight: 650;
-    color: $text-main;
+    font-weight: 700;
+    color: #ffffff;
     position: absolute;
     bottom: 23px;
     left: 20px;
@@ -380,7 +380,7 @@ $def-gray: #b2b2b2;
 }
 
 .settings {
-  color: #ffffff;
+  color: $text-main;
   font-size: 1.4rem;
   font-weight: 550;
   margin: 0% auto;
@@ -424,7 +424,7 @@ img {
   position: absolute;
   z-index: 55;
   right: 15px;
-  background-color: #272727d3;
+  background-color: $transition-colors;
   top: 45px;
   backdrop-filter: blur(3px);
   border-radius: 10px;
@@ -441,12 +441,10 @@ img {
     font-size: 1rem;
     height: 30px;
 
-    p {
-      color: white;
-    }
-
+   
     &:hover {
-      background-color: rgba(0, 0, 0, 0.451);
+      background-color: $hover;
+      color: $text-main;
     }
   }
 }
@@ -456,7 +454,7 @@ img {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   height: 100%;
-  border-right: 0.1em solid rgb(63, 63, 63);
+  border-right: 1px solid rgba(128, 128, 128, 0.237);
 
   .profile-txt-wrp {
     text-align: center;
@@ -480,26 +478,7 @@ img {
     justify-content: center;
     flex-direction: column;
 
-    .pht-settings {
-      color: $crazy_color;
-      display: flex;
-      h3 {
-        font-size: 1rem;
-      }
-
-      .file-input {
-        top: 0px;
-        width: 130px;
-        opacity: 0;
-        color: #00ff44;
-        position: absolute;
-      }
-
-      span {
-        font-size: 1.3rem;
-        margin-left: 5px;
-      }
-    }
+ 
 
     input {
       margin-top: 15px;
@@ -514,9 +493,7 @@ img {
     }
   }
 
-  h1 {
-    color: white;
-  }
+
 
   display: flex;
   align-items: center;
@@ -534,32 +511,9 @@ img {
     color: rgb(61, 61, 61);
   }
 
-  .input-container {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    p {
-      margin-right: 7px;
-      color: $crazy_color;
-    }
-
-    input {
-      max-width: 60%;
-      background-color: rgba(102, 51, 153, 0);
-      color: rgb(153, 153, 153);
-      border-bottom: 2px solid rgb(47, 47, 47);
-      font-size: 20px;
-
-      &:focus {
-      }
-    }
-    span {
-      color: $crazy_color;
-    }
+  
   }
-}
+
 
 .logout-alert {
   width: 100%;

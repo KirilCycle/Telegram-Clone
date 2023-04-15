@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vueuse/core": "^10.0.2",
     "core-js": "^3.8.3",
     "firebase": "^9.18.0",
     "firebase-admin": "^11.5.0",

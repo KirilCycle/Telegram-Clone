@@ -103,6 +103,8 @@ export default {
 $custom-c4: rgb(23, 23, 23);
 $def-gray: #828282;
 
+@import "@/styles/colors";
+
 .profile-img-wrap {
   width: 100%;
   height: 100%;
@@ -116,15 +118,14 @@ $def-gray: #828282;
 
 nav {
   width: 100%;
-  background-color: #393939;
-  background-color: $custom-c4;
+  background-color: $content-main;
   height: 8%;
   display: flex;
   align-items: center;
   flex-direction: row;
   h3 {
     margin-left: 20px;
-    color: white;
+    color: $text-main;
   }
   button {
     width: 60px;
@@ -143,7 +144,7 @@ nav {
       height: 40px;
       color: $def-gray;
       &:hover {
-        background-color: #ffffff22;
+        background-color: $hover;
       }
     }
   }
@@ -151,7 +152,7 @@ nav {
 .user-profile {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  border-left: 1px solid rgb(65, 65, 65);
+  border-left: 1px solid rgba(128, 128, 128, 0.237);
   position: absolute;
   z-index: 150;
   min-width: 310px;
@@ -159,13 +160,12 @@ nav {
   right: 0px;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
-  background-color: #171717;
+  background-color: $content-main-dark;
 }
 
 .photo-container {
   width: 100%;
   height: 300px;
-  background-color: #ffffff00;
   position: relative;
   overflow: hidden;
 

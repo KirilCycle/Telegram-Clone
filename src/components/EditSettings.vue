@@ -377,6 +377,8 @@ export default {
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #828282;
 
+@import '@/styles/colors';
+
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
@@ -397,7 +399,7 @@ $def-gray: #828282;
 .edit-wrap {
   width: 100%;
   height: 100%;
-  background-color: $custom-c4;
+  background-color: $content-main;
   z-index: 25;
   box-sizing: border-box;
 }
@@ -414,7 +416,7 @@ $def-gray: #828282;
     left: 10px;
 
     font-size: 0.7rem;
-    background-color: $custom-c4;
+    background-color: $content-main;
     color: gray;
     max-height: 0.8rem;
   }
@@ -441,7 +443,7 @@ $def-gray: #828282;
     border: 1px solid gray;
 
     font-size: 1rem;
-    color: white;
+    color: $text-main;
     &:focus {
       border: 1px solid rgb(53, 107, 255);
     }
@@ -468,7 +470,7 @@ $def-gray: #828282;
     overflow: hidden;
     margin-top: 15px;
     margin-bottom: 15px;
-    color: white;
+    color: $text-main;
     width: 100%;
     height: 50px;
     border-radius: 15px;
@@ -557,7 +559,7 @@ $def-gray: #828282;
   }
 
   h1 {
-    color: #ffffff;
+    color: $text-main;
     font-size: 1.4rem;
     font-weight: 550;
     margin: 0% auto;

@@ -116,18 +116,25 @@ export default {
   @extend .cht-i;
   background-color: rgb(96, 173, 255);
 
-  color: $text-main;
+  color: #ffff;
+
+  .name {
+    color: white;
+  }
 
   &:hover {
     background-color: rgb(96, 173, 255);
+    .time {
+      color:#ffff;
+    }
   }
   .time {
-    color: $text-main;
+    color:#ffff;
   }
 
   .chatitem_info_container {
     .last {
-      color: $text-main;
+      color:#ffff;
     }
   }
 }

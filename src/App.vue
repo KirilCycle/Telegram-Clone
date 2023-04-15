@@ -27,6 +27,8 @@ import { getDatabase, onValue } from "firebase/database";
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
 import { onMounted, watchEffect, watch } from "vue";
 import { getFirestore, collection } from "firebase/firestore";
+
+
 import {
   getAuth,
   setPersistence,
