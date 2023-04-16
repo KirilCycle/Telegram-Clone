@@ -346,7 +346,7 @@ export default {
             
             store.commit("chat/addUniqChatItem", {
               id: formated[i].id,
-              pivotMsg: null,
+              pivot: null,
               page: 0,
             });
             
@@ -355,6 +355,7 @@ export default {
         }
         
      
+        console.log(  store.state.chat.chatsScrollPosition ,'DATKA ');
         store.commit("chat/setChatsCount", formated.length)
 
       } else {

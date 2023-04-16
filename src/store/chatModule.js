@@ -1,23 +1,20 @@
-
 export const chatModule = {
   state: () => ({
     replyMsgRef: null,
-    replyTarget: null, 
+    replyTarget: null,
     chatId: null,
     selectedUser: null,
     querry: null,
-    chatsScrollPosition: [],
+    chatsScrollPosition: {},
     chatIdList: [],
     chatsCount: 0,
-
-
   }),
   getters: {
     getReplyTarget(state) {
       return state.replyTarget;
-   },
+    },
     getChatIdList(state) {
-       return state.chatIdList;
+      return state.chatIdList;
     },
     getReplyMsgRef(state) {
       return state.replyMsgRef;
@@ -35,64 +32,72 @@ export const chatModule = {
       return state.selectedUser;
     },
     getChatsScrollPosition(state) {
-      return state.chatsScrollPosition
-    }
-  
+      return state.chatsScrollPosition;
+    },
   },
   mutations: {
-    setReplyTarget( state, target) {
-      state.replyTarget = target
+    setReplyTarget(state, target) {
+      state.replyTarget = target;
     },
     setChatIdList(state, chats) {
-      state.chatIdList = chats
+      state.chatIdList = chats;
     },
-    setChatId(state,id) {
-     state.chatId = id
+    setChatId(state, id) {
+      state.chatId = id;
     },
-    setQuerry(state,q) {
-      state.querry= q
-     },
-    setSelectedUser(state,selectedUser) {
-      state.selectedUser = selectedUser
-     },
+    setQuerry(state, q) {
+      state.querry = q;
+    },
+    setSelectedUser(state, selectedUser) {
+      state.selectedUser = selectedUser;
+    },
     setReplyMsgRef(state, ref) {
       state.replyMsgRef = ref;
     },
     setChatsCount(state, n) {
-      state.chatsCount = n
+      state.chatsCount = n;
     },
     addUniqChatItem(state, item) {
-      if (!state.chatsScrollPosition.find((it) => it.id === item.id  )) {
-        state.chatsScrollPosition.push(item)
+      if (!state.chatsScrollPosition[item.id]) {
+        state.chatsScrollPosition[item.id] = item;
       }
+    },
+    changeChatsScrollData(state, data) {
+      
+      state.chatsScrollPosition[data.id][data.key] = data.data
+
+     
     },
   },
 
   actions: {
-    setReplyTarget({commit, target}) {
-          commit('setReplyTarget', target)
+    setReplyTarget({ commit, target }) {
+      commit("setReplyTarget", target);
     },
-    setChatIdList({state,commit,chts}) {
-      commit('setChatIdList',chts)
+    setChatIdList({ state, commit, chts }) {
+      commit("setChatIdList", chts);
     },
-    setSelectedUser({state,commit,user}) {
-     commit('setSelectedUser',user)
+    setSelectedUser({ state, commit, user }) {
+      commit("setSelectedUser", user);
     },
-    setChatId({state, commit,id }) {
-      commit("setChatId", id)
+    setChatId({ state, commit, id }) {
+      commit("setChatId", id);
     },
-    setQuerry({state, commit,q }) {
-      commit("setQuerry", q)
+    setQuerry({ state, commit, q }) {
+      commit("setQuerry", q);
     },
     setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);
     },
-    setChatsCount({ state, commit, n}) {
-       commit("setChatsCount", n)
+    setChatsCount({ state, commit, n }) {
+      commit("setChatsCount", n);
     },
     addUniqChatItem({ state, commit, item }) {
-       commit("addUniqChatItem", item)
-    }
+      commit("addUniqChatItem", item);
+    },
+    changeChatsScrollData({ state, commit, data }) {
+      commit("changeChatsScrollData", data);
+    },
   },
   namespaced: true,
 };

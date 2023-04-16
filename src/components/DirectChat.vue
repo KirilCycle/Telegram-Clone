@@ -44,7 +44,7 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
-import { useDark, useToggle } from '@vueuse/core'
+import { useDark, useToggle } from "@vueuse/core";
 
 export default {
   components: { ChatInput, MessageItem },
@@ -82,15 +82,20 @@ export default {
     const chat = ref([]);
     const bottom = ref(null);
 
-    let page = ref(0);
-    const lastVisible = ref(null);
-    const firts = ref(null);
+    //middle msg item
+
+    let page = ref(
+      store.state.chat.chatsScrollPosition[store.state.chat.chatId].page
+    );
+    const pivot = ref(
+      store.state.chat.chatsScrollPosition[store.state.chat.chatId].pivot
+    );
+
     const disablePrevFetch = ref(null);
     const chatWasFetched = ref(null);
     // const slectedChatRef = db.collection("chatMessages");
-    console.log(props.chatId, "TEST");
 
-    const getMessagesType = ref('prev')
+    const getMessagesType = ref("prev");
 
     const chasingBottom = ref(true);
     function scrollToBottom() {
@@ -118,30 +123,25 @@ export default {
 
       if (page.value > 0) {
         //in case we saw a top observer
-        console.log(getMessagesType.value, firts.value, 'DIRECTION')
-        switch( getMessagesType.value) {
+        console.log(getMessagesType.value, pivot.value, "DIRECTION");
+        switch (getMessagesType.value) {
+          case "prev":
+            console.log("prev case", pivot.value);
 
+            query = messagesRef
+              .orderBy("createdAt")
+              .limitToLast(40)
+              .endBefore(pivot.value.createdAt);
 
+            break;
 
-          case 'prev' :
+          case "next":
+            console.log("NEXT CASE", pivot.value);
 
-          console.log( 'prev case', firts.value);
-
-          query = messagesRef
-          .orderBy("createdAt")
-          .limitToLast(40)
-          .endBefore(firts.value.createdAt);
-
-          break
-
-          case 'next' :
-
-          console.log( 'NEXT CASE', firts.value);
-
-          query = messagesRef
-          .orderBy("createdAt")
-          .startAfter(firts.value.createdAt)
-          .limit(40)
+            query = messagesRef
+              .orderBy("createdAt")
+              .startAfter(pivot.value.createdAt)
+              .limit(40);
         }
 
         // query = messagesRef
@@ -161,21 +161,18 @@ export default {
       }
 
       query.onSnapshot((snapshot, parameters) => {
-        if (page.value > 0 ) {
-
-          console.log(   'page.vale > 0',);
+        if (page.value > 0) {
+          console.log("page.vale > 0");
 
           let newData = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-           console.log(newData, 'PORCIYA');
-           chat.value = newData
-
-
+          console.log(newData, "PORCIYA");
+          chat.value = newData;
         } else {
-          console.log(   'page.vale > 0 else ');
+          console.log("page.vale > 0 else ");
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
@@ -183,8 +180,6 @@ export default {
             scrollToBottom();
           }
         }
-
-     
 
         if (chat.value.length < 40) {
           disablePrevFetch.value = true;
@@ -195,23 +190,69 @@ export default {
     });
 
     function fetchPrev() {
-     
-
       if (!disablePrevFetch.value) {
-        firts.value = chat.value[19];
-        getMessagesType.value = 'prev'
-        page.value += 1;
+        
+        let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId]
+       
+        store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "pivot",
+          data: chat.value[19],
+        });
+
+        store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "page",
+          data: link.page + 1,
+        });
+
+        getMessagesType.value = "prev";
+
+       
+
+         page.value = link.page
+
+         pivot.value = link.pivot
+
+    
+
         console.log(page.value);
       }
     }
 
     function fetchNext() {
+     
+      getMessagesType.value = "next";
+
+      let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId]
+
+      store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "pivot",
+          data: chat.value[19],
+        });
+
+        store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "page",
+          data: link.page - 1,
+        });
+
       
-      firts.value = chat.value[19];
-      getMessagesType.value = 'next'
-      page.value -= 1;
+
+       
+
+         page.value = link.page
+
+         pivot.value = link.pivot
+
     
 
+        console.log(page.value);
+
+
+
+   
     }
 
     function firstScroll() {
@@ -222,9 +263,8 @@ export default {
       }
     }
 
-
-    const isDark = useDark()
-    const toggleDark = useToggle()
+    const isDark = useDark();
+    const toggleDark = useToggle();
 
     return {
       chat,
