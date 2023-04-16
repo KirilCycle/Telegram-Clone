@@ -25,10 +25,11 @@
   .bottom-img-shadow {
     width: 100%;
     position: absolute;
-    height: 2px;
-    background-color: #000000cb;
-    box-shadow: rgba(0, 0, 7, 12) 0px 32px 70px 40px;
-    bottom: -2px;
+    height: 3px;
+    background-color: rgb(0, 0, 0);
+    box-shadow: rgba(0, 0, 7, 1) 0px 32px 90px 80px;
+    bottom: -3px;
+    
     
   }
 </style>

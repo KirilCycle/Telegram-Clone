@@ -72,28 +72,6 @@
         :username="$store.state.user.user.username"
       ></profile-user-info>
     </div>
-
-    <p>
-      usernameWrongDataw
-      wad
-      import store from "@/store/store";
-      import { updateProfile, signOut } from "firebase/auth";
-      import { nextTick, watch } from "vue";
-      import firebase from "firebase/compat/app";
-      import "firebase/compat/auth";
-      import "firebase/compat/firestore";
-      import { getAuth } from "firebase/auth";
-      import { collection } from "firebase/firestore";
-      import { doc, getDoc, updateDoc } from "firebase/firestore";
-      import MessageItem from "../components/MessageItem.vue";
-      import { uuidv4 } from "@firebase/util";
-      import SelectedFileModal from "@/components/SelectedFileModal.vue";
-      import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
-      import UserImage from "@/components/UserImage.vue";
-      import EditSettings from "@/components/EditSettings.vue";
-      import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
-    </p>
-
     <div ref="edit" class="edit-panel">
       <edit-settings
         @close="() => handleEditComponent(0, false)"
@@ -386,7 +364,7 @@ $def-gray: #b2b2b2;
 
 .profile_img_wrap_text_wrp {
   .fisrt-name {
-    z-index: 50;
+    z-index: 20;
     font-size: 1.2rem;
     font-weight: 700;
     color: #ffffff;
