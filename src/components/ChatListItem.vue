@@ -76,7 +76,7 @@ export default {
           // console.log(this.enotherUser, 'us');
           this.chatName = us.email.slice(0,us.email.indexOf('@'));
           
-      console.log(    this.enotherUser, 'US');
+    
 
       this.loading = false
 

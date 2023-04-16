@@ -1,15 +1,16 @@
-import router from "@/router/router";
 
 export const chatModule = {
   state: () => ({
     replyMsgRef: null,
     replyTarget: null, 
-    text: null,
-    from: null,
     chatId: null,
     selectedUser: null,
     querry: null,
+    chatsScrollPosition: [],
     chatIdList: [],
+    chatsCount: 0,
+
+
   }),
   getters: {
     getReplyTarget(state) {
@@ -21,8 +22,8 @@ export const chatModule = {
     getReplyMsgRef(state) {
       return state.replyMsgRef;
     },
-    getText(state) {
-      return state.text;
+    getChatsCount(state) {
+      return state.chatsCount;
     },
     getQuerry(state) {
       return state.querry;
@@ -33,9 +34,10 @@ export const chatModule = {
     getChatId(state) {
       return state.selectedUser;
     },
-    getFrom(state) {
-      return state.from;
-    },
+    getChatsScrollPosition(state) {
+      return state.chatsScrollPosition
+    }
+  
   },
   mutations: {
     setReplyTarget( state, target) {
@@ -56,7 +58,14 @@ export const chatModule = {
     setReplyMsgRef(state, ref) {
       state.replyMsgRef = ref;
     },
- 
+    setChatsCount(state, n) {
+      state.chatsCount = n
+    },
+    addUniqChatItem(state, item) {
+      if (!state.chatsScrollPosition.find((it) => it.id === item.id  )) {
+        state.chatsScrollPosition.push(item)
+      }
+    },
   },
 
   actions: {
@@ -78,12 +87,12 @@ export const chatModule = {
     setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);
     },
-    setText({ state, commit, txt }) {
-      commit("setText", txt);
+    setChatsCount({ state, commit, n}) {
+       commit("setChatsCount", n)
     },
-    setFrom({ state, commit, from }) {
-      commit("setFrom", from);
-    },
+    addUniqChatItem({ state, commit, item }) {
+       commit("addUniqChatItem", item)
+    }
   },
   namespaced: true,
 };

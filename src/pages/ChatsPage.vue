@@ -332,11 +332,31 @@ export default {
         const formated = Object.values(doc.data());
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
+
+        console.log(store.state.chat.chatId);
+
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
 
-        console.log(formated, doc.data(), "AS MAIN FETCH CHATS");
+
+        if (formated.length !== store.state.chat.chatsCount) {
+
+          for (let i = 0; i < formated.length; i++) {
+            
+            store.commit("chat/addUniqChatItem", {
+              id: formated[i].id,
+              pivotMsg: null,
+              page: 0,
+            });
+            
+           console.log('here we go ');
+          }
+        }
+        
+     
+        store.commit("chat/setChatsCount", formated.length)
+
       } else {
         console.log("No such document!");
       }
@@ -677,7 +697,6 @@ v-enter-active,
       border-top-left-radius: 25px;
       border-bottom-left-radius: 25px;
 
-
       &::placeholder {
         color: #838383;
         font-size: 1rem;
@@ -777,7 +796,6 @@ v-enter-active,
   background: rgba(152, 152, 152, 0.577);
   border-radius: 20px;
 }
-
 
 @media (max-width: 798px) {
   .right-side-shoved-back {

@@ -81,6 +81,7 @@ export default {
     const db = firebase.firestore();
     const chat = ref([]);
     const bottom = ref(null);
+
     let page = ref(0);
     const lastVisible = ref(null);
     const firts = ref(null);
@@ -104,9 +105,6 @@ export default {
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
     watchEffect(() => {
-
-    
-
       const messagesRef = db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
@@ -120,13 +118,14 @@ export default {
 
       if (page.value > 0) {
         //in case we saw a top observer
+        console.log(getMessagesType.value, firts.value, 'DIRECTION')
+        switch( getMessagesType.value) {
 
 
-        switch(  getMessagesType.value) {
 
           case 'prev' :
 
-         console.log( 'prev case', firts.value);
+          console.log( 'prev case', firts.value);
 
           query = messagesRef
           .orderBy("createdAt")
@@ -135,13 +134,14 @@ export default {
 
           break
 
-          case 'next' : 
+          case 'next' :
+
+          console.log( 'NEXT CASE', firts.value);
 
           query = messagesRef
           .orderBy("createdAt")
           .startAfter(firts.value.createdAt)
           .limit(40)
-
         }
 
         // query = messagesRef
@@ -153,7 +153,6 @@ export default {
         //   .orderBy("createdAt")
         //   .startAfter(firts.value.createdAt)
         //   .limit(40)
-
       } else {
         console.log("b");
 
@@ -163,19 +162,18 @@ export default {
 
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0 ) {
-    
+
           console.log(   'page.vale > 0',);
-         
-        
-            chat.value = snapshot.docs.map((doc) => ({
+
+          let newData = snapshot.docs.map((doc) => ({
               id: doc.id,
               ...doc.data(),
             }));
-          
+
+           console.log(newData, 'PORCIYA');
+           chat.value = newData
 
 
-         
-        
         } else {
           console.log(   'page.vale > 0 else ');
           chat.value = snapshot.docs
@@ -186,7 +184,7 @@ export default {
           }
         }
 
-        console.log(chat.value, "docs");
+     
 
         if (chat.value.length < 40) {
           disablePrevFetch.value = true;
@@ -197,7 +195,7 @@ export default {
     });
 
     function fetchPrev() {
-      console.log("more");
+     
 
       if (!disablePrevFetch.value) {
         firts.value = chat.value[19];
@@ -208,10 +206,11 @@ export default {
     }
 
     function fetchNext() {
-      console.log("less");
-      getMessagesType.value = 'next'
+      
       firts.value = chat.value[19];
+      getMessagesType.value = 'next'
       page.value -= 1;
+    
 
     }
 
@@ -243,7 +242,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '@/styles/colors.scss';
+@import "@/styles/colors.scss";
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
