@@ -64,6 +64,8 @@ export const chatModule = {
     },
     changeChatsScrollData(state, data) {
       
+      // console.log(  'CHANGES IN ', data.id, 'DATA =>' ,data.data );
+
       state.chatsScrollPosition[data.id][data.key] = data.data
 
      

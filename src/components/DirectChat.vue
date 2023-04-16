@@ -84,18 +84,14 @@ export default {
 
     //middle msg item
 
-    let page = ref(
-      store.state.chat.chatsScrollPosition[store.state.chat.chatId].page
-    );
-    const pivot = ref(
-      store.state.chat.chatsScrollPosition[store.state.chat.chatId].pivot
-    );
+    const page = ref(null);
+    const pivot = ref(null);
 
     const disablePrevFetch = ref(null);
     const chatWasFetched = ref(null);
     // const slectedChatRef = db.collection("chatMessages");
 
-    const getMessagesType = ref("prev");
+    const getMessagesType = ref(null);
 
     const chasingBottom = ref(true);
     function scrollToBottom() {
@@ -104,12 +100,28 @@ export default {
 
     function disableAutoScroll(v) {
       chasingBottom.value = v;
-      console.log("scroll d");
     }
 
     //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
 
+    // watchEffect(() => {
+    //   let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
+
+    //   page.value = link.page;
+    //   pivot.value = link.pivot;
+
+    //   console.log("SETUP", link);
+
+    // });
+
     watchEffect(() => {
+      let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
+
+      page.value = link.page;
+      pivot.value = link.pivot;
+
+      console.log("SETUP", link);
+
       const messagesRef = db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
@@ -121,26 +133,22 @@ export default {
       // const lastVisible = chat.value[chat.value.length - 1];
       // const firts = chat.value[0];
 
-      if (page.value > 0) {
+      if (link.page > 0) {
         //in case we saw a top observer
-        console.log(getMessagesType.value, pivot.value, "DIRECTION");
-        switch (getMessagesType.value) {
-          case "prev":
-            console.log("prev case", pivot.value);
 
+        switch (link.getMessagesType) {
+          case "prev":
             query = messagesRef
               .orderBy("createdAt")
               .limitToLast(40)
-              .endBefore(pivot.value.createdAt);
+              .endBefore(link.pivot.createdAt);
 
             break;
 
           case "next":
-            console.log("NEXT CASE", pivot.value);
-
             query = messagesRef
               .orderBy("createdAt")
-              .startAfter(pivot.value.createdAt)
+              .startAfter(link.pivot.createdAt)
               .limit(40);
         }
 
@@ -154,25 +162,19 @@ export default {
         //   .startAfter(firts.value.createdAt)
         //   .limit(40)
       } else {
-        console.log("b");
-
         query = messagesRef.orderBy("createdAt", "desc").limit(40);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0) {
-          console.log("page.vale > 0");
-
           let newData = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
 
-          console.log(newData, "PORCIYA");
           chat.value = newData;
         } else {
-          console.log("page.vale > 0 else ");
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
@@ -191,9 +193,9 @@ export default {
 
     function fetchPrev() {
       if (!disablePrevFetch.value) {
-        
-        let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId]
-       
+        let link =
+          store.state.chat.chatsScrollPosition[store.state.chat.chatId];
+
         store.commit("chat/changeChatsScrollData", {
           id: store.state.chat.chatId,
           key: "pivot",
@@ -206,59 +208,48 @@ export default {
           data: link.page + 1,
         });
 
-        getMessagesType.value = "prev";
+        store.commit("chat/changeChatsScrollData", {
+        id: store.state.chat.chatId,
+        key: "getMessagesType",
+        data: "prev",
+      });
 
-       
 
-         page.value = link.page
+        page.value = link.page;
 
-         pivot.value = link.pivot
-
-    
-
-        console.log(page.value);
+        pivot.value = link.pivot;
       }
     }
 
     function fetchNext() {
-     
-      getMessagesType.value = "next";
-
-      let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId]
+   
+      let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
       store.commit("chat/changeChatsScrollData", {
-          id: store.state.chat.chatId,
-          key: "pivot",
-          data: chat.value[19],
-        });
+        id: store.state.chat.chatId,
+        key: "pivot",
+        data: chat.value[19],
+      });
 
-        store.commit("chat/changeChatsScrollData", {
-          id: store.state.chat.chatId,
-          key: "page",
-          data: link.page - 1,
-        });
+      store.commit("chat/changeChatsScrollData", {
+        id: store.state.chat.chatId,
+        key: "getMessagesType",
+        data: "next",
+      });
 
-      
+      store.commit("chat/changeChatsScrollData", {
+        id: store.state.chat.chatId,
+        key: "page",
+        data: link.page - 1,
+      });
 
-       
-
-         page.value = link.page
-
-         pivot.value = link.pivot
-
-    
-
-        console.log(page.value);
-
-
-
-   
+      page.value = link.page;
+      pivot.value = link.pivot;
     }
 
     function firstScroll() {
       if (!chatWasFetched.value) {
         bottom.value?.scrollIntoView({ block: "end" });
-        console.log("firts scroll");
         chatWasFetched.value = true;
       }
     }

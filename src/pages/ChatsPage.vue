@@ -348,6 +348,7 @@ export default {
               id: formated[i].id,
               pivot: null,
               page: 0,
+              getMessagesType: 'prev',
             });
             
            console.log('here we go ');
