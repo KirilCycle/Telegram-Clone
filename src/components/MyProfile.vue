@@ -86,7 +86,7 @@ opacity: 0;
   width: 100vw;
   position: fixed;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden ;
   display: flex;
 
@@ -100,6 +100,8 @@ opacity: 0;
 
 
   .profile-container {
+    overflow-y: scroll;
+    overflow-x: hidden ;
     min-width: 300px;
     max-width: 600px;
     transform: translateX(0%);

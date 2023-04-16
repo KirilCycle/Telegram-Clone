@@ -1,5 +1,5 @@
 <template>
-  <div class="wrp">
+  <div  class="wrp">
     <div v-observer="fetchPrev"></div>
     <transition name="bounce">
       <button
@@ -35,7 +35,7 @@
 import { collection, getDocs, getDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { ref, watchEffect } from "vue";
+import { onBeforeUpdate, ref, watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
@@ -77,6 +77,31 @@ export default {
       }
     },
   },
+  mounted() {
+    // Get a reference to the div element
+   
+  },
+  beforeUpdate() {
+    console.log('CATCH UPDATE', this.$store.state.chat.chatContainerRef.scrollTop)
+    
+  //   if (  this.$store.state.chat.chatContainerRef ) {
+  //  console.log(   'YES');
+  //        this.$store.state.chat.chatContainerRef.scrollTop = this.$store.state.chat.chatsScrollPosition[store.state.chat.chatId].lastScroll
+  //   }
+
+  //   store.commit("chat/changeChatsScrollData", {
+  //        id: store.state.chat.chatId,
+  //        key: "lastScroll",
+  //        data: this.$store.state.chat.chatContainerRef.scrollTop,
+  //      });
+
+  },
+    // store.commit("chat/changeChatsScrollData", {
+    //   id: store.state.chat.chatId,
+    //   key: "lastScroll",
+    //   data: chatWrap.scrollTop,
+    // });
+  
   setup(props) {
     const db = firebase.firestore();
     const chat = ref([]);
@@ -209,11 +234,10 @@ export default {
         });
 
         store.commit("chat/changeChatsScrollData", {
-        id: store.state.chat.chatId,
-        key: "getMessagesType",
-        data: "prev",
-      });
-
+          id: store.state.chat.chatId,
+          key: "getMessagesType",
+          data: "prev",
+        });
 
         page.value = link.page;
 
@@ -222,7 +246,6 @@ export default {
     }
 
     function fetchNext() {
-   
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
       store.commit("chat/changeChatsScrollData", {
@@ -360,6 +383,7 @@ nav {
   padding-top: 30px;
   position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @media (pointer: coarse) {

@@ -8,6 +8,7 @@ export const chatModule = {
     chatsScrollPosition: {},
     chatIdList: [],
     chatsCount: 0,
+    chatContainerRef: null,
   }),
   getters: {
     getReplyTarget(state) {
@@ -33,6 +34,9 @@ export const chatModule = {
     },
     getChatsScrollPosition(state) {
       return state.chatsScrollPosition;
+    },
+    getChatContainerRef(state) {
+      return state.chatContainerRef;
     },
   },
   mutations: {
@@ -63,12 +67,11 @@ export const chatModule = {
       }
     },
     changeChatsScrollData(state, data) {
-      
       // console.log(  'CHANGES IN ', data.id, 'DATA =>' ,data.data );
-
-      state.chatsScrollPosition[data.id][data.key] = data.data
-
-     
+      state.chatsScrollPosition[data.id][data.key] = data.data;
+    },
+    setChatContainerRef(state, ref) {
+      state.chatContainerRef = ref
     },
   },
 
@@ -99,6 +102,9 @@ export const chatModule = {
     },
     changeChatsScrollData({ state, commit, data }) {
       commit("changeChatsScrollData", data);
+    },
+    setChatContainerRef({ state, commit, ref }) {
+      commit("setChatContainerRef", ref);
     },
   },
   namespaced: true,

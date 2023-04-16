@@ -18,6 +18,7 @@
     background-color: #ffffff00;
     position: relative;
     overflow: hidden;
+    min-height: 300px;
   }
 
 

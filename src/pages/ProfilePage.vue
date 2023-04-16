@@ -477,7 +477,13 @@ img {
   height: 100%;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
   overflow-y: auto ;
-  overflow-x: hidden ;
+  overflow-x: hidden;
+
+  
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .profile-txt-wrp {
     text-align: center;

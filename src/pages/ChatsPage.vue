@@ -55,7 +55,7 @@
           <h3>{{ navName }}</h3>
         </div>
 
-        <div class="chat-container-x">
+        <div ref="chatContainer" class="chat-container-x">
           <component :is="currentChatType"> </component>
         </div>
 
@@ -173,7 +173,12 @@ export default {
       return "ChatisntSelected";
     },
   },
+  mounted() {
+    
+    this.$store.commit('chat/setChatContainerRef', this.$refs.chatContainer)
+   
 
+  },
   methods: {
     async test() {
       const db = firebase.firestore();
@@ -297,6 +302,7 @@ export default {
       }
     },
   },
+
   setup(data) {
     const db = firebase.firestore();
 
@@ -349,6 +355,7 @@ export default {
               pivot: null,
               page: 0,
               getMessagesType: 'prev',
+              lastScroll: 700, 
             });
             
            console.log('here we go ');
