@@ -400,7 +400,6 @@ $def-gray: #828282;
   width: 100%;
   height: 100%;
   background-color: $content-main;
-  z-index: 25;
   box-sizing: border-box;
 }
 

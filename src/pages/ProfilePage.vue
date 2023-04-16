@@ -54,20 +54,24 @@
       </div>
     </nav>
 
-    <user-image>
-      <div class="profile-img-wrap">
-        <img class="profile-img" :src="$store.state.user.user?.photoURL" />
-      </div>
-      <div class="profile_img_wrap_text_wrp">
-        <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
-        <h3 class="email">{{ $store.state.user.user.email }}</h3>
-      </div>
-    </user-image>
+    <div class="user-image-wrp">
+      <user-image>
+        <div class="profile-img-wrap">
+          <img class="profile-img" :src="$store.state.user.user?.photoURL" />
+        </div>
+        <div class="profile_img_wrap_text_wrp">
+          <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
+          <h3 class="email">{{ $store.state.user.user.email }}</h3>
+        </div>
+      </user-image>
+    </div>
 
-    <profile-user-info
-      :bio="$store.state.user.user.bio"
-      :username="$store.state.user.user.username"
-    ></profile-user-info>
+    <div class="profile-user-info-wrp">
+      <profile-user-info
+        :bio="$store.state.user.user.bio"
+        :username="$store.state.user.user.username"
+      ></profile-user-info>
+    </div>
 
     <p>
       usernameWrongDataw
@@ -364,7 +368,7 @@ $def-gray: #b2b2b2;
   position: absolute;
   left: 310px;
   height: 100%;
-  z-index: 60;
+  z-index: 21;
   transform: translateX(0);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
@@ -414,12 +418,18 @@ img {
 }
 
 
+.profile-user-info-wrp {
+  position: relative;
+  top: 8%;
+}
+
 .settings-nav {
   width: 100%;
   background-color: $content-main;
   height: 8%;
-  position: relative;
+  position: fixed;
   top: 0px;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -438,6 +448,14 @@ img {
     cursor: pointer;
   }
 }
+
+
+
+.user-image-wrp {
+  position: relative;
+  top: 8%;
+}
+
 
 .more-content {
   width: 180px;
@@ -479,7 +497,7 @@ img {
   overflow-y: auto ;
   overflow-x: hidden;
 
-  
+
 
   &::-webkit-scrollbar {
     display: none;
