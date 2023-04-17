@@ -1,8 +1,10 @@
 <template>
   <div class="select-radios-wrp">
-    <h2>{{ header }}</h2>
+    <h3>{{ header }}</h3>
 
     <div class="btns-container">
+     
+      
       <label class="container">
         <input
           class="radio-button"
@@ -12,9 +14,11 @@
           value="dark"
           name="light"
         />
+        Dark
         <span>
         </span>
       </label>
+     
       <label class="container">
         <input
           class="radio-button"
@@ -24,9 +28,11 @@
           value="light"
           name="dark"
         />
+        Light
         <span>
         </span>
       </label>
+     
     </div>
   </div>
 </template>
@@ -75,24 +81,32 @@ export default {
 .select-radios-wrp {
   width: 100%;
   height: auto;
-  padding: 10px;
-  margin-top: 20px;
+  padding: 10px 10px 0px 20px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   background: $content-main;
 
-  h2 {
-    color: $text-main;
+  h3 {
+    color: gray;
+    font-weight: normal;
+    font-size: 1.1rem;
+
   }
 
   .btns-container {
-    width: 200px;
-    padding: 10px 0px 10px 0px;
+    width: 140px;
+    padding: 20px 0px 35px 0px;
     display: flex;
     flex-direction: column;
-    background-color: #dc2a2a;
     z-index: 10;
-    height: 60px;
+    height: max-content;
+        
+    color: $text-main;
+    font-weight: normal;
+    font-size: 1.1rem;
+    text-align: right;
+   
 
     .container {
       position: relative;
@@ -102,44 +116,51 @@ export default {
       }
 
       span {
-        height: 20px;
-        width: 20px;
-        border-radius: 10px;
-        border: 3px solid rgba(0, 128, 0, 0.671);
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        border: 2px solid rgba(90, 90, 90, 0.996);
         position: absolute;
         z-index: 10;
         left: 0px;
         top: 0px;
-     
-        
+        transition: 300ms ease-in-out;
+
       }
       
     }
     
     
     .container + .container {
-      margin-top: 30px;
+      margin-top: 45px;
     }
   
     .container span:after {
         
         content: "";
         visibility:visible;
-        background-color: #2348ff;
+        background-color: $main;
         position: absolute;
-        z-index: 1111;
+        z-index: 11;
         top: 50%;
         display: block;
         left: 50%;
-        height: 8px;
-        width: 8px;
-        transform: translate(-50%, -50%) scale(1);
+        height: 15px;
+        width: 15px;
+        transform: translate(-50%, -50%) scale(0);
         border-radius: 50%;
         transition: 300ms ease-in-out;
-  
-      
     } 
+
   
+  }
+
+  .container input[type="radio"]:checked ~ span::after{
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .container input[type="radio"]:checked ~ span {
+    border: 2px solid $main;
   }
 
 
