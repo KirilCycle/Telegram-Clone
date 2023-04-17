@@ -79,7 +79,11 @@
     </div>
 
     <div class="profile-user-info-wrp">
-      <radio-select :header="'Theme'"></radio-select>
+      <radio-select
+        :header="'Theme'"
+        :selected="'dark'"
+        :btnsRadioList="themeVariations"
+      ></radio-select>
     </div>
   </div>
 </template>
@@ -102,6 +106,7 @@ import UserImage from "@/components/UserImage.vue";
 import EditSettings from "@/components/EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
+import { useDark } from "@vueuse/core";
 
 export default {
   components: {
@@ -333,8 +338,29 @@ export default {
       }
     }
 
+    const isDark = useDark();
+
+    function setLightTheme() {
+      isDark.value = false;
+      const root = document.querySelector("#app");
+      root.classList.remove("dark-theme");
+    }
+
+    function setDarkTheme() {
+      isDark.value = true;
+      const root = document.querySelector("#app");
+      root.classList.add("dark-theme");
+    }
+
+    const themeVariations = ref([
+      {name:'light', value:'light', execute: setDarkTheme, title:'Light' },
+      {name:'dark', value:'dark', execute: setLightTheme, title:'Dark' }
+
+    ]);
+
     return {
       logout,
+      themeVariations,
       uploadPhoto,
     };
   },
@@ -437,9 +463,7 @@ img {
 }
 
 .dark .settings-nav {
-
   background-color: $content-main-l;
-
 }
 
 .user-image-wrp {

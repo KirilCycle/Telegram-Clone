@@ -5,33 +5,35 @@
     <div class="btns-container">
      
       
-      <label class="container">
+      <label v-for="it in btnsArray" :key="it.name" class="container">
         <input
           class="radio-button"
-          @click="setLightTheme"
+          @click="it.execute"
           type="radio"
-          v-model="selectedOption"
-          value="dark"
-          name="dark"
+          v-model="selected"
+          :value="it.value"
+          :name="it.name"
         />
-        Dark
+       {{ it.title}}
         <span>
         </span>
       </label>
+
+
      
-      <label class="container">
+      <!-- <label class="container">
         <input
           class="radio-button"
           @click="setDarkTheme"
           type="radio"
-          v-model="selectedOption"
+          v-model="selected"
           value="light"
           name="light"
         />
         Light
         <span>
         </span>
-      </label>
+      </label> -->
      
     </div>
   </div>
@@ -42,42 +44,22 @@ import { useDark } from "@vueuse/core";
 export default {
   props: {
     header: String,
-    executeFn1: Function,
-    executeFn2: Function,
+    btnsRadioList: Array,
+    selected: String,
     required: true,
   },
   data() {
     return {
       header: this.header,
-      selectedOption: localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light',
+      selected: this.selected,
+      btnsArray: this.btnsRadioList,
+   
 
 
     };
   },
-  mounted() {
-    console.log( localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light'  );
-  },
-  setup() {
-    const isDark = useDark();
 
-    function setLightTheme() {
-      isDark.value = false;
-      const root = document.querySelector("#app");
-      root.classList.remove("dark-theme");
-    }
-
-    function setDarkTheme() {
-      isDark.value = true;
-      const root = document.querySelector("#app");
-      root.classList.add("dark-theme");
-    }
-
-    return {
-      isDark,
-      setLightTheme,
-      setDarkTheme,
-    };
-  },
+ 
 };
 </script>
 
@@ -157,7 +139,6 @@ export default {
         transition: 300ms ease-in-out;
     } 
 
-  
   }
 
   .container input[type="radio"]:checked ~ span::after{
@@ -176,10 +157,7 @@ export default {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
   .btns-container {
-
-
     color: $text-main-l
-
   }
   
 }
