@@ -139,4 +139,15 @@ export default {
     }
   }
 }
+
+.dark .input-container {
+  background: $content-main-l;
+  .content {
+    input {
+      color: $text-main-l;
+    }
+  }
+
+  
+}
 </style>

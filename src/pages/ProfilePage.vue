@@ -79,9 +79,8 @@
     </div>
 
     <div class="profile-user-info-wrp">
-          <radio-select :header="'Theme'"></radio-select>
+      <radio-select :header="'Theme'"></radio-select>
     </div>
-
   </div>
 </template>
 
@@ -109,7 +108,7 @@ export default {
     UserImage,
     EditSettings,
     ProfileUserInfo,
-    RadioSelect
+    RadioSelect,
   },
   data() {
     return {
@@ -343,7 +342,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #b2b2b2;
 @import "@/styles/colors";
@@ -396,12 +394,15 @@ $def-gray: #b2b2b2;
   margin: 0% auto;
 }
 
+.dark .settings {
+  color: $text-main-l;
+}
+
 img {
   background: #46464600;
   min-width: 100%;
   height: auto;
 }
-
 
 .profile-user-info-wrp {
   position: relative;
@@ -435,13 +436,16 @@ img {
   }
 }
 
+.dark .settings-nav {
 
+  background-color: $content-main-l;
+
+}
 
 .user-image-wrp {
   position: relative;
   top: 8%;
 }
-
 
 .more-content {
   width: 180px;
@@ -466,7 +470,6 @@ img {
     font-size: 1rem;
     height: 30px;
 
-   
     &:hover {
       background-color: $hover;
       color: $text-main;
@@ -480,10 +483,8 @@ img {
   -webkit-font-smoothing: antialiased;
   height: 100%;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
-  overflow-y: auto ;
+  overflow-y: auto;
   overflow-x: hidden;
-
-
 
   &::-webkit-scrollbar {
     display: none;
@@ -511,8 +512,6 @@ img {
     justify-content: center;
     flex-direction: column;
 
- 
-
     input {
       margin-top: 15px;
       width: 75%;
@@ -525,8 +524,6 @@ img {
       font-size: 1.1rem;
     }
   }
-
-
 
   display: flex;
   align-items: center;
@@ -543,10 +540,11 @@ img {
     margin-top: 10px;
     color: rgb(61, 61, 61);
   }
+}
 
-  
-  }
-
+.dark .wrap {
+  background-color: $content-main-l;
+}
 
 .logout-alert {
   width: 100%;

@@ -17,6 +17,7 @@ import { doc, getDoc } from "firebase/firestore";
 import "firebase/compat/auth";
 // import { ref } from "firebase/storage";
 import { ref, set } from "firebase/database";
+import { useDark } from "@vueuse/core";
 import MyProfile from "./components/MyProfile.vue";
 import "firebase/compat/firestore";
 import { signOut } from "firebase/auth";
@@ -158,7 +159,7 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 // const usersRef = firestoreDb.collection('users'); // Get a reference to the Users collection;
 // // const onlineRef = oldRealTimeDb.ref('.info/connected'); // Get a reference to the list of connections
 // const onlineRef  = ref(oldRealTimeDb, '.info/connected');
-
+const isDark = useDark();
 
 
 

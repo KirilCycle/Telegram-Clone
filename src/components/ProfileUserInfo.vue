@@ -93,4 +93,17 @@ export default {
     @extend %item-patt;
   }
 }
+
+
+.dark .user-info-container  {
+  background-color: $content-main-l;
+  box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.2);
+
+  .user_info_container_text_wrap {
+
+    .info-text  {
+      color: $text-main-l;
+    }
+  }
+}
 </style>

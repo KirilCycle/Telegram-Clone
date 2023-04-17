@@ -36,16 +36,6 @@
         <label>{{ time }}</label>
       </div>
     </div>
-
-    <!-- <message-actions-modal
-      :removeMsg="removeMessage"
-      :msgRef="msg"
-      v-if="visible"
-      @closed="visible = false"
-      :visible="visible"
-      :profileurl="profilePhotoUrl"
-      :message="message"
-    ></message-actions-modal> -->
   </div>
 </template>
 
@@ -179,8 +169,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$crazy_color: #ff3d3d;
-
+@import '@/styles/colors.scss';
 .img-wrp {
   max-width: 100%;
   min-width: 90%;
@@ -197,29 +186,6 @@ $crazy_color: #ff3d3d;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-}
-.message-ations {
-  position: absolute;
-  width: 120px;
-  height: auto;
-  right: -10px;
-  bottom: 0px;
-  border-radius: 5px;
-  overflow: hidden;
-  z-index: 30;
-  backdrop-filter: blur(5px);
-  background-color: #323232d7;
-
-  li {
-    width: 100%;
-    box-sizing: border-box;
-    cursor: pointer;
-    color: white;
-    padding: 5px;
-    &:hover {
-      background-color: #8f8f8f9b;
-    }
-  }
 }
 
 .item {
@@ -269,29 +235,18 @@ $crazy_color: #ff3d3d;
         font-weight: 200;
       }
     }
-    .user-name {
-      font-size: 1rem;
-      font-weight: 500;
-      top: 5px;
-      max-width: 200px;
-      height: 16px;
-      left: 13px;
-      white-space: nowrap;
-      color: $crazy_color;
-    }
+
     padding: 8px;
-    color: white;
-    background: rgb(24, 24, 24);
+    background:  $content-main;
+    color:  $text-main;
     margin-bottom: 7px;
     flex-wrap: wrap;
     position: relative;
     right: 0px;
     margin-left: 10px;
-
     display: inline-block;
     max-width: 500px;
     word-break: break-all;
-
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -323,6 +278,21 @@ $crazy_color: #ff3d3d;
   }
 }
 
+.dark .item { 
+  .item-body{
+    background:  $content-main-l;
+    color:  $text-main-l;
+  }
+}
+
+.dark .my-item { 
+  .item-body{
+    background:  $main;
+    color:  white;
+  }
+
+}
+
 @media (pointer: coarse) {
   //tch sreen
   .my-item {
@@ -346,7 +316,7 @@ $crazy_color: #ff3d3d;
   width: max-content;
   display: flex;
 
-  .item-body {
+  .item-body{
     right: 0px;
     padding-right: 10px;
     .item_body_text {

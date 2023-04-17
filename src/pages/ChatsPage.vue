@@ -585,9 +585,7 @@ v-enter-active,
     }
   }
 
-  .dark .chat-nav-x{
-    background-color: $content-main-l
-  }
+
 
   h3 {
     font-weight: 500;
@@ -596,6 +594,14 @@ v-enter-active,
     position: absolute;
     left: 82px;
     top: 30%;
+  }
+}
+
+.dark .chat-nav-x{
+  background-color: $content-main-l;
+
+  h3 {
+     color: $text-main-l;
   }
 }
 
@@ -610,12 +616,15 @@ v-enter-active,
   overflow-y: scroll;
 }
 
+.dark .chat-container-x  {
+  background-image: url("https://wallpaperaccess.com/full/1295560.png");
+}
+
 @media (min-width: 1400px) {
   .chat-container-x {
     max-width: 1400px;
     margin: 0% auto;
-    background-repeat: no-repeat;
-    background-image: url("https://wallpapercrafter.com/th800/140442-minimalism-dark-faded-abstract.jpg");
+  
   }
 }
 
@@ -757,6 +766,8 @@ v-enter-active,
   }
 
 
+
+
   .chat-list {
     overflow-x: hidden;
   }
@@ -781,6 +792,14 @@ v-enter-active,
   }
 }
 
+.dark .left-bar .left_bar_srch-wrap {
+  background-color: $content-main-l;
+
+  input {
+    color: $text-main-l;
+  }
+
+}
 .dark .left-bar {
   background-color:  $content-main-l ;
 }
@@ -788,14 +807,14 @@ v-enter-active,
   width: 100%;
   height: 100vh;
   position: relative;
-  background-color: #1e1e1e;
+ 
   overflow-y: hidden;
 }
 
 .right-side-shoved-back {
   width: 100%;
   position: relative;
-  background-color: #1e1e1e;
+
   overflow-y: hidden;
   height: 100vh;
 }

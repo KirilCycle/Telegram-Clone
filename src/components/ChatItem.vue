@@ -55,16 +55,18 @@ export default {
     .time {
       color: $text-main;
     }
+
+  
   }
   flex-direction: row;
   align-items: center;
 
   .name {
     color: $text-main;
-
     font-size: 0.9rem;
     font-weight: 550;
   }
+
 
   .last {
     color: gray;
@@ -110,7 +112,13 @@ export default {
     font-size: 0.85rem;
     color: rgb(78, 78, 78);
   }
+  
 }
+
+.dark .cht-i .name {
+  color: $text-main-l;
+}
+
 
 .active {
   @extend .cht-i;
