@@ -598,7 +598,11 @@ v-enter-active,
 .chat-container-x {
   height: 84%;
   max-width: 100%;
-  background-color: $custom-c2;
+  background-repeat: no-repeat;
+  background-image: url("https://wallpapercrafter.com/th800/140442-minimalism-dark-faded-abstract.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   overflow-y: scroll;
 }
 
@@ -606,6 +610,8 @@ v-enter-active,
   .chat-container-x {
     max-width: 1400px;
     margin: 0% auto;
+    background-repeat: no-repeat;
+    background-image: url("https://wallpapercrafter.com/th800/140442-minimalism-dark-faded-abstract.jpg");
   }
 }
 
@@ -790,6 +796,7 @@ v-enter-active,
   overflow-y: scroll;
   height: 100%;
   background-color: $custom-c4;
+  
 }
 
 .chat-container::-webkit-scrollbar {

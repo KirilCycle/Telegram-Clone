@@ -20,8 +20,6 @@
     overflow: hidden;
     min-height: 300px;
   }
-
-
   .bottom-img-shadow {
     width: 100%;
     position: absolute;
@@ -29,7 +27,5 @@
     background-color: rgb(0, 0, 0);
     box-shadow: rgba(0, 0, 7, 1) 0px 32px 90px 80px;
     bottom: -3px;
-    
-    
   }
 </style>

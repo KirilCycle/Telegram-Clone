@@ -77,6 +77,11 @@
         @close="() => handleEditComponent(0, false)"
       ></edit-settings>
     </div>
+
+    <div class="profile-user-info-wrp">
+          <radio-select></radio-select>
+    </div>
+
   </div>
 </template>
 
@@ -97,12 +102,14 @@ import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import UserImage from "@/components/UserImage.vue";
 import EditSettings from "@/components/EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
+import RadioSelect from "@/components/RadioSelect.vue";
 
 export default {
   components: {
     UserImage,
     EditSettings,
     ProfileUserInfo,
+    RadioSelect
   },
   data() {
     return {

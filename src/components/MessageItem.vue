@@ -184,6 +184,7 @@ $crazy_color: #ff3d3d;
 .img-wrp {
   max-width: 100%;
   min-width: 90%;
+  min-height: 340px ;
 
   img {
     border-radius: 5px;
