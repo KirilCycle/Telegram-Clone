@@ -35,6 +35,9 @@
         <p :ref="message.id">{{ message.text }}</p>
         <label>{{ time }}</label>
       </div>
+      <div class="emoji-c">
+        <div v-for="em in message.emojis" :key="em">{{em}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -189,7 +192,7 @@ export default {
 }
 
 .item {
-  min-width: 130px;
+  min-width: 150px;
   max-width: 900px;
   width: 500px;
   position: relative;

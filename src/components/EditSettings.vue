@@ -48,7 +48,7 @@
             v-on:input="(e) => handleTextArea(e.target.value, this)"
           />
         </div>
-
+        
         <div class="info-about-bio-wrap">
           <p>
             Any details such as age, occupation or city. Example: 23 y.o.
