@@ -12,7 +12,7 @@
           type="radio"
           v-model="selectedOption"
           value="dark"
-          name="light"
+          name="dark"
         />
         Dark
         <span>
@@ -26,7 +26,7 @@
           type="radio"
           v-model="selectedOption"
           value="light"
-          name="dark"
+          name="light"
         />
         Light
         <span>
@@ -49,8 +49,13 @@ export default {
   data() {
     return {
       header: this.header,
-      selectedOption: "light",
+      selectedOption: localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light',
+
+
     };
+  },
+  mounted() {
+    console.log( localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light'  );
   },
   setup() {
     const isDark = useDark();
@@ -132,7 +137,7 @@ export default {
     
     
     .container + .container {
-      margin-top: 45px;
+      margin-top: 39px;
     }
   
     .container span:after {

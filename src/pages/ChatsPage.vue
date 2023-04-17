@@ -585,6 +585,10 @@ v-enter-active,
     }
   }
 
+  .dark .chat-nav-x{
+    background-color: $content-main-l
+  }
+
   h3 {
     font-weight: 500;
     font-size: 1.1rem;
@@ -751,6 +755,8 @@ v-enter-active,
       }
     }
   }
+
+
   .chat-list {
     overflow-x: hidden;
   }
@@ -775,6 +781,9 @@ v-enter-active,
   }
 }
 
+.dark .left-bar {
+  background-color:  $content-main-l ;
+}
 .right-side {
   width: 100%;
   height: 100vh;
