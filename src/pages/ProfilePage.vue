@@ -79,7 +79,7 @@
     </div>
 
     <div class="profile-user-info-wrp">
-          <radio-select></radio-select>
+          <radio-select :header="'Theme'"></radio-select>
     </div>
 
   </div>
@@ -406,6 +406,7 @@ img {
 .profile-user-info-wrp {
   position: relative;
   top: 8%;
+  width: 100%;
 }
 
 .settings-nav {
