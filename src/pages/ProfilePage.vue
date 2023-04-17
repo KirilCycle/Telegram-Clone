@@ -81,10 +81,27 @@
     <div class="profile-user-info-wrp">
       <radio-select
         :header="'Theme'"
-        :selected="'dark'"
+        :selected="prevTheme"
         :btnsRadioList="themeVariations"
       ></radio-select>
     </div>
+
+    <div class="profile-user-info-wrp">
+      <radio-select
+        :header="'I have cool reuseful'"
+        :selected="prevTheme"
+        :btnsRadioList="options"
+      ></radio-select>
+    </div>
+
+    <div class="profile-user-info-wrp">
+      <radio-select
+        :header="'radio btns list'"
+        :selected="prevTheme"
+        :btnsRadioList="options2"
+      ></radio-select>
+    </div>
+
   </div>
 </template>
 
@@ -128,7 +145,15 @@ export default {
       isLoading: false,
       logoutV: false,
       moreContentV: false,
+      
     };
+  },
+  computed: {
+    prevTheme() {
+     if (localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light') {
+       return localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light'
+     } return 'dark'
+    }
   },
   created() {},
   methods: {
@@ -358,10 +383,23 @@ export default {
 
     ]);
 
+    const options = ref([  
+      {name:'option', value:'option', execute: () => {}, title:'option' },
+      {name:'option2', value:'option2', execute: () => {}, title:'option2' }])
+
+      const options2 = ref([  
+      {name:'option3', value:'option3', execute: () => {}, title:'option3' },
+      {name:'option4', value:'option4', execute: () => {}, title:'option4' },
+      {name:'option5', value:'option5', execute: () => {}, title:'option5' },
+      {name:'option6', value:'option6', execute: () => {}, title:'option6' }    
+    ])
+
     return {
       logout,
       themeVariations,
       uploadPhoto,
+      options,
+      options2
     };
   },
 };

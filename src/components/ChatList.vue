@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import store from "@/store/store";
 import firebase from "firebase/compat/app";
 import ChatListItem from "./ChatListItem.vue";
 

@@ -14,17 +14,7 @@
 
 <script>
 import ChatInput from "./ChatInput.vue";
-import { collection, getDocs, getDoc, Timestamp } from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import store from "@/store/store";
-import { ref } from "vue";
-import { getDatabase, onValue } from "firebase/database";
-import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { doc, setDoc, writeBatch } from "firebase/firestore";
-import DirectChat from "@/components/DirectChat.vue";
-import FoundedChatsList from "@/components/FoundedChatsList.vue";
-import { getAuth } from "firebase/auth";
-import { uuidv4 } from "@firebase/util";
+
 
 
 

@@ -1,5 +1,4 @@
 <template>
-  <!-- <my-profile class="profile" v-if="$store.state.user.user"></my-profile> -->
   <div class="wrap">
     <router-view></router-view>
   </div>
@@ -7,7 +6,6 @@
 
 <script setup>
 import router, { routes } from "./router/router";
-import TopNavbar from "./components/TopNavbar.vue";
 import store from "./store/store";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -18,25 +16,14 @@ import "firebase/compat/auth";
 // import { ref } from "firebase/storage";
 import { ref, set } from "firebase/database";
 import { useDark } from "@vueuse/core";
-import MyProfile from "./components/MyProfile.vue";
+
 import "firebase/compat/firestore";
-import { signOut } from "firebase/auth";
-import { onBeforeUnmount } from "vue";
-import { updateDoc } from "firebase/firestore";
-import { getDatabase, onValue } from "firebase/database";
+
 
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
-import { onMounted, watchEffect, watch } from "vue";
-import { getFirestore, collection } from "firebase/firestore";
+import { onMounted,   } from "vue";
+import { getFirestore,  } from "firebase/firestore";
 
-
-import {
-  getAuth,
-  setPersistence,
-  signInWithRedirect,
-  inMemoryPersistence,
-  GoogleAuthProvider,
-} from "firebase/auth";
 import { setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 

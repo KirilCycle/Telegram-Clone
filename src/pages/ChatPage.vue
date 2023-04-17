@@ -50,13 +50,10 @@
 <script>
 import store from "@/store/store";
 import { nextTick, ref, watch } from "vue";
-import { query, orderBy, startAt, startAfter } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import { getAuth, updateProfile } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
 import SelectedFileModal from "@/components/SelectedFileModal.vue";

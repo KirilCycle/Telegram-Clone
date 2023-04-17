@@ -123,10 +123,12 @@ nav {
   display: flex;
   align-items: center;
   flex-direction: row;
+
   h3 {
     margin-left: 20px;
     color: $text-main;
   }
+
   button {
     width: 60px;
     height: 100%;
@@ -148,6 +150,17 @@ nav {
       }
     }
   }
+
+}
+
+.dark nav {
+  background-color: $content-main-l;
+
+  h3 {
+    margin-left: 20px;
+    color: $text-main-l;
+  }
+
 }
 .user-profile {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -161,6 +174,10 @@ nav {
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
   background-color: $content-main-dark;
+}
+
+.dark .user-profile {
+  background-color: $content-main-l;
 }
 
 .photo-container {
