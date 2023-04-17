@@ -415,7 +415,7 @@ $def-gray: #b2b2b2;
   position: absolute;
   left: 310px;
   height: 100%;
-  z-index: 21;
+  z-index: 25;
   transform: translateX(0);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
@@ -433,7 +433,7 @@ $def-gray: #b2b2b2;
 
 .profile_img_wrap_text_wrp {
   .fisrt-name {
-    z-index: 20;
+    z-index:12;
     font-size: 1.2rem;
     font-weight: 700;
     color: #ffffff;
@@ -460,7 +460,10 @@ $def-gray: #b2b2b2;
 
 .dark .settings {
   color: $text-main-l;
+
 }
+
+
 
 img {
   background: #46464600;
@@ -480,10 +483,12 @@ img {
   height: 8%;
   position: fixed;
   top: 0px;
-  z-index: 20;
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: center;
+  
+
 
   .settings_nav_right_side {
     width: 80px;
@@ -502,6 +507,7 @@ img {
 
 .dark .settings-nav {
   background-color: $content-main-l;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.237);
 }
 
 .user-image-wrp {

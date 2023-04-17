@@ -4,7 +4,7 @@
       <button @click="() => $emit('close')">
         <span class="material-symbols-outlined"> arrow_back </span>
       </button>
-      <h1>Edit Profile</h1>
+      <h1 class="page-header">Edit Profile</h1>
     </nav>
 
     <div class="edit-content">
@@ -59,11 +59,15 @@
     </div>
 
     <transition name="bounce">
-    <button v-show="somethingChanged"  ref="commit"  @click="commitProfileChanges" class="save-changes-btn">
-      <span class="material-symbols-outlined"> done </span>
-    </button>
+      <button
+        v-show="somethingChanged"
+        ref="commit"
+        @click="commitProfileChanges"
+        class="save-changes-btn"
+      >
+        <span class="material-symbols-outlined"> done </span>
+      </button>
     </transition>
-
   </div>
 </template>
 
@@ -105,8 +109,6 @@ export default {
       usernameExist: false,
       usernameAvaible: false,
       shortLength: false,
-
-     
     };
   },
 
@@ -128,31 +130,25 @@ export default {
     },
 
     somethingChanged() {
-      let somethingChanged = 
+      let somethingChanged =
         this.uploadedPhoto ||
         this.firtsName !== this.firtsNameTmp ||
         this.username !== this.usernameTmp ||
-        this.bio !== this.bioTmp
+        this.bio !== this.bioTmp;
 
-        if (somethingChanged) {
-          return true
-        }  else {
-          
-          return false
-        }
-    }
-
+      if (somethingChanged) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
-  watch: {
-
-   
-
-  },
+  watch: {},
   methods: {
     async handleUsername() {
       this.checkUsername = false;
       this.usernameExist = false;
-      if (this.username.length > 3  && this.username.length < 27) {
+      if (this.username.length > 3 && this.username.length < 27) {
         this.shortLength = false;
         console.log("username changes", this);
 
@@ -228,7 +224,7 @@ export default {
         } else {
           console.log("Huynya predelivay");
           this.usernameWrongData = true;
-          this.usernameAvaible = false
+          this.usernameAvaible = false;
 
           console.log(this.usernameWrongData);
         }
@@ -252,7 +248,6 @@ export default {
 
           this.uploadedPhoto = uploadedTarget;
 
-          
           // selectedPhoto.value = e.target.files[0]
         } else {
           alert("wrog format");
@@ -295,9 +290,7 @@ export default {
 
         let newData = {};
 
-       
         if (this.uploadedPhoto) {
-
           const storage = getStorage();
 
           const storageRef = ref(
@@ -317,11 +310,12 @@ export default {
                   username: this.username,
                 }),
                 ...(this.bio !== this.bioTmp && { bio: this.bio }),
-                photoURL: url
+                photoURL: url,
               };
 
-            updateDoc(userDoc, newData).then((res) =>
-               console.log(res, "UPDATED p"))
+              updateDoc(userDoc, newData).then((res) =>
+                console.log(res, "UPDATED p")
+              );
             });
           });
         } else {
@@ -346,9 +340,9 @@ export default {
               alert("wrong data");
             }
           } else {
-            await updateDoc(userDoc, newData).then((res) =>
-              console.log(res, "UPDATED")
-            ).catch((er) => console.log(er))
+            await updateDoc(userDoc, newData)
+              .then((res) => console.log(res, "UPDATED"))
+              .catch((er) => console.log(er));
 
             console.log("ENOTHER DATA", newData);
           }
@@ -377,7 +371,7 @@ export default {
 $custom-c4: rgb(31, 31, 31);
 $def-gray: #828282;
 
-@import '@/styles/colors';
+@import "@/styles/colors";
 
 .bounce-enter-active {
   animation: bounce-in 0.5s;
@@ -399,25 +393,35 @@ $def-gray: #828282;
 .edit-wrap {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 1225;
   background-color: $content-main;
   box-sizing: border-box;
+}
+
+.dark .edit-wrap {
+  background-color: $content-main-l;
 }
 
 .inpt-container {
   position: relative;
   width: 100%;
   box-sizing: border-box;
-
   p {
     position: absolute;
     top: 5px;
-    z-index: 900;
+    z-index: 22;
     left: 10px;
-
     font-size: 0.7rem;
     background-color: $content-main;
     color: gray;
     max-height: 0.8rem;
+  }
+}
+
+.dark .inpt-container {
+  p {
+    background-color: $content-main-l;
   }
 }
 
@@ -440,11 +444,14 @@ $def-gray: #828282;
     border-radius: 15px;
     box-sizing: border-box;
     border: 1px solid gray;
-
     font-size: 1rem;
     color: $text-main;
     &:focus {
-      border: 1px solid rgb(53, 107, 255);
+      border: 1px solid $main;
+      box-shadow: rgba(34, 137, 255, 0.916) 0px 0px 0px 1px;
+    }
+    &:hover {
+      border: 1px solid $main;
     }
   }
 
@@ -479,8 +486,21 @@ $def-gray: #828282;
     line-height: 1.3125rem;
 
     &:focus {
-      border: 1px solid rgb(53, 107, 255);
+      border: 1px solid $main;
+      box-shadow: rgba(34, 137, 255, 0.916) 0px 0px 0px 1px;
     }
+    &:hover {
+      border: 1px solid $main;
+    }
+  }
+}
+
+.dark .inputs_wrp {
+  input {
+    color: $text-main-l;
+  }
+  textarea {
+    color: $text-main-l;
   }
 }
 
@@ -491,7 +511,8 @@ $def-gray: #828282;
 }
 .edit-content {
   width: 100%;
-
+  position: relative;
+  top: 8%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -548,6 +569,9 @@ $def-gray: #828282;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  top: 0px;
+  z-index: 100;
 
   button {
     position: absolute;
@@ -557,13 +581,21 @@ $def-gray: #828282;
     color: $def-gray;
   }
 
-  h1 {
-    color: $text-main;
-    font-size: 1.4rem;
-    font-weight: 550;
-    margin: 0% auto;
-  }
+  
 }
+.page-header {
+  color: $text-main;
+  font-size: 1.4rem;
+  font-weight: 550;
+  margin: 0% auto;
+}
+
+.dark .page-header {
+  color: $text-main-l;
+}
+
+
+
 
 .save-changes-btn {
   width: 50px;

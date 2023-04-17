@@ -559,6 +559,7 @@ v-enter-active,
   background-color: $content-main;
   height: 8%;
   text-align: left;
+  
   display: flex;
   align-items: center;
   max-height: 75px;
@@ -609,7 +610,7 @@ v-enter-active,
   height: 84%;
   max-width: 100%;
   background-repeat: no-repeat;
-  background-image: url("https://wallpapercrafter.com/th800/140442-minimalism-dark-faded-abstract.jpg");
+  background-image: url("https://wallpapercave.com/wp/wp7111917.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
