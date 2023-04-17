@@ -25,7 +25,7 @@
             <span class="material-symbols-outlined"> forward </span>
             <button>Forward</button>
           </li>
-          <li>
+          <li @click="selectText">
             <span class="material-symbols-outlined"> file_copy </span>
             <button>Coppy Text</button>
           </li>
@@ -68,6 +68,19 @@ export default {
         ...(msgData.imageRef ? { img: msgData.imageRef } : {}),
       });
     },
+
+    selectText() {
+      const el = this.$store.state.message.replyMsgRef;
+
+      const text =  this.$store.state.message.selectedMsgData.text;
+      navigator.clipboard.writeText(text).then(() => {
+        console.log('Text copied to clipboard');
+      }).catch((error) => {
+        console.error('Error copying text to clipboard:', error);
+      });
+    
+    },
+
 
     async deleteMsg() {
       if (
