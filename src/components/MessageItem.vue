@@ -1,10 +1,6 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-     
-       
     <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
-
-
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
@@ -38,12 +34,30 @@
         <p :ref="message.id">{{ message.text }}</p>
         <label>{{ time }}</label>
       </div>
-      <div class="emoji-c">
-        <div v-for="em in message.emj" :key="em.id">
+
+      <!-- <div class="emoji-c" v-for="em in parsedEmoji" :key="em.id">
+        <p>
+          {{ em }}
+        </p>
+
         
-          {{em.em}}
+        <div class="circle">
+          <img :src="em.img" />
+        </div>
+      </div> -->
+
+      <div v-if="emojis">
+        <div class="emoji-c" v-for="em in emojis" :key="em[0]">
+          <p>
+            {{ em[0] }}
+          </p>
+  
+          <!-- <div class="circle">
+            <img :src="em.img" />
+          </div> -->
         </div>
       </div>
+      
     </div>
   </div>
 </template>
@@ -55,9 +69,11 @@ import { getAuth } from "firebase/auth";
 import ProfileImage from "./ProfileImage.vue";
 import MessageActionsModal from "./MessageActionsModal.vue";
 import SmallChatImage from "./SmallChatImage.vue";
+import EmojiContainer from './EmojiContainer.vue';
+import { objectEntries } from '@vueuse/core';
 
 export default {
-  components: { MessageActionsModal, ProfileImage, SmallChatImage },
+  components: { MessageActionsModal, ProfileImage, SmallChatImage, EmojiContainer },
 
   props: {
     message: Object,
@@ -67,6 +83,7 @@ export default {
     required: true,
   },
 
+
   data() {
     return {
       ableTodelete: this.message.userId === store.state.user.user.uid,
@@ -75,7 +92,8 @@ export default {
         : "",
       removeMessage: this.removeMessage,
       isMy: this.isMy,
-      next: this.next,
+      message: this.message,
+      emojis: this.message.emj
     };
   },
 
@@ -89,7 +107,17 @@ export default {
 
       return `${hours}:${minutes}`;
     },
+
+    emojis() {
+      if(this.message.emj) {
+        return objectEntries(this.message.emj)
+      } return false
+    }
+  
+   
   },
+
+
 
   methods: {
     handleTouch(e) {
@@ -106,8 +134,6 @@ export default {
       console.log(store.state.message.selectedMsgData, "SELECTED");
 
       store.commit("message/setVisible", true);
-
-      
     },
     handleSelectMsg(e) {
       store.commit("message/setReplyMsgRef", this.$refs.msg);
@@ -180,11 +206,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/colors.scss';
+@import "@/styles/colors.scss";
 .img-wrp {
   max-width: 100%;
   min-width: 90%;
-  min-height: 340px ;
+  min-height: 340px;
 
   img {
     border-radius: 5px;
@@ -248,8 +274,8 @@ export default {
     }
 
     padding: 8px;
-    background:  $content-main;
-    color:  $text-main;
+    background: $content-main;
+    color: $text-main;
     margin-bottom: 7px;
     flex-wrap: wrap;
     position: relative;
@@ -289,19 +315,18 @@ export default {
   }
 }
 
-.dark .item { 
-  .item-body{
-    background:  $content-main-l;
-    color:  $text-main-l;
+.dark .item {
+  .item-body {
+    background: $content-main-l;
+    color: $text-main-l;
   }
 }
 
-.dark .my-item { 
-  .item-body{
-    background:  $main;
-    color:  white;
+.dark .my-item {
+  .item-body {
+    background: $main;
+    color: white;
   }
-
 }
 
 @media (pointer: coarse) {
@@ -327,7 +352,7 @@ export default {
   width: max-content;
   display: flex;
 
-  .item-body{
+  .item-body {
     right: 0px;
     padding-right: 10px;
     .item_body_text {
@@ -455,6 +480,27 @@ export default {
       width: min-content;
       display: flex;
       max-width: 320px;
+    }
+  }
+}
+
+.emoji-c {
+  width: 70px;
+  height: 30px;
+
+  display: flex;
+  flex-direction: row;
+
+  .circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 }
