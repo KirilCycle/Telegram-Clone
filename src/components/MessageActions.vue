@@ -78,77 +78,93 @@ export default {
       // await updateDoc(washingtonRef, {
       //   capital: true
       // });
+      const msg = store.state.message.selectedMsgData;
+
       const user = this.$store.state.user.user.uid;
 
       let msgRef = this.db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages")
-        .doc(store.state.message.selectedMsgData.id);
+        .doc(msg.id);
 
-      // await updateDoc(msgRef, {
-      //   [linkToSendedEm]: arrayUnion(user)
-      // });
+      if (store.state.message.selectedMsgData.emj) {
+        // await updateDoc(msgRef, {
+        //   [linkToSendedEm]: arrayUnion(user)
+        // });
 
-      async function postReaction(key) {
-        let linkToSendedEm = `emj.${key}`;
+        async function postReaction(key) {
+          let linkToSendedEm = `emj.${key}`;
 
-        console.log(linkToSendedEm, "LETS GO ");
+          console.log(linkToSendedEm, "LETS GO ");
 
-        await updateDoc(msgRef, {
-          [linkToSendedEm]: arrayUnion(user),
-        });
-      }
-
-      const emojis = store.state.message.selectedMsgData?.emj;
-
-      async function removeReaction(key, wasLast) {
-        let linkToSendedEm = `emj.${key}`;
-        //that kin of emoji was only was sender
-        if (wasLast) {
-          msgRef.update({
-            [linkToSendedEm]: firebase.firestore.FieldValue.delete(),
+          await updateDoc(msgRef, {
+            [linkToSendedEm]: arrayUnion(user),
           });
-
-          return;
         }
 
-        console.log("HERE WE GO", key, user);
+        const emojis = store.state.message.selectedMsgData?.emj;
 
-        await updateDoc(msgRef, {
-          [linkToSendedEm]: arrayRemove(user),
-        });
-      }
+        async function removeReaction(key, wasLast) {
+          let linkToSendedEm = `emj.${key}`;
+          //that kin of emoji was only was sender
+          if (wasLast) {
+            msgRef.update({
+              [linkToSendedEm]: firebase.firestore.FieldValue.delete(),
+            });
 
-      let founded;
-      let last;
+            return;
+          }
 
-      if (emojis) {
-        const source = Object.entries(emojis);
+          console.log("HERE WE GO", key, user);
 
-        for (let i = 0; i < source.length; i++) {
-          for (let j = 0; j < source[i][1].length; j++) {
-            let emoji = source[i][0];
+          await updateDoc(msgRef, {
+            [linkToSendedEm]: arrayRemove(user),
+          });
+        }
 
-            if (source[i][1][j] === user) {
-              //case user already used emoji
-              founded = emoji
-              last = source[i][1].length === 1
+        let founded;
+        let last;
 
-              break;
+        if (emojis) {
+          const source = Object.entries(emojis);
+
+          for (let i = 0; i < source.length; i++) {
+            for (let j = 0; j < source[i][1].length; j++) {
+              let emoji = source[i][0];
+
+              if (source[i][1][j] === user) {
+                //case user already used emoji
+                founded = emoji;
+                last = source[i][1].length === 1;
+
+                break;
+              }
             }
           }
-        }
 
-        if (founded) {
-          removeReaction(founded,last).then(() => {
-            postReaction(em)
-          } )
-        } else {
-          postReaction(em)
+          if (founded) {
+            removeReaction(founded, last).then(() => {
+              postReaction(em);
+            });
+          } else {
+            postReaction(em);
+          }
         }
-
+        return;
       }
+
+
+      msgRef.set(
+        {
+          emj: {
+            [em]: [user],
+          },
+        },
+        { merge: true }
+      );
+
+
     },
 
     selectText() {
