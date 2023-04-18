@@ -1,6 +1,5 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
@@ -9,9 +8,6 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-      <!-- <div class="user-name">
-        <p>{{ message.userName }}</p>
-      </div> -->
       <div class="img-wrp" v-if="message.imageRef">
         <img :src="message.imageRef" />
       </div>
@@ -34,18 +30,6 @@
         <p :ref="message.id">{{ message.text }}</p>
         <label>{{ time }}</label>
       </div>
-
-      <!-- <div class="emoji-c" v-for="em in parsedEmoji" :key="em.id">
-        <p>
-          {{ em }}
-        </p>
-
-        
-        <div class="circle">
-          <img :src="em.img" />
-        </div>
-      </div> -->
-
       <div class="emoji-wrap" v-if="emojis">
         <div class="emoji-c" v-for="em in emojis" :key="em[0]">
           <p>
@@ -68,7 +52,6 @@ import { ref } from "vue";
 import store from "@/store/store";
 import { getAuth } from "firebase/auth";
 import ProfileImage from "./ProfileImage.vue";
-import MessageActionsModal from "./MessageActionsModal.vue";
 import SmallChatImage from "./SmallChatImage.vue";
 import EmojiContainer from "./EmojiContainer.vue";
 import { objectEntries } from "@vueuse/core";
@@ -76,7 +59,6 @@ import EmojiUser from "./EmojiUser.vue";
 
 export default {
   components: {
-    MessageActionsModal,
     ProfileImage,
     SmallChatImage,
     EmojiContainer,

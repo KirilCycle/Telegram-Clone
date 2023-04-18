@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined"> reply </span>
             <button>Reply</button>
           </li>
-          <li>
+          <li @click.stop="v = true">
             <span class="material-symbols-outlined"> forward </span>
             <button>Forward</button>
           </li>
@@ -39,6 +39,9 @@
         </ul>
       </div>
     </div>
+
+    <forward-modal v-if="v"></forward-modal>
+
   </Teleport>
 </template>
 
@@ -48,6 +51,7 @@ import { updateDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { doc, setDoc } from "firebase/firestore";
 import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import ForwardModal from './ForwardModal.vue';
 
 export default {
   data() {
@@ -56,7 +60,11 @@ export default {
         store.state.message.selectedMsgData.userId ===
         store.state.user.user.uid,
       db: firebase.firestore(),
+      v: false,
     };
+  },
+  components: {
+   ForwardModal  
   },
   methods: {
     prepareToReply() {
