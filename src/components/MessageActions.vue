@@ -78,26 +78,33 @@ export default {
       // await updateDoc(washingtonRef, {
       //   capital: true
       // });
-
       const user = this.$store.state.user.user.uid;
+
       let msgRef = this.db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages")
         .doc(store.state.message.selectedMsgData.id);
 
-      let linkToSendedEm = `emj.${em}`;
-
       // await updateDoc(msgRef, {
       //   [linkToSendedEm]: arrayUnion(user)
       // });
 
+      async function postReaction(key) {
+        let linkToSendedEm = `emj.${key}`;
+
+        console.log(linkToSendedEm, "LETS GO ");
+
+        await updateDoc(msgRef, {
+          [linkToSendedEm]: arrayUnion(user),
+        });
+      }
+
       const emojis = store.state.message.selectedMsgData?.emj;
 
-      async function removerReaction(key, wasLast) {
-        
+      async function removeReaction(key, wasLast) {
         let linkToSendedEm = `emj.${key}`;
-             //that kin of emoji was only was sender  
+        //that kin of emoji was only was sender
         if (wasLast) {
           msgRef.update({
             [linkToSendedEm]: firebase.firestore.FieldValue.delete(),
@@ -113,6 +120,9 @@ export default {
         });
       }
 
+      let founded;
+      let last;
+
       if (emojis) {
         const source = Object.entries(emojis);
 
@@ -122,11 +132,22 @@ export default {
 
             if (source[i][1][j] === user) {
               //case user already used emoji
+              founded = emoji
+              last = source[i][1].length === 1
 
-              removerReaction(emoji, source[i][1].length === 1);
+              break;
             }
           }
         }
+
+        if (founded) {
+          removeReaction(founded,last).then(() => {
+            postReaction(em)
+          } )
+        } else {
+          postReaction(em)
+        }
+
       }
     },
 
