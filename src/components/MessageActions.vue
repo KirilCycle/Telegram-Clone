@@ -3,14 +3,17 @@
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <div class="emoji-container">
-          <!-- <ul>
-            <li>😂</li>
-            <li>😘</li>
-            <li>👍</li>
-            <li>😍</li>
-            <li>🐳</li>
-            <li></li>
-          </ul> -->
+        
+          <div class="emoji-list">
+            <div>😂</div>
+            <div>😘</div>
+            <div>👍</div>
+            <div>😍</div>
+            <div>🐳</div>
+            <div>👍</div>
+            <div>👎</div>
+            <div>😈</div>   
+          </div>
 
           <div class="emoji_container_circl"></div>
           <div class="emoji_container_smll_circl"></div>
@@ -72,15 +75,16 @@ export default {
     selectText() {
       const el = this.$store.state.message.replyMsgRef;
 
-      const text =  this.$store.state.message.selectedMsgData.text;
-      navigator.clipboard.writeText(text).then(() => {
-        console.log('Text copied to clipboard');
-      }).catch((error) => {
-        console.error('Error copying text to clipboard:', error);
-      });
-    
+      const text = this.$store.state.message.selectedMsgData.text;
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          console.log("Text copied to clipboard");
+        })
+        .catch((error) => {
+          console.error("Error copying text to clipboard:", error);
+        });
     },
-
 
     async deleteMsg() {
       if (
@@ -90,27 +94,25 @@ export default {
 
         const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
 
-      
         try {
-          
-          console.log('EXECUTE FN')
+          console.log("EXECUTE FN");
 
-        let res =  db.collection("chatMessages")
+          let res = db
+            .collection("chatMessages")
             .doc(store.state.chat.chatId)
             .collection("messages")
-            .doc(store.state.message.selectedMsgData.id)
-            
-            res.delete()
-            
+            .doc(store.state.message.selectedMsgData.id);
 
-      
-          console.log(store.state.chat.chatId,  ' msg =>' ,store.state.message.selectedMsgData.id );
+          res.delete();
 
+          console.log(
+            store.state.chat.chatId,
+            " msg =>",
+            store.state.message.selectedMsgData.id
+          );
         } catch (e) {
           console.log(e);
         }
-
-      
       }
     },
 
@@ -141,6 +143,9 @@ export default {
   position: fixed;
 }
 
+
+
+
 .msg-actions {
   top: 0%;
   width: 200px;
@@ -153,18 +158,50 @@ export default {
   padding: 5px;
 
   .emoji-container {
-    width: 270px;
+    width: auto;
     height: 35px;
+    display: flex;
+    flex-direction: row;
     position: absolute;
     top: -49px;
     background-color: #353535;
     border-radius: 30px;
+
+    .emoji-list {
+      width: 100%;
+      height: 35px;
+      align-items: center;
+      background-color: #ffffff00;
+      flex-direction: row;
+      display: flex;
+      
+
+      div {
+        margin: 0.5px;
+        cursor: pointer;
+        height: 30px;
+        width: 30px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+        &:hover {
+          background-color: #6565657a;
+        }
+
+      }
+
+
+    }
 
     .emoji_container_circl {
       width: 25px;
       height: 25px;
       border-radius: 12.5px;
       position: absolute;
+      z-index: -1;
       right: 5px;
       bottom: -7px;
       background-color: #353535;

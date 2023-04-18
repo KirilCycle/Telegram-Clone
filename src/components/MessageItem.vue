@@ -1,6 +1,9 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
+     
+       
     <!-- <profile-image :visible="next?.userId.includes(message?.userId)" :profilePhotoUrl="profilePhotoUrl"></profile-image> -->
+
 
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
@@ -100,6 +103,8 @@ export default {
       console.log(store.state.message.selectedMsgData, "SELECTED");
 
       store.commit("message/setVisible", true);
+
+      
     },
     handleSelectMsg(e) {
       store.commit("message/setReplyMsgRef", this.$refs.msg);
