@@ -1,15 +1,14 @@
 <template>
   <div class="rep-container">
     <div @click="scrllToTarget" class="target-info">
- 
       <span class="material-symbols-outlined"> reply </span>
- 
-      <div v-if="$store.state.message.replyTarget.img" >
-         <small-chat-image :src="$store.state.message.replyTarget.img"></small-chat-image>
+
+      <div v-if="photo">
+        <small-chat-image :src="photo"></small-chat-image>
       </div>
       <div class="text-container">
-        <h3>{{$store.state.message.replyTarget.from}}</h3>
-        <p>{{$store.state.message.replyTarget.text.slice(0,29)}}</p>
+        <h3>{{ data.from }}</h3>
+        <p>{{ data.text.slice(0, 29) }}</p>
       </div>
     </div>
     <span class="material-symbols-outlined" @click="reset"> close </span>
@@ -17,48 +16,68 @@
 </template>
 
 <script>
-import store from '@/store/store';
-import SmallChatImage from './SmallChatImage.vue';
+import store from "@/store/store";
+import SmallChatImage from "./SmallChatImage.vue";
+
+
+
 export default {
+  props: {
+    selected: Object,
+    required: true,
+  },
   components: { SmallChatImage },
   data() {
-    
+    return {
+      data: this.selected,
+    };
   },
   methods: {
     reset() {
-        store.commit('message/setReplyMsgRef', null)
-        store.commit('message/setReplyTarget',null)
+      store.commit("message/setReplyMsgRef", null);
+      store.commit("message/setReplyTarget", null);
+      store.commit("message/setForwardTarget", null);
     },
     scrllToTarget() {
-         store.state.message.replyMsgRef .scrollIntoView({block: "center", behavior: "smooth"})  
-    }
+      if (data.replyMsgRef) {
+        data.replyMsgRef.scrollIntoView({
+          block: "center",
+          behavior: "smooth",
+        });
+      }
+    },
   },
-  props: {
-    ref: Object,
+  computed: {
+    photo() {
+      const source = this.data;
+
+    if (source.imgRef) {
+        return source.imgRef
+      }
+      return false;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/colors';
+@import "@/styles/colors";
 .rep-container {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-   
-   
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+
   cursor: pointer;
   padding: 0px 10px 0px 1px;
   right: 0%;
   position: absolute;
   box-sizing: border-box;
-  height: 100%;  
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  
 
   span {
     width: 35px;
@@ -96,13 +115,12 @@ export default {
   }
 }
 
-
 .dark .rep-container {
   background-color: $content-main-l;
   .text-container {
     p {
       color: $text-main-l;
     }
-   }
+  }
 }
 </style>

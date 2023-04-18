@@ -1,7 +1,8 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
-    <div class="reply-border-wrap" v-if="$store.state.message.replyTarget">
-      <reply-message-border></reply-message-border>
+   
+    <div class="reply-border-wrap" v-if="select">
+      <reply-message-border :selected="select" ></reply-message-border>
     </div>
 
     <div class="content">
@@ -27,6 +28,12 @@
 import store from "@/store/store";
 import ReplyMessageBorder from "./ReplyMessageBorder.vue";
 import SelectedFileModal from "./SelectedFileModal.vue";
+import firebase from "firebase/compat/app";
+import { getAuth } from "firebase/auth";
+import { updateDoc } from "@firebase/firestore";
+import { Timestamp } from "firebase/firestore";
+import { doc } from "firebase/firestore";
+
 export default {
   components: { SelectedFileModal, ReplyMessageBorder },
   props: {
@@ -41,19 +48,93 @@ export default {
     };
   },
   methods: {
-    send(text, img) {
-      if (!img) {
+   async send() {
+     
+      if (store.state.message.forwardTarget) {
+
+      const data = store.state.message.forwardTarget
+
+      console.log(data.text);
+        
+      const db = firebase.firestore();
+
+      const auth = getAuth();
+
+     
+        const message = {
+          userName: this.$store.state.user.user.username,
+          userId: auth.currentUser.uid,
+          text: data.text, 
+          createdAt: Timestamp.now(),
+        };
+        
+        message.userPhotoURl = auth.currentUser.photoURL;
+
+        if (data.imageRef) {
+            message.imageRef = data.imageRef;
+        }
+
+        const chatRefMsg = db
+          .collection("chatMessages")
+          .doc(store.state.chat.chatId)
+          .collection("messages");
+
+        console.log(chatRefMsg, "AS SEND");
+
+        chatRefMsg.add(message).then((res) => console.log("res", res));
+
+        const user1usersChatRef = doc(
+          db,
+          "usersLinksToChat",
+          auth.currentUser.uid
+        );
+        const user2usersChatRef = doc(
+          db,
+          "usersLinksToChat",
+          store.state.chat.chatId.replace(auth.currentUser.uid, "")
+        );
+
+        const lastMsgData = {
+          text,
+          createdAt: message.createdAt,
+          from: message.userName,
+        };
+
+        await updateDoc(user1usersChatRef, {
+          [store.state.chat.chatId]: {
+            lastMsg: lastMsgData,
+            id: store.state.chat.chatId,
+          },
+        });
+
+        await updateDoc(user2usersChatRef, {
+          [store.state.chat.chatId]: {
+            lastMsg: lastMsgData,
+            id: store.state.chat.chatId,
+          },
+        })
+      
+      
+ 
+      }
         this.sendMsg(this.value, null, store.state.message.replyTarget);
         this.value = "";
-      } else {
-        this.sendMsg(text, img);
-        this.value = "";
-      }
+   
+
 
       store.commit("message/setReplyMsgRef", null);
       store.commit("message/setReplyTarget", null);
     },
   },
+  computed: {
+    select() {
+       if (this.$store.state.message.replyTarget) {
+        return this.$store.state.message.replyTarget
+       } else if (this.$store.state.message.forwardTarget) {
+          return this.$store.state.message.forwardTarget
+       } return false
+    }
+  }
 };
 </script>
 

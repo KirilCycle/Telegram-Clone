@@ -142,10 +142,11 @@ export default {
     watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
+      console.log("CHAT WRONG ????", store.state.chat.chatId);
+      
       page.value = link.page;
       pivot.value = link.pivot;
 
-      console.log("SETUP", link);
 
       const messagesRef = db
         .collection("chatMessages")
@@ -277,12 +278,11 @@ export default {
       }
     }
 
-    const isDark = useDark();
-    const toggleDark = useToggle();
+   
 
     return {
       chat,
-      toggleDark,
+      
       fetchPrev,
       firstScroll,
       fetchNext,

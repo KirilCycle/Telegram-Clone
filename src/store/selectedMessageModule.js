@@ -6,10 +6,14 @@ export const messageModule = {
     selectedMsgData: null,
     visible: false,
     query: null,
+    forwardTarget: null
   }),
   getters: {
     getReplyTarget(state) {
       return state.replyTarget;
+    },
+    getForwardTarget(state) {
+      return state.forwardTarget;
     },
     setVisible(state) {
       return state.visible;
@@ -47,6 +51,10 @@ export const messageModule = {
     setSelectdMsg(state, data) {
       state.selectedMsgData = data;
     },
+    setForwardTarget(state,data) {
+      state.forwardTarget = data;
+    },
+    
   },
 
   actions: {
@@ -69,6 +77,10 @@ export const messageModule = {
     setClickCoords({ state, commit, coords }) {
       commit("setClickCoords", coords);
     },
+
+    setForwardTarget({state, commit, data}) {
+      commit("setForwardTarget", data)
+    }
   },
   namespaced: true,
 };

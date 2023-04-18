@@ -67,6 +67,7 @@
             <div v-if="$store.state.chat.selectedUser.new">
               <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
             </div>
+            
 
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
@@ -176,8 +177,7 @@ export default {
   mounted() {
     
     this.$store.commit('chat/setChatContainerRef', this.$refs.chatContainer)
-   
-
+    
   },
   methods: {
     async test() {
@@ -200,7 +200,7 @@ export default {
         });
     },
 
-    async addNewMessage(text, img, replyData) {
+    async addNewMessage(text, img, replyData, ) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
 
@@ -304,8 +304,8 @@ export default {
   },
 
   setup(data) {
+    
     const db = firebase.firestore();
-
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
     console.log(store.state.user.user.uid, "cht");

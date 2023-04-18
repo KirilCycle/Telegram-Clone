@@ -88,13 +88,16 @@ export default {
 
   computed: {
     time() {
-      let date = new Date(this.message?.createdAt.seconds * 1000);
-
-      let hours = date.getHours();
-
-      let minutes = +date.getMinutes();
-
-      return `${hours}:${minutes}`;
+      if (this.message?.createdAt) {
+        let date = new Date(this.message?.createdAt.seconds * 1000);
+  
+        let hours = date.getHours();
+  
+        let minutes = +date.getMinutes();
+  
+        return `${hours}:${minutes}`;
+      }
+       return ''
     },
 
     emojis() {

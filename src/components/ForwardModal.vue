@@ -6,11 +6,14 @@
           <span class="material-symbols-outlined"> close </span>
         </button>
 
-        <input v-on:input="(e) => handleSearch(e.target.value)" placeholder="Forward to..." />
+        <input
+          v-on:input="(e) => handleSearch(e.target.value)"
+          placeholder="Forward to..."
+        />
       </div>
       <div class="forward_modal_list">
-        <div class="chat-list">
-          <chat-list :storePath="'message'"  :chatList="chatList"></chat-list>
+        <div @click.prevent="handleSelect" class="chat-list">
+          <chat-list :storePath="'message'" :chatList="chatList"></chat-list>
         </div>
       </div>
     </div>
@@ -19,7 +22,7 @@
 
 <script>
 import ChatList from "./ChatList.vue";
-import { ref } from 'vue'
+import { ref } from "vue";
 import store from "@/store/store";
 import firebase from "firebase/compat/app";
 
@@ -28,18 +31,32 @@ export default {
     ChatList,
   },
   data() {
-    return {
-      
-    }
+    return {};
   },
   methods: {
-   handleSearch(q) {
+    handleSearch(q) {
+      this.$store.commit("message/setQuery", q);
+    },
 
-  console.log(  q);
-        this.$store.commit('message/setQuery', q)
-    
-   }
+    handleSelect() {
+      const modified = store.state.message.selectedMsgData;
+
+      delete modified.id;
+      delete modified.emj;
+      delete modified.createdAt;
+
+    console.log(modified, 'MOD');
+
+      store.commit(
+        "message/setForwardTarget",
+        store.state.message.selectedMsgData
+      )
+
+      this.$emit('close')
+
+    },
   },
+
   setup() {
     const db = firebase.firestore();
 
@@ -47,31 +64,24 @@ export default {
 
     const chatList = ref("");
 
-
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         const formated = Object.values(doc.data());
         // Do something with the document data
-        
 
         console.log(store.state.chat.chatId);
 
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
-
-
       } else {
         console.log("No such document!");
       }
     });
 
-
-
     return {
-        chatList
-    }
-
+      chatList,
+    };
   },
 };
 </script>
@@ -82,11 +92,9 @@ export default {
 .chat-list {
   overflow-x: hidden;
   position: absolute;
+  width: 100%;
   top: 60px;
-}
-
-.chat-list-hided {
-  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .chat-list::-webkit-scrollbar {
@@ -115,7 +123,6 @@ export default {
 
   .forward_modal {
     width: 420px;
-    overflow-y: scroll;
     height: 80%;
     max-height: 900px;
     background-color: $content-main;

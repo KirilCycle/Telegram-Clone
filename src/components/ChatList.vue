@@ -16,6 +16,7 @@
 <script>
 import firebase from "firebase/compat/app";
 import ChatListItem from "./ChatListItem.vue";
+import store from "@/store/store";
 
 export default {
   components: {
@@ -37,27 +38,10 @@ export default {
     }
   },
   created() {
-    console.log(
-    
-    );
+  
    
 
-    async function fetchChat(chatId) {
-      
-      const db = firebase.firestore()
-      
-      const myCollectionRef = db.collection("chats");
-
-      const documentRef = myCollectionRef.doc(chatId);
-      console.log('EEEEEEEEEEEEEEEEEEEXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-      console.log('EX')
-
-
-      // Retrieve the document using the get() method
-      documentRef.onSnapshot((doc) => {
-        console.log(doc.data());
-      });
-    }
+   
 
    
   },

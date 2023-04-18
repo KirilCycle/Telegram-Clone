@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <forward-modal v-if="v"></forward-modal>
+    <forward-modal @close="v = false" v-if="v"></forward-modal>
 
   </Teleport>
 </template>
@@ -75,17 +75,18 @@ export default {
       store.commit("message/setReplyTarget", {
         text: msgData.text,
         from: msgData.userName,
-        ...(msgData.imageRef ? { img: msgData.imageRef } : {}),
+        ...(msgData.imageRef ? { imageRef: msgData.imageRef } : {}),
       });
     },
 
     async replyEmoji(em) {
-      //       const washingtonRef = doc(db, "cities", "DC");
-
+      
+      
+      //  // set awdawd waa a a a a a a a a a 
       // // Set the "capital" field of the city 'DC'
       // await updateDoc(washingtonRef, {
-      //   capital: true
-      // });
+        //   capital: true
+        // });
       const msg = store.state.message.selectedMsgData;
 
       const user = this.$store.state.user.user.uid;
