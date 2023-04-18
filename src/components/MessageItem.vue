@@ -39,7 +39,10 @@
         <label>{{ time }}</label>
       </div>
       <div class="emoji-c">
-        <div v-for="em in message.emojis" :key="em">{{em}}</div>
+        <div v-for="em in message.emj" :key="em.id">
+        
+          {{em.em}}
+        </div>
       </div>
     </div>
   </div>

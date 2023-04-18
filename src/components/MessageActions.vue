@@ -3,16 +3,15 @@
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <div class="emoji-container">
-        
           <div class="emoji-list">
-            <div>😂</div>
-            <div>😘</div>
-            <div>👍</div>
-            <div>😍</div>
-            <div>🐳</div>
-            <div>👍</div>
-            <div>👎</div>
-            <div>😈</div>   
+            <div @click="() => replyEmoji('😂')">😂</div>
+            <div @click="() => replyEmoji('😘')">😘</div>
+            <div @click="() => replyEmoji('👍')">👍</div>
+            <div @click="() => replyEmoji('😍')">😍</div>
+            <div @click="() => replyEmoji('🐳')">🐳</div>
+            <div @click="() => replyEmoji('👍')">👍</div>
+            <div @click="() => replyEmoji('👎')">👎</div>
+            <div @click="() => replyEmoji('😈')">😈</div>
           </div>
 
           <div class="emoji_container_circl"></div>
@@ -48,7 +47,7 @@ import store from "@/store/store";
 import { updateDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { doc, setDoc } from "firebase/firestore";
-import { deleteDoc } from "firebase/firestore";
+import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 export default {
   data() {
@@ -56,7 +55,7 @@ export default {
       ableToDelete:
         store.state.message.selectedMsgData.userId ===
         store.state.user.user.uid,
-      emoji: ["😂", "😘", "☺️", "👍", "😍", " 🐳"],
+      db: firebase.firestore(),
     };
   },
   methods: {
@@ -70,6 +69,31 @@ export default {
         from: msgData.userName,
         ...(msgData.imageRef ? { img: msgData.imageRef } : {}),
       });
+    },
+
+    async replyEmoji(em) {
+      //       const washingtonRef = doc(db, "cities", "DC");
+
+      // // Set the "capital" field of the city 'DC'
+      // await updateDoc(washingtonRef, {
+      //   capital: true
+      // });
+
+      let msgRef = this.db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages")
+        .doc(store.state.message.selectedMsgData.id);
+
+      await updateDoc(msgRef, {
+        emj: arrayUnion({
+          from: this.$store.state.user.user.uid,
+          img: this.$store.state.user.user.photoURL,
+          em,
+        }),
+      });
+
+      console.log(em);
     },
 
     selectText() {
@@ -90,14 +114,12 @@ export default {
       if (
         store.state.message.selectedMsgData.userId === store.state.user.user.uid
       ) {
-        const db = firebase.firestore();
-
-        const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
+        // const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
 
         try {
           console.log("EXECUTE FN");
 
-          let res = db
+          let res = this.db
             .collection("chatMessages")
             .doc(store.state.chat.chatId)
             .collection("messages")
@@ -143,9 +165,6 @@ export default {
   position: fixed;
 }
 
-
-
-
 .msg-actions {
   top: 0%;
   width: 200px;
@@ -174,7 +193,6 @@ export default {
       background-color: #ffffff00;
       flex-direction: row;
       display: flex;
-      
 
       div {
         margin: 0.5px;
@@ -186,14 +204,10 @@ export default {
         align-items: center;
         justify-content: center;
 
-
         &:hover {
           background-color: #6565657a;
         }
-
       }
-
-
     }
 
     .emoji_container_circl {
