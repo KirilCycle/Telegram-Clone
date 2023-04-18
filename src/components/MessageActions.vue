@@ -230,6 +230,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/colors";
 .msg-action-wrap {
   width: 100%;
   height: 100%;
@@ -240,7 +241,7 @@ export default {
   top: 0%;
   width: 200px;
   border-radius: 5px;
-  background-color: #353535;
+  background-color: $content-main;
   position: absolute;
   height: min-content;
   display: flex;
@@ -254,14 +255,14 @@ export default {
     flex-direction: row;
     position: absolute;
     top: -49px;
-    background-color: #353535;
+    background-color: $content-main;
     border-radius: 30px;
 
     .emoji-list {
       width: 100%;
       height: 35px;
       align-items: center;
-      background-color: #ffffff00;
+     
       flex-direction: row;
       display: flex;
 
@@ -276,7 +277,7 @@ export default {
         justify-content: center;
 
         &:hover {
-          background-color: #6565657a;
+          background-color: $hover;
         }
       }
     }
@@ -289,17 +290,17 @@ export default {
       z-index: -1;
       right: 5px;
       bottom: -7px;
-      background-color: #353535;
+      background-color:  $content-main;
     }
 
     .emoji_container_smll_circl {
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       position: absolute;
       right: 14px;
-      border-radius: 6px;
+      border-radius: 5px;
       bottom: -23px;
-      background-color: #353535;
+      background-color:  $content-main;
     }
   }
 
@@ -312,7 +313,7 @@ export default {
     li {
       font-family: Avenir, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
-      color: #fff;
+      color: $text-main;
       padding: 5px 12px 5px 12px;
       box-sizing: border-box;
       display: flex;
@@ -333,7 +334,7 @@ export default {
       }
 
       &:hover {
-        background-color: rgb(41, 41, 41);
+        background-color: $hover;
       }
     }
     .delete-action {
@@ -355,5 +356,35 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+}
+
+
+.dark .msg-actions {
+  background-color: $content-main-l;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  .actions-list {
+
+    li {
+      color: $text-main-l;
+    }
+    .delete-action {
+      color: #e02b2b;
+    }
+  }
+
+}
+
+.dark .msg-actions .emoji-container {
+  background-color: $content-main-l;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  .emoji_container_smll_circl {
+    background-color: $content-main-l;
+  }
+
+  .emoji_container_circl {
+    background-color: $content-main-l;
+  }
+
+ 
 }
 </style>
