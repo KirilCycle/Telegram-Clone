@@ -47,15 +47,20 @@
       </div> -->
 
       <div v-if="emojis">
+        
         <div class="emoji-c" v-for="em in emojis" :key="em[0]">
+         
           <p>
             {{ em[0] }}
           </p>
   
-          <!-- <div class="circle">
-            <img :src="em.img" />
-          </div> -->
+          <emoji-user  :key="id" v-for="id in em[1]" :senderid="id" ></emoji-user>
+       
+
+
         </div>
+
+
       </div>
       
     </div>
@@ -71,9 +76,10 @@ import MessageActionsModal from "./MessageActionsModal.vue";
 import SmallChatImage from "./SmallChatImage.vue";
 import EmojiContainer from './EmojiContainer.vue';
 import { objectEntries } from '@vueuse/core';
+import EmojiUser from './EmojiUser.vue';
 
 export default {
-  components: { MessageActionsModal, ProfileImage, SmallChatImage, EmojiContainer },
+  components: { MessageActionsModal, ProfileImage, SmallChatImage, EmojiContainer, EmojiUser },
 
   props: {
     message: Object,
@@ -491,17 +497,6 @@ export default {
   display: flex;
   flex-direction: row;
 
-  .circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
+  
 }
 </style>

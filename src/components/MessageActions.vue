@@ -85,25 +85,11 @@ export default {
         .collection("messages")
         .doc(store.state.message.selectedMsgData.id);
 
-      const user = {      
-        id: this.$store.state.user.user.uid
-      }
+      const user =    
+         this.$store.state.user.user.uid
+      
 
-//       // Create an initial document to update.
-// const frankDocRef = doc(db, "users", "frank");
-// await setDoc(frankDocRef, {
-//     name: "Frank",
-//     favorites: { food: "Pizza", color: "Blue", subject: "recess" },
-//     age: 12
-// });
 
-//let query = db.collection("mycollection").doc("mydoc").select("color", "size", "shape");
-
-// // To update age and favorite color:
-// await updateDoc(frankDocRef, {
-//     "age": 13,
-//     "favorites.color": "Red"
-// });
        
       let linkToSendedEm = `emj.${em}`
 
