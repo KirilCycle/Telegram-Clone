@@ -37,17 +37,17 @@ export default {
   },
   computed: {
     isVisible() {
-      if (!store.state[this.path].querry) {
+      if (!store.state[this.path].query) {
         
-        console.log( !store.state[this.path].querry, this.path, 'true',store.state[this.path].querry );
+        console.log( !store.state[this.path].querry, this.path, 'true',store.state[this.path].query );
         
         return true;
 
 
       } else {
-        console.log( !store.state[this.path].querry, this.path, 'else',store.state[this.path].querry );
+        console.log( !store.state[this.path].querry, this.path, 'else',store.state[this.path].query );
         if (this.chatName) {
-          return this.chatName.includes(store.state[this.path].querry);
+          return this.chatName.includes(store.state[this.path].query);
         }
         return true
       }

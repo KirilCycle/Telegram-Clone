@@ -5,7 +5,7 @@ export const messageModule = {
     clickCoords: null,
     selectedMsgData: null,
     visible: false,
-    querry: null,
+    query: null,
   }),
   getters: {
     getReplyTarget(state) {
@@ -33,7 +33,7 @@ export const messageModule = {
       state.visible = v;
     },
     setQuery(state, q) {
-      state.querry = q 
+      state.query = q 
     },
     setReplyTarget(state, target) {
       state.replyTarget = target;

@@ -4,7 +4,7 @@ export const chatModule = {
     replyTarget: null,
     chatId: null,
     selectedUser: null,
-    querry: null,
+    query: null,
     chatsScrollPosition: {},
     chatIdList: [],
     chatsCount: 0,
@@ -23,8 +23,8 @@ export const chatModule = {
     getChatsCount(state) {
       return state.chatsCount;
     },
-    getQuerry(state) {
-      return state.querry;
+    getQuery(state) {
+      return state.query;
     },
     getChatId(state) {
       return state.chatId;
@@ -49,8 +49,8 @@ export const chatModule = {
     setChatId(state, id) {
       state.chatId = id;
     },
-    setQuerry(state, q) {
-      state.querry = q;
+    setQuery(state, q) {
+      state.query = q;
     },
     setSelectedUser(state, selectedUser) {
       state.selectedUser = selectedUser;
@@ -88,8 +88,8 @@ export const chatModule = {
     setChatId({ state, commit, id }) {
       commit("setChatId", id);
     },
-    setQuerry({ state, commit, q }) {
-      commit("setQuerry", q);
+    setQuery({ state, commit, q }) {
+      commit("setQuery", q);
     },
     setReplyMsgRef({ state, commit, ref }) {
       commit("setReplyMsgRef", ref);

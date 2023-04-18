@@ -277,10 +277,10 @@ export default {
       }
     },
 
-    serachChat(querry) {
-      querry.length > 0
-        ? store.commit("chat/setQuerry", querry.toLowerCase())
-        : store.commit("chat/setQuerry", null);
+    serachChat(query) {
+      query.length > 0
+        ? store.commit("chat/setQuery", query.toLowerCase())
+        : store.commit("chat/setQuery", null);
     },
   },
 
