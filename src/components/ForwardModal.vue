@@ -6,25 +6,103 @@
           <span class="material-symbols-outlined"> close </span>
         </button>
 
-        <input v-model="q" placeholder="Forward to..."  />
+        <input v-on:input="(e) => handleSearch(e.target.value)" placeholder="Forward to..." />
       </div>
-      <div class="forward_modal_list"></div>
+      <div class="forward_modal_list">
+        <div class="chat-list">
+          <chat-list :storePath="'message'"  :chatList="chatList"></chat-list>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import ChatList from "./ChatList.vue";
+import { ref } from 'vue'
+import store from "@/store/store";
+import firebase from "firebase/compat/app";
+
 export default {
+  components: {
+    ChatList,
+  },
   data() {
     return {
-      v: "",
-    };
+      
+    }
+  },
+  methods: {
+   handleSearch(q) {
+
+  console.log(  q);
+        this.$store.commit('message/setQuery', q)
+    
+   }
+  },
+  setup() {
+    const db = firebase.firestore();
+
+    const collectionRef = db.collection("usersLinksToChat");
+
+    const chatList = ref("");
+
+
+    collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
+      if (doc.exists) {
+        const formated = Object.values(doc.data());
+        // Do something with the document data
+        
+
+        console.log(store.state.chat.chatId);
+
+        chatList.value = formated.sort(
+          (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
+        );
+
+
+      } else {
+        console.log("No such document!");
+      }
+    });
+
+
+
+    return {
+        chatList
+    }
+
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+
+.chat-list {
+  overflow-x: hidden;
+  position: absolute;
+  top: 60px;
+}
+
+.chat-list-hided {
+  overflow-x: hidden;
+}
+
+.chat-list::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+
+.chat-list-wrap::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.648);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.chat-list-wrap::-webkit-scrollbar-thumb {
+  background: rgba(152, 152, 152, 0.343);
+  border-radius: 20px;
+}
 
 .forward {
   width: 100%;
@@ -37,6 +115,7 @@ export default {
 
   .forward_modal {
     width: 420px;
+    overflow-y: scroll;
     height: 80%;
     max-height: 900px;
     background-color: $content-main;

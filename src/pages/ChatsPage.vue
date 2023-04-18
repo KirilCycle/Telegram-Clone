@@ -24,7 +24,7 @@
       </div>
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
-        <chat-list :serachQ="serachQ" :chatList="chatList"></chat-list>
+        <chat-list :storePath="'chat'"  :chatList="chatList"></chat-list>
       </div>
 
       <div v-if="isSearch" @click="chatHided = true">

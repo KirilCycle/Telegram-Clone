@@ -6,6 +6,7 @@
       v-for="cht in chatList"
       :key="cht.id"
       :chat="cht"
+      :store-path="storePath"
        
     >
   </chat-list-item>
@@ -22,7 +23,7 @@ export default {
   },
   props: {
     chatList: Array,
-
+    storePath: String,
     required: true,
   },
   watch: {
@@ -31,6 +32,7 @@ export default {
   data() {
     return {
       db: firebase.firestore(),
+      storePath: this.storePath
       
     }
   },

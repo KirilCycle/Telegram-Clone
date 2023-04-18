@@ -5,6 +5,7 @@ export const messageModule = {
     clickCoords: null,
     selectedMsgData: null,
     visible: false,
+    querry: null,
   }),
   getters: {
     getReplyTarget(state) {
@@ -23,10 +24,16 @@ export const messageModule = {
     getSelectedMsgItem(state) {
       return state.selectedMsgData;
     },
+    getQuerry(state) {
+      return state.querry
+    }
   },
   mutations: {
     setVisible(state, v) {
       state.visible = v;
+    },
+    setQuery(state, q) {
+      state.querry = q 
     },
     setReplyTarget(state, target) {
       state.replyTarget = target;
@@ -45,6 +52,9 @@ export const messageModule = {
   actions: {
     setVisible({ state, commit, v }) {
       commit("setVisible", v);
+    },
+    setQuery({state, commit, q}) {
+      commit("setQuery", q);
     },
     setSelectdMsg({ state, commit, data }) {
       commit("setSelectdMsg", data);

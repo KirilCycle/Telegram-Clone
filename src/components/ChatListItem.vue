@@ -21,6 +21,7 @@ import ChatItem from "./ChatItem.vue";
 export default {
   props: {
     chat: Object,
+    storePath: String,
   },
   components: {
     ChatItem,
@@ -29,17 +30,24 @@ export default {
     return {
       loading: true,
       db: firebase.firestore(),
+      path: this.storePath
      
       
     };
   },
   computed: {
     isVisible() {
-      if (!store.state.chat.querry) {
+      if (!store.state[this.path].querry) {
+        
+        console.log( !store.state[this.path].querry, this.path, 'true',store.state[this.path].querry );
+        
         return true;
+
+
       } else {
+        console.log( !store.state[this.path].querry, this.path, 'else',store.state[this.path].querry );
         if (this.chatName) {
-          return this.chatName.includes(store.state.chat.querry);
+          return this.chatName.includes(store.state[this.path].querry);
         }
         return true
       }
