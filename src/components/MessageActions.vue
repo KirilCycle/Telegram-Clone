@@ -79,20 +79,55 @@ export default {
       //   capital: true
       // });
 
+      const user = this.$store.state.user.user.uid;
       let msgRef = this.db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages")
         .doc(store.state.message.selectedMsgData.id);
 
-      const user = this.$store.state.user.user.uid
-       
-      let linkToSendedEm = `emj.${em}`
+      let linkToSendedEm = `emj.${em}`;
 
-      await updateDoc(msgRef, {
-        [linkToSendedEm]: arrayUnion(user) 
-      });
+      // await updateDoc(msgRef, {
+      //   [linkToSendedEm]: arrayUnion(user)
+      // });
 
+      const emojis = store.state.message.selectedMsgData?.emj;
+
+      async function removerReaction(key, wasLast) {
+        
+        let linkToSendedEm = `emj.${key}`;
+             //that kin of emoji was only was sender  
+        if (wasLast) {
+          msgRef.update({
+            [linkToSendedEm]: firebase.firestore.FieldValue.delete(),
+          });
+
+          return;
+        }
+
+        console.log("HERE WE GO", key, user);
+
+        await updateDoc(msgRef, {
+          [linkToSendedEm]: arrayRemove(user),
+        });
+      }
+
+      if (emojis) {
+        const source = Object.entries(emojis);
+
+        for (let i = 0; i < source.length; i++) {
+          for (let j = 0; j < source[i][1].length; j++) {
+            let emoji = source[i][0];
+
+            if (source[i][1][j] === user) {
+              //case user already used emoji
+
+              removerReaction(emoji, source[i][1].length === 1);
+            }
+          }
+        }
+      }
     },
 
     selectText() {

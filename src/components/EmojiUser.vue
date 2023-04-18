@@ -37,9 +37,7 @@ import firebase from "firebase/compat/app";
                 let result = await query.get(); 
                 
                 this.userImg =  result.data().photoURL
-                if (this.id === this.$store.state.user.user.uid ) {
-                    this.$emit('my')
-                }
+              
                 
 
             }

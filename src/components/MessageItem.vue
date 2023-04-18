@@ -46,14 +46,13 @@
         </div>
       </div> -->
 
-      <div v-if="emojis">
+      <div ref="emj" v-if="emojis">
         <div class="emoji-c" v-for="em in emojis" :key="em[0]">
           <p>
             {{ em[0] }}
           </p>
 
           <emoji-user
-            @my="setMyEmoji"
             :key="id"
             v-for="id in em[1]"
             :senderid="id"
@@ -139,12 +138,6 @@ export default {
       console.log(store.state.message.selectedMsgData, "SELECTED");
 
       store.commit("message/setVisible", true);
-    },
-
-    setMyEmoji() {
-      console.log("my");
-
-     console.log( this.$refs.msg.style );
     },
 
     handleSelectMsg(e) {
