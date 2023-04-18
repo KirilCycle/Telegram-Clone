@@ -94,9 +94,7 @@ export default {
       let linkToSendedEm = `emj.${em}`
 
       await updateDoc(msgRef, {
-       
         [linkToSendedEm]: arrayUnion(user) 
-
       });
 
       console.log(em);

@@ -47,22 +47,19 @@
       </div> -->
 
       <div v-if="emojis">
-        
         <div class="emoji-c" v-for="em in emojis" :key="em[0]">
-         
           <p>
             {{ em[0] }}
           </p>
-  
-          <emoji-user  :key="id" v-for="id in em[1]" :senderid="id" ></emoji-user>
-       
 
-
+          <emoji-user
+            @my="setMyEmoji"
+            :key="id"
+            v-for="id in em[1]"
+            :senderid="id"
+          ></emoji-user>
         </div>
-
-
       </div>
-      
     </div>
   </div>
 </template>
@@ -74,12 +71,18 @@ import { getAuth } from "firebase/auth";
 import ProfileImage from "./ProfileImage.vue";
 import MessageActionsModal from "./MessageActionsModal.vue";
 import SmallChatImage from "./SmallChatImage.vue";
-import EmojiContainer from './EmojiContainer.vue';
-import { objectEntries } from '@vueuse/core';
-import EmojiUser from './EmojiUser.vue';
+import EmojiContainer from "./EmojiContainer.vue";
+import { objectEntries } from "@vueuse/core";
+import EmojiUser from "./EmojiUser.vue";
 
 export default {
-  components: { MessageActionsModal, ProfileImage, SmallChatImage, EmojiContainer, EmojiUser },
+  components: {
+    MessageActionsModal,
+    ProfileImage,
+    SmallChatImage,
+    EmojiContainer,
+    EmojiUser,
+  },
 
   props: {
     message: Object,
@@ -88,7 +91,6 @@ export default {
     removeMessage: Function,
     required: true,
   },
-
 
   data() {
     return {
@@ -99,7 +101,7 @@ export default {
       removeMessage: this.removeMessage,
       isMy: this.isMy,
       message: this.message,
-      emojis: this.message.emj
+      emojis: this.message.emj,
     };
   },
 
@@ -115,15 +117,12 @@ export default {
     },
 
     emojis() {
-      if(this.message.emj) {
-        return objectEntries(this.message.emj)
-      } return false
-    }
-  
-   
+      if (this.message.emj) {
+        return objectEntries(this.message.emj);
+      }
+      return false;
+    },
   },
-
-
 
   methods: {
     handleTouch(e) {
@@ -141,6 +140,11 @@ export default {
 
       store.commit("message/setVisible", true);
     },
+
+    setMyEmoji() {
+      console.log("my");
+    },
+
     handleSelectMsg(e) {
       store.commit("message/setReplyMsgRef", this.$refs.msg);
       store.commit("message/setClickCoords", {
@@ -491,12 +495,17 @@ export default {
 }
 
 .emoji-c {
-  width: 70px;
+  width: max-content;
+  padding: 2px 5px 2px 5px;
   height: 30px;
-
+  position: relative;
+  border-radius: 20px;
   display: flex;
   flex-direction: row;
+  border: 2px solid rgb(39, 129, 255);
+  align-items: center;
 
-  
+  .senders-wrap {
+  }
 }
 </style>

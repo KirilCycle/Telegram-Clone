@@ -28,6 +28,11 @@ import firebase from "firebase/compat/app";
          },
          methods: {
             async getUserPhoto() {
+
+                if (this.id === this.$store.state.user.user.uid ) {
+                    this.$emit('my')
+                }
+
                 const db = firebase.firestore()
 
                 let query = db.collection("usersPrew").doc(this.id)
@@ -49,6 +54,7 @@ import firebase from "firebase/compat/app";
     height: 20px;
     border-radius: 10px;
     overflow: hidden;
+   
 
     img {
       width: 100%;
@@ -57,7 +63,7 @@ import firebase from "firebase/compat/app";
     }
   }
 
-  .circle + .circle {
-    margin-left: 20px;
+  .circle {
+    margin-left: 3px;
   }
 </style>
