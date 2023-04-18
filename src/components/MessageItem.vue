@@ -46,7 +46,7 @@
         </div>
       </div> -->
 
-      <div ref="emj" v-if="emojis">
+      <div class="emoji-wrap" v-if="emojis">
         <div class="emoji-c" v-for="em in emojis" :key="em[0]">
           <p>
             {{ em[0] }}
@@ -230,6 +230,24 @@ export default {
   user-select: none; /* Standard syntax */
 }
 
+%emoji {
+    width: max-content;
+    padding: 1px;
+    height: auto;
+    position: relative;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.emoji-wrap {
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .item {
   min-width: 150px;
   max-width: 900px;
@@ -318,6 +336,10 @@ export default {
     color: rgb(223, 222, 222);
     bottom: 4px;
   }
+
+
+
+
 }
 
 .dark .item {
@@ -325,9 +347,42 @@ export default {
     background: $content-main-l;
     color: $text-main-l;
   }
+
+  .emoji-c {
+   
+    background-color: $content-main-l;
+    border: 1px solid $main;
+    
+  }
+
 }
 
+.item  .emoji-c {
+  @extend %emoji;
+  background-color: $content-main;
+  border: 1px solid $main;
+  
+}
+
+
+
+.my-item  .emoji-c {
+  @extend %emoji;
+  background-color: $second;
+  border: 1px solid $second;
+  
+}
+
+
+
+
 .dark .my-item {
+  .emoji-c {
+  
+    background-color: $second;
+    border: 1px solid $second;
+    
+  }
   .item-body {
     background: $main;
     color: white;
@@ -489,18 +544,5 @@ export default {
   }
 }
 
-.emoji-c {
-  width: max-content;
-  padding: 2px 5px 2px 5px;
-  height: 30px;
-  position: relative;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: row;
-  border: 2px solid rgb(39, 129, 255);
-  align-items: center;
 
-  .senders-wrap {
-  }
-}
 </style>

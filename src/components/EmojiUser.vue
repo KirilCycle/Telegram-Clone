@@ -52,6 +52,7 @@ import firebase from "firebase/compat/app";
     height: 20px;
     border-radius: 10px;
     overflow: hidden;
+    margin: 0%;
    
 
     img {
