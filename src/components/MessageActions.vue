@@ -85,11 +85,7 @@ export default {
         .collection("messages")
         .doc(store.state.message.selectedMsgData.id);
 
-      const user =    
-         this.$store.state.user.user.uid
-      
-
-
+      const user = this.$store.state.user.user.uid
        
       let linkToSendedEm = `emj.${em}`
 
@@ -97,7 +93,6 @@ export default {
         [linkToSendedEm]: arrayUnion(user) 
       });
 
-      console.log(em);
     },
 
     selectText() {

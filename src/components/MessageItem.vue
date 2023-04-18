@@ -143,6 +143,8 @@ export default {
 
     setMyEmoji() {
       console.log("my");
+
+     console.log( this.$refs.msg.style );
     },
 
     handleSelectMsg(e) {

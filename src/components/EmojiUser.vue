@@ -29,17 +29,17 @@ import firebase from "firebase/compat/app";
          methods: {
             async getUserPhoto() {
 
-                if (this.id === this.$store.state.user.user.uid ) {
-                    this.$emit('my')
-                }
-
+                
                 const db = firebase.firestore()
-
+                
                 let query = db.collection("usersPrew").doc(this.id)
                 
                 let result = await query.get(); 
-
+                
                 this.userImg =  result.data().photoURL
+                if (this.id === this.$store.state.user.user.uid ) {
+                    this.$emit('my')
+                }
                 
 
             }
