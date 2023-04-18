@@ -40,12 +40,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$custom-c2: rgb(32, 32, 32);
+@import '@/styles/colors';
 .rep-container {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
-    $crazy_color:  rgb(68, 134, 255);;
+   
    
   cursor: pointer;
   padding: 0px 10px 0px 1px;
@@ -66,7 +66,7 @@ $custom-c2: rgb(32, 32, 32);
     overflow: hidden;
     flex-shrink: 0;
     cursor: pointer;
-    color: $crazy_color;
+    color: $second;
   }
   .target-info {
     display: flex;
@@ -85,14 +85,24 @@ $custom-c2: rgb(32, 32, 32);
         font-weight: 550;
         font-size: 1rem;
 
-        color: $crazy_color;
+        color: $second;
       }
       p {
         font-weight: 500;
         font-size: 0.8rem;
-        color: white;
+        color: $text-main;
       }
     }
   }
+}
+
+
+.dark .rep-container {
+  background-color: $content-main-l;
+  .text-container {
+    p {
+      color: $text-main-l;
+    }
+   }
 }
 </style>
