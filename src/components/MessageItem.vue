@@ -12,7 +12,7 @@
 
     <div v-if="message.sender" class="forward">
       <p>Forwarded message</p>
-      <h4>{{message.sender?.userName}}</h4>
+      <h4 @click="() => handle(message.sender.userId)">{{message.sender?.userName}}</h4>
   </div>
 
       <div class="img-wrp" v-if="message.imageRef">
@@ -101,6 +101,31 @@ export default {
   },
 
   methods: {
+
+     handle(us) {
+      const first = us + store.state.user.user.uid;
+
+      const second = store.state.user.user.uid + us;
+
+      console.log("handle us ", store.state.chat.chatIdList);
+
+      if (store.state.chat.chatIdList) {
+        if (store.state.chat.chatIdList.find((ch) => ch.id === first)) {
+          store.commit("chat/setSelectedUser", us);
+          store.commit("chat/setChatId", first);
+        } else if (store.state.chat.chatIdList.find((ch) => ch.id === second)) {
+          store.commit("chat/setSelectedUser", us);
+          store.commit("chat/setChatId", second);
+        } else {
+          
+        }
+
+      
+      } else {
+       
+      }
+    },
+
     handleTouch(e) {
       console.log("TOCUB");
 

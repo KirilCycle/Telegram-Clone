@@ -2,7 +2,7 @@
   <div class="file-upl-content">
     <span class="material-symbols-outlined"> attach_file </span>
     <input
-      accept="image/gif, image/jpeg, image/png"
+      accept="image/gif, image/jpeg, image/png, video/mp4, video/avi, video/mov, video/wmv, video/flv, video/mkv, video/webm"
       @change="uploadImage"
       class="file-input"
       type="file"
@@ -32,7 +32,7 @@
             :disabled="notready"
             @click="
               () => {
-                postMessage(photo, capture, $emit, reset);
+                postMessage(photo || video, capture, $emit, reset, type);
               }
             "
           >
@@ -64,24 +64,49 @@ export default {
           uploadedTarget.includes(".png") ||
           uploadedTarget.includes(".jpg") ||
           uploadedTarget.includes(".jpeg") ||
-          uploadedTarget.includes(".svg")
+          uploadedTarget.includes(".svg") ||
+          uploadedTarget.includes(".PNG")
         ) {
-          this.photo = event.target.files[0];
+          (this.video = false), (this.photo = event.target.files[0]);
           this.preview = URL.createObjectURL(this.photo);
           this.v = true;
+        } else if (
+          uploadedTarget.includes(".mp4") ||
+          uploadedTarget.includes(".avi") ||
+          uploadedTarget.includes(".mov") ||
+          uploadedTarget.includes(".wmv") ||
+          uploadedTarget.includes(".flv") ||
+          uploadedTarget.includes(".mkv") ||
+          uploadedTarget.includes(".webm")
+        ) {
+          this.preview = null;
+          this.photo = null;
+          this.video = event.target.files[0];
+          this.v = true;
+
+          console.log("VIDEO");
         } else {
           this.photo = false;
+          this.video = false;
         }
       }
     },
-    reset () {
-      console.log('reset')
-      this.photo = {};
-      this.preview = '';
-      this.filePreview = ''
-      this.capture = ''
-      
-    }
+    reset() {
+      console.log("reset");
+      this.photo = null;
+      this.preview = "";
+      this.filePreview = "";
+      this.capture = "";
+    },
+  },
+  computed: {
+    type() {
+      if (this.photo) {
+        return "photo";
+      } else if (this.video) {
+        return "video";
+      }
+    },
   },
   data() {
     return {
@@ -89,6 +114,7 @@ export default {
       v: false,
       filePreview: null,
       photo: null,
+      video: null,
     };
   },
   setup(props) {
@@ -96,22 +122,32 @@ export default {
 
     const auth = getAuth();
 
-    async function postMessage(photo, capture, emit,resetData) {
-      emit("notready", true);
-      const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
+    async function postMessage(source, capture, emit, resetData, type) {
+    
 
-      uploadBytes(storageRef, photo)
-        .then((snapshot) => {
+      const fileType = source.type.split("/")[0];
 
-          getDownloadURL(storageRef)
-              .then((url) => {
-                emit("sendmesimg", capture, url);
-                resetData()
-              })
-
-        })
-        .catch((er) => console.log(er, "post er"));
+      if (fileType === "video") {
+        console.log('VID');
+        // Code to handle the uploaded image file
+      } else if (fileType === "image") {
+        // Code to handle the uploaded video file
+        console.log('PHT');
+      } else {
+        // Code to handle other file types
+      }
+      // emit("notready", true);
+      // const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
+      // uploadBytes(storageRef, photo)
+      //   .then((snapshot) => {
+      //     getDownloadURL(storageRef).then((url) => {
+      //       emit("sendmesimg", capture, url);
+      //       resetData();
+      //     });
+      //   })
+      //   .catch((er) => console.log(er, "post er"));
     }
+
     return {
       postMessage,
     };
