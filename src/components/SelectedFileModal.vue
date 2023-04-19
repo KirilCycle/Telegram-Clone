@@ -32,7 +32,7 @@
             :disabled="notready"
             @click="
               () => {
-                postMessage(photo || video, capture, $emit, reset, type);
+                postMessage(source, capture, $emit, reset, type);
               }
             "
           >
@@ -48,6 +48,7 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "@firebase/auth";
 import { uuidv4 } from "@firebase/util";
+import {   uploadBytesResumable, } from 'firebase/storage';
 
 export default {
   props: {
@@ -67,7 +68,7 @@ export default {
           uploadedTarget.includes(".svg") ||
           uploadedTarget.includes(".PNG")
         ) {
-          (this.video = false), (this.photo = event.target.files[0]);
+          this.source = event.target.files[0];
           this.preview = URL.createObjectURL(this.photo);
           this.v = true;
         } else if (
@@ -80,14 +81,12 @@ export default {
           uploadedTarget.includes(".webm")
         ) {
           this.preview = null;
-          this.photo = null;
-          this.video = event.target.files[0];
+          this.source = event.target.files[0];
           this.v = true;
 
           console.log("VIDEO");
         } else {
-          this.photo = false;
-          this.video = false;
+          this.source = null;
         }
       }
     },
@@ -123,29 +122,58 @@ export default {
     const auth = getAuth();
 
     async function postMessage(source, capture, emit, resetData, type) {
-    
-
       const fileType = source.type.split("/")[0];
 
       if (fileType === "video") {
-        console.log('VID');
-        // Code to handle the uploaded image file
+        console.log(source, "VID");
+
+        // const storageRef = ref(storage, `videos/${source.name + uuidv4()}`);
+
+        const storageRef = ref(storage, `videos/${source.name + uuidv4()}`);
+
+        const uploadTask = uploadBytesResumable(storageRef, source);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Handle upload progress
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload progress:", progress);
+          },
+          (error) => {
+            console.error("Error uploading video:", error);
+          },
+          () => {
+            // Handle successful upload
+            console.log("Video uploaded successfully");
+            // Get the download URL of the uploaded video file
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then((downloadURL) => {
+                console.log("Download URL:", downloadURL);
+                // Use the download URL to display or share the video with others
+              })
+              .catch((error) => {
+                console.error("Error getting download URL:", error);
+              });
+          }
+        );
       } else if (fileType === "image") {
-        // Code to handle the uploaded video file
-        console.log('PHT');
+        emit("notready", true);
+        const storageRef = ref(storage, `images/${source.name + uuidv4()}`);
+        uploadBytes(storageRef, source)
+          .then((snapshot) => {
+            getDownloadURL(storageRef).then((url) => {
+              emit("sendmesimg", capture, url);
+              resetData();
+            });
+          })
+          .catch((er) => console.log(er, "post er"));
+
+        console.log("PHT");
       } else {
         // Code to handle other file types
       }
-      // emit("notready", true);
-      // const storageRef = ref(storage, `images/${photo.name + uuidv4()}`);
-      // uploadBytes(storageRef, photo)
-      //   .then((snapshot) => {
-      //     getDownloadURL(storageRef).then((url) => {
-      //       emit("sendmesimg", capture, url);
-      //       resetData();
-      //     });
-      //   })
-      //   .catch((er) => console.log(er, "post er"));
     }
 
     return {
