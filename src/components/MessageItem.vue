@@ -1,6 +1,5 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
@@ -9,17 +8,23 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-
-    <div v-if="message.sender" class="forward">
-      <p>Forwarded message</p>
-      <h4 @click="() => handle(message.sender.userId)">{{message.sender?.userName}}</h4>
-  </div>
+      <div v-if="message.sender" class="forward">
+        <p>Forwarded message</p>
+        <h4 @click="() => handle(message.sender.userId)">
+          {{ message.sender?.userName }}
+        </h4>
+      </div>
 
       <div class="img-wrp" v-if="message.source">
         <img v-if="message.source.type === 'img'" :src="message.source.src" />
-        <video  class="video-player" v-else :src="message.source.src" controls></video>
+        <video
+          class="video-player"
+          v-else
+          :src="message.source.src"
+          controls
+        ></video>
       </div>
-   
+
       <div class="item_body_text">
         <p>{{ message.text }}</p>
         <label>{{ time }}</label>
@@ -29,11 +34,7 @@
           <p>
             {{ em[0] }}
           </p>
-          <emoji-user
-            :key="id"
-            v-for="id in em[1]"
-            :senderid="id"
-          ></emoji-user>
+          <emoji-user :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
         </div>
       </div>
     </div>
@@ -83,14 +84,14 @@ export default {
     time() {
       if (this.message?.createdAt) {
         let date = new Date(this.message?.createdAt.seconds * 1000);
-  
+
         let hours = date.getHours();
-  
+
         let minutes = +date.getMinutes();
-  
+
         return `${hours}:${minutes}`;
       }
-       return ''
+      return "";
     },
 
     emojis() {
@@ -102,8 +103,7 @@ export default {
   },
 
   methods: {
-
-     handle(us) {
+    handle(us) {
       const first = us + store.state.user.user.uid;
 
       const second = store.state.user.user.uid + us;
@@ -118,12 +118,8 @@ export default {
           store.commit("chat/setSelectedUser", us);
           store.commit("chat/setChatId", second);
         } else {
-          
         }
-
-      
       } else {
-       
       }
     },
 
@@ -216,20 +212,18 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 .img-wrp {
-  max-width: 100%;
-  min-width: 90%;
+  width: 100%;
   min-height: 340px;
-
   img {
-    border-radius: 5px;
+    border-radius: 10px;
     width: 100%;
     height: 100%;
+    max-height: 83vh;
   }
 
   video {
-    @extend img
+    @extend img;
   }
-
 }
 
 %no-select {
@@ -239,16 +233,15 @@ export default {
 }
 
 %emoji {
-    width: max-content;
-    padding: 1px;
-    height: auto;
-    position: relative;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  width: max-content;
+  padding: 1px;
+  height: auto;
+  position: relative;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
-
 
 .emoji-wrap {
   max-width: 100%;
@@ -323,16 +316,6 @@ export default {
     max-width: 70%;
   }
 
-  .image-container {
-    margin-top: 100%;
-    width: 100%;
-    background-color: rgb(76, 76, 76);
-
-    img {
-      max-width: 100%;
-      min-width: 100%;
-    }
-  }
 
   label {
     font-size: 0.7rem;
@@ -344,10 +327,6 @@ export default {
     color: rgb(223, 222, 222);
     bottom: 4px;
   }
-
-
-
-
 }
 
 .dark .item {
@@ -357,39 +336,27 @@ export default {
   }
 
   .emoji-c {
-   
     background-color: $content-main-l;
     border: 1px solid $main;
-    
   }
-
 }
 
-.item  .emoji-c {
+.item .emoji-c {
   @extend %emoji;
   background-color: $content-main;
   border: 1px solid $main;
-  
 }
 
-
-
-.my-item  .emoji-c {
+.my-item .emoji-c {
   @extend %emoji;
   background-color: $second;
   border: 1px solid $second;
-  
 }
-
-
-
 
 .dark .my-item {
   .emoji-c {
-  
     background-color: $second;
     border: 1px solid $second;
-    
   }
   .item-body {
     background: $main;
@@ -473,38 +440,6 @@ export default {
     }
   }
 
-  .image-container {
-    width: 100%;
-    background-color: rgb(76, 76, 76);
-
-    .max {
-      max-width: 100%;
-      min-width: 100%;
-    }
-
-    img {
-      max-width: 100%;
-      min-width: 100%;
-      
-    }
-
-    video {
-      
-      max-width: 100%;
-      min-width: 100%;
-    }
-  }
-
-  label {
-    font-size: 0.7rem;
-    margin-left: 10px;
-    color: rgb(223, 222, 222);
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-  }
-  .time {
-  }
 }
 
 @media (max-width: 1115px) {
@@ -568,11 +503,9 @@ export default {
   p {
     font-size: 0.8rem;
   }
-   h4 {
+  h4 {
     font-size: 0.9rem;
     cursor: pointer;
-   } 
+  }
 }
-
-
 </style>

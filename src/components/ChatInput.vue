@@ -71,8 +71,10 @@ export default {
         
         message.userPhotoURl = this.$store.state.user.user.photoURL;
 
-        if (data.imageRef) {
-            message.imageRef = data.imageRef;
+        if (data.source) {
+          //   messageisNotReady.value = true;
+       
+          message.source = data.source;
         }
 
         const chatRefMsg = db
@@ -116,8 +118,11 @@ export default {
         })
       
       }
-        this.sendMsg(this.value, null, store.state.message.replyTarget);
-        this.value = "";
+        
+          this.sendMsg(this.value, null, store.state.message.replyTarget);
+          this.value = "";
+
+        
    
 
 

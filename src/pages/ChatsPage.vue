@@ -206,7 +206,9 @@ export default {
 
       const auth = getAuth();
 
-      if (auth.currentUser && text.length < 2000 ) {
+      const nextVerify = text.length > 0 || source
+
+      if (auth.currentUser && text.length < 2000 && nextVerify ) {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -225,7 +227,7 @@ export default {
 
         if (source) {
           //   messageisNotReady.value = true;
-        console.log(source, 'WTF');
+       
           message.source = source;
         }
 
