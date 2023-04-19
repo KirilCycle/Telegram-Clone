@@ -68,7 +68,7 @@ export default {
           createdAt: Timestamp.now(),
         };
         
-        message.userPhotoURl = auth.currentUser.photoURL;
+        message.userPhotoURl = this.$store.state.user.user.photoURL;
 
         if (data.imageRef) {
             message.imageRef = data.imageRef;

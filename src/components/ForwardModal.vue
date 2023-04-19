@@ -44,8 +44,16 @@ export default {
       delete modified.id;
       delete modified.emj;
       delete modified.createdAt;
+      delete modified.replyData;
 
-    console.log(modified, 'MOD');
+      modified.sender =  {
+       userId: modified.userId,
+       userName: modified.userName
+       
+      }
+        
+
+     console.log(modified, 'MOD');
 
       store.commit(
         "message/setForwardTarget",

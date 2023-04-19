@@ -7,7 +7,7 @@
         <small-chat-image :src="photo"></small-chat-image>
       </div>
       <div class="text-container">
-        <h3>{{ data.from }}</h3>
+        <h3>{{ data.from  || data.sender.userName}}</h3>
         <p>{{ data.text.slice(0, 29) }}</p>
       </div>
     </div>
@@ -51,8 +51,8 @@ export default {
     photo() {
       const source = this.data;
 
-    if (source.imgRef) {
-        return source.imgRef
+    if (source.imageRef) {
+        return source.imageRef
       }
       return false;
     },

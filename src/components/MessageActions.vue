@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <forward-modal @close="v = false" v-if="v"></forward-modal>
+    <forward-modal @close="close" v-if="v"></forward-modal>
 
   </Teleport>
 </template>
@@ -77,6 +77,11 @@ export default {
         from: msgData.userName,
         ...(msgData.imageRef ? { imageRef: msgData.imageRef } : {}),
       });
+    },
+
+     close() {
+          this.v = false
+          this.$emit('close')
     },
 
     async replyEmoji(em) {
