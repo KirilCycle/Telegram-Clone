@@ -66,6 +66,7 @@ export default {
           userId: auth.currentUser.uid,
           text, 
           createdAt: Timestamp.now(),
+          sender: data.sender
         };
         
         message.userPhotoURl = this.$store.state.user.user.photoURL;

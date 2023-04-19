@@ -1,5 +1,6 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
+    
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
@@ -8,26 +9,18 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
+
+    <div v-if="message.sender" class="forward">
+      <p>Forwarded message</p>
+      <h4>{{message.sender?.userName}}</h4>
+  </div>
+
       <div class="img-wrp" v-if="message.imageRef">
         <img :src="message.imageRef" />
       </div>
-      <div class="image-container" v-if="photoURL">
-        <img
-          :src="`https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/847px-Red_Apple.jpg`"
-        />
-      </div>
-
-      <div class="reply-block" v-if="message.replyData">
-        <div v-if="message.replyData.img">
-          <small-chat-image :src="message.replyData.img"></small-chat-image>
-        </div>
-
-        <h3>{{ message.replyData.from }}</h3>
-        <p>{{ message.replyData.text }}</p>
-      </div>
-
+   
       <div class="item_body_text">
-        <p :ref="message.id">{{ message.text }}</p>
+        <p>{{ message.text }}</p>
         <label>{{ time }}</label>
       </div>
       <div class="emoji-wrap" v-if="emojis">
@@ -35,7 +28,6 @@
           <p>
             {{ em[0] }}
           </p>
-
           <emoji-user
             :key="id"
             v-for="id in em[1]"
@@ -527,6 +519,16 @@ export default {
       max-width: 320px;
     }
   }
+}
+
+.forward {
+  p {
+    font-size: 0.8rem;
+  }
+   h4 {
+    font-size: 0.9rem;
+    cursor: pointer;
+   } 
 }
 
 
