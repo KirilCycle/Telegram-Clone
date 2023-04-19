@@ -71,7 +71,13 @@ export const chatModule = {
       state.chatsScrollPosition[data.id][data.key] = data.data;
     },
     setChatContainerRef(state, ref) {
-      state.chatContainerRef = ref
+      state.chatContainerRef = ref;
+    },
+    deleteChat(state, key) {
+      console.log("was deleted ?", key);
+
+      delete state.chatsScrollPosition[key];
+      
     },
   },
 

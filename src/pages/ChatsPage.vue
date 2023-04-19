@@ -53,9 +53,8 @@
           <selected-chat-nav></selected-chat-nav>
 
           <h3>{{ navName }}</h3>
-          
-          <chat-settings></chat-settings>
 
+          <chat-settings></chat-settings>
         </div>
 
         <div ref="chatContainer" class="chat-container-x">
@@ -102,8 +101,7 @@ import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
 import SelectedChatNav from "@/components/SelectedChatNav.vue";
 import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
-import ChatSettings from '@/components/ChatSettings.vue';
-
+import ChatSettings from "@/components/ChatSettings.vue";
 
 export default {
   components: {
@@ -117,7 +115,7 @@ export default {
     ChatInput,
     SelectedChatNav,
     MessageActions,
-    ChatSettings
+    ChatSettings,
   },
   data() {
     return {
@@ -128,17 +126,7 @@ export default {
     };
   },
 
-  watch: {
-    chatStore() {
-      console.log("watch AAAACCCC");
-      if (store.state.chat.selectedUser?.new) {
-        this.currentChatType = "NewChat";
-      } else if (store.state.state.chat.chatId) {
-        this.currentChatType = "DirectChat";
-      }
-      this.currentChatType = "ChatisntSelected";
-    },
-  },
+ 
   computed: {
     handleWhichTypeOfChatWasSelected() {
       if (store.state.chat.selectedUser?.new) {
@@ -307,10 +295,13 @@ export default {
     }
 
     // });
+    const currentChatType = ref("ChatisntSelected");
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
-        const formated = Object.values(doc.data());
+        const source = doc.data();
+
+        const formated = Object.values(source);
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
 
@@ -320,7 +311,7 @@ export default {
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
 
-        if (formated.length !== store.state.chat.chatsCount) {
+        if (formated.length > store.state.chat.chatsCount) {
           for (let i = 0; i < formated.length; i++) {
             store.commit("chat/addUniqChatItem", {
               id: formated[i].id,
@@ -333,10 +324,24 @@ export default {
 
             console.log("here we go ");
           }
-        }
+        } else if (formated.length < store.state.chat.chatsCount) {
+          //in case chat was deleted
 
-        console.log(store.state.chat.chatsScrollPosition, "DATKA ");
-        store.commit("chat/setChatsCount", formated.length);
+          //Object.keys(store.state.chat.chatsScrollPosition)
+          for (var key in store.state.chat.chatsScrollPosition) {
+            if (!source[key]) {
+              console.log("LESS THE BEFORE", key)
+              store.commit("chat/deleteChat", key)
+            
+
+              resetSelectedChat()
+
+              break;
+            }
+            console.log(store.state.chat.chatsScrollPosition, "DATKA ");
+            store.commit("chat/setChatsCount", formated.length);
+          }
+        }
       } else {
         console.log("No such document!");
       }
@@ -467,8 +472,6 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
-    const currentChatType = ref("ChatisntSelected");
-
     watchEffect(() => {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
@@ -578,17 +581,9 @@ v-enter-active,
 .chat-container-x {
   height: 84%;
   max-width: 100%;
-  background-repeat: no-repeat;
-  background-image: url("https://wallpapercave.com/wp/wp7111917.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   overflow-y: scroll;
 }
 
-.dark .chat-container-x {
-  background-image: url("https://wallpaperaccess.com/full/1295560.png");
-}
 
 @media (min-width: 1400px) {
   .chat-container-x {
