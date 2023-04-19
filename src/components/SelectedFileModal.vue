@@ -69,7 +69,7 @@ export default {
           uploadedTarget.includes(".PNG")
         ) {
           this.source = event.target.files[0];
-          this.preview = URL.createObjectURL(this.photo);
+          this.preview = URL.createObjectURL(this.source);
           this.v = true;
         } else if (
           uploadedTarget.includes(".mp4") ||
@@ -150,7 +150,14 @@ export default {
             // Get the download URL of the uploaded video file
             getDownloadURL(uploadTask.snapshot.ref)
               .then((downloadURL) => {
-                console.log("Download URL:", downloadURL);
+                console.log("Download URL:", downloadURL)
+
+                const resData = {
+                  type:'video',
+                  src: downloadURL
+                }
+
+                emit("sendMsgWithFile", capture, resData);
                 // Use the download URL to display or share the video with others
               })
               .catch((error) => {
@@ -164,8 +171,14 @@ export default {
         uploadBytes(storageRef, source)
           .then((snapshot) => {
             getDownloadURL(storageRef).then((url) => {
-              emit("sendmesimg", capture, url);
-              resetData();
+
+                const resData = {
+                  type: 'img',
+                  src: url
+                 }
+
+              emit("sendMsgWithFile", capture, resData);
+              resetData()
             });
           })
           .catch((er) => console.log(er, "post er"));

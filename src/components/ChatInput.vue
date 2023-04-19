@@ -7,7 +7,7 @@
 
     <div class="content">
       <span>
-        <selected-file-modal @sendmesimg="sendMsg"></selected-file-modal>
+        <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
 
         <!-- @notready="messageisNotReady = true"
         :notready="messageisNotReady"
@@ -115,8 +115,6 @@ export default {
           },
         })
       
-      
- 
       }
         this.sendMsg(this.value, null, store.state.message.replyTarget);
         this.value = "";

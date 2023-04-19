@@ -15,8 +15,9 @@
       <h4 @click="() => handle(message.sender.userId)">{{message.sender?.userName}}</h4>
   </div>
 
-      <div class="img-wrp" v-if="message.imageRef">
-        <img :src="message.imageRef" />
+      <div class="img-wrp" v-if="message.source">
+        <img v-if="message.source.type === 'img'" :src="message.source.src" />
+        <video  class="video-player" v-else :src="message.source.src" controls></video>
       </div>
    
       <div class="item_body_text">
@@ -224,6 +225,11 @@ export default {
     width: 100%;
     height: 100%;
   }
+
+  video {
+    @extend img
+  }
+
 }
 
 %no-select {
@@ -471,7 +477,19 @@ export default {
     width: 100%;
     background-color: rgb(76, 76, 76);
 
+    .max {
+      max-width: 100%;
+      min-width: 100%;
+    }
+
     img {
+      max-width: 100%;
+      min-width: 100%;
+      
+    }
+
+    video {
+      
       max-width: 100%;
       min-width: 100%;
     }

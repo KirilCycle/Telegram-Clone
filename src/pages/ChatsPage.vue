@@ -200,13 +200,13 @@ export default {
         });
     },
 
-    async addNewMessage(text, img, replyData, ) {
+    async addNewMessage(text, source, replyData, ) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
 
       const auth = getAuth();
 
-      if (auth.currentUser && text.length < 2000 && text.length > 0) {
+      if (auth.currentUser && text.length < 2000 ) {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -223,9 +223,10 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-        if (img) {
+        if (source) {
           //   messageisNotReady.value = true;
-          message.imageRef = img;
+        console.log(source, 'WTF');
+          message.source = source;
         }
 
         if (replyData) {
