@@ -54,7 +54,7 @@ export default {
 
       const data = store.state.message.forwardTarget
 
-      console.log(data.text);
+      const text = data.text
         
       const db = firebase.firestore();
 
@@ -64,7 +64,7 @@ export default {
         const message = {
           userName: this.$store.state.user.user.username,
           userId: auth.currentUser.uid,
-          text: data.text, 
+          text, 
           createdAt: Timestamp.now(),
         };
         
@@ -124,6 +124,7 @@ export default {
 
       store.commit("message/setReplyMsgRef", null);
       store.commit("message/setReplyTarget", null);
+      store.commit("message/setForwardTarget", null);
     },
   },
   computed: {
