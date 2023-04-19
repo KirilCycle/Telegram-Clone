@@ -282,7 +282,6 @@ export default {
 
     return {
       chat,
-      
       fetchPrev,
       firstScroll,
       fetchNext,

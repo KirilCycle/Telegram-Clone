@@ -62,8 +62,8 @@ export default {
       const query = db
 
         .collection("usersPrew")
-        .where("email", ">=", store.state.chat.querry)
-        .where("email", "<=", store.state.chat.querry + "z")
+        .where("email", ">=", store.state.chat.query)
+        .where("email", "<=", store.state.chat.query + "z")
         // .orWhere("displayName", ">=", store.state.chat.querry)
         // .orWhere("displayName", "<=", store.state.chat.querry + "\uf8ff")
         .limit(9);

@@ -14,7 +14,7 @@
         @sendmesimg="sendMessage" -->
       </span>
 
-      <input v-model="value" placeholder="Write a message..." />
+      <input  :value="$store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v"  v-on:input="(e) => textHndl(e.target.value)" placeholder="Write a message..." />
 
       <span class="material-symbols-outlined"> keyboard_voice </span>
       <button @click="send">
@@ -43,11 +43,25 @@ export default {
 
   data() {
     return {
-      value: "",
       sendMsg: this.sendMsg,
+      text: null
     };
   },
   methods: {
+
+    textHndl(v) {
+
+        store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "v",
+          data: v,
+        });
+
+        
+      console.log('HANDLE TEXT', v);
+
+    },
+
    async send() {
      
       if (store.state.message.forwardTarget) {
@@ -73,7 +87,6 @@ export default {
 
         if (data.source) {
           //   messageisNotReady.value = true;
-       
           message.source = data.source;
         }
 
@@ -119,8 +132,8 @@ export default {
       
       }
         
-          this.sendMsg(this.value, null, store.state.message.replyTarget);
-          this.value = "";
+          this.sendMsg(this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v, null, store.state.message.replyTarget);
+          this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v = "";
 
         
    
@@ -220,8 +233,7 @@ export default {
       -ms-user-select: none; /* IE 10 and IE 11 */
       user-select: none; /* Standard syntax */
 
-      &:hover {
-      }
+     
     }
   }
 }

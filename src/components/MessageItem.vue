@@ -21,7 +21,7 @@
           class="video-player"
           v-else
           :src="message.source.src"
-          controls
+           controls
         ></video>
       </div>
 
@@ -223,7 +223,37 @@ export default {
 
   video {
     @extend img;
+    border-radius: 0px;
   }
+
+  .video-player:hover {
+    cursor: pointer;
+  }
+  
+  .video-player::-webkit-media-controls {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .video-player:hover::-webkit-media-controls {
+    opacity: 1;
+  }
+  
+  .video-player::-webkit-media-controls-start-playback-button {
+    display: none;
+  }
+  
+  .video-player:hover::-webkit-media-controls-start-playback-button {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  
+
+
 }
 
 %no-select {

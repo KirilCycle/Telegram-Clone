@@ -24,7 +24,7 @@
       </div>
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
-        <chat-list :storePath="'chat'"  :chatList="chatList"></chat-list>
+        <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>
 
       <div v-if="isSearch" @click="chatHided = true">
@@ -53,6 +53,9 @@
           <selected-chat-nav></selected-chat-nav>
 
           <h3>{{ navName }}</h3>
+          
+          <chat-settings></chat-settings>
+
         </div>
 
         <div ref="chatContainer" class="chat-container-x">
@@ -67,43 +70,12 @@
             <div v-if="$store.state.chat.selectedUser.new">
               <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
             </div>
-            
 
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
           </div>
         </div>
-
-        <!-- <div class="chat-container"> -->
-        <!-- <nav class="chat-nav">
-          <span class="material-symbols-outlined"> chevron_left </span>
-          <h3>{{ $store.state.chat.selectedUser?.email }}</h3>
-        </nav>
-
-        <div v-if="$store.state.chat.chatId">
-          <div class="chat-wrap">
-            <direct-chat :sendMsg="addNewMessage"></direct-chat>
-          </div>
-        </div>
-
-        <chat-input :sendMsg="addNewMessage"></chat-input>
-
-        <div
-          v-if="!$store.state.chat.chatId && !$store.state.chat.selectedUser"
-        >
-          <h2>Select chat</h2>
-        </div>
-
-        <div class="target-chat" v-if="$store.state.chat.selectedUser?.new">
-          <h2>
-            Target chat
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-          </h2>
-
-          <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
-        </div>
-      </div> -->
       </div>
     </Transition>
   </div>
@@ -130,6 +102,8 @@ import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
 import SelectedChatNav from "@/components/SelectedChatNav.vue";
 import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
+import ChatSettings from '@/components/ChatSettings.vue';
+
 
 export default {
   components: {
@@ -143,6 +117,7 @@ export default {
     ChatInput,
     SelectedChatNav,
     MessageActions,
+    ChatSettings
   },
   data() {
     return {
@@ -175,9 +150,7 @@ export default {
     },
   },
   mounted() {
-    
-    this.$store.commit('chat/setChatContainerRef', this.$refs.chatContainer)
-    
+    this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
   },
   methods: {
     async test() {
@@ -200,15 +173,15 @@ export default {
         });
     },
 
-    async addNewMessage(text, source, replyData, ) {
+    async addNewMessage(text, source, replyData) {
       const db = firebase.firestore();
       const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
 
       const auth = getAuth();
 
-      const nextVerify = text.length > 0 || source
+      const nextVerify = text.length > 0 || source;
 
-      if (auth.currentUser && text.length < 2000 && nextVerify ) {
+      if (auth.currentUser && text.length < 2000 && nextVerify) {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -227,7 +200,7 @@ export default {
 
         if (source) {
           //   messageisNotReady.value = true;
-       
+
           message.source = source;
         }
 
@@ -307,7 +280,6 @@ export default {
   },
 
   setup(data) {
-    
     const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
@@ -348,27 +320,23 @@ export default {
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
 
-
         if (formated.length !== store.state.chat.chatsCount) {
-
           for (let i = 0; i < formated.length; i++) {
-            
             store.commit("chat/addUniqChatItem", {
               id: formated[i].id,
               pivot: null,
               page: 0,
-              getMessagesType: 'prev',
-              lastScroll: 700, 
+              v: "",
+              getMessagesType: "prev",
+              lastScroll: 700,
             });
-            
-           console.log('here we go ');
+
+            console.log("here we go ");
           }
         }
-        
-     
-        console.log(  store.state.chat.chatsScrollPosition ,'DATKA ');
-        store.commit("chat/setChatsCount", formated.length)
 
+        console.log(store.state.chat.chatsScrollPosition, "DATKA ");
+        store.commit("chat/setChatsCount", formated.length);
       } else {
         console.log("No such document!");
       }
@@ -396,7 +364,7 @@ export default {
           userId: auth.currentUser.uid,
           text: v,
           createdAt: Timestamp.now(),
-         
+
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         if (auth.currentUser.photoURL) {
@@ -562,7 +530,7 @@ v-enter-active,
   background-color: $content-main;
   height: 8%;
   text-align: left;
-  
+
   display: flex;
   align-items: center;
   max-height: 75px;
@@ -589,8 +557,6 @@ v-enter-active,
     }
   }
 
-
-
   h3 {
     font-weight: 500;
     font-size: 1.1rem;
@@ -601,11 +567,11 @@ v-enter-active,
   }
 }
 
-.dark .chat-nav-x{
+.dark .chat-nav-x {
   background-color: $content-main-l;
 
   h3 {
-     color: $text-main-l;
+    color: $text-main-l;
   }
 }
 
@@ -620,7 +586,7 @@ v-enter-active,
   overflow-y: scroll;
 }
 
-.dark .chat-container-x  {
+.dark .chat-container-x {
   background-image: url("https://wallpaperaccess.com/full/1295560.png");
 }
 
@@ -628,7 +594,6 @@ v-enter-active,
   .chat-container-x {
     max-width: 1400px;
     margin: 0% auto;
-  
   }
 }
 
@@ -759,8 +724,7 @@ v-enter-active,
       background-color: rgba(123, 123, 123, 0.132);
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
-      &:hover {
-      }
+
       cursor: pointer;
       span {
         font-size: 1.2rem;
@@ -768,9 +732,6 @@ v-enter-active,
       }
     }
   }
-
-
-
 
   .chat-list {
     overflow-x: hidden;
@@ -802,16 +763,15 @@ v-enter-active,
   input {
     color: $text-main-l;
   }
-
 }
 .dark .left-bar {
-  background-color:  $content-main-l ;
+  background-color: $content-main-l;
 }
 .right-side {
   width: 100%;
   height: 100vh;
   position: relative;
- 
+
   overflow-y: hidden;
 }
 
@@ -828,7 +788,6 @@ v-enter-active,
   overflow-y: scroll;
   height: 100%;
   background-color: $custom-c4;
-  
 }
 
 .chat-container::-webkit-scrollbar {
