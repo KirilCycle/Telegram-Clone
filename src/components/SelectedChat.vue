@@ -2,11 +2,12 @@
   <div class="wrp">
     <div v-observer="fetchPrev"></div>
 
-    <div v-if="page > 0" class="bottom" ref="bottom">
+    <!-- <div v-if="page > 0" class="bottom" ref="bottom">
       <div v-observer="fetchNext"></div>
-    </div>
+    </div> -->
 
-    <selected-chat-part :nextstart="null" :nextend="null" :start="third" :end="fourt" :chatId="id"></selected-chat-part>
+    <selected-chat-part @msgsWasReceived="scrollToLast" :nextstart="null" :nextend="null" :start="third" :end="fourt" :chatId="id"></selected-chat-part>
+    <div ref="scrollTarget"></div>
     <selected-chat-part :nextstart="nextstart" :nextend="nextend" :start="first" :end="second" :chatId="id"></selected-chat-part>
 
     <div class="bottom" ref="bottom">
@@ -46,7 +47,15 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    scrollToLast() {
+        
+        if (this.$refs.scrollTarget) {
+            this.$refs.scrollTarget.scrollIntoView({block: "end"})
+        }
+      
+    }
+  },
   mounted() {},
 
   setup(props) {
@@ -100,6 +109,8 @@ export default {
 
         fourtRef.value =  Math.floor(Math.random() * 100000000)
         thirdRef.value =  Math.floor(Math.random() * 100000000)
+
+
 
        
     }

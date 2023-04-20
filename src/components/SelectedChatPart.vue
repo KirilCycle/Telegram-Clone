@@ -5,7 +5,9 @@
 </template>
 
 <script>
-import { watchEffect,watch  } from 'vue';
+import { watchEffect,watch,   } from 'vue';
+
+
 export default {
   props: {
     chatId: String,
@@ -20,11 +22,13 @@ export default {
     };
   },
  
-  setup(pops) {
+  setup(pops, { emit }) {
     watchEffect(() => {
         if (pops.nextstart !== pops.start && pops.nextend !== pops.end ) {
-                console.log(pops.start, pops.end, 'ch')
-
+                console.log(pops.start, pops.end, 'FETCH')
+               
+              
+                emit('msgsWasReceived')
         } else {
           console.log(  'same');
         }
