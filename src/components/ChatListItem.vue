@@ -1,5 +1,5 @@
 <template>
-  <div v-show="isVisible" @click="$store.commit('chat/setSelectedUser', enotherUser)">
+  <div v-show="isVisible" @click="handleChatSelect">
     
     <chat-item :time="time" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">     
       <template v-slot:name>
@@ -65,6 +65,12 @@ export default {
   },
 
   methods: {
+    handleChatSelect() {
+     
+      this.$store.commit('chat/setWasObserved', false)
+      this.$store.commit('chat/setSelectedUser', this.enotherUser)
+     
+    },
   
     async fethcEnotherUser() {
 

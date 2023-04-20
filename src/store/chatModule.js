@@ -9,10 +9,14 @@ export const chatModule = {
     chatIdList: [],
     chatsCount: 0,
     chatContainerRef: null,
+    wasObserved: null,
   }),
   getters: {
     getReplyTarget(state) {
       return state.replyTarget;
+    },
+    getWasObserved(state) {
+      return state.wasObserved;
     },
     getChatIdList(state) {
       return state.chatIdList;
@@ -45,6 +49,9 @@ export const chatModule = {
     },
     setChatIdList(state, chats) {
       state.chatIdList = chats;
+    },
+    setWasObserved(state, bool) {
+      state.wasObserved = bool;
     },
     setChatId(state, id) {
       state.chatId = id;

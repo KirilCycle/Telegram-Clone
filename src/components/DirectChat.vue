@@ -1,5 +1,5 @@
 <template>
-  <div  class="wrp">
+  <div class="wrp">
     <div v-observer="fetchPrev"></div>
     <transition name="bounce">
       <button
@@ -79,29 +79,30 @@ export default {
   },
   mounted() {
     // Get a reference to the div element
-   
   },
   beforeUpdate() {
-    console.log('CATCH UPDATE', this.$store.state.chat.chatContainerRef.scrollTop)
-    
-  //   if (  this.$store.state.chat.chatContainerRef ) {
-  //  console.log(   'YES');
-  //        this.$store.state.chat.chatContainerRef.scrollTop = this.$store.state.chat.chatsScrollPosition[store.state.chat.chatId].lastScroll
-  //   }
+    console.log(
+      "CATCH UPDATE",
+      this.$store.state.chat.chatContainerRef.scrollTop
+    );
 
-  //   store.commit("chat/changeChatsScrollData", {
-  //        id: store.state.chat.chatId,
-  //        key: "lastScroll",
-  //        data: this.$store.state.chat.chatContainerRef.scrollTop,
-  //      });
+    //   if (  this.$store.state.chat.chatContainerRef ) {
+    //  console.log(   'YES');
+    //        this.$store.state.chat.chatContainerRef.scrollTop = this.$store.state.chat.chatsScrollPosition[store.state.chat.chatId].lastScroll
+    //   }
 
+    //   store.commit("chat/changeChatsScrollData", {
+    //        id: store.state.chat.chatId,
+    //        key: "lastScroll",
+    //        data: this.$store.state.chat.chatContainerRef.scrollTop,
+    //      });
   },
-    // store.commit("chat/changeChatsScrollData", {
-    //   id: store.state.chat.chatId,
-    //   key: "lastScroll",
-    //   data: chatWrap.scrollTop,
-    // });
-  
+  // store.commit("chat/changeChatsScrollData", {
+  //   id: store.state.chat.chatId,
+  //   key: "lastScroll",
+  //   data: chatWrap.scrollTop,
+  // });
+
   setup(props) {
     const db = firebase.firestore();
     const chat = ref([]);
@@ -142,11 +143,7 @@ export default {
     watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
-      console.log("CHAT WRONG ????", store.state.chat.chatId);
-      
-      page.value = link.page;
-      pivot.value = link.pivot;
-
+      console.log("CHAT WRONG ????", store.state.chat.wasObserved);
 
       const messagesRef = db
         .collection("chatMessages")
@@ -159,28 +156,22 @@ export default {
       // const lastVisible = chat.value[chat.value.length - 1];
       // const firts = chat.value[0];
 
-      if (link.page > 0) {
+      if (link.page > 0 && store.state.chat.wasObserved) {
         //in case we saw a top observer
 
-        switch (link.getMessagesType) {
+        switch (getMessagesType.value) {
           case "prev":
             query = messagesRef
               .orderBy("createdAt")
               .limitToLast(60)
-              .endBefore(link.pivot.createdAt);
+              .endBefore(pivot.value.createdAt);
 
             break;
 
           case "next":
             query = messagesRef
               .orderBy("createdAt")
-              .startAfter(link.pivot.createdAt)
-              .limit(60);
-
-           case "lived": 
-           query = messagesRef
-              .orderBy("createdAt")
-              .startAfter(link.lived.createdAt)
+              .startAfter(pivot.value.createdAt)
               .limit(60);
         }
 
@@ -193,6 +184,12 @@ export default {
         //   .orderBy("createdAt")
         //   .startAfter(firts.value.createdAt)
         //   .limit(40)
+      } else if (link.page > 0 && link.last) {
+        console.log("last");
+        query = messagesRef
+          .orderBy("createdAt")
+          .startAfter(link.last.createdAt)
+          .limit(60);
       } else {
         query = messagesRef.orderBy("createdAt", "desc").limit(60);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
@@ -230,8 +227,8 @@ export default {
 
         store.commit("chat/changeChatsScrollData", {
           id: store.state.chat.chatId,
-          key: "pivot",
-          data: chat.value[30],
+          key: "last",
+          data: chat.value[0],
         });
 
         store.commit("chat/changeChatsScrollData", {
@@ -240,32 +237,28 @@ export default {
           data: link.page + 1,
         });
 
-        store.commit("chat/changeChatsScrollData", {
-          id: store.state.chat.chatId,
-          key: "getMessagesType",
-          data: "prev",
-        });
+        getMessagesType.value = "prev";
 
         page.value = link.page;
 
-        pivot.value = link.pivot;
+        pivot.value = chat.value[30];
+
+        store.commit("chat/setWasObserved", true);
       }
     }
 
     function fetchNext() {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
-      store.commit("chat/changeChatsScrollData", {
-        id: store.state.chat.chatId,
-        key: "pivot",
-        data: chat.value[30],
-      });
+      getMessagesType.value = "next";
+
 
       store.commit("chat/changeChatsScrollData", {
-        id: store.state.chat.chatId,
-        key: "getMessagesType",
-        data: "next",
-      });
+          id: store.state.chat.chatId,
+          key: "last",
+          data: chat.value[0],
+        });
+
 
       store.commit("chat/changeChatsScrollData", {
         id: store.state.chat.chatId,
@@ -274,7 +267,7 @@ export default {
       });
 
       page.value = link.page;
-      pivot.value = link.pivot;
+      pivot.value = chat.value[30];
     }
 
     function firstScroll() {
@@ -283,8 +276,6 @@ export default {
         chatWasFetched.value = true;
       }
     }
-
-   
 
     return {
       chat,
@@ -389,7 +380,6 @@ nav {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
-
 }
 
 @media (pointer: coarse) {
