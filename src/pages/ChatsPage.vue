@@ -67,7 +67,7 @@
         >
           <div class="input-wrap">
             <div v-if="$store.state.chat.selectedUser.new">
-              <chat-input :sendMsg="sendMessageToFoundedChat"></chat-input>
+              <founded-chat-input-vue :sendMsg="sendMessageToFoundedChat"></founded-chat-input-vue>
             </div>
 
             <div v-else>
@@ -104,6 +104,7 @@ import Settings from "@/components/Settings.vue";
 import ChatSettings from "@/components/ChatSettings.vue";
 import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
+import FoundedChatInputVue from '@/components/FoundedChatInput.vue';
 
 export default {
   components: {
@@ -113,7 +114,7 @@ export default {
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
-
+    FoundedChatInputVue,
     ChatList,
     Settings,
     SelectedChat,
@@ -174,7 +175,7 @@ export default {
 
       const nextVerify = text.length > 0 || source;
 
-      if (auth.currentUser && text.length < 2000 && nextVerify) {
+      if (text.length < 2000 && nextVerify) {
         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
@@ -320,7 +321,9 @@ export default {
           for (let i = 0; i < formated.length; i++) {
             store.commit("chat/addUniqChatItem", {
               id: formated[i].id,
-              pivotsMsgs: [],
+              pivot: null,
+              page: 0,
+              getMessagesType: "prev",
               v: "",
             });
 
@@ -351,8 +354,12 @@ export default {
 
     const auth = getAuth();
 
-    async function sendMessageToFoundedChat(v) {
-      if (auth.currentUser.uid && store.state.chat.selectedUser.uid) {
+    async function sendMessageToFoundedChat(v, source) {
+
+      const nextVerify = v.length > 0 || source;
+
+
+      if (store.state.chat.selectedUser.uid && v.length < 2000 && nextVerify) {
         const userId1 = auth.currentUser.uid;
         const userId2 = store.state.chat.selectedUser.uid;
 
@@ -378,10 +385,10 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-        const chatData = {
-          lastMessage: { text: message.text, createdAt: message.createdAt },
-          uid: chatId,
-        };
+
+        if (source) {
+          message.source = source
+        }
 
         const chatsRef = db.collection("chatMessages");
         const chatDocRef = chatsRef.doc(enotherChatId);

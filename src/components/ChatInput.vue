@@ -14,7 +14,9 @@
         @sendmesimg="sendMessage" -->
       </span>
 
-      <input  :value="$store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v"  v-on:input="(e) => textHndl(e.target.value)" placeholder="Write a message..." />
+      
+
+      <input :value="$store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v"  v-on:input="(e) => textHndl(e.target.value)" placeholder="Write a message..." />
 
       <span class="material-symbols-outlined"> keyboard_voice </span>
       <button @click="send">
@@ -56,8 +58,7 @@ export default {
           key: "v",
           data: v,
         });
-
-        
+ 
       console.log('HANDLE TEXT', v);
 
     },
@@ -132,8 +133,8 @@ export default {
       
       }
         
-          this.sendMsg(this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v, null, store.state.message.replyTarget);
-          this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v = "";
+      this.sendMsg(this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v, null, store.state.message.replyTarget);
+      this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v = "";
 
         
    

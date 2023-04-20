@@ -1,7 +1,8 @@
 <template>
   <div class="wrp">
+    <div ref="unpredictableIntelegentMovement" class="save-line"></div>
+
     <div v-observer="fetchPrev"></div>
-    
     <transition name="bounce">
       <button
         @click="scrollToBottom"
@@ -45,7 +46,8 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
-import { useDark, useToggle } from "@vueuse/core";
+
+
 
 export default {
   components: { ChatInput, MessageItem },
@@ -81,7 +83,23 @@ export default {
   mounted() {
     // Get a reference to the div element
   },
+  beforeUpdate() {
+    console.log(
+      "CATCH UPDATE",
+      this.$store.state.chat.chatContainerRef.scrollTop
+    );
 
+    //   if (  this.$store.state.chat.chatContainerRef ) {
+    //  console.log(   'YES');
+    //        this.$store.state.chat.chatContainerRef.scrollTop = this.$store.state.chat.chatsScrollPosition[store.state.chat.chatId].lastScroll
+    //   }
+
+    //   store.commit("chat/changeChatsScrollData", {
+    //        id: store.state.chat.chatId,
+    //        key: "lastScroll",
+    //        data: this.$store.state.chat.chatContainerRef.scrollTop,
+    //      });
+  },
   // store.commit("chat/changeChatsScrollData", {
   //   id: store.state.chat.chatId,
   //   key: "lastScroll",
@@ -93,12 +111,12 @@ export default {
     const chat = ref([]);
     const bottom = ref(null);
 
+    const unpredictableIntelegentMovement = ref(null);
+
     //middle msg item
 
     const page = ref(null);
     const pivot = ref(null);
-
-    const pivotTmp = ref(null);
 
     const disablePrevFetch = ref(null);
     const chatWasFetched = ref(null);
@@ -127,8 +145,10 @@ export default {
 
     // });
 
-     watchEffect( async() => {
+    watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
+
+      console.log("CHAT WRONG ????", store.state.chat.chatId);
 
       page.value = link.page;
       pivot.value = link.pivot;
@@ -147,8 +167,6 @@ export default {
       if (link.page > 0) {
         //in case we saw a top observer
 
-        console.log(link.getMessagesType, "WHERE");
-
         switch (link.getMessagesType) {
           case "prev":
             query = messagesRef
@@ -156,12 +174,10 @@ export default {
               .limitToLast(40)
               .endBefore(link.pivot.createdAt);
 
-            pivotTmp.value = pivot.value.id;
-
             break;
 
           case "next":
-           query = messagesRef
+            query = messagesRef
               .orderBy("createdAt")
               .startAfter(link.pivot.createdAt)
               .limit(40);
@@ -177,7 +193,7 @@ export default {
         //   .startAfter(firts.value.createdAt)
         //   .limit(40)
       } else {
-       query = messagesRef.orderBy("createdAt", "desc").limit(40);
+        query = messagesRef.orderBy("createdAt", "desc").limit(40);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
@@ -188,12 +204,11 @@ export default {
             ...doc.data(),
           }));
 
-        
-            chat.value = newData
-          
-          
-        
-          
+          chat.value = newData;
+
+          if (link.getMessagesType === "prev") {
+            scrollA();
+          }
         } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -208,10 +223,16 @@ export default {
         } else {
           disablePrevFetch.value = null;
         }
-
-        console.log("RED", chat.value.length, pivot.value?.text);
       });
     });
+
+    async function scrollA(link) {
+      if (chat.value.length > 39) {
+        unpredictableIntelegentMovement.value.scrollIntoView({
+          block: "start",
+        });
+      }
+    }
 
     function fetchPrev() {
       if (!disablePrevFetch.value) {
@@ -221,7 +242,7 @@ export default {
         store.commit("chat/changeChatsScrollData", {
           id: store.state.chat.chatId,
           key: "pivot",
-          data: chat.value[18],
+          data: chat.value[20],
         });
 
         store.commit("chat/changeChatsScrollData", {
@@ -282,6 +303,7 @@ export default {
       page,
       bottom,
       disableAutoScroll,
+      unpredictableIntelegentMovement,
       chasingBottom,
       scrollToBottom,
     };
@@ -291,10 +313,15 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 
-.sm {
-  height: 1000px;
+.save-line {
+  background-color: rgba(255, 0, 0, 0.282);
+  height: 10px;
+  width: 100%;
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
