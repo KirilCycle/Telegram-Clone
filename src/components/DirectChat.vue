@@ -1,6 +1,7 @@
 <template>
   <div class="wrp">
     <div v-observer="fetchPrev"></div>
+    
     <transition name="bounce">
       <button
         @click="scrollToBottom"

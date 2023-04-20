@@ -102,6 +102,7 @@ import SelectedChatNav from "@/components/SelectedChatNav.vue";
 import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
 import ChatSettings from "@/components/ChatSettings.vue";
+import SelectedChat from "@/components/SelectedChat.vue";
 
 export default {
   components: {
@@ -112,6 +113,7 @@ export default {
     FoundedChatsList,
     ChatList,
     Settings,
+    SelectedChat,
     ChatInput,
     SelectedChatNav,
     MessageActions,
@@ -315,11 +317,8 @@ export default {
           for (let i = 0; i < formated.length; i++) {
             store.commit("chat/addUniqChatItem", {
               id: formated[i].id,
-              pivot: null,
-              page: 0,
+              pivotsMsgs: [],
               v: "",
-              getMessagesType: "prev",
-              lastScroll: 700,
             });
 
             console.log("here we go ");
@@ -476,7 +475,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "DirectChat";
+        currentChatType.value = "SelectedChat";
       } else {
         currentChatType.value = "ChatisntSelected";
       }
