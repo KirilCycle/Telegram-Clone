@@ -2,20 +2,10 @@
   <div class="wrp">
     <div v-observer="fetchPrev"></div>
 
-    <!-- <div v-if="page > 0" class="bottom" ref="bottom">
-      <div v-observer="fetchNext"></div>
-    </div> -->
-
-    <selected-chat-part @msgsWasReceived="scrollToLast" :nextstart="null" :nextend="null" :start="third" :end="fourt" :chatId="id"></selected-chat-part>
-    <div ref="scrollTarget"></div>
-    <selected-chat-part :nextstart="nextstart" :nextend="nextend" :start="first" :end="second" :chatId="id"></selected-chat-part>
-
     <div class="bottom" ref="bottom">
-        <div v-observer="fetchNext"></div>
+      <div v-observer="fetchNext"></div>
     </div>
-    <!-- <div  v-if="page < 0" class="bottom" ref="bottom">
-      <div v-desapeared="disableAutoScroll"></div>
-    </div> -->
+
     <!-- <chat-input :sendMsg="addNewMessage"></chat-input> -->
   </div>
 </template>
@@ -24,7 +14,7 @@
 import { collection, getDocs, getDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { onBeforeUpdate, ref, watchEffect, computed } from "vue";
+import { onBeforeUpdate, ref, watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
@@ -33,11 +23,10 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
-import SelectedChatPart from "@/components/SelectedChatPart.vue";
 import { useDark, useToggle } from "@vueuse/core";
 
 export default {
-  components: { ChatInput, MessageItem, SelectedChatPart },
+  components: { ChatInput, MessageItem },
   props: {
     chatId: Array,
     sendMsg: Function,
@@ -47,107 +36,78 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    scrollToLast() {
-        
-        if (this.$refs.scrollTarget) {
-            this.$refs.scrollTarget.scrollIntoView({block: "end"})
-        }
-      
-    }
-  },
-  mounted() {},
 
   setup(props) {
+    const db = ref(firebase.firestore());
     const bottom = ref(null);
 
+    const subChats = ref([]);
     //middle msg item
 
+    const disablePrevFetch = ref(null);
+    const chatWasFetched = ref(null);
     // const slectedChatRef = db.collection("chatMessages");
 
-    const chasingBottom = ref(true);
-    function scrollToBottom() {
-      bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
+    const first = ref(null);
 
-    function disableAutoScroll(v) {
-      chasingBottom.value = v;
-    }
+    const chatId = ref(store.state.chat.chatId);
 
-    //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
+    const messagesRef = ref(
+      db.value
+        .collection("chatMessages")
+        .doc(chatId.value)
+        .collection("messages")
+    );
 
-    // watchEffect(() => {
-    //   let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
+    const queryFirst = ref(
+      messagesRef.value.orderBy("createdAt", "desc").limit(40)
+    );
 
-    //   page.value = link.page;
-    //   pivot.value = link.pivot;
+    const queryPrev = ref(
+      messagesRef.value
+        .orderBy("createdAt", "desc")
+        .endBefore(first.value)
+        .limit(40)
+    );
 
-    //   console.log("SETUP", link);
+    watchEffect(async () => {
+      //last msgs (first snapshot)
+      queryFirst.value.onSnapshot((snapshot, parameters) => {
+        subChats.value.push(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
 
-    // });
-    
+        first.value = subChats.value[0][0].createdAt;
 
-    const fourtRef = ref('ddd')
-    const thirdRef = ref('ccc')
-   
-    const secondRef= ref('bbb')
-    const firstRef = ref('aaa')
-
-    const fourtTmp = ref(null)
-    const thirdTmp = ref(null)
-
-   
-
-    watchEffect(() => {
-
+        console.log(subChats.value, "FIRST QUERRY");
+      });
     });
 
-    function fetchPrev() {
-        fourtTmp.value = fourt.value
-        thirdTmp.value = third.value
-
-        //
-
+    async function fetchPrev() {
         
+      const oldestMessage = subChats.value[subChats.value.length - 1];
+      const snapshot = await messagesRef.value
+        .orderBy("createdAt", "desc")
+        .endBefore(oldestMessage.createdAt)
+        .limit(40)
+        .get();
 
-        firstRef.value = third.value
-        secondRef.value = fourt.value
-
-        fourtRef.value =  Math.floor(Math.random() * 100000000)
-        thirdRef.value =  Math.floor(Math.random() * 100000000)       
+      const messages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      subChats.value = messages.concat(subChats.value);
     }
 
-    function fetchNext() {
-      
-    }
-
-  
-    const id = ref(store.state.chat.chatId)
-
-    const first = computed(() => firstRef.value);
-    const second = computed(() => secondRef.value);
-    const third = computed(() => thirdRef.value);
-    const fourt = computed(() => fourtRef.value);
-
-    const nextend = computed(() => fourtTmp.value)
-    const nextstart = computed(() => thirdTmp.value)
+    function fetchNext() {}
+    //     });
 
     return {
-      
-        //   firstScroll,
-      nextend,
-      nextstart,
-      fourt,
-      second,
-      third,
-      first,
       fetchPrev,
       fetchNext,
-      bottom,
-      disableAutoScroll,
-      chasingBottom,
-      scrollToBottom,
-      id
     };
   },
 };

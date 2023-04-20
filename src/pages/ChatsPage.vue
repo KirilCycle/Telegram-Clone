@@ -103,14 +103,17 @@ import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
 import ChatSettings from "@/components/ChatSettings.vue";
 import SelectedChat from "@/components/SelectedChat.vue";
+import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 
 export default {
   components: {
     DirectChat,
     ReplyMessageBorder,
+    SelectedChatDynamic,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
+
     ChatList,
     Settings,
     SelectedChat,
@@ -475,7 +478,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "SelectedChat";
+        currentChatType.value = "DirectChat";
       } else {
         currentChatType.value = "ChatisntSelected";
       }

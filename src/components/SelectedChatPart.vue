@@ -27,6 +27,12 @@ export default {
         if (pops.nextstart !== pops.start && pops.nextend !== pops.end ) {
                 console.log(pops.start, pops.end, 'FETCH')
                
+                //if nextstart 
+                //fetch prev
+
+                //if nextend
+                //fetch next
+
               
                 emit('msgsWasReceived')
         } else {

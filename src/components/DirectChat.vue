@@ -188,9 +188,9 @@ export default {
             ...doc.data(),
           }));
 
-          if (newData.length === 40) {
+        
             chat.value = newData
-          }
+          
           
         
           
