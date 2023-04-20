@@ -634,20 +634,19 @@ v-enter-active,
   }
 }
 
-@media (min-width: 1400px) {
+
+
+
+@media (min-width: 1800px) {
   .chat-input-block-x {
-    max-width: 1400px;
-    margin: 0% auto;
-
-    border-top: 1px solid rgba(101, 101, 101, 0.667);
+    .input-wrap {
+      max-width: 1400px;   
+ 
+    }
   }
+  
 }
 
-.chat-input-block-x {
-  .input-wrap {
-    max-width: 1400px;
-  }
-}
 
 .main {
   display: flex;

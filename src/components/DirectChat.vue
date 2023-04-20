@@ -171,7 +171,7 @@ export default {
           case "prev":
             query = messagesRef
               .orderBy("createdAt")
-              .limitToLast(40)
+              .limitToLast(80)
               .endBefore(link.pivot.createdAt);
 
             break;
@@ -180,7 +180,7 @@ export default {
             query = messagesRef
               .orderBy("createdAt")
               .startAfter(link.pivot.createdAt)
-              .limit(40);
+              .limit(80);
         }
 
         // query = messagesRef
@@ -193,7 +193,7 @@ export default {
         //   .startAfter(firts.value.createdAt)
         //   .limit(40)
       } else {
-        query = messagesRef.orderBy("createdAt", "desc").limit(40);
+        query = messagesRef.orderBy("createdAt", "desc").limit(80);
         // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
@@ -218,7 +218,7 @@ export default {
           }
         }
 
-        if (chat.value.length < 40) {
+        if (chat.value.length < 80) {
           disablePrevFetch.value = true;
         } else {
           disablePrevFetch.value = null;
@@ -227,7 +227,7 @@ export default {
     });
 
     async function scrollA(link) {
-      if (chat.value.length > 39) {
+      if (chat.value.length > 79) {
         unpredictableIntelegentMovement.value.scrollIntoView({
           block: "start",
         });
@@ -242,7 +242,7 @@ export default {
         store.commit("chat/changeChatsScrollData", {
           id: store.state.chat.chatId,
           key: "pivot",
-          data: chat.value[20],
+          data: chat.value[40],
         });
 
         store.commit("chat/changeChatsScrollData", {
@@ -269,7 +269,7 @@ export default {
       store.commit("chat/changeChatsScrollData", {
         id: store.state.chat.chatId,
         key: "pivot",
-        data: chat.value[20],
+        data: chat.value[40],
       });
 
       store.commit("chat/changeChatsScrollData", {

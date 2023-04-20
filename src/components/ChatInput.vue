@@ -5,7 +5,7 @@
       <reply-message-border :selected="select" ></reply-message-border>
     </div>
 
-    <div class="content">
+    <div  class="content">
       <span>
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
 
@@ -18,10 +18,17 @@
 
       <input :value="$store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v"  v-on:input="(e) => textHndl(e.target.value)" placeholder="Write a message..." />
 
-      <span class="material-symbols-outlined"> keyboard_voice </span>
-      <button @click="send">
-        <span class="material-symbols-outlined"> send </span>
-      </button>
+     
+     
+      <div class="send-btn-wrp">
+        <button  v-show="ableTosend" @click="send">
+          <span class="material-symbols-outlined"> send </span>
+        </button>
+        <button>
+          <span   v-show="!ableTosend" class="material-symbols-outlined"> keyboard_voice </span>     
+        </button>
+      </div>
+     
     </div>
   </div>
 </template>
@@ -152,6 +159,17 @@ export default {
        } else if (this.$store.state.message.forwardTarget) {
           return this.$store.state.message.forwardTarget
        } return false
+    },
+
+    ableTosend() {
+      if (this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v) {
+      
+        return true
+      } else {
+      
+        return false
+      }
+ 
     }
   }
 };
@@ -167,11 +185,35 @@ export default {
   bottom: 100%;
   background: $content-main;
 }
+
 .input-container {
   width: 100%;
   padding: 0px 10px 0px 6px;
   height: 100%;
   display: flex;
+  max-height: 60px;
+  &:after {
+    content: "";
+    display: none;
+    position: absolute;
+    right: -20px;
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    
+    border-top: 40px solid transparent;
+    border-left: 20px solid  $content-main;
+    border-bottom: 0px solid transparent;
+  }
+
+  @media (min-width: 1800px) { 
+    
+    &:after { 
+      display: block;
+    }
+    border-radius: 20px 20px 0px 20px;
+    padding: 14px 10px 14px 20px;
+  }
 
   background: $content-main;
   position: relative;
