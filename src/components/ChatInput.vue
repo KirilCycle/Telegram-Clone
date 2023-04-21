@@ -1,11 +1,10 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container">
-   
     <div class="reply-border-wrap" v-if="select">
-      <reply-message-border :selected="select" ></reply-message-border>
+      <reply-message-border :selected="select"></reply-message-border>
     </div>
 
-    <div  class="content">
+    <div class="content">
       <span>
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
 
@@ -14,21 +13,29 @@
         @sendmesimg="sendMessage" -->
       </span>
 
-      
+      <input
+        :value="
+          $store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v
+        "
+        v-on:input="(e) => textHndl(e.target.value)"
+        placeholder="Write a message..."
+      />
 
-      <input :value="$store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v"  v-on:input="(e) => textHndl(e.target.value)" placeholder="Write a message..." />
-
-     
-     
       <div class="send-btn-wrp">
-        <button  v-show="ableTosend" @click="send">
-          <span class="material-symbols-outlined"> send </span>
-        </button>
-        <button>
-          <span   v-show="!ableTosend" class="material-symbols-outlined"> keyboard_voice </span>     
-        </button>
+        <transition name="bounce">
+          <button  class="send-btn" v-show="ableTosend" @click="send">
+            <span class="material-symbols-outlined"> send </span>
+          </button>
+        </transition>
+
+        <transition name="fade">
+          <button v-show="!ableTosend"  class="voice-btn">
+            <span  class="material-symbols-outlined">
+              keyboard_voice
+            </span>
+          </button>
+        </transition>
       </div>
-     
     </div>
   </div>
 </template>
@@ -53,44 +60,38 @@ export default {
   data() {
     return {
       sendMsg: this.sendMsg,
-      text: null
+      text: null,
     };
   },
   methods: {
-
     textHndl(v) {
+      store.commit("chat/changeChatsScrollData", {
+        id: store.state.chat.chatId,
+        key: "v",
+        data: v,
+      });
 
-        store.commit("chat/changeChatsScrollData", {
-          id: store.state.chat.chatId,
-          key: "v",
-          data: v,
-        });
- 
-      console.log('HANDLE TEXT', v);
-
+      console.log("HANDLE TEXT", v);
     },
 
-   async send() {
-     
+    async send() {
       if (store.state.message.forwardTarget) {
+        const data = store.state.message.forwardTarget;
 
-      const data = store.state.message.forwardTarget
+        const text = data.text;
 
-      const text = data.text
-        
-      const db = firebase.firestore();
+        const db = firebase.firestore();
 
-      const auth = getAuth();
+        const auth = getAuth();
 
-     
         const message = {
           userName: this.$store.state.user.user.username,
           userId: auth.currentUser.uid,
-          text, 
+          text,
           createdAt: Timestamp.now(),
-          sender: data.sender
+          sender: data.sender,
         };
-        
+
         message.userPhotoURl = this.$store.state.user.user.photoURL;
 
         if (data.source) {
@@ -136,16 +137,19 @@ export default {
             lastMsg: lastMsgData,
             id: store.state.chat.chatId,
           },
-        })
-      
+        });
       }
-        
-      this.sendMsg(this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v, null, store.state.message.replyTarget);
-      this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v = "";
 
-        
-   
-
+      this.sendMsg(
+        this.$store.state.chat.chatsScrollPosition[
+          this.$store.state.chat.chatId
+        ].v,
+        null,
+        store.state.message.replyTarget
+      );
+      this.$store.state.chat.chatsScrollPosition[
+        this.$store.state.chat.chatId
+      ].v = "";
 
       store.commit("message/setReplyMsgRef", null);
       store.commit("message/setReplyTarget", null);
@@ -154,29 +158,121 @@ export default {
   },
   computed: {
     select() {
-       if (this.$store.state.message.replyTarget) {
-        return this.$store.state.message.replyTarget
-       } else if (this.$store.state.message.forwardTarget) {
-          return this.$store.state.message.forwardTarget
-       } return false
+      if (this.$store.state.message.replyTarget) {
+        return this.$store.state.message.replyTarget;
+      } else if (this.$store.state.message.forwardTarget) {
+        return this.$store.state.message.forwardTarget;
+      }
+      return false;
     },
 
     ableTosend() {
-      if (this.$store.state.chat.chatsScrollPosition[this.$store.state.chat.chatId].v) {
-      
-        return true
+      if (
+        this.$store.state.chat.chatsScrollPosition[
+          this.$store.state.chat.chatId
+        ].v
+      ) {
+        return true;
       } else {
-      
-        return false
+        return false;
       }
- 
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
+
+.bounce-enter-active {
+  animation: bounce-in 0.4s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.3s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.send-btn-wrp {
+  position: relative;
+  width: 50px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  .send {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    
+      color: $second;
+      span {
+        left: 0;
+        position: absolute;
+        color: $second;
+      }
+      /* your styling rules for the first button here */
+    
+  }
+
+
+  button {
+
+    position: absolute;
+  }
+  span {
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    width: 35px;
+    height: 35px;
+    color: gray;
+    flex-shrink: 0;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+
+  .voice-btn {
+    opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  }
+
+  .fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-in-out; /* must match the duration and easing in step 1 */
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
+}
 
 .reply-border-wrap {
   width: 100%;
@@ -200,15 +296,14 @@ export default {
     bottom: 0px;
     width: 0;
     height: 0;
-    
+
     border-top: 40px solid transparent;
-    border-left: 20px solid  $content-main;
+    border-left: 20px solid $content-main;
     border-bottom: 0px solid transparent;
   }
 
-  @media (min-width: 1800px) { 
-    
-    &:after { 
+  @media (min-width: 1800px) {
+    &:after {
       display: block;
     }
     border-radius: 20px 20px 0px 20px;
@@ -262,22 +357,6 @@ export default {
         width: 90%;
       }
     }
-
-    button {
-      -webkit-user-select: none; /* Safari */
-      -khtml-user-select: none; /* Konqueror HTML */
-      -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-      width: 35px;
-      height: 35px;
-      color: $second;
-      flex-shrink: 0;
-      -webkit-user-select: none; /* Safari */
-      -ms-user-select: none; /* IE 10 and IE 11 */
-      user-select: none; /* Standard syntax */
-
-     
-    }
   }
 }
 
@@ -288,7 +367,5 @@ export default {
       color: $text-main-l;
     }
   }
-
-  
 }
 </style>

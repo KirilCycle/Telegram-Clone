@@ -1,11 +1,6 @@
 /* eslint-disable */
 import { createRouter, createWebHashHistory } from "vue-router";
-import AuthPage from "@/pages/AuthPage";
-import RegPage from "@/pages/RegPage";
-import ChatPage from "@/pages/ChatPage";
 import store from "@/store/store";
-import GamePage from "@/pages/GamePage";
-import ProfilePage from "@/pages/ProfilePage";
 import {ref} from 'vue'
 import { async } from "@firebase/util";
 import ChatsPage from '@/pages/ChatsPage'
@@ -16,62 +11,12 @@ export const routes = [
   {
     path: "/",
     name: "auth",
-    component: AuthPage,
-    beforeEnter: async (to, from) => {
-      if (await store.state.user.user) {
-        router.push({name:'chat'})
-        return false;
-      } else {
-        return true
-      }
-
-    },
-    
-  },
-
-  
-
-  {
-    path: "/profile",
-    name: "profile",
-    component: ProfilePage,
-    beforeEnter: async (to, from) => {
-      if (! await store.state.user.user) {
-        console.log( store.state.user.user,'router 2');
-        return false;
-      } else {
-        return true
-      }
-
-    },
-
-  },
-  {
-    path:"/game",
-    name:"game",
-    component: GamePage,
+    component: () =>  import("@/pages/AuthPage.vue"),
   },
   {
     path: "/reg",
     name: "reg",
-    component: RegPage,
-  },
-  {
-    path: "/chat",
-    name: "chat",
-    component: ChatPage,
-    beforeEnter: async (to, from) => {
-      if (!await store.state.user.user) {
-
-        console.log( store.state.user.user,'router',isAuthed.value);
-        return false;
-      } else {
-        store.commit("user/setNavbar", true);
-        return true
-
-      }
-
-    },
+    component: () =>  import("@/pages/RegPage.vue"),
   },
   {
     path: "/chats",
@@ -83,7 +28,7 @@ export const routes = [
         console.log( store.state.user.user,'router',isAuthed.value);
         return false;
       } else {
-        store.commit("user/setNavbar", true);
+       
         return true
 
       }
@@ -93,13 +38,6 @@ export const routes = [
 
 ];
 
-export const loginnedRoutes = [
-  {
-    path: "/",
-    name: "chat",
-    component: ChatPage,
-  },
-];
 
 const router = createRouter({
   routes,
