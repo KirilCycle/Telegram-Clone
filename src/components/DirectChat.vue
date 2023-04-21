@@ -83,11 +83,6 @@ export default {
   mounted() {
     // Get a reference to the div element
   },
-  beforeUpdate() {
-    console.log(
-      "CATCH UPDATE",
-      this.$store.state.chat.chatContainerRef.scrollTop
-    );
 
     //   if (  this.$store.state.chat.chatContainerRef ) {
     //  console.log(   'YES');
@@ -99,7 +94,7 @@ export default {
     //        key: "lastScroll",
     //        data: this.$store.state.chat.chatContainerRef.scrollTop,
     //      });
-  },
+  
   // store.commit("chat/changeChatsScrollData", {
   //   id: store.state.chat.chatId,
   //   key: "lastScroll",

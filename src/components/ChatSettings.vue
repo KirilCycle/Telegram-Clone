@@ -43,9 +43,9 @@ export default {
         [chatId]: firebase.firestore.FieldValue.delete(),
       });
 
-      const chatRef = doc(db, "chatMessages", chatId);
+      const chatRef = db.collection("chatMessages").doc(chatId);
 
-       batch.delete(chatRef);
+      batch.delete(chatRef);
 
       //   // Delete the city 'LA'
       //   const laRef = doc(db, "cities", "LA");

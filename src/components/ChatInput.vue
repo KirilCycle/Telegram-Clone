@@ -23,18 +23,18 @@
 
       <div class="send-btn-wrp">
         <transition name="bounce">
-          <button  class="send-btn" v-show="ableTosend" @click="send">
+          <button class="send-btn" v-show="ableTosend" @click="send">
             <span class="material-symbols-outlined"> send </span>
           </button>
         </transition>
 
         <transition name="fade">
-          <button v-show="!ableTosend"  class="voice-btn">
-            <span  class="material-symbols-outlined">
-              keyboard_voice
-            </span>
-          </button>
-        </transition>
+        <button>
+          <span v-show="!ableTosend" class="material-symbols-outlined">
+            keyboard_voice
+          </span>
+        </button>
+      </transition>
       </div>
     </div>
   </div>
@@ -184,7 +184,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
-
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
@@ -192,13 +191,11 @@ export default {
   opacity: 0;
 }
 
-
-
 .bounce-enter-active {
-  animation: bounce-in 0.4s;
+  animation: bounce-in 0.1s;
 }
 .bounce-leave-active {
-  animation: bounce-in 0.3s reverse;
+  animation: bounce-in 0.1s reverse;
 }
 @keyframes bounce-in {
   0% {
@@ -212,7 +209,6 @@ export default {
   }
 }
 
-
 .send-btn-wrp {
   position: relative;
   width: 50px;
@@ -220,26 +216,26 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  .send {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    
+ 
+ 
+
+
+  .send-btn {
+    width: 100%;
+    height: 100%;
+   
+    span {
+     
       color: $second;
-      span {
-        left: 0;
-        position: absolute;
-        color: $second;
+
+      &:hover {
+        color: $main;
       }
-      /* your styling rules for the first button here */
-    
+ 
+    }
   }
 
-
   button {
-
     position: absolute;
   }
   span {
@@ -255,23 +251,6 @@ export default {
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
   }
-
-  .voice-btn {
-    opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  }
-
-  .fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease-in-out; /* must match the duration and easing in step 1 */
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-
 }
 
 .reply-border-wrap {
@@ -312,7 +291,6 @@ export default {
 
   background: $content-main;
   position: relative;
-
   justify-content: center;
   align-items: center;
   flex-direction: column;

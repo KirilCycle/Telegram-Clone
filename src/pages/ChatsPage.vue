@@ -24,7 +24,7 @@
       </div>
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
-        <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
+        <chat-list  :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>
 
       <div v-if="isSearch" @click="chatHided = true">
@@ -73,6 +73,7 @@
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
+            
           </div>
         </div>
       </div>
@@ -285,6 +286,8 @@ export default {
 
     const chat = ref("");
 
+    const listLoaded = ref(null)
+
     const slectedChatRef = db.collection("usersLinksToChat");
 
     if (store.state.chat.chatId) {
@@ -316,6 +319,8 @@ export default {
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
+
+        listLoaded.value = true
 
         if (formated.length > store.state.chat.chatsCount) {
           for (let i = 0; i < formated.length; i++) {
@@ -497,6 +502,7 @@ export default {
       chat,
       sendMessageToFoundedChat,
       resetSelectedChat,
+      listLoaded,
     };
   },
 };

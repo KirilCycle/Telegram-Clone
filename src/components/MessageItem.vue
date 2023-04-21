@@ -213,11 +213,11 @@ export default {
 @import "@/styles/colors.scss";
 .img-wrp {
   width: 100%;
-  min-height: 340px;
+  
   img {
     border-radius: 10px;
     width: 100%;
-    height: 100%;
+     max-height: 100%;
     max-height: 83vh;
   }
 
@@ -338,6 +338,7 @@ export default {
     display: inline-block;
     max-width: 500px;
     word-break: break-all;
+    overflow-wrap: break-word;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -363,6 +364,8 @@ export default {
   .item-body {
     background: $content-main-l;
     color: $text-main-l;
+  
+    word-break: break-all;
   }
 
   .emoji-c {

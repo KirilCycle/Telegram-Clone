@@ -4,7 +4,7 @@
   </div>
   <Teleport to="body">
     <Transition>
-      <div v-if="v">
+      <div v-if="v" >
         <user-profile @close="v = false"></user-profile>
       </div>
     </Transition>
@@ -12,9 +12,13 @@
 </template>
 
 <script>
-import UserProfile from "./UserProfile.vue";
+// import UserProfile from "./UserProfile.vue";
+
+const UserProfile = () => import("@/components/UserProfile.vue")
+
+
 export default {
-  components: { UserProfile },
+  components: { UserProfile  },
   props: {
     userPhotoUrl: String,
     required: true,

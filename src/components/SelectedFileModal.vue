@@ -211,11 +211,11 @@ $padver: 16px;
   cursor: pointer;
   &:hover {
     span {
-      color: #767676;
+      color: rgb(187, 187, 187);
     }
   }
   width: 20px;
-  overflow: hidden;
+ 
   height: 100%;
   display: flex;
   cursor: pointer;
@@ -227,13 +227,14 @@ $padver: 16px;
   span {
     display: block;
     position: relative;
-    right: 10px;
+    right: 8px;
     height: 30px;
     width: 15px;
-    color: #404661;
+    color: gray;
     top: 0%;
     margin: 0% auto;
     font-size: 2rem;
+    transform: rotate(20deg);
     &:hover {
       color: #767676;
     }
