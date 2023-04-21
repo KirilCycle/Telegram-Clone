@@ -5,6 +5,11 @@
 
   <div class="main">
     <div class="left-bar">
+
+      <div class="btn-controll">
+        <chats-control-btn></chats-control-btn>
+      </div>
+
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <settings></settings>
 
@@ -73,7 +78,7 @@
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -106,6 +111,7 @@ import ChatSettings from "@/components/ChatSettings.vue";
 import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from '@/components/FoundedChatInput.vue';
+import ChatsControlBtn from '@/components/ChatsControlBtn.vue';
 
 export default {
   components: {
@@ -117,6 +123,7 @@ export default {
     FoundedChatsList,
     FoundedChatInputVue,
     ChatList,
+    ChatsControlBtn,
     Settings,
     SelectedChat,
     ChatInput,
@@ -516,13 +523,18 @@ $custom-c4: rgb(23, 23, 23);
 
 $custom-c3: rgb(0, 128, 255);
 
-.test {
-  width: 500px;
-  height: 500px;
-  z-index: 300;
+
+
+.btn-controll {
+  z-index: 10;
+  bottom: 20px;
+  right: 20px;
   position: absolute;
-  background-color: #e40f0f;
+  transition: transform 0.1s ease-out;
+  transform: translateY(100px);
+
 }
+
 
 .fade-enter-active,
 .fade-leave-active {
@@ -654,6 +666,7 @@ v-enter-active,
 }
 
 
+
 .main {
   display: flex;
   justify-content: center;
@@ -673,6 +686,7 @@ v-enter-active,
   width: 310px;
   overflow: hidden;
   resize: horizontal;
+  position: relative;
   flex-shrink: 0;
   background-color: $content-main;
   display: flex;
@@ -766,6 +780,14 @@ v-enter-active,
   }
 }
 
+.left-bar:hover {
+  .btn-controll {
+   transform: translateY(0px);
+  }
+
+} 
+
+
 .dark .left-bar .left_bar_srch-wrap {
   background-color: $content-main-l;
 
@@ -837,6 +859,10 @@ v-enter-active,
     }
   }
 
+ 
+
+
+
   .left-bar {
     width: 60%;
     min-height: none;
@@ -844,7 +870,6 @@ v-enter-active,
     height: none;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
-    position: relative;
     resize: none;
 
     .left_bar_srch-wrap {

@@ -376,8 +376,8 @@ export default {
 
 .item .emoji-c {
   @extend %emoji;
-  background-color: $content-main;
-  border: 1px solid $main;
+  background-color: $content-main-dark;
+  border: 1px solid $content-main-dark;
 }
 
 .my-item .emoji-c {
@@ -437,12 +437,7 @@ export default {
     color: white;
     background: rgb(84, 175, 213);
     margin-bottom: 7px;
-    position: relative;
-
-    display: inline-block;
-    max-width: 500px;
-    word-break: break-all;
-
+  
     right: 0px;
     margin-left: 10px;
     border-top-right-radius: 20px;
@@ -502,7 +497,7 @@ export default {
       padding: 8px;
       color: white;
       display: flex;
-
+      
       flex-wrap: wrap;
       position: relative;
       right: 0px;

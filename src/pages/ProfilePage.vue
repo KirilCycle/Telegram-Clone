@@ -478,6 +478,7 @@ img {
 }
 
 .settings-nav {
+  max-height: 60px;
   width: 100%;
   background-color: $content-main;
   height: 8%;

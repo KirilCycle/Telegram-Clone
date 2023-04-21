@@ -566,6 +566,7 @@ $def-gray: #828282;
 .edti-nav {
   width: 100%;
   height: 8%;
+  max-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
