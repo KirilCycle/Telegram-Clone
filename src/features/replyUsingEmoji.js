@@ -4,13 +4,13 @@ import { doc, setDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
 
-export async function replyEmoji(em, msg) {
+export async function replyEmoji(em, msg, isSelected) {
   //  // set awdawd waa a a a a a a a a a
   // // Set the "capital" field of the city 'DC'
   // await updateDoc(washingtonRef, {
   //   capital: true
   // });
-  console.log( em, msg.emj, 'START');
+  console.log(em, msg.emj, "START");
 
   const user = store.state.user.user.uid;
 
@@ -59,7 +59,11 @@ export async function replyEmoji(em, msg) {
     let last;
 
     if (emojis) {
-      const source = Object.entries(emojis);
+      let source;
+
+      await msgRef.get().then((doc) => {
+        source = Object.entries(doc.data().emj);
+      });
 
       for (let i = 0; i < source.length; i++) {
         for (let j = 0; j < source[i][1].length; j++) {
@@ -74,8 +78,6 @@ export async function replyEmoji(em, msg) {
           }
         }
       }
-
-    
 
       if (founded) {
         if (founded === em) {
