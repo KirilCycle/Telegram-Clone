@@ -159,15 +159,11 @@ export default {
   computed: {
     select() {
       if (this.$store.state.message.replyTarget) {
-        
-        console.log(this.$store.state.message.replyTarget, 'REP');
-        return this.$store.state.message.replyTarget;
+        return true
       } else if (this.$store.state.message.forwardTarget) {
-        
-        console.log(this.$store.state.message.forwardTarget, 'FOR');
-        return this.$store.state.message.forwardTarget;
+        return true;
       }
-      return false;
+      return null;
     },
 
     ableTosend() {

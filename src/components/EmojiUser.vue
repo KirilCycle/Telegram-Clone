@@ -20,15 +20,11 @@ import firebase from "firebase/compat/app";
                 userImg: ''
             }
          },
-
          mounted() {
-            this.getUserPhoto()
-           
-
+            this.getUserPhoto()   
          },
          methods: {
             async getUserPhoto() {
-
                 
                 const db = firebase.firestore()
                 

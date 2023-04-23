@@ -1,10 +1,11 @@
 <template>
-  <div class="rep-container">
+  <div  class="rep-container">
     <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
 
-      <div v-if="select">
-        <small-chat-image :src="select.source?.src"></small-chat-image>
+      <div>
+        <small-chat-image :type="select.source?.type" :src="select.source.src"></small-chat-image>
+      
       </div>
       <div class="text-container">
         <h3>{{ select.from  || select.sender.userName}}</h3>
@@ -40,7 +41,7 @@ export default {
     },
     scrllToTarget() {
       if (data.replyMsgRef) {
-        data.replyMsgRef.scrollIntoView({
+        this.$store.state.message.replyMsgRef.scrollIntoView({
           block: "center",
           behavior: "smooth",
         });
@@ -66,6 +67,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
+
+.video-prew {
+  width: 40px;
+  height: 40px;
+}
 .rep-container {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -82,6 +88,8 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+
 
   span {
     width: 35px;
@@ -102,7 +110,7 @@ export default {
       text-align: left;
       display: flex;
       flex-direction: column;
-      margin-left: 5px;
+      margin-left: 10px;
 
       h3 {
         font-weight: 550;

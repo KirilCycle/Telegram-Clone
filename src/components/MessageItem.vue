@@ -29,14 +29,16 @@
         <p>{{ message.text }}</p>
         <label>{{ time }}</label>
       </div>
+     
       <div class="emoji-wrap" v-if="emojis">
-        <div class="emoji-c" v-for="em in emojis" :key="em[0]">
+        <div @click="(e) => handleEmojiClick(em[0])" class="emoji-c" v-for="em in emojis" :key="em[0]">
           <p>
             {{ em[0] }}
           </p>
           <emoji-user :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
         </div>
       </div>
+     
     </div>
   </div>
 </template>
@@ -122,7 +124,15 @@ export default {
       } else {
       }
     },
+    handleEmojiClick(emj) {
+    
+      //find my id and delete here
+      //
+      
 
+      console.log(emj);
+
+    },
     handleTouch(e) {
       console.log("TOCUB");
 
@@ -278,6 +288,9 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+
+  @extend %no-select;
+
 }
 .item {
   min-width: 150px;

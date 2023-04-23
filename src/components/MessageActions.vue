@@ -41,7 +41,6 @@
     </div>
 
     <forward-modal @close="close" v-if="v"></forward-modal>
-
   </Teleport>
 </template>
 
@@ -51,7 +50,7 @@ import { updateDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { doc, setDoc } from "firebase/firestore";
 import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import ForwardModal from './ForwardModal.vue';
+import ForwardModal from "./ForwardModal.vue";
 
 export default {
   data() {
@@ -64,7 +63,7 @@ export default {
     };
   },
   components: {
-   ForwardModal  
+    ForwardModal,
   },
   methods: {
     prepareToReply() {
@@ -79,19 +78,17 @@ export default {
       });
     },
 
-     close() {
-          this.v = false
-          this.$emit('close')
+    close() {
+      this.v = false;
+      this.$emit("close");
     },
 
     async replyEmoji(em) {
-      
-      
-      //  // set awdawd waa a a a a a a a a a 
+      //  // set awdawd waa a a a a a a a a a
       // // Set the "capital" field of the city 'DC'
       // await updateDoc(washingtonRef, {
-        //   capital: true
-        // });
+      //   capital: true
+      // });
       const msg = store.state.message.selectedMsgData;
 
       const user = this.$store.state.user.user.uid;
@@ -130,8 +127,6 @@ export default {
             return;
           }
 
-          console.log("HERE WE GO", key, user);
-
           await updateDoc(msgRef, {
             [linkToSendedEm]: arrayRemove(user),
           });
@@ -158,6 +153,11 @@ export default {
           }
 
           if (founded) {
+            if (founded === em) {
+              removeReaction(founded, last)
+            console.log(  ("same"))
+              return;
+            }
             removeReaction(founded, last).then(() => {
               postReaction(em);
             });
@@ -168,7 +168,6 @@ export default {
         return;
       }
 
-
       msgRef.set(
         {
           emj: {
@@ -177,8 +176,6 @@ export default {
         },
         { merge: true }
       );
-
-
     },
 
     selectText() {
@@ -276,7 +273,7 @@ export default {
       width: 100%;
       height: 35px;
       align-items: center;
-     
+
       flex-direction: row;
       display: flex;
 
@@ -304,7 +301,7 @@ export default {
       z-index: -1;
       right: 5px;
       bottom: -7px;
-      background-color:  $content-main;
+      background-color: $content-main;
     }
 
     .emoji_container_smll_circl {
@@ -314,7 +311,7 @@ export default {
       right: 14px;
       border-radius: 5px;
       bottom: -23px;
-      background-color:  $content-main;
+      background-color: $content-main;
     }
   }
 
@@ -372,12 +369,10 @@ export default {
   }
 }
 
-
 .dark .msg-actions {
   background-color: $content-main-l;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   .actions-list {
-
     li {
       color: $text-main-l;
     }
@@ -385,7 +380,6 @@ export default {
       color: #e02b2b;
     }
   }
-
 }
 
 .dark .msg-actions .emoji-container {
@@ -398,7 +392,5 @@ export default {
   .emoji_container_circl {
     background-color: $content-main-l;
   }
-
- 
 }
 </style>
