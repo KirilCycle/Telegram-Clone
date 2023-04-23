@@ -31,7 +31,7 @@
       </div>
      
       <div class="emoji-wrap" v-if="emojis">
-        <div @click="(e) => handleEmojiClick(em[0])" class="emoji-c" v-for="em in emojis" :key="em[0]">
+        <div @click="() => replyEmoji(em[0], message)" class="emoji-c" v-for="em in emojis" :key="em[0]">
           <p>
             {{ em[0] }}
           </p>
@@ -52,6 +52,7 @@ import SmallChatImage from "./SmallChatImage.vue";
 import EmojiContainer from "./EmojiContainer.vue";
 import { objectEntries } from "@vueuse/core";
 import EmojiUser from "./EmojiUser.vue";
+import { replyEmoji } from '@/features/replyUsingEmoji';
 
 export default {
   components: {
@@ -79,6 +80,8 @@ export default {
       isMy: this.isMy,
       message: this.message,
       emojis: this.message.emj,
+      replyEmoji,
+
     };
   },
 
@@ -129,7 +132,6 @@ export default {
       //find my id and delete here
       //
       
-
       console.log(emj);
 
     },
@@ -162,16 +164,13 @@ export default {
       console.log(store.state.message.selectedMsgData, "SELECTED");
 
       //
-
       // store.commit('message/setReplyTarget',
       //  {
       //    text: this.message.text,
       //    from: this.message.userName,
       //   ...( this.message.imageRef?  {  img:  this.message.imageRef } : {} )
-
       //  }
       // )
-
       console.log(store.state.message, "FROM REDUX");
     },
   },

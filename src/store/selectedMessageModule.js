@@ -6,7 +6,7 @@ export const messageModule = {
     selectedMsgData: null,
     visible: false,
     query: null,
-    forwardTarget: null
+    forwardTarget: null,
   }),
   getters: {
     getReplyTarget(state) {
@@ -29,15 +29,15 @@ export const messageModule = {
       return state.selectedMsgData;
     },
     getQuerry(state) {
-      return state.querry
-    }
+      return state.querry;
+    },
   },
   mutations: {
     setVisible(state, v) {
       state.visible = v;
     },
     setQuery(state, q) {
-      state.query = q 
+      state.query = q;
     },
     setReplyTarget(state, target) {
       state.replyTarget = target;
@@ -51,17 +51,16 @@ export const messageModule = {
     setSelectdMsg(state, data) {
       state.selectedMsgData = data;
     },
-    setForwardTarget(state,data) {
+    setForwardTarget(state, data) {
       state.forwardTarget = data;
     },
-    
   },
 
   actions: {
     setVisible({ state, commit, v }) {
       commit("setVisible", v);
     },
-    setQuery({state, commit, q}) {
+    setQuery({ state, commit, q }) {
       commit("setQuery", q);
     },
     setSelectdMsg({ state, commit, data }) {
@@ -78,9 +77,14 @@ export const messageModule = {
       commit("setClickCoords", coords);
     },
 
-    setForwardTarget({state, commit, data}) {
-      commit("setForwardTarget", data)
-    }
+    setForwardTarget({ state, commit, data }) {
+      commit("setForwardTarget", data);
+    },
+    
+
   },
+
+  
+
   namespaced: true,
 };

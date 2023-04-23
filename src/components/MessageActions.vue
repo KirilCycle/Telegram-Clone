@@ -4,14 +4,13 @@
       <div ref="modal" class="msg-actions">
         <div class="emoji-container">
           <div class="emoji-list">
-            <div @click="() => replyEmoji('😂')">😂</div>
-            <div @click="() => replyEmoji('😘')">😘</div>
-            <div @click="() => replyEmoji('👍')">👍</div>
-            <div @click="() => replyEmoji('😍')">😍</div>
-            <div @click="() => replyEmoji('🐳')">🐳</div>
-            <div @click="() => replyEmoji('👍')">👍</div>
-            <div @click="() => replyEmoji('👎')">👎</div>
-            <div @click="() => replyEmoji('😈')">😈</div>
+            <div
+              @click="() => replyEmoji(em,  $store.state.message.selectedMsgData)"
+              v-for="em in emojis"
+              :key="em + 1"
+            >
+              {{ em }}
+            </div>
           </div>
 
           <div class="emoji_container_circl"></div>
@@ -46,10 +45,13 @@
 
 <script>
 import store from "@/store/store";
+
 import { updateDoc } from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import { doc, setDoc } from "firebase/firestore";
 import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+import firebase from "firebase/compat/app";
+import { replyEmoji } from "@/features/replyUsingEmoji";
+
 import ForwardModal from "./ForwardModal.vue";
 
 export default {
@@ -60,6 +62,13 @@ export default {
         store.state.user.user.uid,
       db: firebase.firestore(),
       v: false,
+      replyEmoji,
+      emojis: ["😘", "👎", "👍", "😂", "🐳", "😈", "😘"],
+      emojiOptions: {
+        chatId: this.$store.state.chat.chatId,
+        userId: this.$store.state.user.user.uid,
+        selectedMsgData: this.$store.state.message.selectedMsgData,
+      },
     };
   },
   components: {
@@ -83,7 +92,7 @@ export default {
       this.$emit("close");
     },
 
-    async replyEmoji(em) {
+    async replyEmojiss(em) {
       //  // set awdawd waa a a a a a a a a a
       // // Set the "capital" field of the city 'DC'
       // await updateDoc(washingtonRef, {
@@ -154,8 +163,7 @@ export default {
 
           if (founded) {
             if (founded === em) {
-              removeReaction(founded, last)
-            console.log(  ("same"))
+              removeReaction(founded, last);
               return;
             }
             removeReaction(founded, last).then(() => {
