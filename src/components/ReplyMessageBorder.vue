@@ -3,12 +3,12 @@
     <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
 
-      <div v-if="photo">
-        <small-chat-image :src="photo"></small-chat-image>
+      <div v-if="select">
+        <small-chat-image :src="select.source?.src"></small-chat-image>
       </div>
       <div class="text-container">
-        <h3>{{ data.from  || data.sender.userName}}</h3>
-        <p>{{ data.text.slice(0, 29) }}</p>
+        <h3>{{ select.from  || select.sender.userName}}</h3>
+        <p>{{ select.text.slice(0, 29) }}</p>
       </div>
     </div>
     <span class="material-symbols-outlined" @click="reset"> close </span>
@@ -48,11 +48,15 @@ export default {
     },
   },
   computed: {
-    photo() {
-      const source = this.data;
-
-    if (source.imageRef) {
-        return source.imageRef
+    select() {
+      if (this.$store.state.message.replyTarget) {
+        
+        console.log(this.$store.state.message.replyTarget.source, 'REP');
+        return this.$store.state.message.replyTarget;
+      } else if (this.$store.state.message.forwardTarget) {
+        
+        console.log(this.$store.state.message.forwardTarget.source, 'FOR');
+        return this.$store.state.message.forwardTarget;
       }
       return false;
     },

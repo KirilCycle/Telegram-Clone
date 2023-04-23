@@ -75,7 +75,7 @@ export default {
       store.commit("message/setReplyTarget", {
         text: msgData.text,
         from: msgData.userName,
-        ...(msgData.imageRef ? { imageRef: msgData.imageRef } : {}),
+        ...(msgData.source ? { source: msgData.source } : {}),
       });
     },
 

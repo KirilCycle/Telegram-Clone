@@ -6,7 +6,7 @@
 
     <div class="content">
       <span>
-        <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
+        <selected-file-modal  @sendMsgWithFile="sendMsg"></selected-file-modal>
 
         <!-- @notready="messageisNotReady = true"
         :notready="messageisNotReady"
@@ -29,12 +29,12 @@
         </transition>
 
         <transition name="fade">
-        <button>
-          <span v-show="!ableTosend" class="material-symbols-outlined">
-            keyboard_voice
-          </span>
-        </button>
-      </transition>
+          <button>
+            <span v-show="!ableTosend" class="material-symbols-outlined">
+              keyboard_voice
+            </span>
+          </button>
+        </transition>
       </div>
     </div>
   </div>
@@ -159,8 +159,12 @@ export default {
   computed: {
     select() {
       if (this.$store.state.message.replyTarget) {
+        
+        console.log(this.$store.state.message.replyTarget, 'REP');
         return this.$store.state.message.replyTarget;
       } else if (this.$store.state.message.forwardTarget) {
+        
+        console.log(this.$store.state.message.forwardTarget, 'FOR');
         return this.$store.state.message.forwardTarget;
       }
       return false;
@@ -170,7 +174,8 @@ export default {
       if (
         this.$store.state.chat.chatsScrollPosition[
           this.$store.state.chat.chatId
-        ].v
+        ].v ||
+        store.state.message.forwardTarget
       ) {
         return true;
       } else {
@@ -184,8 +189,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
@@ -216,22 +222,17 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
- 
- 
-
 
   .send-btn {
     width: 100%;
     height: 100%;
-   
+
     span {
-     
       color: $second;
 
       &:hover {
         color: $main;
       }
- 
     }
   }
 
