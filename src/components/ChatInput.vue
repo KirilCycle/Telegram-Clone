@@ -6,7 +6,7 @@
 
     <div class="content">
       <span>
-        <selected-file-modal  @sendMsgWithFile="sendMsg"></selected-file-modal>
+        <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
 
         <!-- @notready="messageisNotReady = true"
         :notready="messageisNotReady"
@@ -22,14 +22,14 @@
       />
 
       <div class="send-btn-wrp">
-        <transition name="bounce">
+        <transition>
           <button class="send-btn" v-show="ableTosend" @click="send">
             <span class="material-symbols-outlined"> send </span>
           </button>
         </transition>
 
-        <transition name="fade">
-          <button>
+        <transition>
+          <button @mousedown="startRecording" @mouseup="sendRecording">
             <span v-show="!ableTosend" class="material-symbols-outlined">
               keyboard_voice
             </span>
@@ -49,6 +49,10 @@ import { getAuth } from "firebase/auth";
 import { updateDoc } from "@firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { doc } from "firebase/firestore";
+
+import { ref } from "vue";
+import { getStorage, ref as storageRef } from "firebase/storage";
+import { getDatabase, ref as databaseRef, push } from "firebase/database";
 
 export default {
   components: { SelectedFileModal, ReplyMessageBorder },
@@ -159,7 +163,7 @@ export default {
   computed: {
     select() {
       if (this.$store.state.message.replyTarget) {
-        return true
+        return true;
       } else if (this.$store.state.message.forwardTarget) {
         return true;
       }
@@ -179,37 +183,74 @@ export default {
       }
     },
   },
+  setup(props) {
+    const recording = ref(null);
+    const recordingUrl = ref(null);
+
+   async function startRecording() {
+      if (navigator.mediaDevices) {
+        console.log("start");
+        // recording.value = new MediaRecorder(
+        //   navigator.mediaDevices.getUserMedia({ audio: true })
+        // );
+        // recording.value.start();
+
+        const constraints = { audio: true };
+        let chunks = [];
+
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+          const mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.start();
+          console.log(mediaRecorder.state);
+          console.log("recorder started");
+
+          setTimeout(async () => {
+            mediaRecorder.stop();
+            console.log(mediaRecorder.state, "S");
+
+            
+            const storageRef = ref(storage, 'recordings/' + Date.now() + '.webm');
+            console.log(blob, "AAAUDIO");
+
+            chunks = [];
+            const audioURL = URL.createObjectURL(blob);
+
+            const snapshot = await storageRef.put(blob);
+
+            console.log("recorder stopped", audioURL);
+
+            mediaRecorder.ondataavailable = (e) => {
+              chunks.push(e.data);
+            };
+          }, 3000);
+        });
+      }
+    }
+
+    async function sendRecording() {
+      console.log("end");
+      // recording.value.stop();
+      // recording.value.ondataavailable = (event) => {
+      //   const blob = event.data;
+      //   const storage = getStorage();
+      //   const storageRef = ref(storage, "recordings/" + Date.now() + ".webm");
+      //   storageRef.put(blob).then((snapshot) => {
+      //     recordingUrl.value = snapshot.ref.getDownloadURL();
+      //   });
+      // };
+    }
+
+    return {
+      startRecording,
+      sendRecording,
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
-.bounce-enter-active {
-  animation: bounce-in 0.1s;
-}
-.bounce-leave-active {
-  animation: bounce-in 0.1s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
 
 .send-btn-wrp {
   position: relative;
@@ -317,7 +358,7 @@ export default {
     height: 100%;
 
     input {
-      width: 100%;
+      width: 90%;
       height: 100%;
       max-height: 50px;
       font-size: 1rem;

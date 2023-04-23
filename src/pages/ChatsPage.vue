@@ -5,7 +5,6 @@
 
   <div class="main">
     <div class="left-bar">
-
       <div class="btn-controll">
         <chats-control-btn></chats-control-btn>
       </div>
@@ -29,7 +28,7 @@
       </div>
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
-        <chat-list  :storePath="'chat'" :chatList="chatList"></chat-list>
+        <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>
 
       <div v-if="isSearch" @click="chatHided = true">
@@ -72,13 +71,14 @@
         >
           <div class="input-wrap">
             <div v-if="$store.state.chat.selectedUser.new">
-              <founded-chat-input-vue :sendMsg="sendMessageToFoundedChat"></founded-chat-input-vue>
+              <founded-chat-input-vue
+                :sendMsg="sendMessageToFoundedChat"
+              ></founded-chat-input-vue>
             </div>
 
             <div v-else>
               <chat-input :sendMsg="addNewMessage"></chat-input>
             </div>
-
           </div>
         </div>
       </div>
@@ -110,8 +110,8 @@ import Settings from "@/components/Settings.vue";
 import ChatSettings from "@/components/ChatSettings.vue";
 import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
-import FoundedChatInputVue from '@/components/FoundedChatInput.vue';
-import ChatsControlBtn from '@/components/ChatsControlBtn.vue';
+import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
+import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 
 export default {
   components: {
@@ -140,7 +140,6 @@ export default {
     };
   },
 
- 
   computed: {
     handleWhichTypeOfChatWasSelected() {
       if (store.state.chat.selectedUser?.new) {
@@ -293,7 +292,7 @@ export default {
 
     const chat = ref("");
 
-    const listLoaded = ref(null)
+    const listLoaded = ref(null);
 
     const slectedChatRef = db.collection("usersLinksToChat");
 
@@ -327,7 +326,7 @@ export default {
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
 
-        listLoaded.value = true
+        listLoaded.value = true;
 
         if (formated.length > store.state.chat.chatsCount) {
           for (let i = 0; i < formated.length; i++) {
@@ -347,11 +346,10 @@ export default {
           //Object.keys(store.state.chat.chatsScrollPosition)
           for (var key in store.state.chat.chatsScrollPosition) {
             if (!source[key]) {
-              console.log("LESS THE BEFORE", key)
-              store.commit("chat/deleteChat", key)
-            
+              console.log("LESS THE BEFORE", key);
+              store.commit("chat/deleteChat", key);
 
-              resetSelectedChat()
+              resetSelectedChat();
 
               break;
             }
@@ -367,9 +365,7 @@ export default {
     const auth = getAuth();
 
     async function sendMessageToFoundedChat(v, source) {
-
       const nextVerify = v.length > 0 || source;
-
 
       if (store.state.chat.selectedUser.uid && v.length < 2000 && nextVerify) {
         const userId1 = auth.currentUser.uid;
@@ -397,9 +393,8 @@ export default {
           message.userPhotoURl = auth.currentUser.photoURL;
         }
 
-
         if (source) {
-          message.source = source
+          message.source = source;
         }
 
         const chatsRef = db.collection("chatMessages");
@@ -523,18 +518,32 @@ $custom-c4: rgb(23, 23, 23);
 
 $custom-c3: rgb(0, 128, 255);
 
+.main {
+  display: flex;
+  justify-content: center;
+  background-color: $custom-c2;
+  background-color: #2234ae;
+  background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
+  min-width: 100%;
+  position: relative;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+}
 
+.dark .main {
+  background-color: #44b09e;
+  background-image: linear-gradient(315deg, #44b09e 0%, #e0d2c7 74%);
+}
 
 .btn-controll {
   z-index: 10;
   bottom: 20px;
   right: 20px;
+
   position: absolute;
   transition: transform 0.1s ease-out;
   transform: translateY(100px);
-
 }
-
 
 .fade-enter-active,
 .fade-leave-active {
@@ -611,7 +620,6 @@ v-enter-active,
   overflow-y: scroll;
 }
 
-
 @media (min-width: 1400px) {
   .chat-container-x {
     max-width: 1400px;
@@ -641,6 +649,11 @@ v-enter-active,
   width: 100%;
   height: 8%;
   max-width: inherit;
+  border-bottom: 1px solid $content-main;
+
+  .dark {
+    border-bottom: 1px solid $content-main-l;
+  }
 
   .input-wrap {
     height: 100%;
@@ -652,25 +665,19 @@ v-enter-active,
   }
 }
 
-
-
-
 @media (min-width: 1800px) {
   .chat-input-block-x {
     .input-wrap {
-      max-width: 1400px;   
- 
+      max-width: 1400px;
     }
   }
-  
 }
-
-
 
 .main {
   display: flex;
   justify-content: center;
   background-color: $custom-c2;
+ 
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
@@ -782,11 +789,9 @@ v-enter-active,
 
 .left-bar:hover {
   .btn-controll {
-   transform: translateY(0px);
+    transform: translateY(0px);
   }
-
-} 
-
+}
 
 .dark .left-bar .left_bar_srch-wrap {
   background-color: $content-main-l;
@@ -798,20 +803,35 @@ v-enter-active,
 .dark .left-bar {
   background-color: $content-main-l;
 }
+
 .right-side {
   width: 100%;
   height: 100vh;
   position: relative;
-
   overflow-y: hidden;
+  background-color: #2234ae;
+  background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
 }
+
+.dark .right-side {
+  background-color: #7ee8fa;
+background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+
+}
+
 
 .right-side-shoved-back {
   width: 100%;
-  position: relative;
-
-  overflow-y: hidden;
   height: 100vh;
+  background-color: #2234ae;
+  background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
+  position: relative;
+  overflow-y: hidden;
+}
+.dark .right-side-shoved-back {
+  background-color: #7ee8fa;
+  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+  
 }
 
 .chat-container {
@@ -858,10 +878,6 @@ v-enter-active,
       }
     }
   }
-
- 
-
-
 
   .left-bar {
     width: 60%;

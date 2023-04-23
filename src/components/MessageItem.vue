@@ -30,7 +30,7 @@
         <label>{{ time }}</label>
       </div>
      
-      <div class="emoji-wrap" v-if="emojis[0]">
+      <div class="emoji-wrap" v-if="emojis">
         <div @click="() => replyEmoji(em[0], message)" class="emoji-c" v-for="em in emojis" :key="em[0]">
           <p>
             {{ em[0] }}
@@ -286,7 +286,6 @@ export default {
   max-width: 100%;
   display: flex;
   flex-direction: row;
-  height: 25px;
   flex-wrap: wrap;
 
   @extend %no-select;
@@ -344,24 +343,20 @@ export default {
     background: $content-main;
     color: $text-main;
     margin-bottom: 7px;
-
-    margin: 0;
-    word-break: break-word;
-    white-space: pre-wrap;
-    line-height: 1.3125;
-    text-align: initial;
-    display: block;
-    unicode-bidi: plaintext;
-    border-radius: 0.25rem;
+    
+    flex-wrap: wrap;
     position: relative;
-
+   
+    display: inline-block;
     
     margin-left: 10px;
     max-width: 500px;
+    word-break: break-all;
+    overflow-wrap: break-word;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
-    width: auto;
+    width: max-content;
     min-width: 80px;
     max-width: 70%;
   }
@@ -463,7 +458,6 @@ export default {
     border-bottom-right-radius: 20px;
     width: auto;
     line-height: 19px;
-    
 
     p {
     }
@@ -513,11 +507,18 @@ export default {
       .user-name {
         display: none;
       }
+      word-break: break-all;
+      padding: 8px;
+      color: white;
+      display: flex;
       
-   
+      flex-wrap: wrap;
+      position: relative;
       right: 0px;
       margin-left: 10px;
-
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      width: max-content;
 
       line-height: 19px;
     }
