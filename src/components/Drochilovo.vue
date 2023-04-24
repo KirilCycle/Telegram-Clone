@@ -95,10 +95,15 @@ export default {
       //and delete last
       console.log("get previous");
 
-      if (subChats.length > 3) {
-      } else {
-        // subChat.push({type: 'prev', opirniy: subChat[1]. })
-      }
+      subChats.value.unshift({
+        type: "previous",
+        localId: uuidv4(),
+        opirniy: subChats.value[0].first,
+        last: null,
+        first: null,
+      });
+
+      console.log(  subChats.value)
     }
 
     function fetchNext() {
@@ -106,19 +111,15 @@ export default {
     }
 
     function addDataToGetOtherSubChats(first, last, localId) {
-
       for (let i = 0; i < subChats.value.length; i++) {
-       
         if (subChats.value[i].localId === localId) {
-          subChats.value[i].last = last
-          subChats.value[i].first = first
+          subChats.value[i].last = last;
+          subChats.value[i].first = first;
         }
 
-        
-        
+        console.log("get last");
+      }
     }
-    console.log(subChats.value, 'HA ?????');
-}
 
     return {
       subChats,

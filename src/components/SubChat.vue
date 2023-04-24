@@ -16,7 +16,7 @@ export default {
     const chatPart = ref([]);
 
     for (let i = 0; i < 10; i++) {
-      chatPart.value.push(i + "from");
+      chatPart.value.push(i + props.getData.localId);
       console.log("i");
     }
 
