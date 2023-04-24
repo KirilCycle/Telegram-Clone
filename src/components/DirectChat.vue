@@ -120,6 +120,7 @@ export default {
     const getMessagesType = ref(null);
 
     const chasingBottom = ref(true);
+
     function scrollToBottom() {
       bottom.value?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
@@ -189,7 +190,6 @@ export default {
         //   .limit(40)
       } else {
         query = messagesRef.orderBy("createdAt", "desc").limit(80);
-        // query = messagesRef.orderBy("createdAt", "desc").limit(10)
       }
 
       query.onSnapshot((snapshot, parameters) => {
@@ -224,7 +224,7 @@ export default {
     async function scrollA(link) {
       if (chat.value.length > 79) {
         unpredictableIntelegentMovement.value.scrollIntoView({
-          block: "start",
+          block: "end",
         });
       }
     }
@@ -310,10 +310,10 @@ export default {
 
 .save-line {
   background-color: rgba(255, 0, 0, 0.282);
-  height: 10px;
+  height: 1px;
   width: 100%;
   position: absolute;
-  top: 52%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
