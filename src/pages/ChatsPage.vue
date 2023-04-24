@@ -38,6 +38,7 @@
 
     <Transition>
       <div
+        ref="chat"
         :class="{
           'right-side-shoved-back': chatHided,
           'right-side': !chatHided,
@@ -112,6 +113,7 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
+import { notNullish } from '@vueuse/core';
 
 export default {
   components: {
@@ -136,7 +138,6 @@ export default {
       isSearch: false,
       value: "",
       serachQ: "",
-      chatHided: false,
     };
   },
 
@@ -290,24 +291,8 @@ export default {
 
     const chatList = ref("");
 
-    const chat = ref("");
-
     const listLoaded = ref(null);
 
-    const slectedChatRef = db.collection("usersLinksToChat");
-
-    if (store.state.chat.chatId) {
-      slectedChatRef.doc(store.state.chat.chatId).onSnapshot((doc) => {
-        if (doc.exists) {
-          // Do something with the document data
-          chat.value = doc.data();
-
-          console.log(chat.value, "cht but isnt list juct cht");
-        } else {
-          console.log("No such document!");
-        }
-      });
-    }
 
     // });
     const currentChatType = ref("ChatisntSelected");
@@ -488,7 +473,14 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
+    const chat = ref(null)
+
+    const  chatHided = ref(false)
+
     watchEffect(() => {
+
+    console.log(  chat.value, 'AS MAIN REF', chatHided.value);
+
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
@@ -498,10 +490,13 @@ export default {
       }
     });
 
+
+
     return {
-      chatList,
-      currentChatType,
       chat,
+      chatList,
+      chatHided,
+      currentChatType,
       sendMessageToFoundedChat,
       resetSelectedChat,
       listLoaded,
@@ -857,6 +852,7 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 
 @media (max-width: 798px) {
   .right-side-shoved-back {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     width: 100%;
     position: absolute;
     height: 100vh;
@@ -866,6 +862,7 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
   .right-side {
     width: 40%;
     overflow-x: hidden;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
     transform: translate(0%);
 
@@ -942,6 +939,8 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
+ 
+    
     transform: translate(0%);
   }
   .right-side {
@@ -950,8 +949,8 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     position: absolute;
-    display: none;
-    transform: translate(-120%);
+    display: block;
+    transform: translate(120%);
 
     .chat-container {
       .chat-nav {

@@ -463,8 +463,6 @@ $def-gray: #b2b2b2;
 
 }
 
-
-
 img {
   background: #46464600;
   min-width: 100%;
