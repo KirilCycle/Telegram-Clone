@@ -37,10 +37,7 @@
     </div>
 
     <Transition>
-      <div
-        ref="chat"
-        class="right-side"
-      >
+      <div ref="chat" class="right-side">
         <div
           @touchmove.prevent="() => {}"
           v-if="$store.state.chat.selectedUser"
@@ -110,7 +107,7 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
-import { notNullish } from '@vueuse/core';
+import { notNullish } from "@vueuse/core";
 
 export default {
   components: {
@@ -139,14 +136,7 @@ export default {
   },
 
   computed: {
-    handleWhichTypeOfChatWasSelected() {
-      if (store.state.chat.selectedUser?.new) {
-        ("NewChat");
-      } else if (store.state.state.chat.chatId) {
-        ("DirectChat");
-      }
-      return "ChatisntSelected";
-    },
+  
   },
   mounted() {
     this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
@@ -289,7 +279,6 @@ export default {
     const chatList = ref("");
 
     const listLoaded = ref(null);
-
 
     // });
     const currentChatType = ref("ChatisntSelected");
@@ -470,30 +459,29 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
-    const chat = ref(null)
+    const chat = ref(null);
 
-    const  chatHided = ref(false)
+    const chatHided = ref(false);
 
     watchEffect(() => {
+      console.log(chat.value, "AS MAIN REF", chatHided.value);
 
-
-    console.log(  chat.value, 'AS MAIN REF', chatHided.value);
-
-    
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
         currentChatType.value = "DirectChat";
-      } else {
-        currentChatType.value = "ChatisntSelected";
       }
-
-      if (chat.value) {  
-        chatHided.value? chat.value.style.transform = `translateX(${0}%)` :  chat.value.style.transform = `translateX(${-120}%)`
+      if (chat.value) {
+        if (chatHided.value) {
+          chat.value.style.transform = `translateX(${0}%)`;
+            chat.value.style.width = `100%`;
+        } else {
+           chat.value.style.transform = `translateX(${-140}%)`;
+           
+          chat.value.style.width = `40%`;
+        }
       }
     });
-
-
 
     return {
       chat,
@@ -675,7 +663,7 @@ v-enter-active,
   display: flex;
   justify-content: center;
   background-color: $custom-c2;
- 
+
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
@@ -813,10 +801,8 @@ v-enter-active,
 
 .dark .right-side {
   background-color: #7ee8fa;
-background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-
+  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
-
 
 .right-side-shoved-back {
   width: 100%;
@@ -829,7 +815,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 .dark .right-side-shoved-back {
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-  
 }
 
 .chat-container {
@@ -854,20 +839,13 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
 
 @media (max-width: 798px) {
-  .right-side-shoved-back {
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-    width: 100%;
-    position: absolute;
-    height: 100vh;
-    transform: translate(0%);
-    overflow-x: hidden;
-  }
   .right-side {
-    width: 40%;
+    width: 100%;
     overflow-x: hidden;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
     transform: translate(0%);
+
 
     .chat-container {
       .chat-nav {
@@ -942,8 +920,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
- 
-    
     transform: translate(0%);
   }
   .right-side {
