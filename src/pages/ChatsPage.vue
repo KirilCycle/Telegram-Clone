@@ -39,10 +39,7 @@
     <Transition>
       <div
         ref="chat"
-        :class="{
-          'right-side-shoved-back': chatHided,
-          'right-side': !chatHided,
-        }"
+        class="right-side"
       >
         <div
           @touchmove.prevent="() => {}"
@@ -479,14 +476,20 @@ export default {
 
     watchEffect(() => {
 
+
     console.log(  chat.value, 'AS MAIN REF', chatHided.value);
 
+    
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
         currentChatType.value = "DirectChat";
       } else {
         currentChatType.value = "ChatisntSelected";
+      }
+
+      if (chat.value) {  
+        chatHided.value? chat.value.style.transform = `translateX(${0}%)` :  chat.value.style.transform = `translateX(${-120}%)`
       }
     });
 
