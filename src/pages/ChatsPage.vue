@@ -114,6 +114,7 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
+import Drochilovo from "@/components/Drochilovo.vue";
 import { notNullish } from '@vueuse/core';
 
 export default {
@@ -121,6 +122,7 @@ export default {
     DirectChat,
     ReplyMessageBorder,
     SelectedChatDynamic,
+    Drochilovo,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -485,7 +487,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "DirectChat";
+        currentChatType.value = "Drochilovo";
       } 
     });
 
