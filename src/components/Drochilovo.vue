@@ -49,16 +49,16 @@ export default {
   },
   methods: {},
   setup(props) {
-    const db = firebase.firestore();
     const chat = ref([]);
     const bottom = ref(null);
+    const db = firebase.firestore();
 
     const disablePrevFetch = ref(null);
     const chatWasFetched = ref(null);
     const page = ref(null);
-
+    
     const prevData = ref(null);
-
+    
     const subChats = ref([]);
 
     const messagesRef = ref(
@@ -91,7 +91,7 @@ export default {
           
           subChats.value.push(subChat);
 
-        console.log(  first);
+          console.log(first);
 
 
         });
@@ -112,11 +112,17 @@ export default {
     // subChats.value.push(subChat1);
     // subChats.value.push(subChat2);
 
+    const firstWas = ref(null)
+
     watchEffect(async () => {
       if (!prevData.value) {
         //chat was at first opened
 
-        startChatConverstion();
+        if (!firstWas.value ) {
+          startChatConverstion().then((res) => firstWas.value = true)
+        }
+        console.log(  'AAAAAAA');
+         
       }
     });
 
@@ -125,17 +131,17 @@ export default {
       //in case we have 3 i will push next based first msg
       //and delete last
       if ( subChats.value[0].first) {
-        console.log("get previous");
+        console.log(subChats.value[0].first,"get previous");
   
         subChats.value.unshift({
-          type: "previous",
+          type: "endBefore",
           localId: uuidv4(),
           opirniy: subChats.value[0].first,
           last: null,
           first: null,
         });
   
-        console.log(subChats.value);
+        // console.log(subChats.value);
 
       }
       

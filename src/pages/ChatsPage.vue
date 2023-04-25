@@ -482,12 +482,10 @@ export default {
 
     watchEffect(() => {
 
-   
-
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "Drochilovo";
+        currentChatType.value = "DirectChat";
       } 
     });
 

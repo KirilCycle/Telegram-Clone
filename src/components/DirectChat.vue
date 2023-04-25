@@ -15,8 +15,9 @@
 
     <div v-observerdef="firstScroll" v-if="chat.length > 0"></div>
     <message-item
+      :last="{i, length: chat.length}"
       :removeMessage="deleteMessage"
-      v-for="it in chat"
+      v-for="(it, i) in chat"
       :key="it.id"
       :message="it"
       :isMy="it.userId.includes(firstPartOfmyId)"
@@ -46,8 +47,6 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
-
-
 
 export default {
   components: { ChatInput, MessageItem },
@@ -84,17 +83,17 @@ export default {
     // Get a reference to the div element
   },
 
-    //   if (  this.$store.state.chat.chatContainerRef ) {
-    //  console.log(   'YES');
-    //        this.$store.state.chat.chatContainerRef.scrollTop = this.$store.state.chat.chatsScrollPosition[store.state.chat.chatId].lastScroll
-    //   }
+  //   if (  this.$store.state.chat.chatContainerRef ) {
+  //  console.log(   'YES');
+  //        this.$store.state.chat.chatContainerRef.scrollTop = this.$store.state.chat.chatsScrollPosition[store.state.chat.chatId].lastScroll
+  //   }
 
-    //   store.commit("chat/changeChatsScrollData", {
-    //        id: store.state.chat.chatId,
-    //        key: "lastScroll",
-    //        data: this.$store.state.chat.chatContainerRef.scrollTop,
-    //      });
-  
+  //   store.commit("chat/changeChatsScrollData", {
+  //        id: store.state.chat.chatId,
+  //        key: "lastScroll",
+  //        data: this.$store.state.chat.chatContainerRef.scrollTop,
+  //      });
+
   // store.commit("chat/changeChatsScrollData", {
   //   id: store.state.chat.chatId,
   //   key: "lastScroll",
@@ -194,6 +193,10 @@ export default {
 
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0) {
+          
+
+          console.log("settted", link.last);
+
           let newData = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -202,7 +205,7 @@ export default {
           chat.value = newData;
 
           if (link.getMessagesType === "prev") {
-            scrollA();
+            scrollA()
           }
         } else {
           chat.value = snapshot.docs
@@ -221,12 +224,14 @@ export default {
       });
     });
 
-    async function scrollA(link) {
-      if (chat.value.length > 79) {
-        unpredictableIntelegentMovement.value.scrollIntoView({
-          block: "end",
-        });
-      }
+    async function scrollA() {
+      // if (chat.value.length > 79) {
+      //   unpredictableIntelegentMovement.value.scrollIntoView({
+      //     block: "end",
+      //   });
+      // }
+      
+      
     }
 
     function fetchPrev() {

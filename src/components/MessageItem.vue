@@ -1,5 +1,7 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
+    <div ref="scrollTarget"></div>
+
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
@@ -21,7 +23,7 @@
           class="video-player"
           v-else
           :src="message.source.src"
-           controls
+          controls
         ></video>
       </div>
 
@@ -29,16 +31,20 @@
         <p>{{ message.text }}</p>
         <label>{{ time }}</label>
       </div>
-     
+
       <div class="emoji-wrap" v-if="emojis">
-        <div @click="() => replyEmoji(em[0], message)" class="emoji-c" v-for="em in emojis" :key="em[0]">
+        <div
+          @click="() => replyEmoji(em[0], message)"
+          class="emoji-c"
+          v-for="em in emojis"
+          :key="em[0]"
+        >
           <p>
             {{ em[0] }}
           </p>
           <emoji-user :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
         </div>
       </div>
-     
     </div>
   </div>
 </template>
@@ -52,7 +58,7 @@ import SmallChatImage from "./SmallChatImage.vue";
 import EmojiContainer from "./EmojiContainer.vue";
 import { objectEntries } from "@vueuse/core";
 import EmojiUser from "./EmojiUser.vue";
-import { replyEmoji } from '@/features/replyUsingEmoji';
+import { replyEmoji } from "@/features/replyUsingEmoji";
 
 export default {
   components: {
@@ -66,6 +72,7 @@ export default {
     message: Object,
     isMy: Boolean,
     next: Object,
+    last: Boolean,
     removeMessage: Function,
     required: true,
   },
@@ -81,10 +88,18 @@ export default {
       message: this.message,
       emojis: this.message.emj,
       replyEmoji,
-
     };
   },
-
+  mounted() {
+    if (this.last) {
+      console.log("yes");
+      this.$refs.scrollTarget.style.height = "30px";
+      this.$refs.scrollTarget.style.width = "30px";
+      this.$refs.scrollTarget.style.backgroundColor = "red";
+      console.log(this.last, 'HA ?');
+    } else {
+    }
+  },
   computed: {
     time() {
       if (this.message?.createdAt) {
@@ -128,12 +143,10 @@ export default {
       }
     },
     handleEmojiClick(emj) {
-    
       //find my id and delete here
       //
-      
-      console.log(emj);
 
+      console.log(emj);
     },
     handleTouch(e) {
       console.log("TOCUB");
@@ -222,11 +235,11 @@ export default {
 @import "@/styles/colors.scss";
 .img-wrp {
   width: 100%;
-  
+
   img {
     border-radius: 10px;
     width: 100%;
-     max-height: 100%;
+    max-height: 100%;
     max-height: 83vh;
   }
 
@@ -238,20 +251,20 @@ export default {
   .video-player:hover {
     cursor: pointer;
   }
-  
+
   .video-player::-webkit-media-controls {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
   }
-  
+
   .video-player:hover::-webkit-media-controls {
     opacity: 1;
   }
-  
+
   .video-player::-webkit-media-controls-start-playback-button {
     display: none;
   }
-  
+
   .video-player:hover::-webkit-media-controls-start-playback-button {
     display: block;
     position: absolute;
@@ -259,10 +272,6 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
   }
-
-  
-
-
 }
 
 %no-select {
@@ -289,7 +298,6 @@ export default {
   flex-wrap: wrap;
 
   @extend %no-select;
-
 }
 .item {
   min-width: 150px;
@@ -343,12 +351,12 @@ export default {
     background: $content-main;
     color: $text-main;
     margin-bottom: 7px;
-    
+
     flex-wrap: wrap;
     position: relative;
-   
+
     display: inline-block;
-    
+
     margin-left: 10px;
     max-width: 500px;
     word-break: break-all;
@@ -360,7 +368,6 @@ export default {
     min-width: 80px;
     max-width: 70%;
   }
-
 
   label {
     font-size: 0.7rem;
@@ -378,7 +385,7 @@ export default {
   .item-body {
     background: $content-main-l;
     color: $text-main-l;
-  
+
     word-break: break-all;
   }
 
@@ -451,7 +458,7 @@ export default {
     color: white;
     background: rgb(84, 175, 213);
     margin-bottom: 7px;
-  
+
     right: 0px;
     margin-left: 10px;
     border-top-right-radius: 20px;
@@ -481,7 +488,6 @@ export default {
       font-size: 0.8rem;
     }
   }
-
 }
 
 @media (max-width: 1115px) {
@@ -511,7 +517,7 @@ export default {
       padding: 8px;
       color: white;
       display: flex;
-      
+
       flex-wrap: wrap;
       position: relative;
       right: 0px;
