@@ -1,6 +1,5 @@
 <template>
   <div class="wrp">
-  
     <div v-observer="fetchPrev"></div>
     <messages-skelet v-if="recentlyWasPrevAct" :number="40"></messages-skelet>
     <transition name="bounce">
@@ -47,7 +46,7 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
-import MessagesSkelet from './MessagesSkelet.vue';
+import MessagesSkelet from "./MessagesSkelet.vue";
 
 export default {
   components: { ChatInput, MessageItem, MessagesSkelet },
@@ -108,7 +107,7 @@ export default {
 
     const unpredictableIntelegentMovement = ref(null);
 
-    const recentlyWasPrevAct = ref(null)
+    const recentlyWasPrevAct = ref(null);
     //middle msg item
 
     const page = ref(null);
@@ -142,6 +141,10 @@ export default {
 
     // });
 
+    function setLastVisibleMsgToHookInNextFetchUsingScoll (id) {
+      console.log('YES',id);
+    }
+
     watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
@@ -156,10 +159,6 @@ export default {
         .collection("messages");
 
       let query = null;
-
-      // const db = firebase.firestore();
-      // const lastVisible = chat.value[chat.value.length - 1];
-      // const firts = chat.value[0];
 
       if (link.page > 0) {
         //in case we saw a top observer
@@ -180,35 +179,27 @@ export default {
               .limit(80);
         }
 
-        // query = messagesRef
-        //   .orderBy("createdAt")
-        //   .limitToLast(40)
-        //   .endBefore(firts.value.createdAt);
-
-        // let next = messagesRef
-        //   .orderBy("createdAt")
-        //   .startAfter(firts.value.createdAt)
-        //   .limit(40)
       } else {
         query = messagesRef.orderBy("createdAt", "desc").limit(80);
       }
 
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0) {
+        
+          let newData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-         
+          chat.value = newData;
 
-            let newData = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-  
-            chat.value = newData;
+          if (link.getMessagesType === "prev") {
+            setTimeout(() => {
+              link.last.ref.scrollIntoView({block: "start"})
+            })
 
-
-          // if (link.getMessagesType === "prev") {
-          //   scrollA()
-          // }
+             console.log(   link.last?.ref, 'WAS');
+          }
         } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -226,19 +217,6 @@ export default {
       });
     });
 
-    async function scrollA() {
-      // if (chat.value.length > 79) {
-      //   unpredictableIntelegentMovement.value.scrollIntoView({
-      //     block: "end",
-      //   });
-      // }
-      
-      if (store.state.chat.chatsScrollPosition[store.state.chat.chatId]?.last) {
-      
-      }
-
-
-    }
 
     function fetchPrev() {
       if (!disablePrevFetch.value) {
@@ -261,6 +239,12 @@ export default {
           id: store.state.chat.chatId,
           key: "getMessagesType",
           data: "prev",
+        });
+
+        store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "last",
+          data: {id: chat.value[0].id},
         });
 
         page.value = link.page;
@@ -312,7 +296,7 @@ export default {
       unpredictableIntelegentMovement,
       chasingBottom,
       scrollToBottom,
-      recentlyWasPrevAct
+      recentlyWasPrevAct,
     };
   },
 };

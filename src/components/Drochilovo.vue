@@ -148,14 +148,16 @@ export default {
     }
 
     function addDataToGetOtherSubChats(first, last, localId) {
-      for (let i = 0; i < subChats.value.length; i++) {
-        if (subChats.value[i].localId === localId) {
-          subChats.value[i].last = last;
-          subChats.value[i].first = first;
-        }
+      // for (let i = 0; i < subChats.value.length; i++) {
+      //   if (subChats.value[i].localId === localId) {
+      //     subChats.value[i].last = last;
+      //     subChats.value[i].first = first;
+      //   }
 
-        console.log("get from");
-      }
+      //   console.log("get from");
+      // }
+
+     console.log( first, last, localId, 'AAXXX');
     }
 
     function fetchNext() {

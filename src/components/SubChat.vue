@@ -80,6 +80,8 @@ export default {
           id: doc.id,
           ...doc.data(),
 
+
+
         }))
 
 

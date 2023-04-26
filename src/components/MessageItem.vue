@@ -90,18 +90,36 @@ export default {
       replyEmoji,
     };
   },
-  mounted() {
-    if (this.last.i === this.last.length - 1) {
-     
+  updated() {
+     console.log(  'updated');
+     if (store.state.chat.chatsScrollPosition[store.state.chat.chatId]?.last.id === this.message.id) {
+      
       this.$refs.scrollTarget.style.height = "30px";
       this.$refs.scrollTarget.style.width = "30px";
       this.$refs.scrollTarget.style.backgroundColor = "red";
       console.log(this.last, 'HA ?');
 
-      
-    } else {
-    }
+      store.commit("chat/changeChatsScrollData", {
+          id: store.state.chat.chatId,
+          key: "last",
+          data: {id:this.message.id, ref: this.$refs.scrollTarget},
+        });
+
+
+     }
   },
+  // mounted() {
+  //   if (this.last.i === this.last.length - 1) {
+     
+  //     this.$refs.scrollTarget.style.height = "30px";
+  //     this.$refs.scrollTarget.style.width = "30px";
+  //     this.$refs.scrollTarget.style.backgroundColor = "red";
+  //     console.log(this.last, 'HA ?');
+
+      
+  //   } else {
+  //   }
+  // },
   computed: {
     time() {
       if (this.message?.createdAt) {
