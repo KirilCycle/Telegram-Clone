@@ -242,7 +242,6 @@ button {
 
 #app {
   padding: 0px;
-
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -253,6 +252,7 @@ button {
 
 body {
   background-color: rgb(17, 17, 17);
+  overflow-anchor: none;
   min-height: 100vh;
   /* mobile viewport bug fix */
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -1,8 +1,8 @@
 <template>
   <div class="wrp">
-    <div ref="unpredictableIntelegentMovement" class="save-line"></div>
-
+  
     <div v-observer="fetchPrev"></div>
+    <messages-skelet v-if="recentlyWasPrevAct" :number="40"></messages-skelet>
     <transition name="bounce">
       <button
         @click="scrollToBottom"
@@ -15,7 +15,7 @@
 
     <div v-observerdef="firstScroll" v-if="chat.length > 0"></div>
     <message-item
-      :last="{i, length: chat.length}"
+      :last="{ i, length: chat.length }"
       :removeMessage="deleteMessage"
       v-for="(it, i) in chat"
       :key="it.id"
@@ -47,9 +47,10 @@ import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { onMounted } from "vue";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
+import MessagesSkelet from './MessagesSkelet.vue';
 
 export default {
-  components: { ChatInput, MessageItem },
+  components: { ChatInput, MessageItem, MessagesSkelet },
   props: {
     chatId: Array,
     sendMsg: Function,
@@ -107,6 +108,7 @@ export default {
 
     const unpredictableIntelegentMovement = ref(null);
 
+    const recentlyWasPrevAct = ref(null)
     //middle msg item
 
     const page = ref(null);
@@ -193,20 +195,20 @@ export default {
 
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0) {
-          
 
-          console.log("settted", link.last);
+         
 
-          let newData = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+            let newData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+  
+            chat.value = newData;
 
-          chat.value = newData;
 
-          if (link.getMessagesType === "prev") {
-            scrollA()
-          }
+          // if (link.getMessagesType === "prev") {
+          //   scrollA()
+          // }
         } else {
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -231,7 +233,11 @@ export default {
       //   });
       // }
       
+      if (store.state.chat.chatsScrollPosition[store.state.chat.chatId]?.last) {
       
+      }
+
+
     }
 
     function fetchPrev() {
@@ -306,6 +312,7 @@ export default {
       unpredictableIntelegentMovement,
       chasingBottom,
       scrollToBottom,
+      recentlyWasPrevAct
     };
   },
 };
@@ -409,12 +416,14 @@ nav {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  overflow-anchor: none;
 }
 
 @media (pointer: coarse) {
   //tch sreen
 
   .wrp {
+    overflow-anchor: none;
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */

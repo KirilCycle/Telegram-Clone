@@ -514,6 +514,7 @@ $custom-c3: rgb(0, 128, 255);
 
 .main {
   display: flex;
+  overflow-anchor: none;
   justify-content: center;
   background-color: $custom-c2;
   background-color: #2234ae;

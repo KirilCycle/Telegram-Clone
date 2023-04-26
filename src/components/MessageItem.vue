@@ -91,12 +91,14 @@ export default {
     };
   },
   mounted() {
-    if (this.last) {
-      console.log("yes");
+    if (this.last.i === this.last.length - 1) {
+     
       this.$refs.scrollTarget.style.height = "30px";
       this.$refs.scrollTarget.style.width = "30px";
       this.$refs.scrollTarget.style.backgroundColor = "red";
       console.log(this.last, 'HA ?');
+
+      
     } else {
     }
   },
