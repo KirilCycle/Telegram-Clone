@@ -859,8 +859,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
   .right-side-shoved-back {
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     width: 100%;
-    position: relative;
-  
     overflow-x: hidden;
   }
   .right-side {

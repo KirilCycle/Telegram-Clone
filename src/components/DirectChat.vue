@@ -37,7 +37,7 @@
 import { collection, getDocs, getDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { onBeforeUpdate, ref, watchEffect } from "vue";
+import { onBeforeUpdate, ref, computed, watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
@@ -106,12 +106,14 @@ export default {
     const chat = ref([]);
     const bottom = ref(null);
 
-    const unpredictableIntelegentMovement = ref(null);
 
     const recentlyWasPrevAct = ref(null);
     //middle msg item
 
     const page = ref(null);
+
+    const tmpPage = computed(() => store.state.chat.chatsScrollPosition[store.state.chat.chatId].page);
+
     const pivot = ref(null);
 
     const disablePrevFetch = ref(null);
@@ -130,23 +132,11 @@ export default {
       chasingBottom.value = v;
     }
 
-    //  <div v-for="txt in chat.messages" :key="txt">{{ txt }}</div>
-
-    // watchEffect(() => {
-    //   let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
-
-    //   page.value = link.page;
-    //   pivot.value = link.pivot;
-
-    //   console.log("SETUP", link);
-
-    // });
-
-  
-
+    
+    
     watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
-
+      
       console.log("CHAT WRONG ????", store.state.chat.chatId);
 
       page.value = link.page;
@@ -186,30 +176,31 @@ export default {
       query.onSnapshot((snapshot, parameters) => {
         if (page.value > 0) {
         
+        console.log(  'as aw', page.value, getMessagesType.value,  link.pivot.createdAt );
+
           let newData = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
 
+
           chat.value = newData;
 
-          
-       
+        
             if (getMessagesType.value === "prev") {
               setTimeout(() => {
                 link.last.ref.scrollIntoView({block: "start"})
+                tmpPage.value = page.value
               })
-
-              console.log(   link.last?.ref, 'WAS');
-              
+              console.log(   link.last?.ref, 'WAS',  tmpPage.value ,page.value);              
             }
-          
-
-          
-
 
 
         } else {
+          
+          console.log(  'def ???? ',  link );
+
+
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .reverse();
@@ -292,7 +283,6 @@ export default {
       page,
       bottom,
       disableAutoScroll,
-      unpredictableIntelegentMovement,
       chasingBottom,
       scrollToBottom,
       recentlyWasPrevAct,
