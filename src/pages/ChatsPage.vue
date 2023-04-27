@@ -322,7 +322,6 @@ export default {
               id: formated[i].id,
               pivot: null,
               page: 0,
-              getMessagesType: "prev",
               v: "",
             });
 
@@ -485,10 +484,9 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "DirectCat";
+        currentChatType.value = "DirectChat";
       } 
     });
-
 
 
     return {
