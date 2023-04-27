@@ -485,7 +485,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "DirectChat";
+        currentChatType.value = "DirectCat";
       } 
     });
 

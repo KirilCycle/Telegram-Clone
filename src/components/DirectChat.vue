@@ -194,6 +194,7 @@ export default {
           chat.value = newData;
 
           if (link.getMessagesType === "prev") {
+            'XXXXXXXXXXXXXXXXXX WWWWWWWWWWWAAAAAAAAAASSSSSSSSSSSSSSS'
             setTimeout(() => {
               link.last.ref.scrollIntoView({block: "start"})
             })

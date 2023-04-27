@@ -1,6 +1,6 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <div ref="scrollTarget"></div>
+    <div ref="scrollTarget" :="isTarget"></div>
 
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
@@ -90,36 +90,7 @@ export default {
       replyEmoji,
     };
   },
-  updated() {
-     console.log(  'updated');
-     if (store.state.chat.chatsScrollPosition[store.state.chat.chatId]?.last.id === this.message.id) {
-      
-      this.$refs.scrollTarget.style.height = "30px";
-      this.$refs.scrollTarget.style.width = "30px";
-      this.$refs.scrollTarget.style.backgroundColor = "red";
-      console.log(this.last, 'HA ?');
 
-      store.commit("chat/changeChatsScrollData", {
-          id: store.state.chat.chatId,
-          key: "last",
-          data: {id:this.message.id, ref: this.$refs.scrollTarget},
-        });
-
-
-     }
-  },
-  // mounted() {
-  //   if (this.last.i === this.last.length - 1) {
-     
-  //     this.$refs.scrollTarget.style.height = "30px";
-  //     this.$refs.scrollTarget.style.width = "30px";
-  //     this.$refs.scrollTarget.style.backgroundColor = "red";
-  //     console.log(this.last, 'HA ?');
-
-      
-  //   } else {
-  //   }
-  // },
   computed: {
     time() {
       if (this.message?.createdAt) {
@@ -132,6 +103,27 @@ export default {
         return `${hours}:${minutes}`;
       }
       return "";
+    },
+
+    isTarget() {
+      if (
+        this.$store.state.chat.chatsScrollPosition[
+          this.$store.state.chat.chatId
+        ]?.last?.id === this.message.id && this.$refs.scrollTarget !==  this.$store.state.chat.chatsScrollPosition[
+          this.$store.state.chat.chatId
+        ].last.ref
+      ) {
+
+        
+        store.commit("chat/changeChatsScrollData", {
+          id: this.$store.state.chat.chatId,
+          key: "last",
+          data: { id: this.message.id, ref: this.$refs.scrollTarget },
+        });
+        console.log("HA ?");
+      }
+
+      return true;
     },
 
     emojis() {
