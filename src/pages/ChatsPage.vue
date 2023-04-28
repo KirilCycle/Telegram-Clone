@@ -950,7 +950,7 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     height: calc(var(--vh, 1vh) * 100);
     position: absolute;
     display: block;
-    transform: translate(120%);
+    transform: translate(-120%);
 
     .chat-container {
       .chat-nav {
