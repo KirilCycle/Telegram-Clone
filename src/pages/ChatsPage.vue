@@ -113,15 +113,13 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
-import Drochilovo from "@/components/Drochilovo.vue";
-import { notNullish } from "@vueuse/core";
+import { notNullish } from '@vueuse/core';
 
 export default {
   components: {
     DirectChat,
     ReplyMessageBorder,
     SelectedChatDynamic,
-    // Drochilovo,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -140,7 +138,6 @@ export default {
       isSearch: false,
       value: "",
       serachQ: "",
-      chatHided: true,
     };
   },
 
@@ -296,6 +293,7 @@ export default {
 
     const listLoaded = ref(null);
 
+
     // });
     const currentChatType = ref("ChatisntSelected");
 
@@ -321,6 +319,7 @@ export default {
               id: formated[i].id,
               pivot: null,
               page: 0,
+              getMessagesType: "prev",
               v: "",
             });
 
@@ -474,20 +473,29 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
-    const chat = ref(null);
+    const chat = ref(null)
 
+    const  chatHided = ref(false)
 
     watchEffect(() => {
+
+    console.log(  chat.value, 'AS MAIN REF', chatHided.value);
+
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
         currentChatType.value = "DirectChat";
+      } else {
+        currentChatType.value = "ChatisntSelected";
       }
     });
+
+
 
     return {
       chat,
       chatList,
+      chatHided,
       currentChatType,
       sendMessageToFoundedChat,
       resetSelectedChat,
@@ -507,7 +515,6 @@ $custom-c3: rgb(0, 128, 255);
 
 .main {
   display: flex;
-  overflow-anchor: none;
   justify-content: center;
   background-color: $custom-c2;
   background-color: #2234ae;
@@ -665,6 +672,7 @@ v-enter-active,
   display: flex;
   justify-content: center;
   background-color: $custom-c2;
+ 
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
@@ -774,12 +782,6 @@ v-enter-active,
   }
 }
 
-.left-bar-hided {
-  transform: translate(120%);
-  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-  @extend .left-bar;
-}
-
 .left-bar:hover {
   .btn-controll {
     transform: translateY(0px);
@@ -808,8 +810,11 @@ v-enter-active,
 
 .dark .right-side {
   background-color: #7ee8fa;
-  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+
 }
+
+
 .right-side-shoved-back {
   width: 100%;
   height: 100vh;
@@ -821,6 +826,7 @@ v-enter-active,
 .dark .right-side-shoved-back {
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+  
 }
 
 .chat-container {
@@ -846,15 +852,17 @@ v-enter-active,
 
 @media (max-width: 798px) {
   .right-side-shoved-back {
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     width: 100%;
+    position: absolute;
+    height: 100vh;
+    transform: translate(0%);
     overflow-x: hidden;
   }
   .right-side {
-    width: 100%;
+    width: 40%;
     overflow-x: hidden;
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
+    transform: translate(0%);
 
     .chat-container {
       .chat-nav {
@@ -923,22 +931,26 @@ v-enter-active,
     display: none;
   }
   .right-side-shoved-back {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     width: 100%;
     min-height: 100%;
     position: absolute;
     z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
+ 
+    
     transform: translate(0%);
   }
   .right-side {
     width: 100%;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     position: absolute;
     display: block;
-    transform: translate(-120%);
+    transform: translate(120%);
 
     .chat-container {
       .chat-nav {

@@ -368,7 +368,6 @@ export default {
     @media (min-width: 1700px) {
       input {
         padding-left: 15px;
-
         border-radius: 10px;
         width: 90%;
       }

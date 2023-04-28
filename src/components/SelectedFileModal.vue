@@ -234,7 +234,6 @@ $padver: 16px;
     top: 0%;
     margin: 0% auto;
     font-size: 2rem;
-    transform: rotate(20deg);
     &:hover {
       color: #767676;
     }
