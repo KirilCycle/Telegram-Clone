@@ -4,8 +4,7 @@
   <!-- <button class="test" @click="test"></button> -->
 
   <div class="main">
-    <div 
-    class="left-bar">
+    <div class="left-bar">
       <div class="btn-controll">
         <chats-control-btn></chats-control-btn>
       </div>
@@ -115,14 +114,14 @@ import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import Drochilovo from "@/components/Drochilovo.vue";
-import { notNullish } from '@vueuse/core';
+import { notNullish } from "@vueuse/core";
 
 export default {
   components: {
     DirectChat,
     ReplyMessageBorder,
     SelectedChatDynamic,
-    Drochilovo,
+    // Drochilovo,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -141,6 +140,7 @@ export default {
       isSearch: false,
       value: "",
       serachQ: "",
+      chatHided: true,
     };
   },
 
@@ -295,7 +295,6 @@ export default {
     const chatList = ref("");
 
     const listLoaded = ref(null);
-
 
     // });
     const currentChatType = ref("ChatisntSelected");
@@ -475,24 +474,20 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
-    const chat = ref(null)
+    const chat = ref(null);
 
-    const  chatHided = ref(false)
 
     watchEffect(() => {
-
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
         currentChatType.value = "DirectChat";
-      } 
+      }
     });
-
 
     return {
       chat,
       chatList,
-      chatHided,
       currentChatType,
       sendMessageToFoundedChat,
       resetSelectedChat,
@@ -779,13 +774,11 @@ v-enter-active,
   }
 }
 
-
 .left-bar-hided {
   transform: translate(120%);
   transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
   @extend .left-bar;
 }
-
 
 .left-bar:hover {
   .btn-controll {
@@ -815,11 +808,8 @@ v-enter-active,
 
 .dark .right-side {
   background-color: #7ee8fa;
-background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-
+  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
-
-
 .right-side-shoved-back {
   width: 100%;
   height: 100vh;
@@ -831,7 +821,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 .dark .right-side-shoved-back {
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-  
 }
 
 .chat-container {
@@ -862,11 +851,10 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     overflow-x: hidden;
   }
   .right-side {
-    width: 40%;
+    width: 100%;
     overflow-x: hidden;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
-
 
     .chat-container {
       .chat-nav {
