@@ -159,15 +159,15 @@ export default {
 
           chat.value = newData;
 
-          if (getMessagesType.value === "prev") {
+          if (getMessagesType.value === "prev" &&  link?.last?.ref) {
            try {
              setTimeout(() => {
-               link.last.ref.scrollIntoView({ block: "start" });
+               link?.last?.ref.scrollIntoView({ block: "start" });
              });
            } catch(e) {
-            
+
            }
-            console.log(link.last?.ref, "WAS");
+          
           }
         } else {
           console.log("def ???? ", link);
