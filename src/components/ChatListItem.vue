@@ -66,10 +66,9 @@ export default {
 
   methods: {
     handleChatSelect() {
-     
       this.$store.commit('chat/setWasObserved', false)
       this.$store.commit('chat/setSelectedUser', this.enotherUser)
-     
+         
     },
   
     async fethcEnotherUser() {

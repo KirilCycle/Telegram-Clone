@@ -2,7 +2,7 @@
   <TransitionGroup name="list" class="chat-list-wrap" tag="div">
     <chat-list-item
      
-      @click="() => $store.commit('chat/setChatId', cht.id)"
+      @click="() => handleChatSelect(cht.id)"
       v-for="cht in chatList"
       :key="cht.id"
       :chat="cht"
@@ -29,6 +29,11 @@ export default {
   },
   watch: {
    
+  },
+  methods: {
+    handleChatSelect(id) {
+      this.$store.commit('chat/setChatId', id)
+    }
   },
   data() {
     return {

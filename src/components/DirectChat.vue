@@ -114,24 +114,29 @@ export default {
       chasingBottom.value = v;
     }
 
+    const messagesRef = ref(
+      db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages")
+    );
+
+    const query = ref(null);
+
     watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
       console.log("CHAT WRONG ????", store.state.chat.chatId);
 
-      const messagesRef = db
-        .collection("chatMessages")
-        .doc(store.state.chat.chatId)
-        .collection("messages");
-
-      let query = null;
+      
 
       if (link.page > 0) {
         //in case we saw a top observer
+        console.log("WTF WITH PIVOT !!!!", link.pivot);
 
         switch (getMessagesType.value) {
           case "prev":
-            query = messagesRef
+            query.value = messagesRef.value
               .orderBy("createdAt")
               .limitToLast(80)
               .endBefore(link.pivot);
@@ -139,34 +144,45 @@ export default {
             break;
 
           case "next":
-            query = messagesRef
+            query.value = messagesRef.value
               .orderBy("createdAt")
               .startAfter(link.pivot)
               .limit(80);
         }
       } else {
-        query = messagesRef.orderBy("createdAt", "desc").limit(80);
+        console.log(
+          "def ??????????????????????????????????????????????????????? ",
+          link
+        );
+
+        query.value = messagesRef.value.orderBy("createdAt", "desc").limit(80);
       }
 
-      query.onSnapshot((snapshot, parameters) => {
+    
+      query.value.onSnapshot((snapshot, parameters) => {
         if (link.page > 0) {
-          console.log("as aw", getMessagesType.value, link.pivot.createdAt);
-
           let newData = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
 
+          console.log("BRAIN QUERRY ", query.value, link, newData);
           chat.value = newData;
 
           if (getMessagesType.value === "prev") {
             setTimeout(() => {
-              link.last.ref.scrollIntoView({ block: "start" });
+              //sometimes it want get old ref which already not actual
+              try {
+                link.last.ref.scrollIntoView({ block: "start" });
+              } catch (e) {}
             });
             console.log(link.last?.ref, "WAS");
           }
         } else {
-          console.log("def ???? ", link);
+          console.log(
+            "def ??????????????????????????????????????????????????????? ",
+            link
+          );
 
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -216,7 +232,7 @@ export default {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
       const middle = Math.floor(chat.value.length / 2);
-      
+
       store.commit("chat/changeChatsScrollData", {
         id: store.state.chat.chatId,
         key: "pivot",
@@ -229,7 +245,7 @@ export default {
         data: link.page - 1,
       });
 
-      getMessagesType.value = 'next'
+      getMessagesType.value = "next";
     }
 
     function firstScroll() {

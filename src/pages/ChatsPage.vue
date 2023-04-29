@@ -852,6 +852,7 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 
 @media (max-width: 798px) {
   .right-side-shoved-back {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     width: 100%;
     position: absolute;
     height: 100vh;
@@ -861,6 +862,7 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
   .right-side {
     width: 40%;
     overflow-x: hidden;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
     transform: translate(0%);
 
@@ -931,7 +933,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     display: none;
   }
   .right-side-shoved-back {
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     width: 100%;
     min-height: 100%;
     position: absolute;
@@ -944,13 +945,12 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
   }
   .right-side {
     width: 100%;
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     position: absolute;
     display: block;
-    transform: translate(-120%);
+    transform: translate(120%);
 
     .chat-container {
       .chat-nav {
