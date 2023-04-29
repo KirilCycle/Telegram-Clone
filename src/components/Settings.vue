@@ -50,6 +50,7 @@
 @import '@/styles/colors';
   
   .menu-btn-wrap {
+    flex-shrink: 0;
     cursor: pointer;
     border-radius: 5px;
     width: 43px;

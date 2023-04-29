@@ -25,6 +25,7 @@
         >
           <span class="material-symbols-outlined"> language </span>
         </button>
+
       </div>
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
@@ -113,7 +114,7 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
-import { notNullish } from '@vueuse/core';
+import { notNullish } from "@vueuse/core";
 
 export default {
   components: {
@@ -282,6 +283,45 @@ export default {
   },
 
   setup(data) {
+    // function Fn1(res) {
+    //   console.log( "res Fn1",res);
+    //   return "res Fn1";
+    // }
+    // function Fn2(res) {
+    //   console.log( "res Fn2",res);
+    //   return "res Fn2";
+    // }
+    // function Fn3(res) {
+    //   console.log( "res Fn3",res);
+    //   return "res Fn3";
+    // }
+    // function Fn4(res) {
+    //   console.log( "res Fn4",res);
+    //   return "res Fn4";
+    // }
+    // function Fn5(res) {
+    //  console.log( "res Fn5",res);
+    //   return "res Fn5";
+    // }
+
+    // const fns = ref([Fn1, Fn2, Fn3, Fn4, Fn5,]);
+
+    // // Fn1(Fn2(Fn3(Fn4(Fn5))))
+
+    // let iterations = ref(fns.value.length);
+
+    // function useAllOfThem(res) {
+    //   if (iterations.value !== 0) {
+    //     const resPrev = fns.value[iterations.value - 1](res);
+
+    //     iterations.value -= 1;
+
+    //     useAllOfThem(resPrev)
+    //   }
+    // }
+
+    // useAllOfThem();
+
     const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
@@ -292,7 +332,6 @@ export default {
     const chatList = ref("");
 
     const listLoaded = ref(null);
-
 
     // });
     const currentChatType = ref("ChatisntSelected");
@@ -473,13 +512,12 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
-    const chat = ref(null)
+    const chat = ref(null);
 
-    const  chatHided = ref(false)
+    const chatHided = ref(false);
 
     watchEffect(() => {
-
-    console.log(  chat.value, 'AS MAIN REF', chatHided.value);
+      console.log(chat.value, "AS MAIN REF", chatHided.value);
 
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
@@ -489,8 +527,6 @@ export default {
         currentChatType.value = "ChatisntSelected";
       }
     });
-
-
 
     return {
       chat,
@@ -672,7 +708,7 @@ v-enter-active,
   display: flex;
   justify-content: center;
   background-color: $custom-c2;
- 
+
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
@@ -699,7 +735,7 @@ v-enter-active,
     flex-shrink: 0;
     min-width: 100%;
     box-sizing: border-box;
-    padding: 5px;
+    padding: 5px 13px 5px 5px;
     height: 10%;
     max-height: 75px;
     display: flex;
@@ -708,9 +744,9 @@ v-enter-active,
     background-color: $content-main;
 
     input {
-      background-color: rgba(123, 123, 123, 0.132);
+      background-color: $hover;
       height: 43px;
-      width: 60%;
+      width: 100%;
       padding-right: 5px;
       padding-left: 10px;
       margin-left: 5px;
@@ -729,7 +765,7 @@ v-enter-active,
     .left_bar_srch_wrap_settings {
       width: 43px;
       height: 43px;
-      background-color: rgba(123, 123, 123, 0.132);
+      background-color: $hover;
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
       &:hover {
@@ -739,6 +775,7 @@ v-enter-active,
       span {
         font-size: 1.2rem;
         margin: 0% auto;
+        margin-right: 10px;
       }
     }
 
@@ -746,7 +783,7 @@ v-enter-active,
       width: 43px;
       color: $custom-c3;
       height: 43px;
-      background-color: rgba(123, 123, 123, 0.132);
+      background-color: $hover;
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
 
@@ -754,6 +791,8 @@ v-enter-active,
       span {
         font-size: 1.2rem;
         margin: 0% auto;
+        margin-right: 10px;
+        
       }
     }
   }
@@ -810,10 +849,8 @@ v-enter-active,
 
 .dark .right-side {
   background-color: #7ee8fa;
-background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-
+  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
-
 
 .right-side-shoved-back {
   width: 100%;
@@ -826,7 +863,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 .dark .right-side-shoved-back {
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-  
 }
 
 .chat-container {
@@ -892,7 +928,6 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
         padding-left: 10px;
         height: 40px;
         font-size: 1.1rem;
-        width: 80%;
       }
 
       .left_bar_srch_wrap_settings {
@@ -904,10 +939,9 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
         align-items: center;
         height: 40px;
         width: 40px;
-        transform: translate(-3px);
 
         span {
-          font-size: 1.6rem;
+          font-size: 1.2rem;
         }
       }
       .left_bar_srch_wrap_settings_active {
@@ -919,9 +953,10 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
         align-items: center;
         height: 40px;
         width: 40px;
+    
 
         span {
-          font-size: 1.6rem;
+          font-size: 1.2rem;
         }
       }
     }
@@ -939,8 +974,7 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
     z-index: 100;
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
- 
-    
+
     transform: translate(0%);
   }
   .right-side {
@@ -979,13 +1013,5 @@ background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
   }
 }
 
-@media (max-width: 400px) {
-  .left-bar {
-    .left_bar_srch-wrap {
-      input {
-        width: 65%;
-      }
-    }
-  }
-}
+
 </style>

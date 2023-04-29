@@ -124,34 +124,40 @@ export default {
         .doc(store.state.chat.chatId)
         .collection("messages");
 
-      let query = null;
+        let query = null;
+        if (query === null) {
+          console.log("DEF");
+        }
 
       if (link.page > 0) {
         //in case we saw a top observer
+        console.log("DEF")
 
         switch (getMessagesType.value) {
           case "prev":
             query = messagesRef
               .orderBy("createdAt")
               .limitToLast(80)
-              .endBefore(link.pivot);
-
+              .endBefore(link.pivot)
+            console.log("WAS");
             break;
-
           case "next":
             query = messagesRef
               .orderBy("createdAt")
               .startAfter(link.pivot)
-              .limit(80);
+              .limit(80)
+            console.log("WAS 2");
         }
       } else {
+        console.log("DEF");
         query = messagesRef.orderBy("createdAt", "desc").limit(80);
       }
 
-      query.onSnapshot((snapshot, parameters) => {
-        if (link.page > 0) {
-          console.log("as aw", getMessagesType.value, link.pivot.createdAt);
+      //{ preserveSnapshot: true }
 
+      query.onSnapshot({ preserveSnapshot: true },(snapshot, parameters) => {
+        if (link.page > 0) {
+          console.log("as aw", getMessagesType.value, link.pivot);
           let newData = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
@@ -160,24 +166,14 @@ export default {
           chat.value = newData;
 
           if (getMessagesType.value === "prev") {
-
-             setTimeout(() => {
+            setTimeout(() => {
               try {
                 link.last.ref.scrollIntoView({ block: "start" });
-
-              } catch(e) {
-            //nothing
-            console.log(link.last?.ref, "WAS")
-           }
-             });
-           }
-          
-
-
-
-
+              } catch (e) {}
+            });
+          }
         } else {
-          console.log("def ???? ", link);
+          console.log("DEF");
 
           chat.value = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -240,7 +236,7 @@ export default {
         data: link.page - 1,
       });
 
-      getMessagesType.value = 'next'
+      getMessagesType.value = "next";
     }
 
     function firstScroll() {
