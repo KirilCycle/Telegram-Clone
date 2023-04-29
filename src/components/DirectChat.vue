@@ -159,16 +159,23 @@ export default {
 
           chat.value = newData;
 
-          if (getMessagesType.value === "prev" &&  link?.last?.ref) {
-           try {
-             setTimeout(() => {
-               link?.last?.ref.scrollIntoView({ block: "start" });
-             });
-           } catch(e) {
+          if (getMessagesType.value === "prev") {
 
+             setTimeout(() => {
+              try {
+                link.last.ref.scrollIntoView({ block: "start" });
+
+              } catch(e) {
+            //nothing
+            console.log(link.last?.ref, "WAS")
+           }
+             });
            }
           
-          }
+
+
+
+
         } else {
           console.log("def ???? ", link);
 
@@ -220,7 +227,7 @@ export default {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
       const middle = Math.floor(chat.value.length / 2);
-      
+
       store.commit("chat/changeChatsScrollData", {
         id: store.state.chat.chatId,
         key: "pivot",
