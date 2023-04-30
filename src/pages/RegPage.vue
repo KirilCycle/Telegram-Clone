@@ -1,49 +1,47 @@
 <template>
   <div class="wrap">
-    <div class="wrap">
-      <form>
-        <h2 v-if="!wrongData">Create account</h2>
-        <h4 v-if="wrongData">wrong data(idi gulyai)</h4>
-        <div class="input-container">
-          <p class="info-tx">email</p>
-          <main-input :class="{ wrong: wrongValues }" v-model="email" />
-        </div>
-        <div class="input-container">
-          <p class="info-tx">password</p>
-          <main-input
-            :class="{ wrong: wrongValues }"
-            :type="visible"
-            v-model="password"
-          />
-        </div>
-        <div class="input-container">
-          <p class="info-tx">repeat pass</p>
-          <main-input
-            :class="{ wrong: wrongValues }"
-            :type="visible"
-            v-model="secondPassword"
-          />
-        </div>
-        <button class="pas_visible">
-          <span
-            @click.prevent="handleVisible"
-            class="material-symbols-outlined"
-          >
-            {{ visible !== "password" ? "visibility" : "visibility_off" }}
-          </span>
-        </button>
+    
+    <auth-reg-form-wrap>
+      <app-logo-intro :src="appLogoSrc"></app-logo-intro>
+      <h2 v-if="!wrongData">Create account</h2>
+      <h4 v-if="wrongData">wrong data(idi gulyai)</h4>
+      <div class="input-container">
+        <p class="info-tx">email</p>
+        <main-input :class="{ wrong: wrongValues }" v-model="email" />
+      </div>
+      <div class="input-container">
+        <p class="info-tx">password</p>
+        <main-input
+          :class="{ wrong: wrongValues }"
+          :type="visible"
+          v-model="password"
+        />
+      </div>
+      <div class="input-container">
+        <p class="info-tx">repeat pass</p>
+        <main-input
+          :class="{ wrong: wrongValues }"
+          :type="visible"
+          v-model="secondPassword"
+        />
+      </div>
+      <button class="pas_visible">
+        <span @click.prevent="handleVisible" class="material-symbols-outlined">
+          {{ visible !== "password" ? "visibility" : "visibility_off" }}
+        </span>
+      </button>
 
-        <div class="btn-container">
-          <main-button
-            v-show="ableToVerify"
-            class="btn-c"
-            @click.prevent="register"
-            >GO</main-button
-          >
-        </div>
-      </form>
-      <router-link class="link" to="/">I already have account </router-link>
-    </div>
+      <div class="btn-container">
+        <main-button
+          v-show="ableToVerify"
+          class="btn-c"
+          @click.prevent="register"
+          >GO</main-button
+        >
+      </div>
+    </auth-reg-form-wrap>
+
+    <!-- <router-link class="link" to="/">I already have account </router-link> -->
   </div>
 </template>
 
@@ -51,26 +49,39 @@
 /* eslint-disable */
 import router from "@/router/router";
 import store from "@/store/store";
-import { ref } from 'vue';
+import { ref } from "vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import useValidationForm from "@/hooks/useValidationForm";
 import useValidationFeatures from "@/hooks/useValidationsFeatures";
-
+import AuthRegFormWrap from "@/components/AuthRegFormWrap.vue";
+import AppLogoIntro from "@/components/AppLogoIntro.vue";
 
 export default {
+  components: {
+    AuthRegFormWrap,
+    AppLogoIntro,
+  },
+  computed: {
+    ableToVerify() {
+      if (this.email.length > 7 && this.password.length > 7  && this.password === this.secondPassword) {
+        return true
+      }
+      return false;
+    },
+  },
   data() {
     return {
-
+      appLogoSrc:
+        "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/chat-circle-blue-512.png",
     };
   },
 
   setup() {
-    const { email, password, error, visible, wrongValues, wrongData } =
-      useValidationForm();
-
+    const { email, password, error, visible, wrongValues, wrongData } = useValidationForm();
+    
     const { googleSignIn } = useValidationFeatures();
 
-    const secondPassword = ref('')
+    const secondPassword = ref("");
 
     function handleVisible() {
       visible.value === "password"
@@ -101,7 +112,7 @@ export default {
       email,
       password,
       wrongData,
-      secondPassword
+      secondPassword,
     };
   },
 };
@@ -119,36 +130,23 @@ h4 {
   margin-top: 20px;
 }
 
-form {
-  width: 380px;
-  height: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
 
 .wronginput {
   color: red;
 }
-@media (max-width: 550px) {
-  form {
-    width: 280px;
+
+
+.btn-container {
+  height: 47px;
+  width: 100%;
+  .btn-c {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 17px;
+    width: 100%;
   }
 }
 
-.btn {
-}
-
-.btn-c {
-  padding: 10px 32px 10px 32px;
-  border-radius: 5px;
-  color: rgb(0, 0, 0);
-  background-color: $crazy_color;
-  margin: 0% auto;
-  width: 100%;
-  border: 0px;
-  font-size: 1.3rem;
-}
 
 h2 {
   font-size: 2rem;
@@ -158,8 +156,7 @@ h2 {
   font-weight: 650;
 }
 .wrap {
-  width: 100vw;
-  height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;

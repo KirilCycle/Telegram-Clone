@@ -4,11 +4,8 @@
    
     <auth-reg-form-wrap>
 
- 
+      <app-logo-intro :src="appLogoSrc"></app-logo-intro>
 
-      <div class="app-intro">
-          <img :src="appLogoSrc">
-      </div>
       
       <h2>Vue messanger</h2>
       
@@ -53,10 +50,12 @@ import firebase from "firebase/compat/app";
 import useValidationForm from "@/hooks/useValidationForm";
 import useValidationFeatures from "@/hooks/useValidationsFeatures";
 import AuthRegFormWrap from "@/components/AuthRegFormWrap.vue";
+import AppLogoIntro from "@/components/AppLogoIntro.vue";
 
 export default {
   components: {
     AuthRegFormWrap,
+    AppLogoIntro
   },
   data() {
     return {
