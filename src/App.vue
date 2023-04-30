@@ -76,8 +76,7 @@ firebase.auth().onAuthStateChanged(function (user) {
           //
         });
       }
-
-
+      
 
       const prewuserSnapRef = doc(db, "usersPrew", user.uid);
       const prewuserSnap = await getDoc(prewuserSnapRef);
@@ -111,7 +110,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       store.commit("user/setAuthData", auth);
       store.commit("user/setAuth", true);
       store.commit("user/setDb", db);
-      router.push({ name: window.location.hash.replace("#/", "/chats") });
+      router.push({ name: window.location.hash.replace("#/", "") });
     }
     
     
@@ -154,7 +153,9 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 </script>
 
-<style>
+<style lang="scss">
+@import '@/styles/colors.scss';
+
 .profile {
   position: absolute;
   top: 0%;
@@ -253,7 +254,7 @@ button {
 }
 
 body {
-  background-color: rgb(17, 17, 17);
+  background-color: $body-color;
   overflow-anchor: none;
   min-height: 100vh;
   /* mobile viewport bug fix */

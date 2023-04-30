@@ -1,31 +1,38 @@
 
 <template>
   <div class="wrap">
-    <ul></ul>
+   
     <form>
-      <h2 v-if="!wrongData">Log in</h2>
+
+      <div class="app-intro">
+          <img :src="appLogoSrc">
+      </div>
+      
+      <h2 v-if="!wrongData">Vue messanger</h2>
       <h4 v-if="wrongData">wrong email or password</h4>
       <div class="input-container">
         <p class="info-tx">email</p>
-        <input :class="{ wrong: wrongValues }" v-model="email" />
+        <main-input :class="{ wrong: wrongValues }" v-model="email" />
       </div>
       <div class="input-container">
         <p class="info-tx">password</p>
-        <input
+        <main-input
           :class="{ wrong: wrongValues }"
           :type="visible"
           v-model="password"
         />
       </div>
+      <router-link class="link" to="/reg">I dont have account yet</router-link>
       <button class="pas_visible">
         <span @click.prevent="handleVisible" class="material-symbols-outlined">
           {{ visible !== "password" ? "visibility" : "visibility_off" }}
         </span>
       </button>
       <!-- <input  v-model="login" /> -->
-      <button class="btn-c" @click.prevent="register">log in</button>
-      <router-link class="link" to="/reg">I dont have account yet</router-link>
+      <main-button class="btn-c"  @click.prevent="register">SIGN IN</main-button>
     </form>
+   
+
   </div>
 </template>
 
@@ -42,6 +49,7 @@ export default {
     return {
       count: 3,
       response: {},
+      appLogoSrc: "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/chat-circle-blue-512.png",
     };
   },
   setup(props) {
@@ -87,22 +95,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$crazy_color: #00ff44;
+@import '@/styles/colors.scss';
+
 h4 {
   color: #f70000;
 }
+.app-intro {
+  width: 100%;
+  height: auto;
+  img {
+    height: 170px;
+    width: auto;
+  }
+  @media screen and (max-width: 550px) {
+    img {
+      height: 120px;
+    }
+  }
+}
+
+
 form {
   width: 380px;
   height: auto;
   position: absolute;
-  bottom: 100px;
   padding: 20px;
   display: flex;
-  margin: 0% auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   flex-direction: column;
+
+  @media screen and(max-width: 700px) {
+    transform: translate(0%, -20%);
+    top:auto;
+    left: auto;
+  }
+
 }
 .link {
-  color: $crazy_color;
+  color: gray;
   margin-top: 20px;
 }
 .wronginput {
@@ -113,17 +145,11 @@ form {
     width: 280px;
   }
 }
-.btn {
-}
+
 .btn-c {
-  padding: 10px 32px 10px 32px;
-  border-radius: 5px;
-  color: rgb(0, 0, 0);
-  background-color: #3bd23d;
-  margin: 0% auto;
-  width: 100%;
-  border: 0px;
-  font-size: 1.3rem;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 1em;
 }
 h2 {
   font-size: 2rem;
@@ -144,38 +170,44 @@ h2 {
   display: flex;
   margin-top: 32px;
 }
+
+
 .pas_visible {
   height: min-content;
+  overflow: hidden;
   display: block;
   margin: 0% auto;
   width: 40px;
+  padding: 8px;
   margin-top: 5px;
-  :hover {
-    color: #3bd23d;
-  }
   margin-bottom: 5px;
+  cursor: pointer;
+  :hover {
+    color: $second;
+  }
 }
 .info-tx {
   color: gray;
   position: absolute;
   top: -12px;
   left: 2%;
+  background-color:  $body-color;
+  height: min-content;
 }
+
+
+
 input {
   border: 1px solid rgb(98, 98, 98);
   background-color: #ffffff00;
-  margin-top: 10px;
   font: 1rem sans-serif;
-
   border-radius: 5px;
   width: 100%;
   height: 50px;
   line-height: 50px;
   color: gray;
 }
-input:focus {
-  border: 1px solid rgb(0, 252, 4);
-}
+
 .wrong {
   border: 1px solid rgb(255, 0, 0);
   background-color: #ffffff00;
@@ -192,6 +224,4 @@ input:focus {
   border: 1px solid rgb(255, 18, 18);
 }
 </style>
-Footer © 2023 GitHub, Inc. Footer navigation Terms Privacy Security Status Docs
-Contact GitHub Pricing API Training Blog About teom_lab/AuthPage.vue at main ·
-KirilCycle/teom_lab
+

@@ -24,15 +24,15 @@ export default {
   height: 50px;
   border-radius: 15px;
   box-sizing: border-box;
-  border: 1px solid gray;
+  border: 1px solid rgb(81, 81, 81);
   font-size: 1rem;
   color: $text-main;
   &:focus {
-    border: 1px solid $main;
-    box-shadow: rgba(34, 137, 255, 0.916) 0px 0px 0px 1px;
+    border: 1px solid $second;
+    box-shadow: rgb(34, 137, 255) 0px 0px 0px 1px;
   }
   &:hover {
-    border: 1px solid $main;
+    border: 1px solid $second;
   }
 }
 
