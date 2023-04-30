@@ -1,26 +1,25 @@
 <template>
   <div class="wrap">
-    
     <auth-reg-form-wrap>
       <app-logo-intro :src="appLogoSrc"></app-logo-intro>
-      <h2 v-if="!wrongData">Create account</h2>
-      <h4 v-if="wrongData">wrong data(idi gulyai)</h4>
+      <h2>Create account</h2>
+      <h4 v-if="wrongData">invalid data</h4>
       <div class="input-container">
         <p class="info-tx">email</p>
-        <main-input :class="{ wrong: wrongValues }" v-model="email" />
+        <main-input :class="{ invalidData: wrongData }" v-model="email" />
       </div>
       <div class="input-container">
         <p class="info-tx">password</p>
         <main-input
-          :class="{ wrong: wrongValues }"
+          :class="{ invalidData: wrongData }"
           :type="visible"
           v-model="password"
         />
       </div>
       <div class="input-container">
-        <p class="info-tx">repeat pass</p>
+        <p class="info-tx">repeat password</p>
         <main-input
-          :class="{ wrong: wrongValues }"
+          :class="{ invalidData: wrongData }"
           :type="visible"
           v-model="secondPassword"
         />
@@ -63,22 +62,31 @@ export default {
   },
   computed: {
     ableToVerify() {
-      if (this.email.length > 7 && this.password.length > 7  && this.password === this.secondPassword) {
-        return true
+      if (this.email.length > 7 && this.password.length > 7) {
+        if (this.password === this.secondPassword) {
+          this.samePasswords = true;
+          return true;
+        } else {
+          this.samePasswords = false;
+          return false;
+        }
       }
+      this.samePasswords = true;
       return false;
     },
   },
   data() {
     return {
+      samePasswords: false,
       appLogoSrc:
         "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/chat-circle-blue-512.png",
     };
   },
 
   setup() {
-    const { email, password, error, visible, wrongValues, wrongData } = useValidationForm();
-    
+    const { email, password, error, visible, wrongValues, wrongData } =
+      useValidationForm();
+
     const { googleSignIn } = useValidationFeatures();
 
     const secondPassword = ref("");
@@ -91,27 +99,25 @@ export default {
 
     function register() {
       if (email.value.length > 7 && password.value.length > 7) {
-        createUserWithEmailAndPassword(
-          getAuth(),
-          email.value,
-          password.value
-        ).then((data) => {
-          const auth = getAuth();
-
-          store.commit("user/setUser", auth.currentUser);
-          store.commit("user/setAuth", true);
-          console.log(store.state.user.isAuth);
-          router.push({ name: "chat" });
-        });
-      } else {
-        wrongValues.value = true;
+        createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+          .then((data) => {
+            const auth = getAuth();
+            store.commit("user/setUser", auth.currentUser);
+            store.commit("user/setAuth", true);
+            console.log(store.state.user.isAuth);
+            router.push({ name: "chat" });
+          })
+          .catch((e) => (wrongData.value = true));
       }
     }
 
     return {
       email,
+      handleVisible,
       password,
+      register,
       wrongData,
+      visible,
       secondPassword,
     };
   },
@@ -119,22 +125,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/colors.scss";
 $crazy_color: #00ff44;
 
 h4 {
   color: #f70000;
 }
 
+.invalidData {
+  border: 1px solid rgba(220, 6, 6, 0.988);
+ }
+
 .link {
   color: $crazy_color;
   margin-top: 20px;
 }
 
-
 .wronginput {
   color: red;
 }
-
 
 .btn-container {
   height: 47px;
@@ -147,7 +156,6 @@ h4 {
   }
 }
 
-
 h2 {
   font-size: 2rem;
   color: white;
@@ -156,7 +164,6 @@ h2 {
   font-weight: 650;
 }
 .wrap {
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,10 +182,11 @@ h2 {
   display: block;
   margin: 0% auto;
   width: min-content;
+  overflow: hidden;
   margin-top: 5px;
   background-color: rgba(0, 0, 0, 0);
   :hover {
-    color: $crazy_color;
+    color: $second;
   }
   margin-bottom: 5px;
 }
@@ -203,9 +211,6 @@ input {
   color: gray;
 }
 
-input:focus {
-  border: 1px solid $crazy_color;
-}
 .wrong {
   border: 1px solid rgb(255, 0, 0);
   background-color: #ffffff00;
