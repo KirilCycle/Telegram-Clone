@@ -2,7 +2,9 @@
 <template>
   <div class="wrap">
    
-    <form>
+    <auth-reg-form-wrap>
+
+ 
 
       <div class="app-intro">
           <img :src="appLogoSrc">
@@ -31,8 +33,12 @@
         </span>
       </button>
       <!-- <input  v-model="login" /> -->
-      <main-button v-show="ableToVerify" class="btn-c"  @click.prevent="register">SIGN IN</main-button>
-    </form>
+      <div class="btn-container">
+        <main-button v-show="ableToVerify" class="btn-c"  @click.prevent="register">SIGN IN</main-button>
+      </div>
+      
+
+    </auth-reg-form-wrap>
    
 
   </div>
@@ -46,7 +52,12 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import useValidationForm from "@/hooks/useValidationForm";
 import useValidationFeatures from "@/hooks/useValidationsFeatures";
+import AuthRegFormWrap from "@/components/AuthRegFormWrap.vue";
+
 export default {
+  components: {
+    AuthRegFormWrap,
+  },
   data() {
     return {
       count: 3,
@@ -129,24 +140,9 @@ h4 {
 }
 
 
-form {
-  width: 380px;
-  height: auto;
-  position: absolute;
-  padding: 20px;
-  display: flex;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  flex-direction: column;
 
-  @media screen and(max-width: 700px) {
-    transform: translate(0%, -0%);
-    top:auto;
-    left: auto;
-  }
 
-}
+
 .link {
   color: gray;
   margin-top: 20px;
@@ -157,17 +153,18 @@ form {
 }
 
 
-@media (max-width: 550px) {
-  form {
-    width: 280px;
+
+.btn-container {
+  height: 47px;
+  width: 100%;
+  .btn-c {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 17px;
+    width: 100%;
   }
 }
 
-.btn-c {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  font-size: 1em;
-}
 h2 {
   font-size: 2rem;
   color: #ffffff;

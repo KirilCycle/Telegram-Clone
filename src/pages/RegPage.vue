@@ -6,14 +6,22 @@
         <h4 v-if="wrongData">wrong data(idi gulyai)</h4>
         <div class="input-container">
           <p class="info-tx">email</p>
-          <input :class="{ wrong: wrongValues }" v-model="email" />
+          <main-input :class="{ wrong: wrongValues }" v-model="email" />
         </div>
         <div class="input-container">
           <p class="info-tx">password</p>
-          <input
+          <main-input
             :class="{ wrong: wrongValues }"
             :type="visible"
             v-model="password"
+          />
+        </div>
+        <div class="input-container">
+          <p class="info-tx">repeat pass</p>
+          <main-input
+            :class="{ wrong: wrongValues }"
+            :type="visible"
+            v-model="secondPassword"
           />
         </div>
         <button class="pas_visible">
@@ -24,56 +32,79 @@
             {{ visible !== "password" ? "visibility" : "visibility_off" }}
           </span>
         </button>
-        <!-- <input  v-model="login" /> -->
-        <button class="btn-c" @click.prevent="register">Go</button>
-        <!-- <button @click.prevent="googleSignIn">Sign in with google</button> -->
-        <!-- <button @click.prevent="signInWithGoogle" class="btn-c">create</button> -->
+
+        <div class="btn-container">
+          <main-button
+            v-show="ableToVerify"
+            class="btn-c"
+            @click.prevent="register"
+            >GO</main-button
+          >
+        </div>
       </form>
       <router-link class="link" to="/">I already have account </router-link>
     </div>
   </div>
 </template>
 
-<script setup>
+<script>
 /* eslint-disable */
 import router from "@/router/router";
-import { ref } from "vue";
 import store from "@/store/store";
+import { ref } from 'vue';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import useValidationForm from "@/hooks/useValidationForm";
 import useValidationFeatures from "@/hooks/useValidationsFeatures";
-import { doc, setDoc } from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import { updateProfile } from "firebase/auth";
 
-const { email, password, error, visible, wrongValues, wrongData } =
-  useValidationForm();
 
-const { googleSignIn } = useValidationFeatures();
+export default {
+  data() {
+    return {
 
-function handleVisible() {
-  visible.value === "password"
-    ? (visible.value = "text")
-    : (visible.value = "password");
-}
+    };
+  },
 
-function register() {
-  if (email.value.length > 7 && password.value.length > 7) {
-    createUserWithEmailAndPassword(getAuth(), email.value, password.value).then(
-      (data) => {
+  setup() {
+    const { email, password, error, visible, wrongValues, wrongData } =
+      useValidationForm();
 
-        const auth = getAuth()
+    const { googleSignIn } = useValidationFeatures();
 
-        store.commit("user/setUser", auth.currentUser);
-        store.commit("user/setAuth", true);
-        console.log(store.state.user.isAuth);
-        router.push({ name: "chat" });
+    const secondPassword = ref('')
+
+    function handleVisible() {
+      visible.value === "password"
+        ? (visible.value = "text")
+        : (visible.value = "password");
+    }
+
+    function register() {
+      if (email.value.length > 7 && password.value.length > 7) {
+        createUserWithEmailAndPassword(
+          getAuth(),
+          email.value,
+          password.value
+        ).then((data) => {
+          const auth = getAuth();
+
+          store.commit("user/setUser", auth.currentUser);
+          store.commit("user/setAuth", true);
+          console.log(store.state.user.isAuth);
+          router.push({ name: "chat" });
+        });
+      } else {
+        wrongValues.value = true;
       }
-    );
-  } else {
-    wrongValues.value = true;
-  }
-}
+    }
+
+    return {
+      email,
+      password,
+      wrongData,
+      secondPassword
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
