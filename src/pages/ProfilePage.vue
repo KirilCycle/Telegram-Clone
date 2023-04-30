@@ -109,6 +109,7 @@ import store from "@/store/store";
 import { updateProfile, signOut } from "firebase/auth";
 import { nextTick, watch } from "vue";
 import firebase from "firebase/compat/app";
+import { useDark } from "@vueuse/core";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
@@ -122,7 +123,7 @@ import UserImage from "@/components/UserImage.vue";
 import EditSettings from "@/components/EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
-import { useDark } from "@vueuse/core";
+
 
 export default {
   components: {
@@ -362,6 +363,7 @@ export default {
       }
     }
 
+    
     const isDark = useDark();
 
     function setLightTheme() {

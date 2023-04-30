@@ -325,7 +325,7 @@ export default {
     const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
-    console.log(store.state.user.user.uid, "cht");
+  
 
     const collectionRef = db.collection("usersLinksToChat");
 

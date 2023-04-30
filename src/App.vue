@@ -17,6 +17,9 @@ import "firebase/compat/auth";
 import { ref, set } from "firebase/database";
 import { useDark } from "@vueuse/core";
 
+
+
+
 import "firebase/compat/firestore";
 
 
@@ -26,6 +29,11 @@ import { getFirestore,  } from "firebase/firestore";
 
 import { setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+
+
+const isDark = useDark()
+
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -66,7 +74,7 @@ const db = getFirestore(app);
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     async function checkNeccessaryData() {
-      console.log("v action");
+      
       const docRef = doc(db, "usersLinksToChat", user.uid);
       const docSnap = await getDoc(docRef);
 
@@ -262,4 +270,9 @@ body {
     -webkit-font-smoothing: antialiased;
   min-height: -webkit-fill-available;
 }
+
+.dark  body{
+  background-color: $body-color-l;
+}
+
 </style>

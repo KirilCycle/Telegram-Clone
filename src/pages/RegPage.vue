@@ -16,7 +16,7 @@
           v-model="password"
         />
       </div>
-      <div class="input-container">
+      <div  v-show="!ableToVerify" class="input-container">
         <p class="info-tx">repeat password</p>
         <main-input
           :class="{ invalidData: wrongData }"
@@ -24,15 +24,15 @@
           v-model="secondPassword"
         />
       </div>
-      <button class="pas_visible">
+      <button  class="pas_visible">
         <span @click.prevent="handleVisible" class="material-symbols-outlined">
           {{ visible !== "password" ? "visibility" : "visibility_off" }}
         </span>
       </button>
 
-      <div class="btn-container">
+      <div  v-show="ableToVerify" class="btn-container">
         <main-button
-          v-show="ableToVerify"
+
           class="btn-c"
           @click.prevent="register"
           >GO</main-button
@@ -40,7 +40,7 @@
       </div>
     </auth-reg-form-wrap>
 
-    <!-- <router-link class="link" to="/">I already have account </router-link> -->
+    <router-link class="link" to="/">I already have account </router-link>
   </div>
 </template>
 
@@ -126,7 +126,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
-$crazy_color: #00ff44;
+
 
 h4 {
   color: #f70000;
@@ -137,8 +137,14 @@ h4 {
  }
 
 .link {
-  color: $crazy_color;
-  margin-top: 20px;
+  color: rgb(105, 105, 105);
+  text-decoration: none;
+  
+  &:hover {
+    color: $second;
+    text-decoration:underline
+  }
+
 }
 
 .wronginput {
@@ -148,6 +154,7 @@ h4 {
 .btn-container {
   height: 47px;
   width: 100%;
+  margin-top: 25px;
   .btn-c {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -163,6 +170,11 @@ h2 {
   font-family: "Noto Sans", sans-serif;
   font-weight: 650;
 }
+
+.dark h2 {
+  color: rgb(0, 0, 0);
+  
+}
 .wrap {
   display: flex;
   justify-content: center;
@@ -174,7 +186,7 @@ h2 {
   width: 100%;
   position: relative;
   display: flex;
-  margin-top: 32px;
+  margin-top: 25px;
 }
 
 .pas_visible {
@@ -183,12 +195,13 @@ h2 {
   margin: 0% auto;
   width: min-content;
   overflow: hidden;
-  margin-top: 5px;
-  background-color: rgba(0, 0, 0, 0);
+  margin-top: 10px;
+  height: min-content;
+ 
   :hover {
     color: $second;
   }
-  margin-bottom: 5px;
+ 
 }
 
 .info-tx {

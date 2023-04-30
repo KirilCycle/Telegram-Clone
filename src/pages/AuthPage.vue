@@ -145,6 +145,13 @@ h4 {
 .link {
   color: gray;
   margin-top: 20px;
+  text-decoration:none;
+ 
+  &:hover {
+    color: $second;
+    text-decoration:underline
+  }
+
 }
 
 .invalidData {
@@ -171,6 +178,15 @@ h2 {
   font-family: "Noto Sans", sans-serif;
   font-weight: 650;
 }
+
+.dark  h2{
+  font-size: 2rem;
+  color: #030303;
+  font-weight: 100;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 650;
+}
+
 .wrap {
   display: flex;
   justify-content: center;
@@ -188,9 +204,12 @@ h2 {
 .pas_visible {
   height: min-content;
   overflow: hidden;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0% auto;
   width: 40px;
+  height: 40px;
   padding: 8px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -198,6 +217,8 @@ h2 {
   :hover {
     color: $second;
   }
+
+
 }
 .info-tx {
   color: gray;
@@ -206,6 +227,10 @@ h2 {
   left: 2%;
   background-color:  $body-color;
   height: min-content;
+}
+
+.dark .info-tx {
+  background-color: $body-color-l ;
 }
 
 .wrongPass {
