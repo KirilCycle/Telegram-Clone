@@ -24,12 +24,12 @@
       <div class="inputs_wrp">
         <div class="inpt-container">
           <p>First Name</p>
-          <input class="default-inpt" v-model="firtsName" />
+          <main-input class="default-inpt" v-model="firtsName" />
         </div>
 
         <div class="inpt-container">
           <p>{{ usernameState }}</p>
-          <input
+          <main-input
             class="default-inpt"
             :class="{
               'input-username-wrong':
@@ -435,24 +435,11 @@ $def-gray: #828282;
   justify-content: center;
   padding: 15px;
 
-  input {
+  
+  input  {
     margin-top: 15px;
     margin-bottom: 15px;
-    padding: 0px 0px 0px 5px;
-    width: 100%;
-    height: 50px;
-    border-radius: 15px;
-    box-sizing: border-box;
-    border: 1px solid gray;
-    font-size: 1rem;
-    color: $text-main;
-    &:focus {
-      border: 1px solid $main;
-      box-shadow: rgba(34, 137, 255, 0.916) 0px 0px 0px 1px;
-    }
-    &:hover {
-      border: 1px solid $main;
-    }
+   
   }
 
   .input-username-wrong {

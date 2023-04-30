@@ -1,7 +1,6 @@
 <template>
   <div @click="moreContentV = false" class="wrap">
     <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
-
     <nav class="settings-nav">
       <button @click="$emit('close')" class="settings-btn">
         <span class="material-symbols-outlined"> arrow_back </span>
@@ -248,7 +247,7 @@ export default {
     },
 
     changeDisplayName() {
-      const symphols = ["@", "#", "$", "!", "+", "|", "/"];
+      const symphols = ["@", "#", "$", "!", "+", "|", "/", "."];
 
       let ready = true;
 

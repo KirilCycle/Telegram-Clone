@@ -2,7 +2,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import store from "@/store/store";
 import {ref} from 'vue'
-import { async } from "@firebase/util";
 import ChatsPage from '@/pages/ChatsPage'
 
 const isAuthed = ref(store.state.user.user)
@@ -22,8 +21,8 @@ export const routes = [
     path: "/chats",
     name: "chats",
     component: ChatsPage,
-    beforeEnter: async (to, from) => {
-      if (!await store.state.user.user) {
+    beforeEnter:  (to, from) => {
+      if ( !store.state.user.user) {
 
         console.log( store.state.user.user,'router',isAuthed.value);
         return false;

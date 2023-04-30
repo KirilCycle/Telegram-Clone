@@ -1,9 +1,3 @@
-Skip to content Search or jump to… Pull requests Issues Codespaces Marketplace
-Explore @KirilCycle KirilCycle / teom_lab Public Cannot fork because you own
-this repository and are not a member of any organizations. Code Issues Pull
-requests Actions Projects Wiki Security Insights Settings
-teom_lab/src/pages/AuthPage.vue @KirilCycle KirilCycle new reg/auth pages Latest
-commit 05bd5d8 2 days ago History 1 contributor 223 lines (192 sloc) 4.22 KB
 
 <template>
   <div class="wrap">
@@ -79,7 +73,7 @@ export default {
             store.commit("user/setAuth", true);
             store.commit("user/setUser", data);
             console.log(store.state.user.isAuth, store.state.user.user);
-            router.push({ name: "chat" });
+            router.push({ name: "chats" });
           })
           .catch((er) => {
             this.wrongData = true;

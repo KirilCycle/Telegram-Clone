@@ -50,10 +50,10 @@
 @import '@/styles/colors';
   
   .menu-btn-wrap {
-    flex-shrink: 0;
     cursor: pointer;
     border-radius: 5px;
     width: 43px;
+    flex-shrink: 0;
     height: 43px;
     border-radius: 21.5px;
     display: flex;

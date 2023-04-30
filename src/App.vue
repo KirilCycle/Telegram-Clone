@@ -77,6 +77,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         });
       }
 
+
+
       const prewuserSnapRef = doc(db, "usersPrew", user.uid);
       const prewuserSnap = await getDoc(prewuserSnapRef);
 
@@ -109,7 +111,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       store.commit("user/setAuthData", auth);
       store.commit("user/setAuth", true);
       store.commit("user/setDb", db);
-      router.push({ name: window.location.hash.replace("#/", "") });
+      router.push({ name: window.location.hash.replace("#/", "/chats") });
     }
     
     
@@ -146,7 +148,7 @@ document.documentElement.style.setProperty("--vh", `${vh}px`);
 // const usersRef = firestoreDb.collection('users'); // Get a reference to the Users collection;
 // // const onlineRef = oldRealTimeDb.ref('.info/connected'); // Get a reference to the list of connections
 // const onlineRef  = ref(oldRealTimeDb, '.info/connected');
-const isDark = useDark();
+
 
 
 
