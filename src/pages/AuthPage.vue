@@ -31,7 +31,7 @@
         </span>
       </button>
       <!-- <input  v-model="login" /> -->
-      <main-button class="btn-c"  @click.prevent="register">SIGN IN</main-button>
+      <main-button v-show="ableToVerify" class="btn-c"  @click.prevent="register">SIGN IN</main-button>
     </form>
    
 
@@ -50,6 +50,8 @@ export default {
   data() {
     return {
       count: 3,
+      email: '',
+      password: '',
       response: {},
       appLogoSrc: "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/chat-circle-blue-512.png",
     };
@@ -69,6 +71,14 @@ export default {
       wrongData,
     };
   },
+  computed: {
+    ableToVerify() {
+      if (this.email.length > 7 && this.password.length > 7 ) {
+       return true
+      }
+      return false
+    }
+  },
   methods: {
     handleVisible() {
       this.visible === "password"
@@ -77,15 +87,8 @@ export default {
     },
 
     register() {
-      if (this.email.length < 8 ) {
-
-        return
-      }
-
-      if (this.email.length < 8) {
-        
-        return
-      }
+       
+      this.wrongData = false;
 
          signInWithEmailAndPassword(getAuth(), this.email, this.password)
           .then((data) => {
@@ -97,7 +100,9 @@ export default {
           .catch((er) => {
             this.wrongData = true;
           });
+        
    
+
     },
   },
 };
@@ -149,9 +154,6 @@ form {
 
 .invalidData {
  border: 1px solid rgba(220, 6, 6, 0.988);
-
- 
-
 }
 
 
