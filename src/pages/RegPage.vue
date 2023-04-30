@@ -16,29 +16,37 @@
           v-model="password"
         />
       </div>
-      <div  v-show="!ableToVerify" class="input-container">
-        <p class="info-tx">repeat password</p>
-        <main-input
-          :class="{ invalidData: wrongData }"
-          :type="visible"
-          v-model="secondPassword"
-        />
-      </div>
-      <button  class="pas_visible">
-        <span @click.prevent="handleVisible" class="material-symbols-outlined">
-          {{ visible !== "password" ? "visibility" : "visibility_off" }}
-        </span>
-      </button>
 
-      <div  v-show="ableToVerify" class="btn-container">
-        <main-button
 
+      <div class="last-content">
+        <div  v-show="!ableToVerify" class="input-container">
+          <p class="info-tx">repeat password</p>
+          <main-input
+            :class="{ invalidData: wrongData }"
+            :type="visible"
+            v-model="secondPassword"
+          />
+        </div>
+        
+        <div  v-show="ableToVerify" class="btn-container">
+         
+          <main-button
+          
           class="btn-c"
           @click.prevent="register"
           >GO</main-button
-        >
+          >
+        </div>
       </div>
+
+
+
     </auth-reg-form-wrap>
+    <button  class="pas_visible">
+      <span @click.prevent="handleVisible" class="material-symbols-outlined">
+        {{ visible !== "password" ? "visibility" : "visibility_off" }}
+      </span>
+    </button>
 
     <router-link class="link" to="/">I already have account </router-link>
   </div>
@@ -132,12 +140,17 @@ h4 {
   color: #f70000;
 }
 
+.last-content {
+  height: 60px;
+}
+
 .invalidData {
   border: 1px solid rgba(220, 6, 6, 0.988);
  }
 
 .link {
   color: rgb(105, 105, 105);
+
   text-decoration: none;
   
   &:hover {
@@ -154,7 +167,7 @@ h4 {
 .btn-container {
   height: 47px;
   width: 100%;
-  margin-top: 25px;
+  margin-top: 35px;
   .btn-c {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -201,7 +214,7 @@ h2 {
   :hover {
     color: $second;
   }
- 
+  margin-bottom: 5px;
 }
 
 .info-tx {
