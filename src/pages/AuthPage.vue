@@ -8,16 +8,18 @@
           <img :src="appLogoSrc">
       </div>
       
-      <h2 v-if="!wrongData">Vue messanger</h2>
-      <h4 v-if="wrongData">wrong email or password</h4>
+      <h2>Vue messanger</h2>
+      
+      <h4 v-if="wrongData">invalid data</h4>
+
       <div class="input-container">
         <p class="info-tx">email</p>
-        <main-input :class="{ wrong: wrongValues }" v-model="email" />
+        <main-input :class="{  invalidData: wrongData }" v-model="email" />
       </div>
       <div class="input-container">
         <p class="info-tx">password</p>
         <main-input
-          :class="{ wrong: wrongValues }"
+          :class="{  invalidData: wrongData }"
           :type="visible"
           v-model="password"
         />
@@ -75,8 +77,17 @@ export default {
     },
 
     register() {
-      if (this.email.length > 7 && this.password.length > 7) {
-        signInWithEmailAndPassword(getAuth(), this.email, this.password)
+      if (this.email.length < 8 ) {
+
+        return
+      }
+
+      if (this.email.length < 8) {
+        
+        return
+      }
+
+         signInWithEmailAndPassword(getAuth(), this.email, this.password)
           .then((data) => {
             store.commit("user/setAuth", true);
             store.commit("user/setUser", data);
@@ -86,9 +97,7 @@ export default {
           .catch((er) => {
             this.wrongData = true;
           });
-      } else {
-        this.wrongValues = true;
-      }
+   
     },
   },
 };
@@ -127,7 +136,7 @@ form {
   flex-direction: column;
 
   @media screen and(max-width: 700px) {
-    transform: translate(0%, -20%);
+    transform: translate(0%, -0%);
     top:auto;
     left: auto;
   }
@@ -137,9 +146,15 @@ form {
   color: gray;
   margin-top: 20px;
 }
-.wronginput {
-  color: red;
+
+.invalidData {
+ border: 1px solid rgba(220, 6, 6, 0.988);
+
+ 
+
 }
+
+
 @media (max-width: 550px) {
   form {
     width: 280px;
@@ -195,7 +210,14 @@ h2 {
   height: min-content;
 }
 
+.wrongPass {
+  color: red;
+}
 
+
+.wrongEmail {
+  color: red;
+}
 
 input {
   border: 1px solid rgb(98, 98, 98);
