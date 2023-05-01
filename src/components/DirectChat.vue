@@ -114,67 +114,57 @@ export default {
       chasingBottom.value = v;
     }
 
-    const query = ref(null)
-
-    const messagesRef = ref(
-      db
-        .collection("chatMessages")
-        .doc(store.state.chat.chatId)
-        .collection("messages")
-    );
-
-    watchEffect(() => {
-      let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
-      if (link.page > 0) {
-        //in case we saw a top observer
-        
-
-        switch (getMessagesType.value) {
-          case "prev":
-            query.value = messagesRef.value
-              .orderBy("createdAt")
-              .limitToLast(80)
-              .endBefore(link.pivot);
-
-          
-            break;
-          case "next":
-            query.value = messagesRef.value
-              .orderBy("createdAt")
-              .startAfter(link.pivot)
-              .limit(80);
-        }
-      } else {
-        console.log("DEF MAIN");
-        query.value = messagesRef.value.orderBy("createdAt", "desc").limit(80);
-      }
-    })
-
-
     watchEffect(() => {
       let link = store.state.chat.chatsScrollPosition[store.state.chat.chatId];
 
       console.log("CHAT WRONG ????", store.state.chat.chatId);
 
-      
-      if (query.value === null) {
-        console.log("DEF NUUUUULLLLL !!!!!!");
-      }
-    
-   
+      const messagesRef = db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages");
 
-     
+        let query = null;
+        if (query === null) {
+          console.log("DEF");
+        }
 
-     
-      //{ preserveSnapshot: true }
       if (link.page > 0) {
-        query.value.onSnapshot((snapshot, parameters) => {
+        //in case we saw a top observer
+        console.log("DEF")
+
+        switch (getMessagesType.value) {
+          case "prev":
+            query = messagesRef
+              .orderBy("createdAt")
+              .limitToLast(80)
+              .endBefore(link.pivot)
+            console.log("WAS");
+            break;
+          case "next":
+            query = messagesRef
+              .orderBy("createdAt")
+              .startAfter(link.pivot)
+              .limit(80)
+            console.log("WAS 2");
+        }
+      } else {
+        console.log("DEF");
+        query = messagesRef.orderBy("createdAt", "desc").limit(80);
+      }
+
+      //{ preserveSnapshot: true }
+
+      query.onSnapshot({ preserveSnapshot: true },(snapshot, parameters) => {
         if (link.page > 0) {
+          console.log("as aw", getMessagesType.value, link.pivot);
           let newData = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
+
           chat.value = newData;
+
           if (getMessagesType.value === "prev") {
             setTimeout(() => {
               try {
@@ -182,7 +172,16 @@ export default {
               } catch (e) {}
             });
           }
-        } 
+        } else {
+          console.log("DEF");
+
+          chat.value = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .reverse();
+          if (chasingBottom.value) {
+            scrollToBottom();
+          }
+        }
 
         if (chat.value.length < 80) {
           disablePrevFetch.value = true;
@@ -190,23 +189,7 @@ export default {
           disablePrevFetch.value = null;
         }
       });
-       } else {
-         query.value.onSnapshot((snapshot, parameters) => {
-             chat.value = snapshot.docs
-               .map((doc) => ({ id: doc.id, ...doc.data() }))
-               .reverse();
-             if (chasingBottom.value) {
-               scrollToBottom();
-             }
-           })
-
-       }
-
-
-
-
-     
-    })
+    });
 
     function fetchPrev() {
       if (!disablePrevFetch.value) {
