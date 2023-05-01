@@ -42,37 +42,18 @@ export default {
   },
   methods: {
     async startChat() {
-      const messagesRef = this.db
-        .collection("chatMessages")
-        .doc(this.$store.state.chat.chatId)
-        .collection("messages");
-
-      const query = messagesRef.orderBy("createdAt", "desc").limit(12);
-
-      query
-        .get()
-        .then((querySnapshot) => {
-          const messages = [];
-          querySnapshot.forEach((doc) => {
-            messages.push(doc.data());
-          });
+     
                     
           const startSettings = {
             id: uuidv4(),
-            howGet: { action: "first", message: messages[messages.length -1 ].createdAt},
+            howGet: { action: "first" },
             topMessage: null,
             bottomMessage: null,
           }
 
           this.chatPartSettings.unshift(startSettings)
 
-        })
-        .catch((error) => {
-          // Handle 
-          console.error(error);
-        });
-
-      const startSettings = {};
+       
 
       //   this.chatPartSettings.push(startMessage)
     },

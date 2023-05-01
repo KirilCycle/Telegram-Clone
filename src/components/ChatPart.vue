@@ -10,7 +10,14 @@
 import { collection, getDocs, getDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { onBeforeUpdate, ref, onMounted, computed, watchEffect } from "vue";
+import {
+  onBeforeUpdate,
+  ref,
+  onMounted,
+  computed,
+  watchEffect,
+  watch,
+} from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
@@ -20,6 +27,7 @@ import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { scrollTo } from "vue-scrollto";
 import { limitToFirst, limitToLast, startAfter } from "firebase/database";
 import MessagesSkelet from "./MessagesSkelet.vue";
+import { settings } from "firebase/analytics";
 
 // id: uuidv4(),
 //         howGet:  {action:'startAfter', message: 222 },
@@ -33,7 +41,7 @@ export default {
   setup(props, { emit }) {
     const db = firebase.firestore();
     const chat = ref([]);
-    const limit = ref(12);
+    const limit = ref(10);
     const query = ref(null);
     const messagesRef = ref(
       db
@@ -46,6 +54,13 @@ export default {
       //setting query
     });
 
+    function setNewLast() {
+      emit("updated", {
+        id: props.settings.id,
+        bottomMessage: chat.value[chat.value.length - 1].createdAt,
+        topMessage: chat.value[0],
+      });
+    }
     // setting querry params based client actions
     if (props.settings.howGet.action === "endBefore") {
       query.value = messagesRef.value
@@ -64,6 +79,10 @@ export default {
     }
 
     watchEffect(() => {
+      if (chat.value[0]) {
+      }
+    });
+
       query.value.onSnapshot(
         // { preserveSnapshot: true },
         (snapshot, parameters) => {
@@ -72,25 +91,39 @@ export default {
             ...doc.data(),
           }));
 
-          if (props.settings.howGet.action === 'first') {
-              chat.value = response.reverse()
+          if (props.settings.howGet.action === "first") {
+            console.log("HERE");
+            chat.value = response.reverse();
+            //    setNewLast()
           } else {
-            chat.value = response
+            console.log("HERE");
+            chat.value = response;
           }
-          
         }
       );
 
-      if (!props.settings.topMessage && chat.value.length) {
-        console.log("EMIT", props.settings.id);
-        limit.value += 1;
-        emit("updated", {
-          id: props.settings.id,
-          topMessage: chat.value[0],
-          bottomMessage: chat.value[chat.value.length - 1],
-        });
-      }
-    });
+    //   watchEffect(() => {
+    //     if (!props.settings.topMessage && chat.value.length) {
+    //     console.log("EMIT", props.settings.id);
+    //     emit("updated", {
+    //       id: props.settings.id,
+    //       topMessage: chat.value[0].createdAt,
+    //       bottomMessage: chat.value[chat.value.length - 1].createdAt,
+    //     });
+    //   }
+    //   })
+
+    watchEffect(() => {
+        if (!props.settings.topMessage && chat.value.length) {
+            console.log("EMIT", props.settings.id);
+            emit("updated", {
+              id: props.settings.id,
+              topMessage: chat.value[0].createdAt,
+              bottomMessage: chat.value[chat.value.length - 1].createdAt,
+            });
+          }
+    })
+    
 
     // as only one
 

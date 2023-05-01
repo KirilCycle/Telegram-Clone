@@ -366,7 +366,6 @@ export default {
               v: "",
             });
 
-            console.log("here we go ");
           }
         } else if (formated.length < store.state.chat.chatsCount) {
           //in case chat was deleted
