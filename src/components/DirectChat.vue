@@ -138,13 +138,13 @@ export default {
             query = messagesRef
               .orderBy("createdAt")
               .limitToLast(80)
-              .endBefore(link.pivot)
+              .endBefore(  JSON.stringify(link.pivot))
             console.log("WAS");
             break;
           case "next":
             query = messagesRef
               .orderBy("createdAt")
-              .startAfter(link.pivot)
+              .startAfter( link.pivot)
               .limit(80)
             console.log("WAS 2");
         }
@@ -163,6 +163,7 @@ export default {
             ...doc.data(),
           }));
 
+    
           chat.value = newData;
 
           if (getMessagesType.value === "prev") {

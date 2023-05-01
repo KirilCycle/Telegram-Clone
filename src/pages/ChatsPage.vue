@@ -348,7 +348,7 @@ export default {
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
 
-        console.log(store.state.chat.chatId);
+       
 
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
@@ -374,14 +374,14 @@ export default {
           //Object.keys(store.state.chat.chatsScrollPosition)
           for (var key in store.state.chat.chatsScrollPosition) {
             if (!source[key]) {
-              console.log("LESS THE BEFORE", key);
+         
               store.commit("chat/deleteChat", key);
 
               resetSelectedChat();
 
               break;
             }
-            console.log(store.state.chat.chatsScrollPosition, "DATKA ");
+
             store.commit("chat/setChatsCount", formated.length);
           }
         }

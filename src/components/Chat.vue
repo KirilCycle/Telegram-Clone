@@ -1,17 +1,22 @@
 <template>
   <div class="chat-wrap">
-    <button @click="getPrev"></button>
+    <button class="prev" @click="getPrev">show prev</button>
 
-    <chat-part></chat-part>
+    <chat-part
+      @updated="setUpdatedData"
+      :settings="part"
+      v-for="part in chatPartSettings"
+      :key="part.id"
+    ></chat-part>
 
-    <button @click="getNext"></button>
+    <button class="next" @click="getNext">show next</button>
   </div>
 </template>
 
 <script>
 //miracle doesnt exist
 // import { collection, getDocs, getDoc } from "firebase/firestore";
-// import firebase from "firebase/compat/app";
+import firebase from "firebase/compat/app";
 // import store from "@/store/store";
 // import { getDatabase, onValue } from "firebase/database";
 // import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
@@ -20,6 +25,7 @@
 // import MessageItem from "./MessageItem.vue";
 // import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 // import { scrollTo } from "vue-scrollto";
+import { uuidv4 } from "@firebase/util";
 // import { onMounted } from "vue";
 // import { limitToFirst, limitToLast, startAfter } from "firebase/database";
 // import MessagesSkelet from "./MessagesSkelet.vue";
@@ -31,21 +37,67 @@ export default {
   },
 
   setup() {
-    const chat = ref(null);
+    const db = firebase.firestore();
+
+    const chatPartSettings = ref([]);
+
+    //action startAfter/endBefore
+    //
+
+    const chatPartsetting = {
+      id: uuidv4(),
+      howGet: { action: "endBefore", message: 111 },
+      topMessage: null,
+      bottomMessage: null,
+    };
+
+    const chatPartsetting2 = {
+      id: uuidv4(),
+      howGet: { action: "startAfter", message: 222 },
+      topMessage: null,
+      bottomMessage: null,
+    };
+
+    // chatPartSettings.value.unshift(chatPartsetting2)
+    chatPartSettings.value.unshift(chatPartsetting);
 
     function getPrev() {}
 
     function getNext() {}
 
+    function setUpdatedData(settings) {
+      console.log("SET", settings);
+     const link = chatPartSettings.value.findIndex((set) => set.id === settings.id )
+
+     chatPartSettings.value[link] = {
+        ...chatPartSettings.value[link],
+        ...settings
+     }
+
+     console.log( chatPartSettings.value)
+
+    }
+
     return {
       getPrev,
+      chatPartSettings,
       getNext,
+      setUpdatedData,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.prev {
+  width: 100%;
+  height: 50px;
+  background-color: #5b42ff;
+  color: white;
+}
+.next {
+  @extend .prev;
+}
 .chat-wrap {
   padding-top: 30px;
   position: relative;
