@@ -15,7 +15,6 @@
     <div v-observerdef="firstScroll" v-if="chat.length > 0"></div>
     <message-item
       :last="{ i, length: chat.length }"
-      :removeMessage="deleteMessage"
       v-for="(it, i) in chat"
       :key="it.id"
       :message="it"
@@ -70,21 +69,7 @@ export default {
     };
   },
   methods: {
-    async deleteMessage(chatId, messageId) {
-      const db = firebase.firestore();
 
-      try {
-        const chatRef = doc(db, "chatMessages", chatId);
-
-        await updateDoc(chatRef, {
-          messages: firebase.firestore.FieldValue.arrayRemove(messageId),
-        });
-
-        console.log("Message deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting message:", error);
-      }
-    },
   },
   mounted() {},
 
@@ -138,7 +123,7 @@ export default {
             query = messagesRef
               .orderBy("createdAt")
               .limitToLast(80)
-              .endBefore(  JSON.stringify(link.pivot))
+              .endBefore(  link.pivot)
             console.log("WAS");
             break;
           case "next":

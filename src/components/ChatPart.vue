@@ -1,7 +1,7 @@
 <template>
   <div class="chat-part">
     <div v-for="message in chat" :key="message.id" class="msg">
-      {{ message }}
+      {{ message.text }}
     </div>
   </div>
 </template>
@@ -31,30 +31,69 @@ export default {
     settings: Object,
   },
   setup(props, { emit }) {
+    const db = firebase.firestore();
     const chat = ref([]);
-
-    let query;
+    const limit = ref(12);
+    const query = ref(null);
+    const messagesRef = ref(
+      db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages")
+    );
 
     onMounted(() => {
       //setting query
     });
 
-    for (let i = 0; i < 12; i++) {
-      chat.value.push( i + " " + props.settings.id.slice(0, 5));
+    // setting querry params based client actions
+    if (props.settings.howGet.action === "endBefore") {
+      query.value = messagesRef.value
+        .orderBy("createdAt")
+        .limitToLast(limit.value)
+        .endBefore(props.settings.howGet.message);
+    } else if (props.settings.howGet.action === "first") {
+      query.value = messagesRef.value
+        .orderBy("createdAt", "desc")
+        .limit(limit.value);
+    } else {
+      query.value = messagesRef.value
+        .orderBy("createdAt")
+        .limit(limit.value)
+        .startAfter(props.settings.howGet.message);
     }
 
-    //as only one 
-    if (!props.settings.topMessage) {
-        console.log('EMIT',props.settings.id)
+    watchEffect(() => {
+      query.value.onSnapshot(
+        // { preserveSnapshot: true },
+        (snapshot, parameters) => {
+          let response = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          if (props.settings.howGet.action === 'first') {
+              chat.value = response.reverse()
+          } else {
+            chat.value = response
+          }
+          
+        }
+      );
+
+      if (!props.settings.topMessage && chat.value.length) {
+        console.log("EMIT", props.settings.id);
+        limit.value += 1;
         emit("updated", {
           id: props.settings.id,
           topMessage: chat.value[0],
           bottomMessage: chat.value[chat.value.length - 1],
         });
-    }
+      }
+    });
 
+    // as only one
 
-    
     return {
       chat,
     };
