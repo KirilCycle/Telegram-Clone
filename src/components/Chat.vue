@@ -61,21 +61,32 @@ export default {
     // chatPartSettings.value.unshift(chatPartsetting2)
     chatPartSettings.value.unshift(chatPartsetting);
 
-    function getPrev() {}
+    function getPrev() {
+      //will get new messages based prev top settings 
+        const newChatPart = {
+        id: uuidv4(),
+        howGet: { action: "endBefore", message:  chatPartSettings.value[0].topMessage  },
+        topMessage: null,
+        bottomMessage: null,
+      };
+
+      chatPartSettings.value.unshift(newChatPart);
+    }
 
     function getNext() {}
 
     function setUpdatedData(settings) {
       console.log("SET", settings);
-     const link = chatPartSettings.value.findIndex((set) => set.id === settings.id )
+      const link = chatPartSettings.value.findIndex(
+        (set) => set.id === settings.id
+      );
 
-     chatPartSettings.value[link] = {
+      chatPartSettings.value[link] = {
         ...chatPartSettings.value[link],
-        ...settings
-     }
+        ...settings,
+      };
 
-     console.log( chatPartSettings.value)
-
+      console.log(chatPartSettings.value);
     }
 
     return {

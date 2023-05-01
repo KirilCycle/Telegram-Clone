@@ -43,12 +43,18 @@ export default {
       chat.value.push( i + " " + props.settings.id.slice(0, 5));
     }
 
-    emit("updated", {
-      id: props.settings.id,
-      topMessage: chat.value[0],
-      bottomMessage: chat.value[chat.value.length - 1],
-    });
+    //as only one 
+    if (!props.settings.topMessage) {
+        console.log('EMIT',props.settings.id)
+        emit("updated", {
+          id: props.settings.id,
+          topMessage: chat.value[0],
+          bottomMessage: chat.value[chat.value.length - 1],
+        });
+    }
 
+
+    
     return {
       chat,
     };
