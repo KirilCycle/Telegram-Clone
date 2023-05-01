@@ -56,9 +56,9 @@ export default {
     const disablePrevFetch = ref(null);
     const chatWasFetched = ref(null);
     const page = ref(null);
-    
+
     const prevData = ref(null);
-    
+
     const subChats = ref([]);
 
     const messagesRef = ref(
@@ -72,29 +72,31 @@ export default {
 
     async function startChatConverstion() {
       try {
-        query.value = messagesRef.value.orderBy("createdAt","desc").limit(20);
+        query.value = messagesRef.value.orderBy("createdAt", "desc").limit(20);
 
-       
+        let first = {};
+
         query.value.onSnapshot((snapshot, parameters) => {
-          const first = {
-            id: snapshot.docs[19],
-            ...snapshot.docs[19].data(),
-          };
 
+          first.createdAt = snapshot.docs[0].data().createdAt
+          first.id = snapshot.docs[0].id
+          console.log(  first);
+       
           const subChat = {
-            type: "startAfter",
+            type: "endBefore",
             localId: uuidv4(),
             opirniy: first,
             last: null,
             first: null,
           };
-          
-          subChats.value.push(subChat);
-
-          console.log(first);
-
-
+  
+         
+  
+        subChats.value.push(subChat);
         });
+
+
+        console.log(first);
       } catch (e) {
         console.log(e, "AT FIRST TRY TO GET CONVERSATION");
       }
@@ -112,17 +114,16 @@ export default {
     // subChats.value.push(subChat1);
     // subChats.value.push(subChat2);
 
-    const firstWas = ref(null)
+    const firstWas = ref(null);
 
     watchEffect(async () => {
       if (!prevData.value) {
         //chat was at first opened
 
-        if (!firstWas.value ) {
-          startChatConverstion().then((res) => firstWas.value = true)
+        if (!firstWas.value) {
+          startChatConverstion().then((res) => (firstWas.value = true));
         }
-        console.log(  'AAAAAAA');
-         
+        console.log("AAAAAAA");
       }
     });
 
@@ -130,9 +131,9 @@ export default {
       //chat will have 3 sub chats
       //in case we have 3 i will push next based first msg
       //and delete last
-      if ( subChats.value[0].first) {
-        console.log(subChats.value[0].first,"get previous");
-  
+      if (subChats.value[0]?.first) {
+        console.log(subChats.value[0].first, "get previous");
+
         subChats.value.unshift({
           type: "endBefore",
           localId: uuidv4(),
@@ -140,24 +141,22 @@ export default {
           last: null,
           first: null,
         });
-  
-        // console.log(subChats.value);
 
+        // console.log(subChats.value);
       }
-      
     }
 
     function addDataToGetOtherSubChats(first, last, localId) {
-      // for (let i = 0; i < subChats.value.length; i++) {
-      //   if (subChats.value[i].localId === localId) {
-      //     subChats.value[i].last = last;
-      //     subChats.value[i].first = first;
-      //   }
+      for (let i = 0; i < subChats.value.length; i++) {
+        if (subChats.value[i].localId === localId) {
+          subChats.value[i].last = last;
+          subChats.value[i].first = first;
+        }
 
-      //   console.log("get from");
-      // }
+        console.log("get from");
+      }
 
-     console.log( first, last, localId, 'AAXXX');
+      console.log(first, last, localId, "AAXXX");
     }
 
     function fetchNext() {

@@ -477,7 +477,7 @@ img {
 }
 
 .settings-nav {
-  max-height: 60px;
+  
   width: 100%;
   background-color: $content-main;
   height: 8%;
@@ -487,6 +487,11 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+
+@media screen and(min-width :1400px) {
+  height: 60px;
+  
+}
   
 
 
@@ -513,6 +518,11 @@ img {
 .user-image-wrp {
   position: relative;
   top: 8%;
+
+  @media screen and(min-width: 1400px) {
+    top: 60px
+  }
+
 }
 
 .more-content {

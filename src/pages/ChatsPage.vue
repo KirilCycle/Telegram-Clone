@@ -114,6 +114,8 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
+import Drochilovo from '@/components/Drochilovo.vue'
+
 import { notNullish } from "@vueuse/core";
 
 export default {
@@ -121,6 +123,7 @@ export default {
     DirectChat,
     ReplyMessageBorder,
     SelectedChatDynamic,
+    Drochilovo,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -553,7 +556,7 @@ $custom-c3: rgb(0, 128, 255);
   display: flex;
   justify-content: center;
   background-color: $custom-c2;
-  background-color: #2234ae;
+  background-color: #1c1c1c;
   background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
   min-width: 100%;
   position: relative;
@@ -843,8 +846,8 @@ v-enter-active,
   height: 100vh;
   position: relative;
   overflow-y: hidden;
-  background-color: #2234ae;
-  background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
+  background-color: $body-color;
+  
 }
 
 .dark .right-side {
@@ -855,8 +858,8 @@ v-enter-active,
 .right-side-shoved-back {
   width: 100%;
   height: 100vh;
-  background-color: #2234ae;
-  background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
+  background-color: $body-color;
+ 
   position: relative;
   overflow-y: hidden;
 }

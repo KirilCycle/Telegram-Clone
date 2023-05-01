@@ -217,12 +217,17 @@ h2 {
   margin-bottom: 5px;
 }
 
-.info-tx {
-  color: gray;
-  position: absolute;
-  top: -12px;
-  left: 2%;
+
+.input-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  margin-top: 25px;
 }
+
+
+
+
 
 input {
   border: 1px solid rgb(98, 98, 98);

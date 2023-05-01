@@ -64,14 +64,14 @@ export default {
           query.value = messagesRef.value
             .orderBy("createdAt")
             .limitToLast(20)
-            .endBefore(props.getData.opirniy.createdAt);
+            .endBefore(props.getData.opirniy);
 
           break;
 
         case "startAfter":
           query.value = messagesRef.value
             .orderBy("createdAt")
-            .startAfter(props.getData.opirniy.createdAt)
+            .startAfter(props.getData.opirniy)
             .limit(20);
       }
 
