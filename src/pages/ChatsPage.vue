@@ -520,7 +520,6 @@ export default {
     const chatHided = ref(false);
 
     watchEffect(() => {
-      console.log(chat.value, "AS MAIN REF", chatHided.value);
 
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";

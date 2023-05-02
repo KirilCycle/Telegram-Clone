@@ -4,6 +4,7 @@
 
     <chat-part
       @updated="setUpdatedData"
+      @updatePrev="updatePrev"
       :settings="part"
       v-for="part in chatPartSettings"
       :key="part.id"
@@ -106,7 +107,6 @@ export default {
     function getNext() {}
 
     function setUpdatedData(settings) {
-      console.log("SET", settings);
       const link = chatPartSettings.value.findIndex(
         (set) => set.id === settings.id
       );
@@ -119,7 +119,13 @@ export default {
       console.log(chatPartSettings.value);
     }
 
+
+    function updatePrev () {
+    console.log('UPDATED');
+    }
+
     return {
+      updatePrev,
       getPrev,
       chatPartSettings,
       getNext,

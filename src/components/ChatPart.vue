@@ -50,18 +50,9 @@ export default {
         .collection("messages")
     );
 
-    onMounted(() => {
-      //setting query
-    });
 
-    function setNewLast() {
-      emit("updated", {
-        id: props.settings.id,
-        bottomMessage: chat.value[chat.value.length - 1].createdAt,
-        topMessage: chat.value[0],
-      });
-    }
     // setting querry params based client actions
+
     if (props.settings.howGet.action === "endBefore") {
       query.value = messagesRef.value
         .orderBy("createdAt")
@@ -78,52 +69,49 @@ export default {
         .startAfter(props.settings.howGet.message);
     }
 
+    query.value.onSnapshot(
+      // { preserveSnapshot: true },
+      (snapshot, parameters) => {
+        let response = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log("HERE", props.settings.id);
+
+        if (props.settings.howGet.action === "first") {
+          chat.value = response.reverse();
+          //    setNewLast()
+        } else {
+          chat.value = response;
+        }
+      }
+    );
+
+
     watchEffect(() => {
-      if (chat.value[0]) {
+      if (
+        chat.value.length &&
+        props.settings.howGet.action === "first" &&
+        props.settings.topMessage &&
+        props.settings.topMessage !== chat.value[0]?.createdAt
+      ) {
+        console.log("GO GO GO");
+        emit('updatePrev', props.settings.id)
+      }
+    })
+
+
+    //standar emit
+    watchEffect(() => {
+      if (!props.settings.topMessage && chat.value.length) {
+        console.log("EMIT", props.settings.id);
+        emit("updated", {
+          id: props.settings.id,
+          topMessage: chat.value[0].createdAt,
+          bottomMessage: chat.value[chat.value.length - 1].createdAt,
+        });
       }
     });
-
-      query.value.onSnapshot(
-        // { preserveSnapshot: true },
-        (snapshot, parameters) => {
-          let response = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-
-          if (props.settings.howGet.action === "first") {
-            console.log("HERE");
-            chat.value = response.reverse();
-            //    setNewLast()
-          } else {
-            console.log("HERE");
-            chat.value = response;
-          }
-        }
-      );
-
-    //   watchEffect(() => {
-    //     if (!props.settings.topMessage && chat.value.length) {
-    //     console.log("EMIT", props.settings.id);
-    //     emit("updated", {
-    //       id: props.settings.id,
-    //       topMessage: chat.value[0].createdAt,
-    //       bottomMessage: chat.value[chat.value.length - 1].createdAt,
-    //     });
-    //   }
-    //   })
-
-    watchEffect(() => {
-        if (!props.settings.topMessage && chat.value.length) {
-            console.log("EMIT", props.settings.id);
-            emit("updated", {
-              id: props.settings.id,
-              topMessage: chat.value[0].createdAt,
-              bottomMessage: chat.value[chat.value.length - 1].createdAt,
-            });
-          }
-    })
-    
 
     // as only one
 
