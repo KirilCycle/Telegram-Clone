@@ -43,19 +43,14 @@ export default {
   },
   methods: {
     async startChat() {
-     
-                    
-          const startSettings = {
-            id: uuidv4(),
-            howGet: { action: "first" },
-            topMessage: null,
-            bottomMessage: null,
-          }
+      const startSettings = {
+        id: uuidv4(),
+        howGet: { action: "first" },
+        topMessage: null,
+        bottomMessage: null,
+      };
 
-          this.chatPartSettings.unshift(startSettings)
-
-       
-
+      this.chatPartSettings.unshift(startSettings);
       //   this.chatPartSettings.push(startMessage)
     },
   },
@@ -83,7 +78,6 @@ export default {
       bottomMessage: null,
     };
     // chatPartSettings.value.unshift(chatPartsetting2)
-    
 
     function getPrev() {
       //will get new messages based prev top settings
@@ -119,9 +113,18 @@ export default {
       console.log(chatPartSettings.value);
     }
 
+    //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
+    function updatePrev(id, newTopMessage, text) {
+   
+      console.log(  chatPartSettings.value[0],'START',text)
+      
+      chatPartSettings.value[0].howGet = {
+        action: "endBefore",
+        message: newTopMessage,
+      }
 
-    function updatePrev () {
-    console.log('UPDATED');
+    console.log(chatPartSettings.value[0], 'after',text);
+     
     }
 
     return {

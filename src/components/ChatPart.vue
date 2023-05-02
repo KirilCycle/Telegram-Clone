@@ -51,32 +51,39 @@ export default {
     );
 
 
+    
     // setting querry params based client actions
 
-    if (props.settings.howGet.action === "endBefore") {
-      query.value = messagesRef.value
-        .orderBy("createdAt")
-        .limitToLast(limit.value)
-        .endBefore(props.settings.howGet.message);
-    } else if (props.settings.howGet.action === "first") {
-      query.value = messagesRef.value
-        .orderBy("createdAt", "desc")
-        .limit(limit.value);
-    } else {
-      query.value = messagesRef.value
-        .orderBy("createdAt")
-        .limit(limit.value)
-        .startAfter(props.settings.howGet.message);
-    }
+    watchEffect(() => {
+      if (props.settings.howGet.action === "endBefore") {
+        query.value = messagesRef.value
+          .orderBy("createdAt")
+          .limitToLast(limit.value)
+          .endBefore(props.settings.howGet.message);
+      } else if (props.settings.howGet.action === "first") {
+        query.value = messagesRef.value
+          .orderBy("createdAt", "desc")
+          .limit(limit.value);
+      } else {
+        query.value = messagesRef.value
+          .orderBy("createdAt")
+          .limit(limit.value)
+          .startAfter(props.settings.howGet.message);
+      }
+    })
+
 
     query.value.onSnapshot(
       // { preserveSnapshot: true },
+      
       (snapshot, parameters) => {
         let response = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+    
         console.log("HERE", props.settings.id);
+
 
         if (props.settings.howGet.action === "first") {
           chat.value = response.reverse();
@@ -87,7 +94,6 @@ export default {
       }
     );
 
-
     watchEffect(() => {
       if (
         chat.value.length &&
@@ -96,7 +102,7 @@ export default {
         props.settings.topMessage !== chat.value[0]?.createdAt
       ) {
         console.log("GO GO GO");
-        emit('updatePrev', props.settings.id)
+        emit('updatePrev', props.settings.id, chat.value[0].createdAt,  chat.value[0].text)
       }
     })
 
