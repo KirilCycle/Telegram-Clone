@@ -114,7 +114,7 @@ export default {
     });
 
     // as only one
-
+    
     return {
       chat,
     };

@@ -116,7 +116,21 @@ export default {
       }
     }
 
-    function getNext() {} 
+    function getNext() {
+      const newChatPart = {
+        id: uuidv4(),
+        howGet: {
+          action: "startAfter",
+          message: chatPartSettings.value[1].bottomMessage,
+        },
+        topMessage: null,
+        bottomMessage: null,
+      };
+
+       chatPartSettings.value.push(newChatPart);
+       chatPartSettings.value.shift();
+   
+    } 
 
     function setUpdatedData(settings) {
       const link = chatPartSettings.value.findIndex(
