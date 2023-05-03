@@ -82,10 +82,18 @@ export default {
         }));
         console.log("HERE", props.settings.id);
         chat.value = response;
+
+        //in case response less than required limit (mean cursor beyond collection it can bee as top of whole collection or bottom ) 
+        //so we need
+        //prevent adding new chat part
+        if (response.length < limit.value) {
+          emit('disableCursorMove',props.settings.howGet.action)
+        }
+
       }
     );
 
-    //standar emit
+    //standar emit at first chat part apppear (will invoke only once)  during messages changes we will change it to in main chatSettings
     watchEffect(() => {
       if (!props.settings.topMessage && chat.value.length) {
         console.log("EMIT", props.settings.id);
@@ -113,8 +121,8 @@ export default {
      
     });
 
-    // as only one
-    
+  
+
     return {
       chat,
     };

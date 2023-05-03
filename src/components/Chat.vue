@@ -3,6 +3,7 @@
     <button class="prev" @click="getPrev">show prev</button>
 
     <chat-part
+      @disableCursorMove="disableNextData"
       @updated="setUpdatedData"
       @changes="updateTopOrBottomMessage"
       :settings="part"
@@ -56,8 +57,9 @@ export default {
         .get()
         .then((snapshot) => {
           if (!snapshot.empty) {
-            const TopMessageFromLastPartofMessages = snapshot.docs[snapshot.docs.length - 1];
-            
+            const TopMessageFromLastPartofMessages =
+              snapshot.docs[snapshot.docs.length - 1];
+
             const startSettings = {
               id: uuidv4(),
               howGet: {
@@ -82,8 +84,9 @@ export default {
   },
   setup() {
     const db = firebase.firestore();
-
     const chatPartSettings = ref([]);
+    const getNextAvaible = ref(null);
+    const getPreviousAvaible = ref(true);
 
     //action startAfter/endBefore
 
@@ -94,43 +97,45 @@ export default {
       bottomMessage: null,
     };
 
-
     // chatPartSettings.value.unshift(chatPartsetting2)
 
     function getPrev() {
       //will get new messages based prev top settings
-      const newChatPart = {
-        id: uuidv4(),
-        howGet: {
-          action: "endBefore",
-          message: chatPartSettings.value[0].topMessage,
-        },
-        topMessage: null,
-        bottomMessage: null,
-      };
-
-      chatPartSettings.value.unshift(newChatPart);
-
-      if (chatPartSettings.value.length > 2) {
-        chatPartSettings.value.pop();
+      if (getPreviousAvaible.value) {
+        const newChatPart = {
+          id: uuidv4(),
+          howGet: {
+            action: "endBefore",
+            message: chatPartSettings.value[0].topMessage,
+          },
+          topMessage: null,
+          bottomMessage: null,
+        };
+  
+        chatPartSettings.value.unshift(newChatPart);
+  
+        if (chatPartSettings.value.length > 2) {
+          chatPartSettings.value.pop();
+        }
       }
     }
 
     function getNext() {
-      const newChatPart = {
-        id: uuidv4(),
-        howGet: {
-          action: "startAfter",
-          message: chatPartSettings.value[1].bottomMessage,
-        },
-        topMessage: null,
-        bottomMessage: null,
-      };
-
-       chatPartSettings.value.push(newChatPart);
-       chatPartSettings.value.shift();
-   
-    } 
+      if (getNextAvaible.value) {
+        const newChatPart = {
+          id: uuidv4(),
+          howGet: {
+            action: "startAfter",
+            message: chatPartSettings.value[1].bottomMessage,
+          },
+          topMessage: null,
+          bottomMessage: null,
+        };
+  
+        chatPartSettings.value.push(newChatPart);
+        chatPartSettings.value.shift();
+      }
+      }
 
     function setUpdatedData(settings) {
       const link = chatPartSettings.value.findIndex(
@@ -145,25 +150,38 @@ export default {
       console.log(chatPartSettings.value);
     }
 
-    function updateTopOrBottomMessage (id, top, bottom) {
-      const link = chatPartSettings.value.findIndex(
-        (set) => set.id === id
-      );
+    function updateTopOrBottomMessage(id, top, bottom) {
+      const link = chatPartSettings.value.findIndex((set) => set.id === id);
 
-     chatPartSettings.value[link].topMessage = top;
-     chatPartSettings.value[link].bottomMessage = bottom; 
+      chatPartSettings.value[link].topMessage = top;
+      chatPartSettings.value[link].bottomMessage = bottom;
 
-     console.log(chatPartSettings.value);
+      console.log(chatPartSettings.value);
+    }
+
+    // Some chat parts say that they reach the top or bottom of the entire collection and we need to prevent observer(top/bottom) calls
+    function disableNextData(gettingType) {
+      if (gettingType === "endBefore") {
+
+        getNextAvaible.value = true
+        getPreviousAvaible.value = false
+        console.log(gettingType, "PREVENT");
+      } else if (gettingType === "startAfter") {
+
+        getPreviousAvaible.value = true
+        getNextAvaible.value = false
+        console.log(gettingType, "PREVENT");
+      }
     }
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
-    
 
     return {
       getPrev,
+      disableNextData,
       chatPartSettings,
       getNext,
       setUpdatedData,
-      updateTopOrBottomMessage
+      updateTopOrBottomMessage,
     };
   },
 };
