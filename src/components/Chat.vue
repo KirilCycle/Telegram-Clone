@@ -3,6 +3,8 @@
     <button class="prev" @click="getPrev">show prev</button>
 
     <chat-part
+      @updated="setUpdatedData"
+      @updatePrev="updatePrev"
       :settings="part"
       v-for="part in chatPartSettings"
       :key="part.id"
@@ -59,7 +61,7 @@ export default {
             const startSettings = {
               id: uuidv4(),
               howGet: {
-                action: "startAfter",
+                action: "first",
                 message: TopMessageFromLastPartofMessages,
               },
               topMessage: null,
@@ -82,8 +84,6 @@ export default {
     const db = firebase.firestore();
 
     const chatPartSettings = ref([]);
-
-    console.log(chatPartSettings.value, "setted");
 
     //action startAfter/endBefore
 
@@ -114,7 +114,6 @@ export default {
         bottomMessage: null,
       };
 
-      console.log("PREV");
       chatPartSettings.value.unshift(newChatPart);
 
       if (chatPartSettings.value.length > 2) {
@@ -125,7 +124,6 @@ export default {
     function getNext() {}
 
     function setUpdatedData(settings) {
-      console.log("UPDATED ?");
       const link = chatPartSettings.value.findIndex(
         (set) => set.id === settings.id
       );
@@ -140,13 +138,16 @@ export default {
 
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
     function updatePrev(id, newTopMessage, text) {
-      console.log("UPDATED ?");
+   
+      console.log(  chatPartSettings.value[0],'START',text)
+      
       chatPartSettings.value[0].howGet = {
         action: "endBefore",
         message: newTopMessage,
-      };
+      }
 
-      console.log(chatPartSettings.value[0], "after", text);
+    console.log(chatPartSettings.value[0], 'after',text);
+     
     }
 
     return {

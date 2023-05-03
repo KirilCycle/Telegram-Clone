@@ -59,12 +59,13 @@ export default {
           .endBefore(props.settings.howGet.message);
       } else if (props.settings.howGet.action === "first") {
         query.value = messagesRef.value
-          .orderBy("createdAt", "desc")
-          .limit(limit.value);
+          .orderBy("createdAt")
+          // .limit(limit.value)
+          .startAfter(props.settings.howGet.message);
       } else {
         query.value = messagesRef.value
           .orderBy("createdAt")
-          // .limit(limit.value)
+           .limit(limit.value)
           .startAfter(props.settings.howGet.message);
       }
     })
@@ -97,16 +98,16 @@ export default {
 
 
     //standar emit
-    // watchEffect(() => {
-    //   if (!props.settings.topMessage && chat.value.length) {
-    //     console.log("EMIT", props.settings.id);
-    //     emit("updated", {
-    //       id: props.settings.id,
-    //       topMessage: chat.value[0].createdAt,
-    //       bottomMessage: chat.value[chat.value.length - 1].createdAt,
-    //     });
-    //   }
-    // });
+    watchEffect(() => {
+      if (!props.settings.topMessage && chat.value.length) {
+        console.log("EMIT", props.settings.id);
+        emit("updated", {
+          id: props.settings.id,
+          topMessage: chat.value[0].createdAt,
+          bottomMessage: chat.value[chat.value.length - 1].createdAt,
+        });
+      }
+    });
 
     // as only one
 
