@@ -3,8 +3,6 @@
     <button class="prev" @click="getPrev">show prev</button>
 
     <chat-part
-      @updated="setUpdatedData"
-      @updatePrev="updatePrev"
       :settings="part"
       v-for="part in chatPartSettings"
       :key="part.id"
@@ -43,15 +41,38 @@ export default {
   },
   methods: {
     async startChat() {
-      const startSettings = {
-        id: uuidv4(),
-        howGet: { action: "first" },
-        topMessage: null,
-        bottomMessage: null,
-      };
+      console.log("GO START");
+      const messagesRef = this.db
+        .collection("chatMessages")
+        .doc(this.$store.state.chat.chatId)
+        .collection("messages");
 
-      this.chatPartSettings.unshift(startSettings);
-      //   this.chatPartSettings.push(startMessage)
+      let query = messagesRef.orderBy("createdAt", "desc").limit(10);
+
+      query
+        .limit(10)
+        .get()
+        .then((snapshot) => {
+          if (!snapshot.empty) {
+            const TopMessageFromLastPartofMessages = snapshot.docs[snapshot.docs.length - 1];
+            
+            const startSettings = {
+              id: uuidv4(),
+              howGet: {
+                action: "startAfter",
+                message: TopMessageFromLastPartofMessages,
+              },
+              topMessage: null,
+              bottomMessage: null,
+            };
+
+            this.chatPartSettings.unshift(startSettings);
+          }
+        })
+        .catch((error) => {
+          // Handle any errors
+          console.error("Error getting last message:", error);
+        });
     },
   },
   mounted() {
@@ -61,6 +82,8 @@ export default {
     const db = firebase.firestore();
 
     const chatPartSettings = ref([]);
+
+    console.log(chatPartSettings.value, "setted");
 
     //action startAfter/endBefore
 
@@ -91,6 +114,7 @@ export default {
         bottomMessage: null,
       };
 
+      console.log("PREV");
       chatPartSettings.value.unshift(newChatPart);
 
       if (chatPartSettings.value.length > 2) {
@@ -101,6 +125,7 @@ export default {
     function getNext() {}
 
     function setUpdatedData(settings) {
+      console.log("UPDATED ?");
       const link = chatPartSettings.value.findIndex(
         (set) => set.id === settings.id
       );
@@ -115,16 +140,13 @@ export default {
 
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
     function updatePrev(id, newTopMessage, text) {
-   
-      console.log(  chatPartSettings.value[0],'START',text)
-      
+      console.log("UPDATED ?");
       chatPartSettings.value[0].howGet = {
         action: "endBefore",
         message: newTopMessage,
-      }
+      };
 
-    console.log(chatPartSettings.value[0], 'after',text);
-     
+      console.log(chatPartSettings.value[0], "after", text);
     }
 
     return {

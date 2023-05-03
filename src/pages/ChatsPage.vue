@@ -738,8 +738,8 @@ v-enter-active,
     min-width: 100%;
     box-sizing: border-box;
     padding: 5px 13px 5px 5px;
-    height: 10%;
-    max-height: 75px;
+    height: 8%;
+    max-height: 60px;
     display: flex;
     flex-direction: row;
     align-items: center;

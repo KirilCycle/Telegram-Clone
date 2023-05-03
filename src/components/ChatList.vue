@@ -1,15 +1,13 @@
 <template>
   <TransitionGroup name="list" class="chat-list-wrap" tag="div">
     <chat-list-item
-     
       @click="() => handleChatSelect(cht.id)"
       v-for="cht in chatList"
       :key="cht.id"
       :chat="cht"
       :store-path="storePath"
-       
     >
-  </chat-list-item>
+    </chat-list-item>
   </TransitionGroup>
 </template>
 
@@ -27,35 +25,27 @@ export default {
     storePath: String,
     required: true,
   },
-  watch: {
-   
-  },
+  watch: {},
   methods: {
     handleChatSelect(id) {
-      this.$store.commit('chat/setChatId', id)
-    }
+      this.$store.commit("chat/setChatId", id);
+    },
   },
   data() {
     return {
       db: firebase.firestore(),
-      storePath: this.storePath
-      
-    }
+      storePath: this.storePath,
+    };
   },
-  created() {
-  
-   
-
-   
-
-   
-  },
+  created() {},
 };
 </script>
 
 <style lang="scss" scoped>
 .chat-list-wrap {
- 
+  width: 100%;
+  padding: 0px 3px 0px 3px;
+  box-sizing: border-box;
   padding-bottom: 40px;
 }
 

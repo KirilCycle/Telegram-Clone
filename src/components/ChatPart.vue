@@ -49,11 +49,8 @@ export default {
         .doc(store.state.chat.chatId)
         .collection("messages")
     );
-
-
     
     // setting querry params based client actions
-
     watchEffect(() => {
       if (props.settings.howGet.action === "endBefore") {
         query.value = messagesRef.value
@@ -67,7 +64,7 @@ export default {
       } else {
         query.value = messagesRef.value
           .orderBy("createdAt")
-          .limit(limit.value)
+          // .limit(limit.value)
           .startAfter(props.settings.howGet.message);
       }
     })
@@ -81,43 +78,35 @@ export default {
           id: doc.id,
           ...doc.data(),
         }));
-    
         console.log("HERE", props.settings.id);
-
-
-        if (props.settings.howGet.action === "first") {
-          chat.value = response.reverse();
-          //    setNewLast()
-        } else {
           chat.value = response;
-        }
       }
     );
 
-    watchEffect(() => {
-      if (
-        chat.value.length &&
-        props.settings.howGet.action === "first" &&
-        props.settings.topMessage &&
-        props.settings.topMessage !== chat.value[0]?.createdAt
-      ) {
-        console.log("GO GO GO");
-        emit('updatePrev', props.settings.id, chat.value[0].createdAt,  chat.value[0].text)
-      }
-    })
+    // watchEffect(() => {
+    //   if (
+    //     chat.value.length &&
+    //     props.settings.howGet.action === "first" &&
+    //     props.settings.topMessage &&
+    //     props.settings.topMessage !== chat.value[0]?.createdAt
+    //   ) {
+    //     console.log("GO GO GO");
+    //     emit('updatePrev', props.settings.id, chat.value[0].createdAt,  chat.value[0].text)
+    //   }
+    // })
 
 
     //standar emit
-    watchEffect(() => {
-      if (!props.settings.topMessage && chat.value.length) {
-        console.log("EMIT", props.settings.id);
-        emit("updated", {
-          id: props.settings.id,
-          topMessage: chat.value[0].createdAt,
-          bottomMessage: chat.value[chat.value.length - 1].createdAt,
-        });
-      }
-    });
+    // watchEffect(() => {
+    //   if (!props.settings.topMessage && chat.value.length) {
+    //     console.log("EMIT", props.settings.id);
+    //     emit("updated", {
+    //       id: props.settings.id,
+    //       topMessage: chat.value[0].createdAt,
+    //       bottomMessage: chat.value[chat.value.length - 1].createdAt,
+    //     });
+    //   }
+    // });
 
     // as only one
 
