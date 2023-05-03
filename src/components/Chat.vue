@@ -4,7 +4,6 @@
 
     <chat-part
       @updated="setUpdatedData"
-      @updatePrev="updatePrev"
       :settings="part"
       v-for="part in chatPartSettings"
       :key="part.id"
@@ -94,12 +93,7 @@ export default {
       bottomMessage: null,
     };
 
-    const chatPartsetting2 = {
-      id: uuidv4(),
-      howGet: { action: "startAfter", message: 222 },
-      topMessage: null,
-      bottomMessage: null,
-    };
+
     // chatPartSettings.value.unshift(chatPartsetting2)
 
     function getPrev() {
@@ -121,7 +115,7 @@ export default {
       }
     }
 
-    function getNext() {}
+    function getNext() {} 
 
     function setUpdatedData(settings) {
       const link = chatPartSettings.value.findIndex(
@@ -136,22 +130,13 @@ export default {
       console.log(chatPartSettings.value);
     }
 
-    //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
-    function updatePrev(id, newTopMessage, text) {
-   
-      console.log(  chatPartSettings.value[0],'START',text)
-      
-      chatPartSettings.value[0].howGet = {
-        action: "endBefore",
-        message: newTopMessage,
-      }
+    function updateTopOrBottomMessage (id) {
 
-    console.log(chatPartSettings.value[0], 'after',text);
-     
     }
+    //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
+    
 
     return {
-      updatePrev,
       getPrev,
       chatPartSettings,
       getNext,

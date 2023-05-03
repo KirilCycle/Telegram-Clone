@@ -41,6 +41,8 @@ export default {
   setup(props, { emit }) {
     const db = firebase.firestore();
     const chat = ref([]);
+    const top = ref(null);
+    const bottom = ref(null);
     const limit = ref(10);
     const query = ref(null);
     const messagesRef = ref(
@@ -49,7 +51,7 @@ export default {
         .doc(store.state.chat.chatId)
         .collection("messages")
     );
-    
+
     // setting querry params based client actions
     watchEffect(() => {
       if (props.settings.howGet.action === "endBefore") {
@@ -65,37 +67,23 @@ export default {
       } else {
         query.value = messagesRef.value
           .orderBy("createdAt")
-           .limit(limit.value)
+          .limit(limit.value)
           .startAfter(props.settings.howGet.message);
       }
-    })
-
+    });
 
     query.value.onSnapshot(
       // { preserveSnapshot: true },
-      
+
       (snapshot, parameters) => {
         let response = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         console.log("HERE", props.settings.id);
-          chat.value = response;
+        chat.value = response;
       }
     );
-
-    // watchEffect(() => {
-    //   if (
-    //     chat.value.length &&
-    //     props.settings.howGet.action === "first" &&
-    //     props.settings.topMessage &&
-    //     props.settings.topMessage !== chat.value[0]?.createdAt
-    //   ) {
-    //     console.log("GO GO GO");
-    //     emit('updatePrev', props.settings.id, chat.value[0].createdAt,  chat.value[0].text)
-    //   }
-    // })
-
 
     //standar emit
     watchEffect(() => {
@@ -106,7 +94,25 @@ export default {
           topMessage: chat.value[0].createdAt,
           bottomMessage: chat.value[chat.value.length - 1].createdAt,
         });
+        top.value = chat.value[0].createdAt;
+        bottom.value = chat.value[chat.value.length - 1].createdAt;
       }
+    });
+
+
+    //in case bottom or first message was deleted we need to change this data in subChats settings to give next chat block make right snapshot params  
+    watchEffect(() => {
+      if (chat.value.length && props.settings.howGet.action !== "first" ) {
+        if ( top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds) {
+
+          console.log( 'pizda');
+        }
+      //&& top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds
+    
+      
+      
+      }
+     
     });
 
     // as only one
