@@ -4,6 +4,7 @@
 
     <chat-part
       @updated="setUpdatedData"
+      @changes="updateTopOrBottomMessage"
       :settings="part"
       v-for="part in chatPartSettings"
       :key="part.id"
@@ -130,8 +131,15 @@ export default {
       console.log(chatPartSettings.value);
     }
 
-    function updateTopOrBottomMessage (id) {
+    function updateTopOrBottomMessage (id, top, bottom) {
+      const link = chatPartSettings.value.findIndex(
+        (set) => set.id === id
+      );
 
+     chatPartSettings.value[link].topMessage = top;
+     chatPartSettings.value[link].bottomMessage = bottom; 
+
+     console.log(chatPartSettings.value);
     }
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
     
@@ -141,6 +149,7 @@ export default {
       chatPartSettings,
       getNext,
       setUpdatedData,
+      updateTopOrBottomMessage
     };
   },
 };

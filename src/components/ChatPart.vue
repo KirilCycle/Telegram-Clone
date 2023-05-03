@@ -104,13 +104,11 @@ export default {
     watchEffect(() => {
       if (chat.value.length && props.settings.howGet.action !== "first" ) {
         if ( top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds) {
-
+          
+          emit('changes', props.settings.id, chat.value[0].createdAt, chat.value[chat.value.length -1].createdAt)
           console.log( 'pizda');
         }
       //&& top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds
-    
-      
-      
       }
      
     });
