@@ -109,7 +109,8 @@ export default {
           bottomMessage: chat.value[chat.value.length - 1].createdAt,
           ref: scrollDiv.value,
           action: props.settings.howGet.action
-        });
+        })
+        emit('loaded')
         top.value = chat.value[0].createdAt;
         bottom.value = chat.value[chat.value.length - 1].createdAt;
       }

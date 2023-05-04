@@ -1,8 +1,10 @@
 <template>
   <div class="chat-wrap">
-    <button class="prev" @click="getPrev">show prev</button>
+    <div v-observer="getPrev"></div>
+    <!-- <button class="prev" @click="getPrev">show prev</button> -->
 
     <chat-part
+      @loaded="loading = null"
       @disableCursorMove="disableNextData"
       @updated="setUpdatedData"
       @changes="updateTopOrBottomMessage"
@@ -11,7 +13,8 @@
       :key="part.id"
     ></chat-part>
 
-    <button class="next" @click="getNext">show next</button>
+    <!-- <button class="next" @click="getNext">show next</button> -->
+    <div class="bottomRef" v-observer="getNext"></div>
   </div>
 </template>
 
@@ -116,6 +119,7 @@ export default {
     const chatPartSettings = ref([]);
     const getNextAvaible = ref(true);
     const getPreviousAvaible = ref(true);
+    const loading = ref(null)
 
     const selectedChat = ref(null);
 
@@ -183,6 +187,7 @@ export default {
         });
     }
 
+    //reset settings on selected chat changed
     watchEffect(() => {
       if (!selectedChat.value) {
         selectedChat.value = store.state.chat.chatId;
@@ -200,9 +205,8 @@ export default {
       }
     });
 
-    //action startAfter/endBefore
-
     const chatPartsetting = {
+      //action startAfter/endBefore
       id: uuidv4(),
       howGet: { action: "endBefore", message: 111 },
       topMessage: null,
@@ -211,7 +215,7 @@ export default {
 
     function getPrev() {
       //will get new messages based prev top settings
-      if (getPreviousAvaible.value) {
+      if (getPreviousAvaible.value && chatPartSettings.value[0] ) {
         const newChatPart = {
           id: uuidv4(),
           howGet: {
@@ -222,18 +226,19 @@ export default {
           bottomMessage: null,
         };
 
-        chatPartSettings.value.unshift(newChatPart);
+        chatPartSettings.value.unshift(newChatPart)
+        loading.value = true
 
         if (chatPartSettings.value.length > 2) {
           chatPartSettings.value.pop();
         }
-
+        
         getNextAvaible.value = true;
       }
     }
 
     function getNext() {
-      if (getNextAvaible.value && chatPartSettings.value[1]) {
+      if (getNextAvaible.value && chatPartSettings.value[1] ) {
         const newChatPart = {
           id: uuidv4(),
           howGet: {
@@ -245,6 +250,8 @@ export default {
         };
 
         chatPartSettings.value.push(newChatPart);
+
+        loading.value = true
         chatPartSettings.value.shift();
 
         getPreviousAvaible.value = true;
@@ -265,6 +272,10 @@ export default {
       if (settings.action === "endBefore") {
         setTimeout(() => {
           chatPartSettings.value[1].ref.scrollIntoView({ block: "start" });
+        }, 0);
+      } else if (settings.action === "startAfter") {
+        setTimeout(() => {
+          chatPartSettings.value[0].ref.scrollIntoView({ block: "start" });
         }, 0);
       }
     }
@@ -297,6 +308,7 @@ export default {
       disableNextData,
       chatPartSettings,
       getNext,
+      loading,
       setUpdatedData,
       updateTopOrBottomMessage,
     };
@@ -310,6 +322,9 @@ export default {
   height: 50px;
   background-color: #5b42ff;
   color: white;
+}
+.bottom {
+  height: 4px;
 }
 .next {
   @extend .prev;

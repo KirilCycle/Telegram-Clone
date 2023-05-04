@@ -3,7 +3,7 @@ export default {
     let options = {
       root: document.querySelector("#scrollArea"),
       rootMargin: "0px",
-      threshold: 1.0,
+      threshold: 0.1,
     };
     
     // type conditions =  'visible' | 'always' | 'hided' 
@@ -14,8 +14,6 @@ export default {
         binding.value();
       }
     };
-
-
 
     let observer = new IntersectionObserver(callback, options);
     observer.observe(el);

@@ -231,11 +231,9 @@ button {
   overflow: visible;
 
   background: transparent;
-
   /* inherit font & color from ancestor */
   color: inherit;
   font: inherit;
-
   /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
   line-height: normal;
 
@@ -272,6 +270,7 @@ body {
 }
 
 .dark  body{
+  transition: background-color 0.5s ease;
   background-color: $body-color-l;
 }
 
