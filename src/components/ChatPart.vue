@@ -128,7 +128,7 @@ export default {
         if ( top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds) {
           
           emit('changes', props.settings.id, chat.value[0].createdAt, chat.value[chat.value.length -1].createdAt)
-          console.log( 'pizda');
+          console.log( 'pizda',chat.value);
         }
       //&& top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds
       }
