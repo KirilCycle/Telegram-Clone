@@ -60,21 +60,25 @@ export default {
           .limitToLast(limit.value)
           .endBefore(props.settings.howGet.message);
       } else if (props.settings.howGet.action === "first") {
+       if (props.settings.howGet.showAll) {
         query.value = messagesRef.value
-          .orderBy("createdAt")
-          // .limit(limit.value)
-          .startAfter(props.settings.howGet.message);
+         .orderBy("createdAt")
+       } else {
+         query.value = messagesRef.value
+         .orderBy("createdAt")
+         .startAfter(props.settings.howGet.message);
+       }
       } else {
-        query.value = messagesRef.value
+        query.value = messagesRef.value 
           .orderBy("createdAt")
           .limit(limit.value)
           .startAfter(props.settings.howGet.message);
       }
     });
 
+
     query.value.onSnapshot(
       // { preserveSnapshot: true },
-
       (snapshot, parameters) => {
         let response = snapshot.docs.map((doc) => ({
           id: doc.id,

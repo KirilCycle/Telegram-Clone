@@ -52,23 +52,48 @@ export default {
 
       let query = messagesRef.orderBy("createdAt", "desc").limit(10);
 
-      query
+      let qurryToFirstMessage = messagesRef.orderBy("createdAt").limit(1);
+      //fisrt message of whole collection     
+      let firstMessageEver;
+
+      qurryToFirstMessage
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+          if (!snapshot.empty) {
+            firstMessageEver = snapshot.docs[0].data().createdAt;
+          } 
+
+          query
         .limit(10)
         .get()
         .then((snapshot) => {
           if (!snapshot.empty) {
             const TopMessageFromLastPartofMessages =
-              snapshot.docs[snapshot.docs.length - 1];
+              snapshot.docs[snapshot.docs.length - 1].data();
 
-            const startSettings = {
-              id: uuidv4(),
-              howGet: {
-                action: "first",
-                message: TopMessageFromLastPartofMessages,
-              },
-              topMessage: null,
-              bottomMessage: null,
-            };
+              //in case TopMessageFromLastPartofMessages same as first message in whole collection, we need change params, as 
+              //we will see only after first message, chat can be have 
+              const startSettings = {
+                id: uuidv4(),
+                howGet: {
+                  action: "first",
+                  message: TopMessageFromLastPartofMessages.createdAt,
+                },
+                topMessage: null,
+                bottomMessage: null,
+              };
+
+            if (firstMessageEver && TopMessageFromLastPartofMessages) {
+              if (
+                JSON.stringify(firstMessageEver) ===
+                JSON.stringify(TopMessageFromLastPartofMessages.createdAt)
+              ) {
+               //change params to see all messages
+               startSettings.howGet.showAll = true 
+              }
+            }
+
 
             this.chatPartSettings.unshift(startSettings);
           }
@@ -77,6 +102,14 @@ export default {
           // Handle any errors
           console.error("Error getting last message:", error);
         });
+
+        })
+        .catch((error) => {
+          // Handle any errors
+          console.error("Error getting last message:", error);
+        });
+
+     
     },
   },
   mounted() {
@@ -85,7 +118,7 @@ export default {
   setup() {
     const db = firebase.firestore();
     const chatPartSettings = ref([]);
-    const getNextAvaible = ref(null);
+    const getNextAvaible = ref(true);
     const getPreviousAvaible = ref(true);
 
     //action startAfter/endBefore
@@ -96,8 +129,6 @@ export default {
       topMessage: null,
       bottomMessage: null,
     };
-
-    // chatPartSettings.value.unshift(chatPartsetting2)
 
     function getPrev() {
       //will get new messages based prev top settings
@@ -111,9 +142,9 @@ export default {
           topMessage: null,
           bottomMessage: null,
         };
-  
+
         chatPartSettings.value.unshift(newChatPart);
-  
+
         if (chatPartSettings.value.length > 2) {
           chatPartSettings.value.pop();
         }
@@ -121,7 +152,7 @@ export default {
     }
 
     function getNext() {
-      if (getNextAvaible.value) {
+      if ((getNextAvaible.value, chatPartSettings.value[1])) {
         const newChatPart = {
           id: uuidv4(),
           howGet: {
@@ -131,11 +162,11 @@ export default {
           topMessage: null,
           bottomMessage: null,
         };
-  
+
         chatPartSettings.value.push(newChatPart);
         chatPartSettings.value.shift();
       }
-      }
+    }
 
     function setUpdatedData(settings) {
       const link = chatPartSettings.value.findIndex(
@@ -162,14 +193,12 @@ export default {
     // Some chat parts say that they reach the top or bottom of the entire collection and we need to prevent observer(top/bottom) calls
     function disableNextData(gettingType) {
       if (gettingType === "endBefore") {
-
-        getNextAvaible.value = true
-        getPreviousAvaible.value = false
+        getNextAvaible.value = true;
+        getPreviousAvaible.value = false;
         console.log(gettingType, "PREVENT");
       } else if (gettingType === "startAfter") {
-
-        getPreviousAvaible.value = true
-        getNextAvaible.value = false
+        getPreviousAvaible.value = true;
+        getNextAvaible.value = false;
         console.log(gettingType, "PREVENT");
       }
     }
