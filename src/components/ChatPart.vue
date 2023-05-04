@@ -102,12 +102,13 @@ export default {
     //standar emit at first chat part apppear (will invoke only once)  during messages changes we will change it to in main chatSettings
     watchEffect(() => {
       if (!props.settings.topMessage && chat.value.length) {
-        console.log("EMIT", props.settings.id);
+        console.log("EMIT", props.settings.topMessage , chat.value.length );
         emit("updated", {
           id: props.settings.id,
           topMessage: chat.value[0].createdAt,
           bottomMessage: chat.value[chat.value.length - 1].createdAt,
-          ref: scrollDiv.value
+          ref: scrollDiv.value,
+          action: props.settings.howGet.action
         });
         top.value = chat.value[0].createdAt;
         bottom.value = chat.value[chat.value.length - 1].createdAt;
@@ -134,7 +135,7 @@ export default {
         console.log("EMIT REF", props.settings.id);
         emit("updated", {
           id: props.settings.id,
-          ref: scrollDiv.value
+          ref: scrollDiv.value,
         });
       }
     })

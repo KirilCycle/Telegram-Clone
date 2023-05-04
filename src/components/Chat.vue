@@ -184,7 +184,13 @@ export default {
         ...settings,
       };
       
-      console.log(chatPartSettings.value);
+      console.log(chatPartSettings.value,   settings.action === 'endBefore')
+      if (settings.action === 'endBefore') {
+       
+        setTimeout(() => {
+          chatPartSettings.value[1].ref.scrollIntoView({block:'start'})
+        },0)
+      }
 
     }
 
@@ -210,6 +216,7 @@ export default {
       }
     }
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
+
     
 
     return {
