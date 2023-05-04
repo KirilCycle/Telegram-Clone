@@ -65,14 +65,17 @@ export default {
           .endBefore(props.settings.howGet.message);
       } else if (props.settings.howGet.action === "first") {
        if (!props.settings.howGet.showAll) {
-         query.value = messagesRef.value
+        //chat already quite long
+        query.value = messagesRef.value
          .orderBy("createdAt")
          .startAfter(props.settings.howGet.message);
       } else {
+        //chat to small we dont need use startAfter as we will avoid first msg
          query.value = messagesRef.value
           .orderBy("createdAt")
        }
       } else {
+        //case startAfter
         query.value = messagesRef.value 
           .orderBy("createdAt")
           .limit(limit.value)
