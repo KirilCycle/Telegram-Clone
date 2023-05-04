@@ -150,7 +150,7 @@ export default {
 
     //detectig if we already reach bottom of collection 
     watchEffect(() => {
-      if (theMostRecentMessage.value && chatPartSettings.value) {
+      if (theMostRecentMessage.value && chatPartSettings.value[0]) {
         if (
           JSON.stringify(chatPartSettings.value[0].bottomMessage) ===
           JSON.stringify(theMostRecentMessage.value)
