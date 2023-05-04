@@ -183,8 +183,9 @@ export default {
         ...chatPartSettings.value[link],
         ...settings,
       };
-
+      
       console.log(chatPartSettings.value);
+
     }
 
     function updateTopOrBottomMessage(id, top, bottom) {
@@ -209,6 +210,7 @@ export default {
       }
     }
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
+    
 
     return {
       getPrev,

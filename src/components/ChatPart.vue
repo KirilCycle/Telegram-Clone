@@ -1,5 +1,6 @@
 <template>
   <div class="chat-part">
+    <div ref="scrollDiv"></div>
     <div v-for="message in chat" :key="message.id" class="msg">
       {{ message.text }}
     </div>
@@ -45,6 +46,7 @@ export default {
     const bottom = ref(null);
     const limit = ref(10);
     const query = ref(null);
+    const scrollDiv =ref(null)
     const messagesRef = ref(
       db
         .collection("chatMessages")
@@ -105,12 +107,12 @@ export default {
           id: props.settings.id,
           topMessage: chat.value[0].createdAt,
           bottomMessage: chat.value[chat.value.length - 1].createdAt,
+          ref: scrollDiv.value
         });
         top.value = chat.value[0].createdAt;
         bottom.value = chat.value[chat.value.length - 1].createdAt;
       }
     });
-
 
     //in case bottom or first message was deleted we need to change this data in subChats settings to give next chat block make right snapshot params  
     watchEffect(() => {
@@ -125,9 +127,20 @@ export default {
      
     });
 
-  
+
+    //setting scroll ref only once to every exisiting chat setttings
+    watchEffect(() => {
+      if (!props.settings.ref && scrollDiv.value) {
+        console.log("EMIT REF", props.settings.id);
+        emit("updated", {
+          id: props.settings.id,
+          ref: scrollDiv.value
+        });
+      }
+    })
 
     return {
+      scrollDiv,
       chat,
     };
   },
