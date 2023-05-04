@@ -207,7 +207,6 @@ export default {
 
         if (source) {
           //   messageisNotReady.value = true;
-
           message.source = source;
         }
 
@@ -528,6 +527,8 @@ export default {
       } else {
         currentChatType.value = "ChatisntSelected";
       }
+
+      console.log(store.state.chat.chatId, 'IDSHKA')
     });
 
     return {

@@ -19,7 +19,7 @@
 //miracle doesnt exist
 // import { collection, getDocs, getDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
-// import store from "@/store/store";
+import store from "@/store/store";
 // import { getDatabase, onValue } from "firebase/database";
 // import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 // import { doc, setDoc } from "firebase/firestore";
@@ -53,7 +53,7 @@ export default {
       let query = messagesRef.orderBy("createdAt", "desc").limit(10);
 
       let qurryToFirstMessage = messagesRef.orderBy("createdAt").limit(1);
-      //fisrt message of whole collection     
+      //fisrt message of whole collection
       let firstMessageEver;
 
       qurryToFirstMessage
@@ -62,54 +62,50 @@ export default {
         .then((snapshot) => {
           if (!snapshot.empty) {
             firstMessageEver = snapshot.docs[0].data().createdAt;
-          } 
+          }
 
           query
-        .limit(10)
-        .get()
-        .then((snapshot) => {
-          if (!snapshot.empty) {
-            const TopMessageFromLastPartofMessages =
-              snapshot.docs[snapshot.docs.length - 1].data();
+            .limit(10)
+            .get()
+            .then((snapshot) => {
+              if (!snapshot.empty) {
+                const TopMessageFromLastPartofMessages =
+                  snapshot.docs[snapshot.docs.length - 1].data();
 
-              //in case TopMessageFromLastPartofMessages same as first message in whole collection, we need change params, as 
-              //we will see only after first message, chat can be have 
-              const startSettings = {
-                id: uuidv4(),
-                howGet: {
-                  action: "first",
-                  message: TopMessageFromLastPartofMessages.createdAt,
-                },
-                topMessage: null,
-                bottomMessage: null,
-              };
+                //in case TopMessageFromLastPartofMessages same as first message in whole collection, we need change params, as
+                //we will see only after first message, chat can be have
+                const startSettings = {
+                  id: uuidv4(),
+                  howGet: {
+                    action: "first",
+                    message: TopMessageFromLastPartofMessages.createdAt,
+                  },
+                  topMessage: null,
+                  bottomMessage: null,
+                };
 
-            if (firstMessageEver && TopMessageFromLastPartofMessages) {
-              if (
-                JSON.stringify(firstMessageEver) ===
-                JSON.stringify(TopMessageFromLastPartofMessages.createdAt)
-              ) {
-               //change params to see all messages
-               startSettings.howGet.showAll = true 
+                if (firstMessageEver && TopMessageFromLastPartofMessages) {
+                  if (
+                    JSON.stringify(firstMessageEver) ===
+                    JSON.stringify(TopMessageFromLastPartofMessages.createdAt)
+                  ) {
+                    //change params to see all messages
+                    startSettings.howGet.showAll = true;
+                  }
+                }
+
+                this.chatPartSettings.unshift(startSettings);
               }
-            }
-
-
-            this.chatPartSettings.unshift(startSettings);
-          }
+            })
+            .catch((error) => {
+              // Handle any errors
+              console.error("Error getting last message:", error);
+            });
         })
         .catch((error) => {
           // Handle any errors
           console.error("Error getting last message:", error);
         });
-
-        })
-        .catch((error) => {
-          // Handle any errors
-          console.error("Error getting last message:", error);
-        });
-
-     
     },
   },
   mounted() {
@@ -120,6 +116,89 @@ export default {
     const chatPartSettings = ref([]);
     const getNextAvaible = ref(true);
     const getPreviousAvaible = ref(true);
+
+    const selectedChat = ref(null);
+
+    async function startChat() {
+      console.log("GO START");
+      const messagesRef = db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages");
+
+      let query = messagesRef.orderBy("createdAt", "desc").limit(10);
+
+      let qurryToFirstMessage = messagesRef.orderBy("createdAt").limit(1);
+      //fisrt message of whole collection
+      let firstMessageEver;
+
+      qurryToFirstMessage
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+          if (!snapshot.empty) {
+            firstMessageEver = snapshot.docs[0].data().createdAt;
+          }
+
+          query
+            .limit(10)
+            .get()
+            .then((snapshot) => {
+              if (!snapshot.empty) {
+                const TopMessageFromLastPartofMessages =
+                  snapshot.docs[snapshot.docs.length - 1].data();
+
+                //in case TopMessageFromLastPartofMessages same as first message in whole collection, we need change params, as
+                //we will see only after first message, chat can be have
+                const startSettings = {
+                  id: uuidv4(),
+                  howGet: {
+                    action: "first",
+                    message: TopMessageFromLastPartofMessages.createdAt,
+                  },
+                  topMessage: null,
+                  bottomMessage: null,
+                };
+
+                if (firstMessageEver && TopMessageFromLastPartofMessages) {
+                  if (
+                    JSON.stringify(firstMessageEver) ===
+                    JSON.stringify(TopMessageFromLastPartofMessages.createdAt)
+                  ) {
+                    //change params to see all messages
+                    startSettings.howGet.showAll = true;
+                  }
+                }
+                chatPartSettings.value.unshift(startSettings);
+              }
+            })
+            .catch((error) => {
+              // Handle any errors
+              console.error("Error getting last message:", error);
+            });
+        })
+        .catch((error) => {
+          // Handle any errors
+          console.error("Error getting last message:", error);
+        });
+    }
+
+    watchEffect(() => {
+      if (!selectedChat.value) {
+        selectedChat.value = store.state.chat.chatId;
+      }
+      if (
+        selectedChat.value &&
+        store.state.chat.chatId !== selectedChat.value
+      ) {
+        chatPartSettings.value = [];
+        getNextAvaible.value = true;
+        getPreviousAvaible.value = true;
+        startChat().then(
+          (res) => (selectedChat.value = store.state.chat.chatId)
+        );
+      }
+    });
 
     //action startAfter/endBefore
 
@@ -149,8 +228,7 @@ export default {
           chatPartSettings.value.pop();
         }
 
-        getNextAvaible.value = true
-
+        getNextAvaible.value = true;
       }
     }
 
@@ -169,8 +247,7 @@ export default {
         chatPartSettings.value.push(newChatPart);
         chatPartSettings.value.shift();
 
-        getPreviousAvaible.value = true
-
+        getPreviousAvaible.value = true;
       }
     }
 
@@ -183,15 +260,13 @@ export default {
         ...chatPartSettings.value[link],
         ...settings,
       };
-      
-      console.log(chatPartSettings.value,   settings.action === 'endBefore')
-      if (settings.action === 'endBefore') {
-       
-        setTimeout(() => {
-          chatPartSettings.value[1].ref.scrollIntoView({block:'start'})
-        },0)
-      }
 
+      console.log(chatPartSettings.value, settings.action === "endBefore");
+      if (settings.action === "endBefore") {
+        setTimeout(() => {
+          chatPartSettings.value[1].ref.scrollIntoView({ block: "start" });
+        }, 0);
+      }
     }
 
     function updateTopOrBottomMessage(id, top, bottom) {
@@ -216,8 +291,6 @@ export default {
       }
     }
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
-
-    
 
     return {
       getPrev,
