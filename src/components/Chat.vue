@@ -275,7 +275,7 @@ export default {
         }, 0);
       } else if (settings.action === "startAfter") {
         setTimeout(() => {
-          chatPartSettings.value[0].ref.scrollIntoView({ block: "start" });
+          chatPartSettings.value[0].refBot.scrollIntoView({ block: "end" });
         }, 0);
       }
     }

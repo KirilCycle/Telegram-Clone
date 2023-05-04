@@ -4,6 +4,7 @@
     <div v-for="message in chat" :key="message.id" class="msg">
       {{ message.text }}
     </div>
+    <div ref="scrollBott"></div>
   </div>
 </template>
 
@@ -47,6 +48,7 @@ export default {
     const limit = ref(10);
     const query = ref(null);
     const scrollDiv =ref(null)
+    const scrollBott = ref(null)
     const messagesRef = ref(
       db
         .collection("chatMessages")
@@ -108,6 +110,7 @@ export default {
           topMessage: chat.value[0].createdAt,
           bottomMessage: chat.value[chat.value.length - 1].createdAt,
           ref: scrollDiv.value,
+          refBot: scrollBott.value,
           action: props.settings.howGet.action
         })
         emit('loaded')
@@ -144,12 +147,18 @@ export default {
     return {
       scrollDiv,
       chat,
+      scrollBott,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.bottom-scroll {
+  width: 100%;
+  height: 1px;
+  color: red;
+}
 .msg {
   width: 300px;
   margin-top: 10px;
