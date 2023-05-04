@@ -148,11 +148,14 @@ export default {
         if (chatPartSettings.value.length > 2) {
           chatPartSettings.value.pop();
         }
+
+        getNextAvaible.value = true
+
       }
     }
 
     function getNext() {
-      if ((getNextAvaible.value, chatPartSettings.value[1])) {
+      if (getNextAvaible.value && chatPartSettings.value[1]) {
         const newChatPart = {
           id: uuidv4(),
           howGet: {
@@ -165,6 +168,9 @@ export default {
 
         chatPartSettings.value.push(newChatPart);
         chatPartSettings.value.shift();
+
+        getPreviousAvaible.value = true
+
       }
     }
 
