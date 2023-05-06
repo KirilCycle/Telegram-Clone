@@ -15,7 +15,7 @@
 
     <!-- <button class="next" @click="getNext">show next</button> -->
     <div v-desapeared="bottomWasleaved"></div>
-    <div v-observer="getNext"></div>
+    <div class="get-next-observer" v-observer="getNext"></div>
   </div>
 </template>
 
@@ -41,6 +41,9 @@ export default {
   components: {
     ChatPart,
   },
+  methods: {
+
+  },
   data() {
     return {
       db: firebase.firestore(),
@@ -50,18 +53,33 @@ export default {
   setup() {
     const db = firebase.firestore();
     const chatPartSettings = ref([]);
-    const getNextAvaible = ref(false);
+    const getNextAvaible = ref(true);
     const getPreviousAvaible = ref(true);
     const loading = ref(null);
     const chasingBottom = ref(null);
     const theMostRecentMessage = ref(null);
-    const selectedChat = ref(null);
+    const currrentChatId = ref(null);
     const messagesRef = ref(
       db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages")
     );
+
+    
+
+    watchEffect(() => {
+     if (currrentChatId.value !== store.state.chat.chatId)  {
+      
+      console.log('enother');
+
+      currrentChatId.value = store.state.chat.chatId
+      chatPartSettings.value = []
+      startChat()
+
+     } 
+    })
+
 
     const qurryRecentMessageQuerry = ref(
       messagesRef.value.orderBy("createdAt", "desc").limit(1) // Limit the result to 1 document
@@ -85,40 +103,45 @@ export default {
     };
 
     async function startChat() {
-      console.log("GO START");
+      console.log("GO START CHAT");
       const messagesRef = db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages");
 
-      let query = messagesRef.orderBy("createdAt", "desc").limit(10);
+     
 
       let qurryToFirstMessage = messagesRef.orderBy("createdAt").limit(1);
       //fisrt message of whole collection
       let firstMessageEver;
 
       qurryToFirstMessage
-        .limit(1)
         .get()
         .then((snapshot) => {
           if (!snapshot.empty) {
             firstMessageEver = snapshot.docs[0].data().createdAt;
           }
+          let query = messagesRef.orderBy("createdAt", "desc").limit(11);
 
           query
-            .limit(10)
             .get()
             .then((snapshot) => {
               if (!snapshot.empty) {
                 const TopMessageFromLastPartofMessages =
                   snapshot.docs[snapshot.docs.length - 1].data();
 
+                console.log(
+                  TopMessageFromLastPartofMessages,
+                  firstMessageEver,
+                  "VERSUS"
+                );
                 //in case TopMessageFromLastPartofMessages same as first message in whole collection, we need change params, as
                 //we will see only after first message, chat can be have
                 const startSettings = {
                   id: uuidv4(),
                   howGet: {
                     action: "first",
+                    text: TopMessageFromLastPartofMessages.text,
                     message: TopMessageFromLastPartofMessages.createdAt,
                   },
                   topMessage: null,
@@ -131,12 +154,16 @@ export default {
                     JSON.stringify(TopMessageFromLastPartofMessages.createdAt)
                   ) {
                     //change params to see all messages
+                    console.log("showAll = true");
                     startSettings.howGet.showAll = true;
                   }
                 }
                 chatPartSettings.value.unshift(startSettings);
+
+
               }
             })
+
             .catch((error) => {
               // Handle any errors
               console.error("Error getting last message:", error);
@@ -148,7 +175,7 @@ export default {
         });
     }
 
-    //detectig if we already reach bottom of collection 
+    //detectig if we already reach bottom of collection
     watchEffect(() => {
       if (theMostRecentMessage.value && chatPartSettings.value[0]) {
         if (
@@ -163,33 +190,15 @@ export default {
         ) {
           console.log("YES AS THE BOTTOM");
         }
-      } 
+      }
     });
 
-    onMounted(() => {
-      startChat();
-    });
-    //reset settings on selected chat changed
-    watchEffect(() => {
-      if (!selectedChat.value) {
-        selectedChat.value = store.state.chat.chatId;
-      }
-      if (
-        selectedChat.value &&
-        store.state.chat.chatId !== selectedChat.value
-      ) {
-        chatPartSettings.value = [];
-        getNextAvaible.value = true;
-        getPreviousAvaible.value = true;
-        startChat().then(
-          (res) => (selectedChat.value = store.state.chat.chatId)
-        );
-      }
-    });
 
     function getPrev() {
       //will get new messages based prev top settings
+ 
       if (getPreviousAvaible.value && chatPartSettings.value[0]) {
+        console.log("PREV", chatPartSettings.value[0]);
         const newChatPart = {
           id: uuidv4(),
           howGet: {
@@ -242,7 +251,6 @@ export default {
         ...settings,
       };
 
-      console.log(chatPartSettings.value, settings.action === "endBefore");
       if (settings.action === "endBefore") {
         setTimeout(() => {
           chatPartSettings.value[1].ref.scrollIntoView({ block: "start" });
@@ -259,8 +267,6 @@ export default {
 
       chatPartSettings.value[link].topMessage = top;
       chatPartSettings.value[link].bottomMessage = bottom;
-
-      console.log(chatPartSettings.value);
     }
 
     // Some chat parts say that they reach the top or bottom of the entire collection and we need to prevent observer(top/bottom) calls
@@ -276,9 +282,7 @@ export default {
       }
     }
 
-    function bottomWasleaved(observedState) {
-      console.log(observedState);
-    }
+    function bottomWasleaved(observedState) {}
     //i use limit() in case "first" action, and prev settings will still look at old endBefore(data)
 
     return {
@@ -296,6 +300,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.get-next-observer {
+  width: 100%;
+  height: 1px;
+  background-color: #fff;
+}
+
 .prev {
   width: 100%;
   height: 50px;

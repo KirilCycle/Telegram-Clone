@@ -16,7 +16,8 @@
     z-index: 500;
     padding-top: 70px ;
     h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        font-weight: normal;
         color: #3e3e3e;
     }
   }

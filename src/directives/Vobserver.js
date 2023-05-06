@@ -3,7 +3,7 @@ export default {
     let options = {
       root: document.querySelector("#scrollArea"),
       rootMargin: "0px",
-      threshold: 0.9,
+      threshold: 0.1,
     };
     
     // type conditions =  'visible' | 'always' | 'hided' 

@@ -114,15 +114,14 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
-import Chat from '@/components/Chat.vue'
-
+import ChatXxx from '@/components/ChatXxx.vue';
 
 
 
 export default {
   components: {
     DirectChat,
-    Chat,
+    ChatXxx,
     ReplyMessageBorder,
     SelectedChatDynamic,
     NewChat,
@@ -264,15 +263,15 @@ export default {
         ? store.commit("chat/setQuery", query.toLowerCase())
         : store.commit("chat/setQuery", null);
     },
+
   },
 
   computed: {
     navName() {
-      console.log("perecomput");
+     
       const user = store.state.chat.selectedUser;
 
-      console.log(user);
-
+     
       if (user) {
         if (user?.displayName) {
           return user.displayName;
@@ -523,12 +522,10 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "Chat";
+        currentChatType.value = "ChatXxx";
       } else {
         currentChatType.value = "ChatisntSelected";
       }
-
-      console.log(store.state.chat.chatId, 'IDSHKA')
     });
 
     return {
@@ -887,6 +884,7 @@ v-enter-active,
 .chat-container::-webkit-scrollbar-thumb {
   background: rgba(152, 152, 152, 0.577);
   border-radius: 20px;
+  
 }
 
 @media (max-width: 798px) {
