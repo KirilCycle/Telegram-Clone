@@ -28,6 +28,8 @@
 
       </div>
 
+      
+
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
         <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>

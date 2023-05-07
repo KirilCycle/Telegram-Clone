@@ -274,4 +274,9 @@ body {
   background-color: $body-color-l;
 }
 
+html,body{
+    -webkit-overflow-scrolling : touch !important;
+    overflow: auto !important;
+}
+
 </style>

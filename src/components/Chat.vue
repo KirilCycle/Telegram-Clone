@@ -41,9 +41,6 @@ export default {
   components: {
     ChatPart,
   },
-  methods: {
-
-  },
   data() {
     return {
       db: firebase.firestore(),
@@ -70,14 +67,11 @@ export default {
 
     watchEffect(() => {
      if (currrentChatId.value !== store.state.chat.chatId)  {
-      
-      console.log('enother');
-
+      console.log( 'enother');
       currrentChatId.value = store.state.chat.chatId
       chatPartSettings.value = []
       startChat()
-
-     } 
+     } 6666
     })
 
 
@@ -121,7 +115,7 @@ export default {
           if (!snapshot.empty) {
             firstMessageEver = snapshot.docs[0].data().createdAt;
           }
-          let query = messagesRef.orderBy("createdAt", "desc").limit(11);
+          let query = messagesRef.orderBy("createdAt", "desc").limit(10);
 
           query
             .get()
@@ -159,8 +153,6 @@ export default {
                   }
                 }
                 chatPartSettings.value.unshift(startSettings);
-
-
               }
             })
 

@@ -107,7 +107,7 @@ export default {
     watchEffect(() => {
       
       if (!props.settings.topMessage && chat.value.length) {
-
+      
 
         emit("updated", {
           id: props.settings.id,
@@ -126,7 +126,7 @@ export default {
 
     //in case bottom or first message was deleted we need to change this data in subChats settings to give next chat block make right snapshot params
     watchEffect(() => {
-      if (chat.value.length ) {
+      if (chat.value.length && props.settings.howGet.action !== "first") {
         if (
           top.value?.seconds !== chat.value[0].createdAt?.seconds ||
           top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds

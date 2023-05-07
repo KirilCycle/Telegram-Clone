@@ -1,12 +1,15 @@
 <template>
   <div>
-    <button class="prev" @click="prev"></button>
-    <div v-for="i in messages" :key="i" class="message">
+    
+    <div class="user-using-mobile"></div>
+
+    <div v-observer="prev" class="prev"></div>
+    <div v-for="i in messages" :key="i.id" class="message">
       <p>
-        {{ i }}
+        {{ i.text }}
       </p>
     </div>
-    <button class="next" @click="next"></button>
+    <!-- <div v-observer="next" class="next"></div> -->
   </div>
 </template>
 
@@ -33,62 +36,100 @@ export default {
   setup() {
     const messages = ref([]);
     const db = firebase.firestore();
-    const query = ref(null)
-    const pivotMessageCreatedAt = ref(null)
-    const pivotMessage = ref(null)
-    const querryType = ref(null) 
+    const query = ref(null);
+    const pivotMessageCreatedAt = ref(null);
+    const pivotMessage = ref(null);
+    const limit = ref(20);
+    const querryType = ref(null);
     const messagesRef = db
-        .collection("chatMessages")
-        .doc(store.state.chat.chatId)
-        .collection("messages");
+      .collection("chatMessages")
+      .doc(store.state.chat.chatId)
+      .collection("messages");
 
     watchEffect(() => {
-       switch(querryType.value) {
-        case "prev": 
-
-        break
+      switch (querryType.value) {
+        case "prev":
+          query.value = messagesRef
+            .orderBy("createdAt", "desc")
+            .limit(limit.value);
+          break;
 
         case "next":
+          query.value = messagesRef
+            .orderBy("createdAt")
+            .startAfter(pivotMessage.value)
+            .limit(20);
+          break;
 
         default:
-            
-
-       }
+          query.value = messagesRef.orderBy("createdAt", "desc").limit(20);
+      }
     });
 
-    watchEffect(() => {});
+    watchEffect(() => {
+      query.value.onSnapshot((snapshot, parameters) => {
+        const response = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-    async function prev() {}
+        querryType.value === "prev"
+          ? messages.value = response.reverse()
+          : messages.value = response
+      });
+    });
 
-    async function next() {}
+    async function prev() {
+      if (messages.value) {
+        querryType.value = "prev";
+        limit.value = limit.value + 10;
+      }
+    }
+
+    // async function next() {
+    //   if (messages.value) {
+    //     console.log("get next messages", messages.value[20].createdAt);
+
+    //     pivotMessage.value = messages.value[20].createdAt;
+
+    //     querryType.value = "next";
+    //   }
+    // }
 
     return {
       messages,
       prev,
-      next,
+      
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.container {
+ 
+}
+
 .message {
   margin: 5px;
-  width: 400px;
+  width: 300px;
   height: 200px;
   background-color: #3f3f3f;
 }
 
 .prev {
   width: 100%;
-  height: 100px;
-  background-color: #fff;
+  position: relative;
+  top: 200px;
 }
 
 .next {
   width: 100%;
-  height: 100px;
+  height: 10px;
   background-color: #fff;
+  position: relative;
+  bottom: 200px;
 }
 
 p {
