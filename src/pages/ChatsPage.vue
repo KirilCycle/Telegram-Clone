@@ -25,10 +25,7 @@
         >
           <span class="material-symbols-outlined"> language </span>
         </button>
-
       </div>
-
-      
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
         <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
@@ -66,7 +63,11 @@
         </div>
 
         <div ref="chatContainer" class="chat-container-x">
-          <component :is="currentChatType"> </component>
+          <component
+            @saveLastChatSettings="saveChatSettings"
+            :is="currentChatType"
+          >
+          </component>
         </div>
 
         <div
@@ -116,9 +117,8 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
-import ChatXxx from '@/components/ChatXxx.vue';
-
-
+import ChatXxx from "@/components/ChatXxx.vue";
+import Vue from 'vue';
 
 export default {
   components: {
@@ -265,15 +265,12 @@ export default {
         ? store.commit("chat/setQuery", query.toLowerCase())
         : store.commit("chat/setQuery", null);
     },
-
   },
 
   computed: {
     navName() {
-     
       const user = store.state.chat.selectedUser;
 
-     
       if (user) {
         if (user?.displayName) {
           return user.displayName;
@@ -329,8 +326,6 @@ export default {
     const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
-  
-
     const collectionRef = db.collection("usersLinksToChat");
 
     const chatList = ref("");
@@ -348,8 +343,6 @@ export default {
         // Do something with the document data
         store.commit("chat/setChatIdList", formated);
 
-       
-
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
@@ -358,14 +351,12 @@ export default {
 
         if (formated.length > store.state.chat.chatsCount) {
           for (let i = 0; i < formated.length; i++) {
-            store.commit("chat/addUniqChatItem", {
+            store.commit("chat/addUniqChatSettingsItem", {
               id: formated[i].id,
-              pivot: null,
-              page: 0,
-              getMessagesType: "prev",
               v: "",
+              scrollPosition: null,
+              limit: 0,
             });
-
           }
         } else if (formated.length < store.state.chat.chatsCount) {
           //in case chat was deleted
@@ -373,7 +364,6 @@ export default {
           //Object.keys(store.state.chat.chatsScrollPosition)
           for (var key in store.state.chat.chatsScrollPosition) {
             if (!source[key]) {
-         
               store.commit("chat/deleteChat", key);
 
               resetSelectedChat();
@@ -388,6 +378,8 @@ export default {
         console.log("No such document!");
       }
     });
+
+    const chatContainer = ref(null);
 
     const auth = getAuth();
 
@@ -515,12 +507,18 @@ export default {
       store.commit("chat/setChatId", null);
     }
 
+    function saveChatSettings(id, limit) {
+      const scrollPosition = chatContainer.value.scrollTop;
+
+
+      console.log("SAVED", id, limit, scrollPosition, store.state.chat.chatSettings);
+    }
+
     const chat = ref(null);
 
     const chatHided = ref(false);
 
     watchEffect(() => {
-
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
@@ -535,8 +533,10 @@ export default {
       chatList,
       chatHided,
       currentChatType,
+      chatContainer,
       sendMessageToFoundedChat,
       resetSelectedChat,
+      saveChatSettings,
       listLoaded,
     };
   },
@@ -794,7 +794,6 @@ v-enter-active,
         font-size: 1.2rem;
         margin: 0% auto;
         margin-right: 10px;
-        
       }
     }
   }
@@ -846,7 +845,6 @@ v-enter-active,
   position: relative;
   overflow-y: hidden;
   background-color: $body-color;
-  
 }
 
 .dark .right-side {
@@ -858,7 +856,7 @@ v-enter-active,
   width: 100%;
   height: 100vh;
   background-color: $body-color;
- 
+
   position: relative;
   overflow-y: hidden;
 }
@@ -886,7 +884,6 @@ v-enter-active,
 .chat-container::-webkit-scrollbar-thumb {
   background: rgba(152, 152, 152, 0.577);
   border-radius: 20px;
-  
 }
 
 @media (max-width: 798px) {
@@ -956,7 +953,6 @@ v-enter-active,
         align-items: center;
         height: 40px;
         width: 40px;
-    
 
         span {
           font-size: 1.2rem;
@@ -1015,6 +1011,4 @@ v-enter-active,
     }
   }
 }
-
-
 </style>

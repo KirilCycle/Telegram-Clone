@@ -8,7 +8,7 @@
         {{ i.text }}
       </p>
     </div>
-    <!-- <div v-observer="next" class="next"></div> -->
+    <div ref="bottom"></div>
   </div>
 </template>
 
@@ -32,15 +32,13 @@ import MessagesSkelet from "./MessagesSkelet.vue";
 
 export default {
   data() {},
-  setup() {
+  setup(props, {emit }) {
     const messages = ref([]);
     const db = firebase.firestore();
     const query = ref(null);
-    const pivotMessageCreatedAt = ref(null);
-    const pivotMessage = ref(null);
     const limit = ref(20);
-    const querryType = ref(null);
     const currentId = ref(null);
+    const bottom = ref(null);
 
     onMounted(() => {
       currentId.value = store.state.chat.chatId;
@@ -48,10 +46,17 @@ export default {
 
     watchEffect(() => {
       if (currentId.value !== store.state.chat.chatId) {
-        limit.value = 20;
-        currentId.value = store.state.chat.chatId
+        let scrollPosition = window.scrollY;
         
+        
+        emit('saveLastChatSettings',currentId.value, limit?.value)
 
+        limit.value = 20;
+        currentId.value = store.state.chat.chatId;
+
+        console.log(scrollPosition);
+
+        console.log("CHNAGED");
       }
     });
 
@@ -79,14 +84,14 @@ export default {
 
     async function prev() {
       if (messages.value) {
-        querryType.value = "prev";
-        limit.value = limit.value + 10;
+        limit.value = limit.value + 20;
       }
     }
 
     return {
       messages,
       prev,
+      bottom,
     };
   },
 };

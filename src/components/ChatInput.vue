@@ -15,7 +15,7 @@
 
       <input
         :value="
-          $store.state.chat.chatsScrollPosition[$store.state.chat.chatId].v
+          $store.state.chat.chatSettings[$store.state.chat.chatId].v
         "
         v-on:input="(e) => textHndl(e.target.value)"
         placeholder="Write a message..."
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     textHndl(v) {
-      store.commit("chat/changeChatsScrollData", {
+      store.commit("chat/changeChatSettings", {
         id: store.state.chat.chatId,
         key: "v",
         data: v,
@@ -145,13 +145,13 @@ export default {
       }
 
       this.sendMsg(
-        this.$store.state.chat.chatsScrollPosition[
+        this.$store.state.chat.chatSettings[
           this.$store.state.chat.chatId
         ].v,
         null,
         store.state.message.replyTarget
       );
-      this.$store.state.chat.chatsScrollPosition[
+      this.$store.state.chat.chatSettings[
         this.$store.state.chat.chatId
       ].v = "";
 
@@ -172,7 +172,7 @@ export default {
 
     ableTosend() {
       if (
-        this.$store.state.chat.chatsScrollPosition[
+        this.$store.state.chat.chatSettings[
           this.$store.state.chat.chatId
         ].v ||
         store.state.message.forwardTarget

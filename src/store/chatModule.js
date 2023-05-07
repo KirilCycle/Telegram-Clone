@@ -5,7 +5,7 @@ export const chatModule = {
     chatId: null,
     selectedUser: null,
     query: null,
-    chatsScrollPosition: {},
+    chatSettings: {},
     chatIdList: [],
     chatsCount: 0,
     chatContainerRef: null,
@@ -36,8 +36,8 @@ export const chatModule = {
     getChatId(state) {
       return state.selectedUser;
     },
-    getChatsScrollPosition(state) {
-      return state.chatsScrollPosition;
+    getChatSettings(state) {
+      return state.chatSettings;
     },
     getChatContainerRef(state) {
       return state.chatContainerRef;
@@ -68,14 +68,14 @@ export const chatModule = {
     setChatsCount(state, n) {
       state.chatsCount = n;
     },
-    addUniqChatItem(state, item) {
-      if (!state.chatsScrollPosition[item.id]) {
-        state.chatsScrollPosition[item.id] = item;
+    addUniqChatSettingsItem(state, item) {
+      if (!state.chatSettings[item.id]) {
+        state.chatSettings[item.id] = item;
       }
     },
-    changeChatsScrollData(state, data) {
+    changeChatSettings(state, data) {
       // console.log(  'CHANGES IN ', data.id, 'DATA =>' ,data.data );
-      state.chatsScrollPosition[data.id][data.key] = data.data;
+      state.chatSettings[data.id][data.key] = data.data;
     },
     setChatContainerRef(state, ref) {
       state.chatContainerRef = ref;
@@ -83,7 +83,7 @@ export const chatModule = {
     deleteChat(state, key) {
       console.log("was deleted ?", key);
 
-      delete state.chatsScrollPosition[key];
+      delete state.chatSettings[key];
       
     },
   },
@@ -110,11 +110,11 @@ export const chatModule = {
     setChatsCount({ state, commit, n }) {
       commit("setChatsCount", n);
     },
-    addUniqChatItem({ state, commit, item }) {
-      commit("addUniqChatItem", item);
+    addUniqChatSettingsItem({ state, commit, item }) {
+      commit("addUniqChatSettingsItem", item);
     },
-    changeChatsScrollData({ state, commit, data }) {
-      commit("changeChatsScrollData", data);
+    changeChatSettings({ state, commit, data }) {
+      commit("changeChatSettings", data);
     },
     setChatContainerRef({ state, commit, ref }) {
       commit("setChatContainerRef", ref);
