@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <div class="user-using-mobile"></div>
 
     <div v-observer="prev" class="prev"></div>
@@ -41,41 +40,40 @@ export default {
     const pivotMessage = ref(null);
     const limit = ref(20);
     const querryType = ref(null);
-    const messagesRef = db
-      .collection("chatMessages")
-      .doc(store.state.chat.chatId)
-      .collection("messages");
+    const currentId = ref(null);
+
+    onMounted(() => {
+      currentId.value = store.state.chat.chatId;
+    });
 
     watchEffect(() => {
-      switch (querryType.value) {
-        case "prev":
-          query.value = messagesRef
-            .orderBy("createdAt", "desc")
-            .limit(limit.value);
-          break;
+      if (currentId.value !== store.state.chat.chatId) {
+        limit.value = 20;
+        currentId.value = store.state.chat.chatId
+        
 
-        case "next":
-          query.value = messagesRef
-            .orderBy("createdAt")
-            .startAfter(pivotMessage.value)
-            .limit(20);
-          break;
-
-        default:
-          query.value = messagesRef.orderBy("createdAt", "desc").limit(20);
       }
     });
 
     watchEffect(() => {
+      const messagesRef = ref(
+        db
+          .collection("chatMessages")
+          .doc(currentId.value)
+          .collection("messages")
+      );
+
+      query.value = messagesRef.value
+        .orderBy("createdAt", "desc")
+        .limit(limit.value);
+
       query.value.onSnapshot((snapshot, parameters) => {
         const response = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
 
-        querryType.value === "prev"
-          ? messages.value = response.reverse()
-          : messages.value = response
+        messages.value = response.reverse();
       });
     });
 
@@ -86,29 +84,16 @@ export default {
       }
     }
 
-    // async function next() {
-    //   if (messages.value) {
-    //     console.log("get next messages", messages.value[20].createdAt);
-
-    //     pivotMessage.value = messages.value[20].createdAt;
-
-    //     querryType.value = "next";
-    //   }
-    // }
-
     return {
       messages,
       prev,
-      
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .container {
- 
 }
 
 .message {
