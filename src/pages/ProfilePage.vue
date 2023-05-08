@@ -481,6 +481,7 @@ img {
   width: 100%;
   background-color: $content-main;
   height: 8%;
+  max-height: 60px;
   position: fixed;
   top: 0px;
   z-index: 15;

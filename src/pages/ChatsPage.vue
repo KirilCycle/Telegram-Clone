@@ -118,7 +118,9 @@ import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import ChatXxx from "@/components/ChatXxx.vue";
-import Vue from 'vue';
+import Vue from "vue";
+import { computed, reactive } from "vue";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -354,26 +356,12 @@ export default {
             store.commit("chat/addUniqChatSettingsItem", {
               id: formated[i].id,
               v: "",
+              lastMsg: null,
               scrollPosition: null,
               limit: 0,
             });
           }
-        } else if (formated.length < store.state.chat.chatsCount) {
-          //in case chat was deleted
-
-          //Object.keys(store.state.chat.chatsScrollPosition)
-          for (var key in store.state.chat.chatsScrollPosition) {
-            if (!source[key]) {
-              store.commit("chat/deleteChat", key);
-
-              resetSelectedChat();
-
-              break;
-            }
-
-            store.commit("chat/setChatsCount", formated.length);
-          }
-        }
+        } 
       } else {
         console.log("No such document!");
       }
@@ -508,10 +496,17 @@ export default {
     }
 
     function saveChatSettings(id, limit) {
-      const scrollPosition = chatContainer.value.scrollTop;
+      const scrollPosition = chatContainer?.value?.scrollTop;
 
+      const settings = {
+        limit,
+        scrollPosition,
+        id,
+      };
 
-      console.log("SAVED", id, limit, scrollPosition, store.state.chat.chatSettings);
+      console.log(settings, 'HERE');
+
+      store.commit("chat/changeChatSettings", settings);
     }
 
     const chat = ref(null);
@@ -746,7 +741,7 @@ v-enter-active,
     background-color: $content-main;
 
     input {
-      background-color: $hover;
+      background-color: $dark-input;
       height: 43px;
       width: 100%;
       padding-right: 5px;

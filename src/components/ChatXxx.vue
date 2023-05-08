@@ -32,7 +32,7 @@ import MessagesSkelet from "./MessagesSkelet.vue";
 
 export default {
   data() {},
-  setup(props, {emit }) {
+  setup(props, { emit }) {
     const messages = ref([]);
     const db = firebase.firestore();
     const query = ref(null);
@@ -45,18 +45,17 @@ export default {
     });
 
     watchEffect(() => {
-      if (currentId.value !== store.state.chat.chatId) {
-        let scrollPosition = window.scrollY;
-        
-        
-        emit('saveLastChatSettings',currentId.value, limit?.value)
 
+      if ( currentId.value !== store.state.chat.chatId) {
+        if (currentId.value) {
+          emit("saveLastChatSettings", currentId.value, limit?.value);
+        }
+
+        messages.value = [];
         limit.value = 20;
         currentId.value = store.state.chat.chatId;
 
-        console.log(scrollPosition);
-
-        console.log("CHNAGED");
+       console.log( 'CHANGED');
       }
     });
 

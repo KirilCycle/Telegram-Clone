@@ -73,9 +73,10 @@ export const chatModule = {
         state.chatSettings[item.id] = item;
       }
     },
-    changeChatSettings(state, data) {
-      // console.log(  'CHANGES IN ', data.id, 'DATA =>' ,data.data );
-      state.chatSettings[data.id][data.key] = data.data;
+    changeChatSettings(state, settings) {
+    
+      state.chatSettings[settings.id] = { ...state.chatSettings[id], ...data };
+      console.log("EXECUTED", state.chatSettings[id], data);
     },
     setChatContainerRef(state, ref) {
       state.chatContainerRef = ref;
@@ -84,7 +85,6 @@ export const chatModule = {
       console.log("was deleted ?", key);
 
       delete state.chatSettings[key];
-      
     },
   },
 
@@ -113,8 +113,8 @@ export const chatModule = {
     addUniqChatSettingsItem({ state, commit, item }) {
       commit("addUniqChatSettingsItem", item);
     },
-    changeChatSettings({ state, commit, data }) {
-      commit("changeChatSettings", data);
+    changeChatSettings({ state, commit,settings }) {
+      commit("changeChatSettings",settings);
     },
     setChatContainerRef({ state, commit, ref }) {
       commit("setChatContainerRef", ref);
