@@ -30,7 +30,10 @@ export default {
     return {
       loading: true,
       db: firebase.firestore(),
-      path: this.storePath
+      path: this.storePath,
+      enotherUser: null,
+      chatName: '',
+ 
      
       
     };

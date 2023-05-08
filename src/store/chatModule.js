@@ -74,9 +74,9 @@ export const chatModule = {
       }
     },
     changeChatSettings(state, settings) {
-    
-      state.chatSettings[settings.id] = { ...state.chatSettings[id], ...data };
-      console.log("EXECUTED", state.chatSettings[id], data);
+      state.chatSettings[settings.id] = { ...state.chatSettings[settings.id], ...settings };
+
+      
     },
     setChatContainerRef(state, ref) {
       state.chatContainerRef = ref;

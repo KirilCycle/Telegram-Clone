@@ -4,13 +4,12 @@
 
     <div class="btns-container">
      
-      
       <label v-for="it in btnsArray" :key="it.name" class="container">
         <input
           class="radio-button"
           @click="it.execute"
           type="radio"
-          v-model="selected"
+          v-model="selectedNow"
           :value="it.value"
           :name="it.name"
         />
@@ -18,23 +17,6 @@
         <span>
         </span>
       </label>
-
-
-     
-      <!-- <label class="container">
-        <input
-          class="radio-button"
-          @click="setDarkTheme"
-          type="radio"
-          v-model="selected"
-          value="light"
-          name="light"
-        />
-        Light
-        <span>
-        </span>
-      </label> -->
-     
     </div>
   </div>
 </template>
@@ -50,12 +32,8 @@ export default {
   },
   data() {
     return {
-      header: this.header,
-      selected: this.selected,
+      selectedNow: this.selected,
       btnsArray: this.btnsRadioList,
-   
-
-
     };
   },
 

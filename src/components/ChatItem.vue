@@ -22,8 +22,6 @@ import store from "@/store/store";
 export default {
   data() {
     return {
-      pthUrl: this.pthUrl,
-      id: this.id,
       TampStamp: this.time,
       active: this.id === store.state.chat.chatId,
     };

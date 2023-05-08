@@ -7,10 +7,6 @@
     <div class="content">
       <span>
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
-
-        <!-- @notready="messageisNotReady = true"
-        :notready="messageisNotReady"
-        @sendmesimg="sendMessage" -->
       </span>
 
       <input
@@ -71,11 +67,10 @@ export default {
     textHndl(v) {
       store.commit("chat/changeChatSettings", {
         id: store.state.chat.chatId,
-        key: "v",
-        data: v,
+        v:v
       });
 
-      console.log("HANDLE TEXT", v);
+      console.log("HANDLE TEXT", v,);
     },
 
     async send() {
