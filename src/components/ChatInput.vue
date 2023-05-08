@@ -59,7 +59,6 @@ export default {
 
   data() {
     return {
-      sendMsg: this.sendMsg,
       text: null,
     };
   },

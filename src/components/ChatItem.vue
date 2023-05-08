@@ -26,10 +26,27 @@ export default {
       active: this.id === store.state.chat.chatId,
     };
   },
+  computed: {
+    time() {
+      const timestamp = new Date(
+        this.lastMessageTimeStmp.seconds * 1000 +
+        this.lastMessageTimeStmp.nanoseconds / 1000000
+      );
+
+      const hours = timestamp.getHours();
+      const minutes = timestamp.getMinutes();
+
+      // Add leading zeros to the hours and minutes if they are single digits
+      const formattedHours = hours.toString().padStart(2, "0");
+      const formattedMinutes = minutes.toString().padStart(2, "0");
+
+      return `${formattedHours}:${formattedMinutes}`;
+    },
+  },
   props: {
     pthUrl: String,
     id: String,
-    time: Number,
+    lastMessageTimeStmp: Object,
     required: true,
   },
 };
@@ -53,8 +70,6 @@ export default {
     .time {
       color: $text-main;
     }
-
-  
   }
   flex-direction: row;
   align-items: center;
@@ -64,7 +79,6 @@ export default {
     font-size: 0.9rem;
     font-weight: 550;
   }
-
 
   .last {
     color: gray;
@@ -110,13 +124,11 @@ export default {
     font-size: 0.85rem;
     color: rgb(78, 78, 78);
   }
-  
 }
 
 .dark .cht-i .name {
   color: $text-main-l;
 }
-
 
 .active {
   @extend .cht-i;
@@ -131,16 +143,16 @@ export default {
   &:hover {
     background-color: rgb(96, 173, 255);
     .time {
-      color:#ffff;
+      color: #ffff;
     }
   }
   .time {
-    color:#ffff;
+    color: #ffff;
   }
 
   .chatitem_info_container {
     .last {
-      color:#ffff;
+      color: #ffff;
     }
   }
 }

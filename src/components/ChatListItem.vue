@@ -1,7 +1,7 @@
 <template>
   <div v-show="isVisible" @click="handleChatSelect">
     
-    <chat-item :time="time" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">     
+    <chat-item :lastMessageTimeStmp="this.chat.lastMsg?.createdAt" :id="chat.id" v-show="!loading" :pthUrl="enotherUser?.photoURL">     
       <template v-slot:name>
         <h3>{{ chatName }}</h3>
       </template>
@@ -54,16 +54,6 @@ export default {
         return true
       }
     },
-    time() {
-      let date = new Date( this.chat.lastMsg?.createdAt.seconds * 1000);
-
-      let hours = date.getHours();
-
-      let minutes = + date.getMinutes();
-
-      return `${hours}:${minutes}` 
-     
-    }
   },
 
   methods: {
