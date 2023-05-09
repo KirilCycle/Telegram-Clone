@@ -1,11 +1,9 @@
 <template>
-  <div class="chat-part">
-    <div ref="scrollDiv"></div>
-    <div v-for="message in chat" :key="message.id" class="msg">
-      {{ message.text }}
-    </div>
-    <div ref="scrollBott"></div>
-  </div>
+  <div ref="scrollDiv"></div>
+   <div v-for="message in chat" :key="message.id" class="msg">
+    {{ message.text }}
+   </div>
+  <div ref="scrollBott"></div>
 </template>
 
 <script>
@@ -102,13 +100,9 @@ export default {
       }
     );
 
- 
     //standar emit at first chat part apppear (will invoke only once)  during messages changes we will change it to in main chatSettings
     watchEffect(() => {
-      
       if (!props.settings.topMessage && chat.value.length) {
-      
-
         emit("updated", {
           id: props.settings.id,
           topMessage: chat.value[0].createdAt,
@@ -120,7 +114,11 @@ export default {
 
         top.value = chat.value[0].createdAt;
         bottom.value = chat.value[chat.value.length - 1].createdAt;
-      console.log("STANDART EMIT UPDATE", chat.value[chat.value.length - 1],chat.value[0]  );
+        console.log(
+          "STANDART EMIT UPDATE",
+          chat.value[chat.value.length - 1],
+          chat.value[0]
+        );
       }
     });
 
@@ -175,8 +173,6 @@ export default {
   background-color: rgb(93, 145, 241);
 }
 .chat-part {
-  margin: 7px 0px 7px 0px;
   width: 100%;
-  border: 3px solid rgb(98, 117, 135);
 }
 </style>

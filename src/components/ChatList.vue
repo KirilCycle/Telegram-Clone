@@ -34,7 +34,6 @@ export default {
   data() {
     return {
       db: firebase.firestore(),
-      storePath: this.storePath,
     };
   },
   created() {},

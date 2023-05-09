@@ -95,7 +95,6 @@ export default {
       profilePhoto: this.$store.state.user.user.photoURL,
       uploadedPhoto: null,
 
-      v: this.v,
       firtsName: this.$store.state.user.user.displayName,
       username: this.$store.state.user.user.username,
       bio: this.$store.state.user.user.bio,

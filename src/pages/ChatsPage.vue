@@ -1,8 +1,6 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
-
-  <!-- <button class="test" @click="test"></button> -->
-
+  
   <div class="main">
     <div class="left-bar">
       <div class="btn-controll">
@@ -118,6 +116,8 @@ import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import ChatXxx from "@/components/ChatXxx.vue";
+import Chat from "@/components/Chat";
+
 import Vue from "vue";
 import { computed, reactive } from "vue";
 import { useStore } from "vuex";
@@ -126,6 +126,7 @@ export default {
   components: {
     DirectChat,
     ChatXxx,
+    Chat,
     ReplyMessageBorder,
     SelectedChatDynamic,
     NewChat,
@@ -517,7 +518,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "ChatXxx";
+        currentChatType.value = "Chat";
       } else {
         currentChatType.value = "ChatisntSelected";
       }

@@ -31,7 +31,6 @@ import { limitToFirst, limitToLast, startAfter } from "firebase/database";
 import MessagesSkelet from "./MessagesSkelet.vue";
 
 export default {
-  data() {},
   setup(props, { emit }) {
     const messages = ref([]);
     const db = firebase.firestore();
@@ -47,6 +46,7 @@ export default {
     watchEffect(() => {
 
       if ( currentId.value !== store.state.chat.chatId) {
+       
         if (currentId.value) {
           emit("saveLastChatSettings", currentId.value, limit?.value);
         }

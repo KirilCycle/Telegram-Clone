@@ -29,13 +29,6 @@ export default {
     username: String,
     bio: String,
   },
-  data() {
-    return {
-      username: this.username,
-      bio: this.bio,
-    };
-  },
-  
 };
 </script>
 

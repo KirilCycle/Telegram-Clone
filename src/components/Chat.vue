@@ -1,22 +1,23 @@
 <template>
-  <div class="chat-wrap">
-    <div v-observer="getPrev"></div>
-    <!-- <button class="prev" @click="getPrev">show prev</button> -->
+  <div class="prev-observer" v-observer="getPrev"></div>
+  <!-- <button class="prev" @click="getPrev">show prev</button> -->
 
-    <chat-part
-      @loaded="loading = null"
-      @disableCursorMove="disableNextData"
-      @updated="setUpdatedData"
-      @changes="updateTopOrBottomMessage"
-      :settings="part"
-      v-for="part in chatPartSettings"
-      :key="part.id"
-    ></chat-part>
+  <div ref="mobileDetector" class="handle-mobile-device"></div>
 
-    <!-- <button class="next" @click="getNext">show next</button> -->
-    <div v-desapeared="bottomWasleaved"></div>
-    <div class="get-next-observer" v-observer="getNext"></div>
-  </div>
+  <chat-part
+    @loaded="loading = null"
+    @disableCursorMove="disableNextData"
+    @updated="setUpdatedData"
+    @changes="updateTopOrBottomMessage"
+    :settings="part"
+    v-for="part in chatPartSettings"
+    :key="part.id"
+  ></chat-part>
+
+  <div @click="scroll" class="scroll-bottom-btn"></div>
+  <!-- <button class="next" @click="getNext">show next</button> -->
+  <div v-desapeared="bottomWasleaved"></div>
+  <div class="get-next-observer" v-observer="getNext"></div>
 </template>
 
 <script>
@@ -56,6 +57,8 @@ export default {
     const chasingBottom = ref(null);
     const theMostRecentMessage = ref(null);
     const currrentChatId = ref(null);
+    const stop = ref(false);
+    const mobileDetector = ref(null)
     const messagesRef = ref(
       db
         .collection("chatMessages")
@@ -63,17 +66,14 @@ export default {
         .collection("messages")
     );
 
-    
-
     watchEffect(() => {
-     if (currrentChatId.value !== store.state.chat.chatId)  {
-      console.log( 'enother');
-      currrentChatId.value = store.state.chat.chatId
-      chatPartSettings.value = []
-      startChat()
-     } 6666
-    })
-
+      if (currrentChatId.value !== store.state.chat.chatId) {
+        console.log("enother");
+        currrentChatId.value = store.state.chat.chatId;
+        chatPartSettings.value = [];
+        startChat();
+      }
+    });
 
     const qurryRecentMessageQuerry = ref(
       messagesRef.value.orderBy("createdAt", "desc").limit(1) // Limit the result to 1 document
@@ -95,6 +95,9 @@ export default {
       topMessage: null,
       bottomMessage: null,
     };
+    function scroll() {
+      stop.value = !stop.value;
+    }
 
     async function startChat() {
       console.log("GO START CHAT");
@@ -102,8 +105,6 @@ export default {
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages");
-
-     
 
       let qurryToFirstMessage = messagesRef.orderBy("createdAt").limit(1);
       //fisrt message of whole collection
@@ -185,11 +186,14 @@ export default {
       }
     });
 
-
     function getPrev() {
       //will get new messages based prev top settings
- 
-      if (getPreviousAvaible.value && chatPartSettings.value[0]) {
+
+      if (
+        getPreviousAvaible.value &&
+        chatPartSettings.value[0] &&
+        !stop.value
+      ) {
         console.log("PREV", chatPartSettings.value[0]);
         const newChatPart = {
           id: uuidv4(),
@@ -213,7 +217,7 @@ export default {
     }
 
     function getNext() {
-      if (getNextAvaible.value && chatPartSettings.value[1]) {
+      if (getNextAvaible.value && chatPartSettings.value[1] && !stop.value) {
         const newChatPart = {
           id: uuidv4(),
           howGet: {
@@ -243,7 +247,10 @@ export default {
         ...settings,
       };
 
-      if (settings.action === "endBefore") {
+      const styles = window.getComputedStyle(mobileDetector.value);
+
+      if (settings.action === "endBefore" && styles.display !== 'none' ) {
+       console.log( 'GO SCROLL');
         setTimeout(() => {
           chatPartSettings.value[1].ref.scrollIntoView({ block: "start" });
         }, 0);
@@ -279,6 +286,8 @@ export default {
 
     return {
       getPrev,
+      scroll,
+      mobileDetector,
       bottomWasleaved,
       disableNextData,
       chatPartSettings,
@@ -292,6 +301,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.prev-observer {
+  background-color: red;
+
+  position: relative;
+  top: 400px;
+}
+
+.scroll-bottom-btn {
+  width: 50px;
+  right: 10px;
+  bottom: 100px;
+  position: absolute;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #fff;
+}
+
+.handle-mobile-device {
+  display: none;
+  @media only screen and (max-width: 500px) {
+    display: block;
+    width: 20px;
+    right: 100px;
+    bottom: 100px;
+    position: absolute;
+    height: 20px;
+    border-radius: 25px;
+    background-color: #39c442;
+  }
+}
 
 .get-next-observer {
   width: 100%;
