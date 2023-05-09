@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <div class="user-using-mobile"></div>
-
+ 
     <div v-observer="prev" class="prev"></div>
     <div v-for="i in messages" :key="i.id" class="message">
       <p>
         {{ i.text }}
       </p>
     </div>
-    <div ref="bottom"></div>
-  </div>
+
+    <button class="bottom-scroll-btn"></button>
+
+    <div ref="bottom" v-desapeared="chasingBottomStateHandle"></div>
+ 
 </template>
 
 <script>
@@ -38,15 +39,24 @@ export default {
     const limit = ref(20);
     const currentId = ref(null);
     const bottom = ref(null);
+    const atTheBottom = ref(true);
 
     onMounted(() => {
       currentId.value = store.state.chat.chatId;
     });
 
-    watchEffect(() => {
+    function catchBottom () {
+    if (atTheBottom.value) {
+      // bottom.value.scrollIntoView({block: "center", behavior: "smooth"});
+    }
+    }
 
-      if ( currentId.value !== store.state.chat.chatId) {
-       
+    function chasingBottomStateHandle (botomVisible) {
+       atTheBottom.value = botomVisible 
+    }
+
+    watchEffect(() => {
+      if (currentId.value !== store.state.chat.chatId) {
         if (currentId.value) {
           emit("saveLastChatSettings", currentId.value, limit?.value);
         }
@@ -54,8 +64,7 @@ export default {
         messages.value = [];
         limit.value = 20;
         currentId.value = store.state.chat.chatId;
-
-       console.log( 'CHANGED');
+        console.log("CHANGED");
       }
     });
 
@@ -76,8 +85,8 @@ export default {
           id: doc.id,
           ...doc.data(),
         }));
-
         messages.value = response.reverse();
+        catchBottom()
       });
     });
 
@@ -91,6 +100,7 @@ export default {
       messages,
       prev,
       bottom,
+      chasingBottomStateHandle,
     };
   },
 };
@@ -107,10 +117,19 @@ export default {
   background-color: #3f3f3f;
 }
 
+.bottom-scroll-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 27.5px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 120px;
+  right: 5px;
+}
 .prev {
   width: 100%;
   position: relative;
-  top: 200px;
+  top: 700px;
 }
 
 .next {

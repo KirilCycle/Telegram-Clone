@@ -335,7 +335,7 @@ export default {
 
     const listLoaded = ref(null);
 
-    // });
+    
     const currentChatType = ref("ChatisntSelected");
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
@@ -511,7 +511,6 @@ export default {
     }
 
     const chat = ref(null);
-
     const chatHided = ref(false);
 
     watchEffect(() => {

@@ -1,8 +1,8 @@
 <template>
   <div ref="scrollDiv"></div>
-   <div v-for="message in chat" :key="message.id" class="msg">
+  <div v-for="message in chat" :key="message.id" class="msg">
     {{ message.text }}
-   </div>
+  </div>
   <div ref="scrollBott"></div>
 </template>
 
@@ -61,7 +61,7 @@ export default {
         query.value = messagesRef.value
           .orderBy("createdAt")
           .limitToLast(limit.value)
-          .endBefore(props.settings.howGet.message);
+          .endBefore(props.settings.howGet.message.createdAt);
         console.log("endBEfore");
       } else if (props.settings.howGet.action === "first") {
         if (!props.settings.howGet.showAll) {
@@ -69,7 +69,7 @@ export default {
           console.log("first long chat");
           query.value = messagesRef.value
             .orderBy("createdAt")
-            .startAfter(props.settings.howGet.message);
+            .startAfter(props.settings.howGet.message.createdAt);
         } else {
           console.log("first  showAll");
           //chat to small we dont need use startAfter as we will avoid first msg
@@ -81,7 +81,7 @@ export default {
         query.value = messagesRef.value
           .orderBy("createdAt")
           .limit(limit.value)
-          .startAfter(props.settings.howGet.message);
+          .startAfter(props.settings.howGet.message.createdAt);
       }
     });
 
@@ -103,37 +103,48 @@ export default {
     //standar emit at first chat part apppear (will invoke only once)  during messages changes we will change it to in main chatSettings
     watchEffect(() => {
       if (!props.settings.topMessage && chat.value.length) {
+        const topMsgData = {
+          createdAt: chat.value[0].createdAt,
+          id: chat.value[0].id,
+        };
+        const bottomMsgData = {
+          createdAt: chat.value[chat.value.length - 1].createdAt,
+          id: chat.value[chat.value.length - 1].id,
+        };
+
         emit("updated", {
           id: props.settings.id,
-          topMessage: chat.value[0].createdAt,
-          bottomMessage: chat.value[chat.value.length - 1].createdAt,
+          topMessage: topMsgData,
+          bottomMessage: bottomMsgData,
           ref: scrollDiv.value,
           refBot: scrollBott.value,
           action: props.settings.howGet.action,
         });
 
-        top.value = chat.value[0].createdAt;
-        bottom.value = chat.value[chat.value.length - 1].createdAt;
-        console.log(
-          "STANDART EMIT UPDATE",
-          chat.value[chat.value.length - 1],
-          chat.value[0]
-        );
+        top.value = bottomMsgData;
+        bottom.value = topMsgData;
       }
     });
 
     //in case bottom or first message was deleted we need to change this data in subChats settings to give next chat block make right snapshot params
     watchEffect(() => {
-      if (chat.value.length && props.settings.howGet.action !== "first") {
-        if (
-          top.value?.seconds !== chat.value[0].createdAt?.seconds ||
-          top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds
-        ) {
+      if (chat.value.length && props.settings.howGet.action) {
+        if (top.value.id === chat.value[0].id) {
+       
+         const topMsgData = {
+            createdAt: chat.value[0].createdAt,
+            id: chat.value[0].id,
+          };
+          const bottomMsgData = {
+            createdAt: chat.value[chat.value.length - 1].createdAt,
+            id: chat.value[chat.value.length - 1].id,
+          };
+
           emit(
             "changes",
             props.settings.id,
-            chat.value[0].createdAt,
-            chat.value[chat.value.length - 1].createdAt
+            topMsgData,
+            bottomMsgData,
           );
         }
         //&& top.value?.seconds !== chat.value[0].createdAt?.seconds ||  top.value?.nanoseconds !== chat.value[0].createdAt?.nanoseconds

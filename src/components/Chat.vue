@@ -14,7 +14,7 @@
     :key="part.id"
   ></chat-part>
 
-  <div @click="scroll" class="scroll-bottom-btn"></div>
+  <div @click="scroll" v-show="getNextAvaible" class="scroll-bottom-btn"></div>
   <!-- <button class="next" @click="getNext">show next</button> -->
   <div v-desapeared="bottomWasleaved"></div>
   <div class="get-next-observer" v-observer="getNext"></div>
@@ -51,14 +51,15 @@ export default {
   setup() {
     const db = firebase.firestore();
     const chatPartSettings = ref([]);
-    const getNextAvaible = ref(true);
+    const getNextAvaible = ref(false);
     const getPreviousAvaible = ref(true);
     const loading = ref(null);
     const chasingBottom = ref(null);
     const theMostRecentMessage = ref(null);
+    const firstMessageInChatEver = ref(null);
     const currrentChatId = ref(null);
     const stop = ref(false);
-    const mobileDetector = ref(null)
+    const mobileDetector = ref(null);
     const messagesRef = ref(
       db
         .collection("chatMessages")
@@ -83,7 +84,10 @@ export default {
       // { preserveSnapshot: true },
       (snapshot, parameters) => {
         if (snapshot.docs[0]) {
-          theMostRecentMessage.value = snapshot.docs[0].data().createdAt;
+          theMostRecentMessage.value = {
+            createdAt: snapshot.docs[0].data().createdAt,
+            id:snapshot.docs[0].id,
+          };
         }
       }
     );
@@ -137,7 +141,10 @@ export default {
                   howGet: {
                     action: "first",
                     text: TopMessageFromLastPartofMessages.text,
-                    message: TopMessageFromLastPartofMessages.createdAt,
+                    message: {
+                      id: TopMessageFromLastPartofMessages.id,
+                      createdAt: TopMessageFromLastPartofMessages.createdAt,
+                    },
                   },
                   topMessage: null,
                   bottomMessage: null,
@@ -152,11 +159,13 @@ export default {
                     console.log("showAll = true");
                     startSettings.howGet.showAll = true;
                   }
+                } else if (!firstMessageEver) {
+                  console.log("showAll = true");
+                  startSettings.howGet.showAll = true;
                 }
                 chatPartSettings.value.unshift(startSettings);
               }
             })
-
             .catch((error) => {
               // Handle any errors
               console.error("Error getting last message:", error);
@@ -171,18 +180,15 @@ export default {
     //detectig if we already reach bottom of collection
     watchEffect(() => {
       if (theMostRecentMessage.value && chatPartSettings.value[0]) {
-        if (
-          JSON.stringify(chatPartSettings.value[0].bottomMessage) ===
-          JSON.stringify(theMostRecentMessage.value)
-        ) {
-          console.log("YES AS THE BOTTOM");
-        } else if (
-          chatPartSettings.value[1] &&
-          JSON.stringify(chatPartSettings.value[1].bottomMessage) ===
-            JSON.stringify(theMostRecentMessage.value)
-        ) {
-          console.log("YES AS THE BOTTOM");
-        }
+    console.log(   chatPartSettings.value, 'SSS');
+      // if (
+        //   chatPartSettings.value[0].bottomMessage.id  === theMostRecentMessage.value.id
+        // ) {
+        //   console.log("YES AS THE BOTTOM");
+        //   getNextAvaible.value = false;
+        // } else {
+        //   getNextAvaible.value = true;
+        // }
       }
     });
 
@@ -199,7 +205,10 @@ export default {
           id: uuidv4(),
           howGet: {
             action: "endBefore",
-            message: chatPartSettings.value[0].topMessage,
+            message: {
+              id: chatPartSettings.value[0].topMessage.id,
+              createdAt: chatPartSettings.value[0].topMessage.createdAt,
+            },
           },
           topMessage: null,
           bottomMessage: null,
@@ -211,8 +220,6 @@ export default {
         if (chatPartSettings.value.length > 2) {
           chatPartSettings.value.pop();
         }
-
-        getNextAvaible.value = true;
       }
     }
 
@@ -222,7 +229,10 @@ export default {
           id: uuidv4(),
           howGet: {
             action: "startAfter",
-            message: chatPartSettings.value[1].bottomMessage,
+            message: {
+              id: chatPartSettings.value[1].bottomMessage.id,
+              createdAt: chatPartSettings.value[1].bottomMessage.createdAt
+            },
           },
           topMessage: null,
           bottomMessage: null,
@@ -249,8 +259,8 @@ export default {
 
       const styles = window.getComputedStyle(mobileDetector.value);
 
-      if (settings.action === "endBefore" && styles.display !== 'none' ) {
-       console.log( 'GO SCROLL');
+      if (settings.action === "endBefore" && styles.display !== "none") {
+        console.log("GO SCROLL");
         setTimeout(() => {
           chatPartSettings.value[1].ref.scrollIntoView({ block: "start" });
         }, 0);
@@ -292,6 +302,7 @@ export default {
       disableNextData,
       chatPartSettings,
       getNext,
+      getNextAvaible,
       loading,
       setUpdatedData,
       updateTopOrBottomMessage,
