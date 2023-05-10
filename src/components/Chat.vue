@@ -67,6 +67,7 @@ export default {
         .collection("messages")
     );
 
+    //select chat
     watchEffect(() => {
       if (currrentChatId.value !== store.state.chat.chatId) {
         console.log("enother");
@@ -86,22 +87,11 @@ export default {
         if (snapshot.docs[0]) {
           theMostRecentMessage.value = {
             createdAt: snapshot.docs[0].data().createdAt,
-            id:snapshot.docs[0].id,
+            id: snapshot.docs[0].id,
           };
         }
       }
     );
-
-    const chatPartsetting = {
-      //action startAfter/endBefore
-      id: uuidv4(),
-      howGet: { action: "endBefore", message: 111 },
-      topMessage: null,
-      bottomMessage: null,
-    };
-    function scroll() {
-      stop.value = !stop.value;
-    }
 
     async function startChat() {
       console.log("GO START CHAT");
@@ -179,16 +169,21 @@ export default {
 
     //detectig if we already reach bottom of collection
     watchEffect(() => {
-      if (theMostRecentMessage.value && chatPartSettings.value[0]) {
-    console.log(   chatPartSettings.value, 'SSS');
-      // if (
-        //   chatPartSettings.value[0].bottomMessage.id  === theMostRecentMessage.value.id
-        // ) {
-        //   console.log("YES AS THE BOTTOM");
-        //   getNextAvaible.value = false;
-        // } else {
-        //   getNextAvaible.value = true;
-        // }
+      if (
+        theMostRecentMessage.value &&
+        chatPartSettings.value[0]?.bottomMessage &&
+        chatPartSettings.value[1]?.bottomMessage
+      ) {
+        if (
+          theMostRecentMessage.value.id ===
+            chatPartSettings.value[0].bottomMessage.id ||
+          theMostRecentMessage.value.id ===
+            chatPartSettings.value[1].bottomMessage.id
+        ) {
+          getNextAvaible.value = false;
+        } else {
+          getNextAvaible.value = true;
+        }
       }
     });
 
@@ -231,7 +226,7 @@ export default {
             action: "startAfter",
             message: {
               id: chatPartSettings.value[1].bottomMessage.id,
-              createdAt: chatPartSettings.value[1].bottomMessage.createdAt
+              createdAt: chatPartSettings.value[1].bottomMessage.createdAt,
             },
           },
           topMessage: null,
@@ -289,6 +284,10 @@ export default {
         getNextAvaible.value = false;
         console.log(gettingType, "PREVENT");
       }
+    }
+
+    function scroll() {
+      stop.value = !stop.value;
     }
 
     function bottomWasleaved(observedState) {}

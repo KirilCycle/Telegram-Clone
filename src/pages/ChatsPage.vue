@@ -117,6 +117,7 @@ import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import ChatXxx from "@/components/ChatXxx.vue";
 import Chat from "@/components/Chat";
+import AndTheRainWillKillAsAll from '@/components/chat/AndTheRainWillKillAsAll'
 
 import Vue from "vue";
 import { computed, reactive } from "vue";
@@ -125,6 +126,7 @@ import { useStore } from "vuex";
 export default {
   components: {
     DirectChat,
+    AndTheRainWillKillAsAll,
     ChatXxx,
     Chat,
     ReplyMessageBorder,
@@ -517,7 +519,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "Chat";
+        currentChatType.value = "AndTheRainWillKillAsAll";
       } else {
         currentChatType.value = "ChatisntSelected";
       }
