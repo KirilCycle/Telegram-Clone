@@ -1,19 +1,27 @@
 <template>
   <div class="previos-observer" v-observer="previous"></div>
-  <div class="msg" v-for="msg in msgs" :key="msg.id">
-    {{ msg.text }}
-  </div>
-  <div  class="next" v-observer="next"></div>
+  <messages-list
+    @update="handleNewData"
+    :settigns="chat"
+    v-for="chat in chatSettings"
+    :key="chat.id"
+  ></messages-list>
+  <div class="next" v-observer="next"></div>
 </template>
 
 <script>
-import { watchEffect } from "vue";
+import { onMounted, watchEffect } from "vue";
 import firebase from "firebase/compat/app";
 import { ref } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
+import { uuidv4 } from "@firebase/util";
+import MessagesList from "./MessagesList.vue";
 
 export default {
+  components: {
+    MessagesList,
+  },
   setup() {
     const bottom = ref(null);
     const db = firebase.firestore();
@@ -29,60 +37,36 @@ export default {
         .doc(store.state.chat.chatId)
         .collection("messages")
     );
+    const nextSetting = ref({});
+    const chatSettings = ref([]);
 
-    watchEffect(() => {
-      switch (gettingType.value) {
-        case "prev":
-          chatQuerry.value = chatRef.value
-            .orderBy("createdAt")
-            .limitToLast(limit.value)
-            .endBefore(pivotMessage.value);
-          console.log("WAS");
-          break;
-        case "next":
-          chatQuerry.value = chatRef.value
-            .orderBy("createdAt")
-            .startAfter(pivotMessage.value)
-            .limit(limit.value);
-          console.log("WAS 2");
-        default:
-          chatQuerry.value = chatRef.value
-            .orderBy("createdAt", "desc")
-            .limit(limit.value);
-      }
-
-
-      chatQuerry.value.onSnapshot((snapshot, parameters) => {
-        if (gettingType.value === 'prev') {
-          msgs.value = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-        } else {
-          msgs.value = snapshot.docs
-            .map((doc) => ({ id: doc.id, ...doc.data() }))
-            .reverse();
-        }
-      });
+    onMounted(() => {
+      chatSettings.value.push({ type: "start", id: 'start' });
     });
 
-    function previous() {
-      gettingType.value = "prev";
-      const middle = Math.floor((msgs.value.length - 1) / 2);
-      pivotMessage.value = msgs.value[middle].createdAt
-      console.log("GO ?",middle);
+    function handleNewData(middle) {
+      nextSetting.value.pivot = middle;
     }
 
+    function previous() {
+      console.log("prev");
+      chatSettings.value.pop();
+      chatSettings.value.push({ ...nextSetting.value, type: "prev",id: uuidv4() });
+    }
+
+    
+
     function next() {
-      const middle = Math.floor((msgs.value.length - 1 )/ 2);
-      pivotMessage.value = msgs.value[middle].createdAt
-      gettingType.value = "next";
-      console.log("GO NEXT ?",middle,msgs.value[middle].text );
+      console.log("prev");
+      chatSettings.value.pop();
+      chatSettings.value.push({ ...nextSetting.value, type: "next",id: uuidv4()  });
     }
 
     return {
       bottom,
       previous,
+      handleNewData,
+      chatSettings,
       msgs,
       next,
       top,
