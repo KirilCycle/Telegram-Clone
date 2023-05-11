@@ -23,7 +23,7 @@ export default {
     const pivotMessage = ref(null);
     const limit = ref(30);
     const chatQuerry = ref(null);
-    const messagesRef = ref(
+    const chatRef = ref(
       db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
@@ -33,23 +33,24 @@ export default {
     watchEffect(() => {
       switch (gettingType.value) {
         case "prev":
-          chatQuerry.value = messagesRef.value
+          chatQuerry.value = chatRef.value
             .orderBy("createdAt")
             .limitToLast(limit.value)
             .endBefore(pivotMessage.value);
           console.log("WAS");
           break;
         case "next":
-          chatQuerry.value = messagesRef.value
+          chatQuerry.value = chatRef.value
             .orderBy("createdAt")
             .startAfter(pivotMessage.value)
             .limit(limit.value);
           console.log("WAS 2");
         default:
-          chatQuerry.value = messagesRef.value
+          chatQuerry.value = chatRef.value
             .orderBy("createdAt", "desc")
             .limit(limit.value);
       }
+
 
       chatQuerry.value.onSnapshot((snapshot, parameters) => {
         if (gettingType.value === 'prev') {
