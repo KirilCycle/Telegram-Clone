@@ -34,6 +34,24 @@ export default {
     const currentAction = ref(null);
     const unsubscribe = ref(null);
 
+    const firstMessageId = ref(null);
+    const lastMessageId = ref(null);
+
+    const querryToFirst = messagesRef.value
+      .orderBy("createdAt", "desc")
+      .limit(1);
+
+    querryToFirst.onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        // Access the first document
+        const firstDocument = doc.data();
+        // Do something with the first document
+        console.log(firstDocument.text, 'RECENT');
+        // Unsubscribe from further updates
+     
+      });
+    });
+
     watchEffect(() => {
       switch (gettingType.value) {
         case "prev":
@@ -55,13 +73,13 @@ export default {
             .startAfter(pivotMessage.value)
             .limit(limit.value);
 
-      if (unsubscribe.value) {
+          if (unsubscribe.value) {
             unsubscribe.value();
             subscribeToSnapshot();
           }
           console.log("WAS 2");
         default:
-         if (unsubscribe.value) {
+          if (unsubscribe.value) {
             unsubscribe.value();
             subscribeToSnapshot();
           }
@@ -74,7 +92,7 @@ export default {
       function subscribeToSnapshot() {
         unsubscribe.value = chatQuerry.value.onSnapshot(
           (snapshot, parameters) => {
-            if (gettingType.value === "prev" || gettingType.value === "next" ) {
+            if (gettingType.value === "prev" || gettingType.value === "next") {
               msgs.value = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
