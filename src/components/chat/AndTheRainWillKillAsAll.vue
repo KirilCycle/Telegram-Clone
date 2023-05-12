@@ -1,27 +1,20 @@
 <template>
   <div class="previos-observer" v-observer="previous"></div>
-  <messages-list
-    @update="handleNewData"
-    :settigns="chat"
-    v-for="chat in chatSettings"
-    :key="chat.id"
-  ></messages-list>
+  <div class="msg" v-for="msg in msgs" :key="msg.id">
+    {{ msg.text }}
+  </div>
   <div class="next" v-observer="next"></div>
 </template>
 
 <script>
 import { onMounted, watchEffect } from "vue";
+import { uuidv4 } from "@firebase/util";
 import firebase from "firebase/compat/app";
 import { ref } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
-import { uuidv4 } from "@firebase/util";
-import MessagesList from "./MessagesList.vue";
 
 export default {
-  components: {
-    MessagesList,
-  },
   setup() {
     const bottom = ref(null);
     const db = firebase.firestore();
@@ -31,42 +24,103 @@ export default {
     const pivotMessage = ref(null);
     const limit = ref(30);
     const chatQuerry = ref(null);
-    const chatRef = ref(
+    const messagesRef = ref(
       db
         .collection("chatMessages")
         .doc(store.state.chat.chatId)
         .collection("messages")
     );
-    const nextSetting = ref({});
-    const chatSettings = ref([]);
+    const prevgettingActionId = ref(null);
+    const currentAction = ref(null);
+    const unsubscribe = ref(null);
 
-    onMounted(() => {
-      chatSettings.value.push({ type: "start", id: 'start' });
+    watchEffect(() => {
+      switch (gettingType.value) {
+        case "prev":
+          chatQuerry.value = messagesRef.value
+            .orderBy("createdAt")
+            .limitToLast(limit.value)
+            .endBefore(pivotMessage.value);
+
+          if (unsubscribe.value) {
+            unsubscribe.value();
+            subscribeToSnapshot();
+          }
+
+          console.log("WAS");
+          break;
+        case "next":
+          chatQuerry.value = messagesRef.value
+            .orderBy("createdAt")
+            .startAfter(pivotMessage.value)
+            .limit(limit.value);
+
+      if (unsubscribe.value) {
+            unsubscribe.value();
+            subscribeToSnapshot();
+          }
+          console.log("WAS 2");
+        default:
+         if (unsubscribe.value) {
+            unsubscribe.value();
+            subscribeToSnapshot();
+          }
+
+          chatQuerry.value = messagesRef.value
+            .orderBy("createdAt", "desc")
+            .limit(limit.value);
+      }
+
+      function subscribeToSnapshot() {
+        unsubscribe.value = chatQuerry.value.onSnapshot(
+          (snapshot, parameters) => {
+            if (gettingType.value === "prev" || gettingType.value === "next" ) {
+              msgs.value = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+            } else {
+              msgs.value = snapshot.docs
+                .map((doc) => ({ id: doc.id, ...doc.data() }))
+                .reverse();
+            }
+          }
+        );
+      }
+
+      // Function to subscribe to the snapshot listener
+
+      // Initial subscription
+      onMounted(() => {
+        subscribeToSnapshot();
+      });
+
+      // If you need to unsubscribe
+      // unsubscribe();
+
+      // If you need to subscribe again
+      // subscribeToSnapshot();
     });
 
-    function handleNewData(middle) {
-      nextSetting.value.pivot = middle;
-    }
-
     function previous() {
-      console.log("prev");
-      chatSettings.value.pop();
-      chatSettings.value.push({ ...nextSetting.value, type: "prev",id: uuidv4() });
+      gettingType.value = "prev";
+      const middle = Math.floor((msgs.value.length - 1) / 2);
+      pivotMessage.value = msgs.value[middle].createdAt;
+      console.log("GO ?", middle);
+      currentAction.value = uuidv4();
     }
-
-    
 
     function next() {
-      console.log("prev");
-      chatSettings.value.pop();
-      chatSettings.value.push({ ...nextSetting.value, type: "next",id: uuidv4()  });
+      gettingType.value = "next";
+      const middle = Math.floor((msgs.value.length - 1) / 2);
+      pivotMessage.value = msgs.value[middle].createdAt;
+      console.log("GO NEXT ?", middle, msgs.value[middle].text);
+      currentAction.value = uuidv4();
     }
 
     return {
       bottom,
       previous,
-      handleNewData,
-      chatSettings,
       msgs,
       next,
       top,
@@ -89,9 +143,7 @@ export default {
 
 .next {
   position: relative;
-  bottom: 500px;
-  background-color: #fff;
-  width: 3px;
+  bottom: 730px;
 }
 
 .msg + .msg {
