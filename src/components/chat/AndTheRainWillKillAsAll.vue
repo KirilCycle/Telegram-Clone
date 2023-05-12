@@ -37,18 +37,20 @@ export default {
     const firstMessageId = ref(null);
     const lastMessageId = ref(null);
 
-    const querryToFirst = messagesRef.value
+    const querryToFirst = db
+      .collection("chatMessages")
+      .doc(store.state.chat.chatId)
+      .collection("messages")
       .orderBy("createdAt", "desc")
       .limit(1);
 
     querryToFirst.onSnapshot((snapshot) => {
       snapshot.forEach((doc) => {
         // Access the first document
-        const firstDocument = doc.data();
+         lastMessageId.value = doc.id;
         // Do something with the first document
-        console.log(firstDocument.text, 'RECENT');
+       
         // Unsubscribe from further updates
-     
       });
     });
 
@@ -129,11 +131,15 @@ export default {
     }
 
     function next() {
-      gettingType.value = "next";
-      const middle = Math.floor((msgs.value.length - 1) / 2);
-      pivotMessage.value = msgs.value[middle].createdAt;
-      console.log("GO NEXT ?", middle, msgs.value[middle].text);
-      currentAction.value = uuidv4();
+      if (lastMessageId.value !== msgs.value[msgs.value.length - 1].id ) {
+        gettingType.value = "next";
+        const middle = Math.floor((msgs.value.length - 1) / 2);
+        pivotMessage.value = msgs.value[middle].createdAt;
+        console.log("GO NEXT ?", middle, msgs.value[middle].text);
+        currentAction.value = uuidv4();
+      } else {
+        console.log('XUY TAM A NE NEXT');
+      }
     }
 
     return {
