@@ -1,6 +1,6 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
-  
+
   <div class="main">
     <div class="left-bar">
       <div class="btn-controll">
@@ -64,6 +64,8 @@
           <component
             @saveLastChatSettings="saveChatSettings"
             :is="currentChatType"
+            :key="chatKey"
+            @update="update"
           >
           </component>
         </div>
@@ -117,7 +119,7 @@ import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import ChatXxx from "@/components/ChatXxx.vue";
 import Chat from "@/components/Chat";
-import AndTheRainWillKillAsAll from '@/components/chat/AndTheRainWillKillAsAll'
+import AndTheRainWillKillAsAll from "@/components/chat/AndTheRainWillKillAsAll";
 
 import Vue from "vue";
 import { computed, reactive } from "vue";
@@ -148,10 +150,10 @@ export default {
     return {
       isSearch: false,
       value: "",
+      chatKey: 's',
       serachQ: "",
     };
   },
-
   computed: {
     handleWhichTypeOfChatWasSelected() {
       if (store.state.chat.selectedUser?.new) {
@@ -166,6 +168,12 @@ export default {
     this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
   },
   methods: {
+      update(changeId) {
+      if (changeId !== this.chatKey) {
+       console.log(   'UPDATED');
+        this.chatKey = changeId
+      }
+    },
     async test() {
       const db = firebase.firestore();
       const batch = writeBatch(db);
@@ -337,7 +345,6 @@ export default {
 
     const listLoaded = ref(null);
 
-    
     const currentChatType = ref("ChatisntSelected");
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
@@ -364,7 +371,7 @@ export default {
               limit: 0,
             });
           }
-        } 
+        }
       } else {
         console.log("No such document!");
       }
@@ -507,7 +514,7 @@ export default {
         id,
       };
 
-      console.log(settings, 'HERE');
+      console.log(settings, "HERE");
 
       store.commit("chat/changeChatSettings", settings);
     }
@@ -525,6 +532,8 @@ export default {
       }
     });
 
+    const rer = ref(0);
+
     return {
       chat,
       chatList,
@@ -535,6 +544,7 @@ export default {
       resetSelectedChat,
       saveChatSettings,
       listLoaded,
+      rer,
     };
   },
 };

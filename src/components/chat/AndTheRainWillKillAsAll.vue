@@ -4,7 +4,11 @@
   <div class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
   </div>
- <div ref="scrollAtTheBottom" class="check-bottom-scroll" v-desapeared="handleScrollBtn"></div>
+  <div
+    ref="scrollAtTheBottom"
+    class="check-bottom-scroll"
+    v-desapeared="handleScrollBtn"
+  ></div>
   <div class="next" v-observer="next"></div>
 </template>
 
@@ -17,7 +21,7 @@ import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 
 export default {
-  setup() {
+  setup(props, { emit }) {
     const bottom = ref(null);
     const db = firebase.firestore();
     const top = ref(null);
@@ -36,15 +40,15 @@ export default {
     const unsubscribe = ref(null);
     const isBottom = ref(null);
     const scrollAtTheBottom = ref(null);
-    
-    const atTheBottom = ref(null)
+    const atTheBottom = ref(null);
+    const lastChatId = ref(null);
+    const invokeStartChat = ref(null);
 
-
-   function handleScrollBtn (isBottom) {
-       atTheBottom.value = isBottom
-   }
+    function handleScrollBtn(isBottom) {
+      atTheBottom.value = isBottom;
+    }
     // const querryToFirst = db
-    //   .collection("chatMessages")  
+    //   .collection("chatMessages")
     //   .doc(store.state.chat.chatId)
     //   .collection("messages")
     //   .orderBy("createdAt", "desc")
@@ -59,6 +63,30 @@ export default {
     //     // Unsubscribe from further updates
     //   });
     // });
+    // watchEffect(() => {
+    //   if (store.state.chat.chatId !== lastChatId.value) {
+    //    gettingType.value = null;
+    //   console.log("s");
+    //     if (unsubscribe.value) {
+    //      unsubscribe.value
+    //     }
+    //       pivotMessage.value = null;
+    //       chatQuerry.value = null;
+    //       msgs.value = null;
+
+    //       lastChatId.value = store.state.chat.chatId;
+    //       gettingType.value = null;
+    //       invokeStartChat.value = true;
+    //   }
+    // });
+
+    watchEffect(() => {
+      if (store.state.chat.chatId !== lastChatId.value) {
+     console.log(   'HA > ');
+        emit('update',store.state.chat.chatId)
+        lastChatId.value = store.state.chat.chatId
+      }
+    });
 
     watchEffect(() => {
       switch (gettingType.value) {
@@ -116,12 +144,13 @@ export default {
         );
       }
 
-      // Function to subscribe to the snapshot listener
-
-      // Initial subscription
       onMounted(() => {
         subscribeToSnapshot();
       });
+      // Function to subscribe to the snapshot listener
+      // Initial subscription
+      // onMounted(() => {
+      // });
 
       // If you need to unsubscribe
       // unsubscribe();
@@ -186,8 +215,6 @@ export default {
 .check-bottom-scroll {
   position: relative;
   bottom: 50px;
- 
-
 }
 
 .previos-observer {
@@ -197,7 +224,7 @@ export default {
 
 .next {
   position: relative;
-  bottom: 730px;
+  bottom: 130px;
 }
 
 .msg + .msg {
