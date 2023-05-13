@@ -1,8 +1,10 @@
 <template>
+  <button v-show="!atTheBottom" class="scroll-bottom"></button>
   <div class="previos-observer" v-observer="previous"></div>
   <div class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
   </div>
+ <div ref="scrollAtTheBottom" class="check-bottom-scroll" v-desapeared="handleScrollBtn"></div>
   <div class="next" v-observer="next"></div>
 </template>
 
@@ -30,29 +32,33 @@ export default {
         .doc(store.state.chat.chatId)
         .collection("messages")
     );
-    const prevgettingActionId = ref(null);
     const currentAction = ref(null);
     const unsubscribe = ref(null);
+    const isBottom = ref(null);
+    const scrollAtTheBottom = ref(null);
+    
+    const atTheBottom = ref(null)
 
-    const firstMessageId = ref(null);
-    const lastMessageId = ref(null);
 
-    const querryToFirst = db
-      .collection("chatMessages")
-      .doc(store.state.chat.chatId)
-      .collection("messages")
-      .orderBy("createdAt", "desc")
-      .limit(1);
+   function handleScrollBtn (isBottom) {
+       atTheBottom.value = isBottom
+   }
+    // const querryToFirst = db
+    //   .collection("chatMessages")  
+    //   .doc(store.state.chat.chatId)
+    //   .collection("messages")
+    //   .orderBy("createdAt", "desc")
+    //   .limit(1);
 
-    querryToFirst.onSnapshot((snapshot) => {
-      snapshot.forEach((doc) => {
-        // Access the first document
-         lastMessageId.value = doc.id;
-        // Do something with the first document
-       
-        // Unsubscribe from further updates
-      });
-    });
+    // querryToFirst.onSnapshot((snapshot) => {
+    //   snapshot.forEach((doc) => {
+    //     // Access the first document
+    //      lastMessageId.value = doc.id;
+    //     // Do something with the first document
+
+    //     // Unsubscribe from further updates
+    //   });
+    // });
 
     watchEffect(() => {
       switch (gettingType.value) {
@@ -99,10 +105,12 @@ export default {
                 id: doc.id,
                 ...doc.data(),
               }));
+              console.log(msgs.value);
             } else {
               msgs.value = snapshot.docs
                 .map((doc) => ({ id: doc.id, ...doc.data() }))
                 .reverse();
+              console.log(msgs.value);
             }
           }
         );
@@ -126,28 +134,34 @@ export default {
       gettingType.value = "prev";
       const middle = Math.floor((msgs.value.length - 1) / 2);
       pivotMessage.value = msgs.value[middle].createdAt;
+      console.log(msgs.value[middle].text, "prev midle");
       console.log("GO ?", middle);
       currentAction.value = uuidv4();
     }
 
     function next() {
-      if (lastMessageId.value !== msgs.value[msgs.value.length - 1].id ) {
+      if (msgs.value.length > 29) {
         gettingType.value = "next";
         const middle = Math.floor((msgs.value.length - 1) / 2);
+        console.log(msgs.value[middle].text, "next midle");
         pivotMessage.value = msgs.value[middle].createdAt;
         console.log("GO NEXT ?", middle, msgs.value[middle].text);
         currentAction.value = uuidv4();
       } else {
-        console.log('XUY TAM A NE NEXT');
+        console.log("XUY TAM A NE NEXT");
       }
     }
 
     return {
       bottom,
       previous,
+      isBottom,
+      scrollAtTheBottom,
       msgs,
       next,
+      handleScrollBtn,
       top,
+      atTheBottom,
     };
   },
 };
@@ -158,6 +172,22 @@ export default {
   width: 300px;
   height: 300px;
   background-color: #fff;
+}
+.scroll-bottom {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 100px;
+  right: 5px;
+}
+
+.check-bottom-scroll {
+  position: relative;
+  bottom: 50px;
+ 
+
 }
 
 .previos-observer {
