@@ -26,7 +26,7 @@ export default {
     const db = firebase.firestore();
     const top = ref(null);
     const gettingType = ref(null);
-    const msgs = ref(null);
+    const msgs = ref([]);
     const pivotMessage = ref(null);
     const limit = ref(30);
     const chatQuerry = ref(null);
@@ -43,48 +43,30 @@ export default {
     const atTheBottom = ref(null);
     const lastChatId = ref(null);
     const invokeStartChat = ref(null);
+    const isFirstSrllWasExecuted = ref(null);
 
     function handleScrollBtn(isBottom) {
       atTheBottom.value = isBottom;
     }
-    // const querryToFirst = db
-    //   .collection("chatMessages")
-    //   .doc(store.state.chat.chatId)
-    //   .collection("messages")
-    //   .orderBy("createdAt", "desc")
-    //   .limit(1);
 
-    // querryToFirst.onSnapshot((snapshot) => {
-    //   snapshot.forEach((doc) => {
-    //     // Access the first document
-    //      lastMessageId.value = doc.id;
-    //     // Do something with the first document
-
-    //     // Unsubscribe from further updates
-    //   });
-    // });
-    // watchEffect(() => {
-    //   if (store.state.chat.chatId !== lastChatId.value) {
-    //    gettingType.value = null;
-    //   console.log("s");
-    //     if (unsubscribe.value) {
-    //      unsubscribe.value
-    //     }
-    //       pivotMessage.value = null;
-    //       chatQuerry.value = null;
-    //       msgs.value = null;
-
-    //       lastChatId.value = store.state.chat.chatId;
-    //       gettingType.value = null;
-    //       invokeStartChat.value = true;
-    //   }
-    // });
+    watchEffect(() => {
+      if (msgs.value.length > 5 && !isFirstSrllWasExecuted.value) {
+        setTimeout(() => {
+          scrollAtTheBottom.value.scrollIntoView({
+            block: "start",
+            inline: "start",
+          });
+          console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
+          isFirstSrllWasExecuted.value = true;
+        });
+      }
+    });
 
     watchEffect(() => {
       if (store.state.chat.chatId !== lastChatId.value) {
-     console.log(   'HA > ');
-        emit('update',store.state.chat.chatId)
-        lastChatId.value = store.state.chat.chatId
+        console.log("HA > ");
+        emit("update", store.state.chat.chatId);
+        lastChatId.value = store.state.chat.chatId;
       }
     });
 
@@ -133,12 +115,19 @@ export default {
                 id: doc.id,
                 ...doc.data(),
               }));
-              console.log(msgs.value);
             } else {
               msgs.value = snapshot.docs
                 .map((doc) => ({ id: doc.id, ...doc.data() }))
                 .reverse();
-              console.log(msgs.value);
+            } 
+            if (atTheBottom.value) {
+              setTimeout(() => {
+                scrollAtTheBottom.value.scrollIntoView({
+                  block: "start",
+                  inline: "start",
+                  behavior: 'smooth',
+                });
+              });
             }
           }
         );
@@ -160,12 +149,14 @@ export default {
     });
 
     function previous() {
-      gettingType.value = "prev";
-      const middle = Math.floor((msgs.value.length - 1) / 2);
-      pivotMessage.value = msgs.value[middle].createdAt;
-      console.log(msgs.value[middle].text, "prev midle");
-      console.log("GO ?", middle);
-      currentAction.value = uuidv4();
+      if (msgs.value.length > 29 || gettingType.value === "next") {
+        gettingType.value = "prev";
+        const middle = Math.floor((msgs.value.length - 1) / 2);
+        pivotMessage.value = msgs.value[middle].createdAt;
+        console.log(msgs.value[middle].text, "prev midle");
+        console.log("GO ?", middle);
+        currentAction.value = uuidv4();
+      }
     }
 
     function next() {
