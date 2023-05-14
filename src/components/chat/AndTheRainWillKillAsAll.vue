@@ -119,13 +119,13 @@ export default {
               msgs.value = snapshot.docs
                 .map((doc) => ({ id: doc.id, ...doc.data() }))
                 .reverse();
-            } 
+            }
             if (atTheBottom.value) {
               setTimeout(() => {
                 scrollAtTheBottom.value.scrollIntoView({
                   block: "start",
                   inline: "start",
-                  behavior: 'smooth',
+                  behavior: "smooth",
                 });
               });
             }
@@ -169,6 +169,7 @@ export default {
         currentAction.value = uuidv4();
       } else {
         console.log("XUY TAM A NE NEXT");
+        gettingType.value = null;
       }
     }
 
@@ -210,13 +211,21 @@ export default {
 
 .previos-observer {
   position: relative;
-  top: 730px;
+  top: 630px;
+  background-color: #2dff68;
+  height: 1px;
 }
 
 .next {
+  background-color: #2dff68;
+  height: 1px;
   position: relative;
-  bottom: 130px;
+  bottom: 530px;
 }
+
+@media (min-height: 1200px) {
+}
+
 
 .msg + .msg {
   margin-top: 3px;
