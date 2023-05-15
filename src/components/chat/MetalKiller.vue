@@ -71,6 +71,7 @@ export default {
               .map((doc) => ({ id: doc.id, ...doc.data() }))
               .reverse();
           }
+          console.log(msgs.value.forEach((el) => console.log(el.text)));
           if (atTheBottom.value) {
             setTimeout(() => {
               scrollAtTheBottom.value.scrollIntoView({
@@ -109,38 +110,39 @@ export default {
     watchEffect(() => {
       switch (gettingType.value) {
         case "prev":
-          chatQuerry.value = messagesRef.value
+          chatQuerry.value = db
+            .collection("chatMessages")
+            .doc(store.state.chat.chatId)
+            .collection("messages")
             .orderBy("createdAt")
             .limitToLast(limit.value)
             .endBefore(pivotMessage.value);
 
-          if (unsubscribe.value) {
-            unsubscribe.value();
-            subscribeToSnapshot();
-          }
+             subscribeToSnapshot();
 
           console.log("WAS");
           break;
         case "next":
-          chatQuerry.value = messagesRef.value
+          chatQuerry.value = db
+            .collection("chatMessages")
+            .doc(store.state.chat.chatId)
+            .collection("messages")
             .orderBy("createdAt")
             .startAfter(pivotMessage.value)
             .limit(limit.value);
 
-          if (unsubscribe.value) {
-            unsubscribe.value();
-            subscribeToSnapshot();
-          }
+          subscribeToSnapshot();
+
           console.log("WAS 2");
         default:
-          if (unsubscribe.value) {
-            unsubscribe.value();
-            subscribeToSnapshot();
-          }
-
-          chatQuerry.value = messagesRef.value
+          chatQuerry.value = db
+            .collection("chatMessages")
+            .doc(store.state.chat.chatId)
+            .collection("messages")
             .orderBy("createdAt", "desc")
             .limit(limit.value);
+
+          subscribeToSnapshot();
       }
 
       // Function to subscribe to the snapshot listener
@@ -157,23 +159,25 @@ export default {
 
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
+        chatQuerry.value = null;
+        unsubscribe.value();
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
         pivotMessage.value = msgs.value[middle].createdAt;
         console.log(msgs.value[middle].text, "prev midle");
         console.log("GO ?", middle);
-        currentAction.value = uuidv4();
       }
     }
 
     function next() {
       if (msgs.value.length > limit.value - 1) {
+        chatQuerry.value = null;
+        unsubscribe.value();
         gettingType.value = "next";
         const middle = Math.floor((msgs.value.length - 1) / 2);
         console.log(msgs.value[middle].text, "next midle");
         pivotMessage.value = msgs.value[middle].createdAt;
         console.log("GO NEXT ?", middle, msgs.value[middle].text);
-        currentAction.value = uuidv4();
       } else {
         console.log("XUY TAM A NE NEXT");
         gettingType.value = null;
