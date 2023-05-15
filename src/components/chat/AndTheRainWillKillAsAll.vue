@@ -34,7 +34,7 @@ export default {
     const gettingType = ref(null);
     const msgs = ref([]);
     const pivotMessage = ref(null);
-    const limit = ref(30);
+    const limit = ref(50);
     const chatQuerry = ref(null);
     const messagesRef = ref(
       db
@@ -137,6 +137,16 @@ export default {
               });
             }
 
+            
+            if (props.parentRef.scrollTop < 50 ) {
+              // props.parentRef.scrollIntoView({
+              //   block: "center",
+              //   inline: "nearest",
+              // });
+
+              alert('LEST GO BOYS')
+             
+            }
             // if (navigator.userAgentData.mobile && window.innerWidth < 550) {
             //    props.parentRef.scrollIntoView({ block: 'center', behavior: 'smooth' })
             // }
@@ -171,7 +181,7 @@ export default {
     }
 
     function next() {
-      if (msgs.value.length > 29) {
+      if (msgs.value.length > limit.value - 1) {
         gettingType.value = "next";
         const middle = Math.floor((msgs.value.length - 1) / 2);
         console.log(msgs.value[middle].text, "next midle");
@@ -232,7 +242,6 @@ export default {
 .previos-observer {
   position: relative;
   top: 630px;
-
 }
 
 .next {
