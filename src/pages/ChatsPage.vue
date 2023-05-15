@@ -62,11 +62,8 @@
 
         <div ref="chatContainer" class="chat-container-x">
           <component
-            @saveLastChatSettings="saveChatSettings"
             :is="currentChatType"
-            :key="chatKey"
-            @update="update"
-            :parentRef="chatContainer"
+            :key="$store.state.chat.chatKey"
           >
           </component>
         </div>
@@ -121,14 +118,17 @@ import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import ChatXxx from "@/components/ChatXxx.vue";
 import Chat from "@/components/Chat";
 import AndTheRainWillKillAsAll from "@/components/chat/AndTheRainWillKillAsAll";
-
+import ParentChat from "@/components/chat/ParentChat.vue"
 import Vue from "vue";
 import { computed, reactive } from "vue";
 import { useStore } from "vuex";
+import MetalKiller from '@/components/chat/MetalKiller.vue';
 
 export default {
   components: {
     DirectChat,
+    MetalKiller,
+    ParentChat,
     AndTheRainWillKillAsAll,
     ChatXxx,
     Chat,
@@ -516,7 +516,7 @@ export default {
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
-        currentChatType.value = "AndTheRainWillKillAsAll";
+        currentChatType.value = "MetalKiller";
       } else {
         currentChatType.value = "ChatisntSelected";
       }

@@ -22,7 +22,6 @@ import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 
 export default {
-  data() {},
   props: {
     parentRef: Object,
   },
@@ -51,8 +50,38 @@ export default {
     const invokeStartChat = ref(null);
     const isFirstSrllWasExecuted = ref(null);
 
+    onMounted(() => {
+      subscribeToSnapshot();
+    });
+
     function handleScrollBtn(isBottom) {
       atTheBottom.value = isBottom;
+    }
+
+    function subscribeToSnapshot() {
+      unsubscribe.value = chatQuerry.value.onSnapshot(
+        (snapshot, parameters) => {
+          if (gettingType.value === "prev" || gettingType.value === "next") {
+            msgs.value = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+          } else {
+            msgs.value = snapshot.docs
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .reverse();
+          }
+          if (atTheBottom.value) {
+            setTimeout(() => {
+              scrollAtTheBottom.value.scrollIntoView({
+                block: "start",
+                inline: "start",
+                behavior: "smooth",
+              });
+            });
+          }
+        }
+      );
     }
 
     watchEffect(() => {
@@ -72,7 +101,7 @@ export default {
     watchEffect(() => {
       if (store.state.chat.chatId !== lastChatId.value) {
         console.log("HA > ");
-        emit("update", store.state.chat.chatId);
+        store.commit("chat/setChatKey", store.state.chat.chatId);
         lastChatId.value = store.state.chat.chatId;
       }
     });
@@ -114,49 +143,6 @@ export default {
             .limit(limit.value);
       }
 
-      function subscribeToSnapshot() {
-        unsubscribe.value = chatQuerry.value.onSnapshot(
-          (snapshot, parameters) => {
-            if (gettingType.value === "prev" || gettingType.value === "next") {
-              msgs.value = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-            } else {
-              msgs.value = snapshot.docs
-                .map((doc) => ({ id: doc.id, ...doc.data() }))
-                .reverse();
-            }
-            if (atTheBottom.value) {
-              setTimeout(() => {
-                scrollAtTheBottom.value.scrollIntoView({
-                  block: "start",
-                  inline: "start",
-                  behavior: "smooth",
-                });
-              });
-            }
-
-            // if (props.parentRef.scrollTop < 0) {
-            //   const scrollContainer = props.parentRef;
-            //   const containerHeight = scrollContainer.clientHeight;
-            //   const contentHeight = scrollContainer.scrollHeight;
-
-            //   // Calculate the position to scroll to (middle of the list)
-            //   const scrollToPosition = (contentHeight - containerHeight) / 2;
-
-            //   // Scroll to the desired position
-            //   scrollContainer.scrollTo({
-            //     top: scrollToPosition,
-            //   });
-            // }
-          }
-        );
-      }
-
-      onMounted(async () => {
-        subscribeToSnapshot();
-      });
       // Function to subscribe to the snapshot listener
       // Initial subscription
       // onMounted(() => {
@@ -231,7 +217,7 @@ export default {
 .msg {
   width: 300px;
   height: 300px;
-  background-color: #fff;
+  background-color: #13b05a;
 }
 .scroll-bottom {
   width: 30px;

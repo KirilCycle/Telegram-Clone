@@ -10,10 +10,14 @@ export const chatModule = {
     chatsCount: 0,
     chatContainerRef: null,
     wasObserved: null,
+    chatKey: '',
   }),
   getters: {
     getReplyTarget(state) {
       return state.replyTarget;
+    },
+    getChatKey(state) {
+      return state.chatKey;
     },
     getWasObserved(state) {
       return state.wasObserved;
@@ -46,6 +50,9 @@ export const chatModule = {
   mutations: {
     setReplyTarget(state, target) {
       state.replyTarget = target;
+    },
+    setChatKey(state, key) {
+      state.chatKey = key;
     },
     setChatIdList(state, chats) {
       state.chatIdList = chats;
@@ -91,6 +98,9 @@ export const chatModule = {
   actions: {
     setReplyTarget({ commit, target }) {
       commit("setReplyTarget", target);
+    },
+    setChatKey({ commit, id }) {
+      commit("setChatKey", id);
     },
     setChatIdList({ state, commit, chts }) {
       commit("setChatIdList", chts);
