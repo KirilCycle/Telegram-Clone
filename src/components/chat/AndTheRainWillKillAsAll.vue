@@ -1,6 +1,7 @@
 <template>
   <button v-show="!atTheBottom" class="scroll-bottom"></button>
   <div class="previos-observer" v-observer="previous"></div>
+
   <div class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
   </div>
@@ -21,6 +22,11 @@ import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 
 export default {
+  data() {},
+  props: {
+    parentRef: Object,
+  },
+
   setup(props, { emit }) {
     const bottom = ref(null);
     const db = firebase.firestore();
@@ -60,6 +66,7 @@ export default {
           isFirstSrllWasExecuted.value = true;
         });
       }
+      console.log(props.parentRef, "REFKA");
     });
 
     watchEffect(() => {
@@ -129,6 +136,10 @@ export default {
                 });
               });
             }
+
+            // if (navigator.userAgentData.mobile && window.innerWidth < 550) {
+            //    props.parentRef.scrollIntoView({ block: 'center', behavior: 'smooth' })
+            // }
           }
         );
       }
@@ -204,6 +215,15 @@ export default {
   right: 5px;
 }
 
+.mobile-scroll-target {
+  background-color: red;
+  position: relative;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .check-bottom-scroll {
   position: relative;
   bottom: 50px;
@@ -212,20 +232,31 @@ export default {
 .previos-observer {
   position: relative;
   top: 630px;
-  background-color: #2dff68;
-  height: 1px;
+
 }
 
 .next {
-  background-color: #2dff68;
-  height: 1px;
   position: relative;
-  bottom: 530px;
+  bottom: 630px;
 }
 
 @media (min-height: 1200px) {
 }
 
+@media (max-width: 500px) {
+  /* Styles for touchscreen devices */
+  .previos-observer {
+    top: 0px;
+  }
+
+  .next {
+    bottom: 0px;
+  }
+}
+
+@media (pointer: fine) {
+  /* Styles for non-touchscreen devices */
+}
 
 .msg + .msg {
   margin-top: 3px;

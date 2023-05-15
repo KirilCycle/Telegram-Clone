@@ -66,6 +66,7 @@
             :is="currentChatType"
             :key="chatKey"
             @update="update"
+            :parentRef="chatContainer"
           >
           </component>
         </div>
@@ -95,7 +96,7 @@
 import { collection, getDocs, getDoc, Timestamp } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc, writeBatch } from "firebase/firestore";
@@ -150,28 +151,19 @@ export default {
     return {
       isSearch: false,
       value: "",
-      chatKey: 's',
+      chatKey: "s",
       serachQ: "",
+      parentChatRef: this.$refs.chatContainer,
     };
-  },
-  computed: {
-    handleWhichTypeOfChatWasSelected() {
-      if (store.state.chat.selectedUser?.new) {
-        ("NewChat");
-      } else if (store.state.state.chat.chatId) {
-        ("DirectChat");
-      }
-      return "ChatisntSelected";
-    },
   },
   mounted() {
     this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
   },
   methods: {
-      update(changeId) {
+    update(changeId) {
       if (changeId !== this.chatKey) {
-       console.log(   'UPDATED');
-        this.chatKey = changeId
+        console.log("UPDATED");
+        this.chatKey = changeId;
       }
     },
     async test() {
@@ -377,8 +369,6 @@ export default {
       }
     });
 
-    const chatContainer = ref(null);
-
     const auth = getAuth();
 
     async function sendMessageToFoundedChat(v, source) {
@@ -534,12 +524,15 @@ export default {
 
     const rer = ref(0);
 
+    const chatContainer = ref(null);
+
+
     return {
       chat,
       chatList,
+      chatContainer,
       chatHided,
       currentChatType,
-      chatContainer,
       sendMessageToFoundedChat,
       resetSelectedChat,
       saveChatSettings,
