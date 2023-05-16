@@ -127,7 +127,11 @@ export default {
             .limitToLast(limit.value)
             .endBefore(pivotMessage.value);
 
-          subscribeToSnapshot();
+      
+          if (unsubscribe.value) {
+            unsubscribe.value();
+            subscribeToSnapshot();
+          }
 
           console.log("WAS");
           break;
@@ -138,10 +142,15 @@ export default {
             .collection("messages")
             .orderBy("createdAt")
             .startAfter(pivotMessage.value)
-            .limit(limit.value);
+            .limit(limit.value)
+            
+            
+          if (unsubscribe.value) {
+            unsubscribe.value();
+            subscribeToSnapshot();
+          };
 
-          subscribeToSnapshot();
-
+    
           console.log("WAS 2");
         default:
           chatQuerry.value = db
@@ -151,16 +160,22 @@ export default {
             .orderBy("createdAt", "desc")
             .limit(limit.value);
 
+
+          if (unsubscribe.value) {
+            unsubscribe.value();
+            subscribeToSnapshot();
+          }
+
             console.log("WAS DEF")
 
-          subscribeToSnapshot();
+        
       }
     });
 
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
         chatQuerry.value = null;
-        unsubscribe.value();
+    
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
 
@@ -174,7 +189,7 @@ export default {
     function next() {
       if (msgs.value.length > limit.value - 1 &&  gettingType.value === 'prev') {
         chatQuerry.value = null;
-        unsubscribe.value();
+      
         gettingType.value = "next";
         const middle = Math.floor((msgs.value.length - 1) / 2);
         console.log(msgs.value[middle].text, "next midle");
