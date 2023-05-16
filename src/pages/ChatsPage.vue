@@ -662,16 +662,16 @@ v-enter-active,
 
 .chat-container-x::-webkit-scrollbar {
   display: block;
-  width: 5px;
+  width: 7px;
 }
 
 .chat-container-x::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.107);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.123);
+  background: rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
 }
 
 .chat-container-x::-webkit-scrollbar-thumb {
-  background: rgba(152, 152, 152, 0.169);
+  background: rgba(255, 255, 255, 0.603);
   border-radius: 20px;
 }
 

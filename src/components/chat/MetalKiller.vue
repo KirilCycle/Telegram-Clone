@@ -1,10 +1,21 @@
 <template>
   <button v-show="!atTheBottom" @click="show" class="scroll-bottom"></button>
+
+  <div
+    v-observer="disableScroll"
+    class="block-scroll-to-prevent-stick-to-top"
+  ></div>
   <div class="previos-observer" v-observer="previous"></div>
+
+ <!-- <div  class="msg" v-for="msg in skillets" :key="msg.id">
+    {{ msg.text }}
+  </div> -->
 
   <div ref="msg" class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
   </div>
+
+
   <div
     ref="scrollAtTheBottom"
     class="check-bottom-scroll"
@@ -71,7 +82,6 @@ export default {
               .map((doc) => ({ id: doc.id, ...doc.data() }))
               .reverse();
           }
-          console.log(msgs.value.forEach((el) => console.log(el.text)));
           if (atTheBottom.value) {
             setTimeout(() => {
               scrollAtTheBottom.value.scrollIntoView({
@@ -96,7 +106,6 @@ export default {
           isFirstSrllWasExecuted.value = true;
         });
       }
-      console.log(props.parentRef, "REFKA");
     });
 
     watchEffect(() => {
@@ -118,7 +127,7 @@ export default {
             .limitToLast(limit.value)
             .endBefore(pivotMessage.value);
 
-             subscribeToSnapshot();
+          subscribeToSnapshot();
 
           console.log("WAS");
           break;
@@ -142,19 +151,10 @@ export default {
             .orderBy("createdAt", "desc")
             .limit(limit.value);
 
+            console.log("WAS DEF")
+
           subscribeToSnapshot();
       }
-
-      // Function to subscribe to the snapshot listener
-      // Initial subscription
-      // onMounted(() => {
-      // });
-
-      // If you need to unsubscribe
-      // unsubscribe();
-
-      // If you need to subscribe again
-      // subscribeToSnapshot();
     });
 
     function previous() {
@@ -163,6 +163,8 @@ export default {
         unsubscribe.value();
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
+
+        //-2 as i want see more new data 
         pivotMessage.value = msgs.value[middle].createdAt;
         console.log(msgs.value[middle].text, "prev midle");
         console.log("GO ?", middle);
@@ -170,7 +172,7 @@ export default {
     }
 
     function next() {
-      if (msgs.value.length > limit.value - 1) {
+      if (msgs.value.length > limit.value - 1 &&  gettingType.value === 'prev') {
         chatQuerry.value = null;
         unsubscribe.value();
         gettingType.value = "next";
@@ -182,6 +184,11 @@ export default {
         console.log("XUY TAM A NE NEXT");
         gettingType.value = null;
       }
+    }
+
+    function disableScroll() {
+      console.log("disableScroll disableScroll disableScroll disableScroll disableScroll disableScroll disableScroll disableScroll");
+      
     }
 
     function show() {
@@ -201,10 +208,14 @@ export default {
       });
     }
 
+    const skillets = ref([{id:1,  text:''}, {id:11234,  text:''},  {id:12331239,  text:''}, {id:22,  text:''}, {id:2345,  text:''}, {id: 22221, text:''}])
+
     return {
       show,
       bottom,
+      skillets,
       previous,
+      disableScroll,
       isBottom,
       scrollAtTheBottom,
       msgs,
@@ -238,9 +249,14 @@ export default {
   bottom: 50px;
 }
 
+.block-scroll-to-prevent-stick-to-top {
+  position: relative;
+  top: 430px;
+}
+
 .previos-observer {
   position: relative;
-  top: 630px;
+  top: 1430px;
 }
 
 .next {
