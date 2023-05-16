@@ -125,6 +125,7 @@ import { computed, reactive } from "vue";
 import { useStore } from "vuex";
 import MetalKiller from '@/components/chat/MetalKiller.vue';
 
+
 export default {
   components: {
     DirectChat,
@@ -518,6 +519,7 @@ export default {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
         currentChatType.value = "MetalKiller";
+        //MetalKiller
       } else {
         currentChatType.value = "ChatisntSelected";
       }
@@ -649,7 +651,7 @@ v-enter-active,
 }
 
 .chat-container-x {
-  height: 84%;
+  height: 78%;
   max-width: 100%;
   overflow-y: scroll;
 }

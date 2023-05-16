@@ -1,6 +1,5 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <div ref="scrollTarget" :="isTarget"></div>
 
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
@@ -29,7 +28,7 @@
 
       <div class="item_body_text">
         <p>{{ message.text }}</p>
-        <label>{{ time }}</label>
+        <p class="time">{{ time }}</p>
       </div>
 
       <div class="emoji-wrap" v-if="emojis">
@@ -83,10 +82,6 @@ export default {
       profilePhotoUrl: this.message.userPhotoURl
         ? this.message.userPhotoURl
         : "",
-      removeMessage: this.removeMessage,
-      isMy: this.isMy,
-      message: this.message,
-      emojis: this.message.emj,
       replyEmoji,
     };
   },
@@ -103,27 +98,6 @@ export default {
         return `${hours}:${minutes}`;
       }
       return "";
-    },
-
-    isTarget() {
-      if (
-        this.$store.state.chat.chatsScrollPosition[
-          this.$store.state.chat.chatId
-        ]?.last?.id === this.message.id && this.$refs.scrollTarget !==  this.$store.state.chat.chatsScrollPosition[
-          this.$store.state.chat.chatId
-        ].last.ref
-      ) {
-
-        
-        store.commit("chat/changeChatsScrollData", {
-          id: this.$store.state.chat.chatId,
-          key: "last",
-          data: { id: this.message.id, ref: this.$refs.scrollTarget },
-        });
-        console.log("HA ?");
-      }
-
-      return true;
     },
 
     emojis() {
@@ -215,12 +189,10 @@ export default {
 
     const msg = ref(null);
 
-    const pivotTouch = ref(30);
 
     function touchMoveHandle(e) {
       clearTimeout(myTimeout.value);
 
-      let elementwidth = msg.value.offsetWidth;
 
       let elementPosition = msg.value.clientX;
       // msg.value.style.transform = `translateX(${ msg.value.offsetWidth  }px)`
@@ -466,10 +438,10 @@ export default {
     .user-name {
       display: none;
     }
-    padding: 8px;
+  
     color: white;
     background: rgb(84, 175, 213);
-    margin-bottom: 7px;
+  
 
     right: 0px;
     margin-left: 10px;
@@ -558,6 +530,10 @@ export default {
     }
   }
 }
+
+
+
+
 
 .forward {
   p {

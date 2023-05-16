@@ -68,8 +68,6 @@ export default {
         id: store.state.chat.chatId,
         v:v
       });
-
-      console.log("HANDLE TEXT", v,);
     },
 
     async send() {

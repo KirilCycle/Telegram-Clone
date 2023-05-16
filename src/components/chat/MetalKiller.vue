@@ -10,9 +10,16 @@
     {{ msg.text }}
   </div> -->
 
-  <div ref="msg" class="msg" v-for="msg in msgs" :key="msg.id">
+  <message-item
+      v-for="it in msgs"
+      :key="it.id"
+      :message="it"
+      :isMy="it.userId.includes(firstPartOfmyId)"
+    ></message-item>
+
+  <!-- <div ref="msg" class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
-  </div>
+  </div> -->
 
   <div
     ref="scrollAtTheBottom"
@@ -29,10 +36,19 @@ import firebase from "firebase/compat/app";
 import { ref } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
+import MessageItem from "../MessageItem.vue";
 
 export default {
   props: {
     parentRef: Object,
+  },
+  data() {
+    return {
+      firstPartOfmyId: store.state.user.user.uid.slice(0, 10),
+    }
+  },
+  components: {
+    MessageItem,
   },
 
   setup(props, { emit }) {
@@ -42,7 +58,7 @@ export default {
     const gettingType = ref(null);
     const msgs = ref([]);
     const pivotMessage = ref(null);
-    const limit = ref(25);
+    const limit = ref(52);
     const chatQuerry = ref(null);
     const messagesRef = ref(
       db
@@ -72,7 +88,7 @@ export default {
 
       querry.onSnapshot((snapshot) => {
         recentMsgID.value = snapshot.docs[0].id;
-        console.log(snapshot.docs[0].data());
+        
       });
     }
 
@@ -94,7 +110,6 @@ export default {
               ...doc.data(),
             }));
           } else {
-            console.log("REVERSE");
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
               .reverse();
@@ -167,8 +182,8 @@ export default {
           }
 
           console.log("WAS 2");
-           break;
-        default :
+          break;
+        default:
           chatQuerry.value = db
             .collection("chatMessages")
             .doc(store.state.chat.chatId)
@@ -187,8 +202,6 @@ export default {
 
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
-      
-
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
 
@@ -297,17 +310,17 @@ export default {
 
 .block-scroll-to-prevent-stick-to-top {
   position: relative;
-  top: px;
+  top: 1px;
 }
 
 .previos-observer {
   position: relative;
-  top: 1267px;
+  top:567px;
 }
 
 .next {
   position: relative;
-  bottom: 907px;
+  bottom: 407px;
 }
 
 @media (min-height: 1200px) {
