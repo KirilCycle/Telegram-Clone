@@ -58,10 +58,27 @@ export default {
     const lastChatId = ref(null);
     const invokeStartChat = ref(null);
     const isFirstSrllWasExecuted = ref(null);
+    const firstGettinWas = ref(null);
     const scrollWasDisabled = ref(null);
+    const recentMsgID = ref(null);
+
+    function subscribeToRecentMsg() {
+      let querry = db
+        .collection("chatMessages")
+        .doc(store.state.chat.chatId)
+        .collection("messages")
+        .orderBy("createdAt", "desc")
+        .limit(1);
+
+      querry.onSnapshot((snapshot) => {
+        recentMsgID.value = snapshot.docs[0].id;
+        console.log(snapshot.docs[0].data());
+      });
+    }
 
     onMounted(() => {
       subscribeToSnapshot();
+      subscribeToRecentMsg();
     });
 
     function handleScrollBtn(isBottom) {
@@ -77,11 +94,11 @@ export default {
               ...doc.data(),
             }));
           } else {
+            console.log("REVERSE");
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
               .reverse();
           }
-         
 
           if (atTheBottom.value) {
             setTimeout(() => {
@@ -150,7 +167,8 @@ export default {
           }
 
           console.log("WAS 2");
-        default:
+           break;
+        default :
           chatQuerry.value = db
             .collection("chatMessages")
             .doc(store.state.chat.chatId)
@@ -169,7 +187,7 @@ export default {
 
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
-        chatQuerry.value = null;
+      
 
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
@@ -182,25 +200,33 @@ export default {
     }
 
     function next() {
-      if (msgs.value.length > limit.value - 1 && gettingType.value === "prev") {
-        chatQuerry.value = null;
-
+      if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {
         gettingType.value = "next";
         const middle = Math.floor((msgs.value.length - 1) / 2);
         console.log(msgs.value[middle].text, "next midle");
         pivotMessage.value = msgs.value[middle].createdAt;
         console.log("GO NEXT ?", middle, msgs.value[middle].text);
-      } else {
+      } else if (msgs.value[msgs.value.length - 1].id === recentMsgID.value) {
+        console.log("def");
         console.log("XUY TAM A NE NEXT");
         gettingType.value = null;
       }
+      // chatQuerry.value = null;
+      // gettingType.value = "next";
+      // const middle = Math.floor((msgs.value.length - 1) / 2);
+      // console.log(msgs.value[middle].text, "next midle");
+      // pivotMessage.value = msgs.value[middle].createdAt;
+      // console.log("GO NEXT ?", middle, msgs.value[middle].text);
+
+      // console.log("XUY TAM A NE NEXT");
+      // gettingType.value = null;
     }
 
     function disableScroll() {
-     if (gettingType.value === 'prev' && limit.value === msgs.value.length) {
-   console.log(   'redirect');
-      show()      
-     }
+      if (gettingType.value === "prev" && limit.value === msgs.value.length) {
+        console.log("redirect");
+        show();
+      }
     }
 
     function show() {
@@ -271,17 +297,17 @@ export default {
 
 .block-scroll-to-prevent-stick-to-top {
   position: relative;
-  top: 50px;
+  top: px;
 }
 
 .previos-observer {
   position: relative;
-  top: 1167px;
+  top: 1267px;
 }
 
 .next {
   position: relative;
-  bottom: 67px;
+  bottom: 907px;
 }
 
 @media (min-height: 1200px) {
