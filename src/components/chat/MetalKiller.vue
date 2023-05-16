@@ -1,20 +1,18 @@
 <template>
   <button v-show="!atTheBottom" @click="show" class="scroll-bottom"></button>
-
   <div
     v-observer="disableScroll"
     class="block-scroll-to-prevent-stick-to-top"
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
- <!-- <div  class="msg" v-for="msg in skillets" :key="msg.id">
+  <!-- <div  class="msg" v-for="msg in skillets" :key="msg.id">
     {{ msg.text }}
   </div> -->
 
   <div ref="msg" class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
   </div>
-
 
   <div
     ref="scrollAtTheBottom"
@@ -60,6 +58,7 @@ export default {
     const lastChatId = ref(null);
     const invokeStartChat = ref(null);
     const isFirstSrllWasExecuted = ref(null);
+    const scrollWasDisabled = ref(null);
 
     onMounted(() => {
       subscribeToSnapshot();
@@ -82,6 +81,8 @@ export default {
               .map((doc) => ({ id: doc.id, ...doc.data() }))
               .reverse();
           }
+         
+
           if (atTheBottom.value) {
             setTimeout(() => {
               scrollAtTheBottom.value.scrollIntoView({
@@ -127,7 +128,6 @@ export default {
             .limitToLast(limit.value)
             .endBefore(pivotMessage.value);
 
-      
           if (unsubscribe.value) {
             unsubscribe.value();
             subscribeToSnapshot();
@@ -142,15 +142,13 @@ export default {
             .collection("messages")
             .orderBy("createdAt")
             .startAfter(pivotMessage.value)
-            .limit(limit.value)
-            
-            
+            .limit(limit.value);
+
           if (unsubscribe.value) {
             unsubscribe.value();
             subscribeToSnapshot();
-          };
+          }
 
-    
           console.log("WAS 2");
         default:
           chatQuerry.value = db
@@ -160,26 +158,23 @@ export default {
             .orderBy("createdAt", "desc")
             .limit(limit.value);
 
-
           if (unsubscribe.value) {
             unsubscribe.value();
             subscribeToSnapshot();
           }
 
-            console.log("WAS DEF")
-
-        
+          console.log("WAS DEF");
       }
     });
 
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
         chatQuerry.value = null;
-    
+
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
 
-        //-2 as i want see more new data 
+        //-2 as i want see more new data
         pivotMessage.value = msgs.value[middle].createdAt;
         console.log(msgs.value[middle].text, "prev midle");
         console.log("GO ?", middle);
@@ -187,9 +182,9 @@ export default {
     }
 
     function next() {
-      if (msgs.value.length > limit.value - 1 &&  gettingType.value === 'prev') {
+      if (msgs.value.length > limit.value - 1 && gettingType.value === "prev") {
         chatQuerry.value = null;
-      
+
         gettingType.value = "next";
         const middle = Math.floor((msgs.value.length - 1) / 2);
         console.log(msgs.value[middle].text, "next midle");
@@ -202,8 +197,10 @@ export default {
     }
 
     function disableScroll() {
-      console.log("disableScroll disableScroll disableScroll disableScroll disableScroll disableScroll disableScroll disableScroll");
-      
+     if (gettingType.value === 'prev' && limit.value === msgs.value.length) {
+   console.log(   'redirect');
+      show()      
+     }
     }
 
     function show() {
@@ -223,7 +220,14 @@ export default {
       });
     }
 
-    const skillets = ref([{id:1,  text:''}, {id:11234,  text:''},  {id:12331239,  text:''}, {id:22,  text:''}, {id:2345,  text:''}, {id: 22221, text:''}])
+    const skillets = ref([
+      { id: 1, text: "" },
+      { id: 11234, text: "" },
+      { id: 12331239, text: "" },
+      { id: 22, text: "" },
+      { id: 2345, text: "" },
+      { id: 22221, text: "" },
+    ]);
 
     return {
       show,
@@ -249,6 +253,7 @@ export default {
   height: 300px;
   background-color: #13b05a;
 }
+
 .scroll-bottom {
   width: 30px;
   height: 30px;
@@ -266,17 +271,17 @@ export default {
 
 .block-scroll-to-prevent-stick-to-top {
   position: relative;
-  top: 430px;
+  top: 50px;
 }
 
 .previos-observer {
   position: relative;
-  top: 1430px;
+  top: 1167px;
 }
 
 .next {
   position: relative;
-  bottom: 630px;
+  bottom: 67px;
 }
 
 @media (min-height: 1200px) {

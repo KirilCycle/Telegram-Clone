@@ -64,6 +64,7 @@
           <component
             :is="currentChatType"
             :key="$store.state.chat.chatKey"
+            :parentRef="$refs.chatContainer"
           >
           </component>
         </div>
