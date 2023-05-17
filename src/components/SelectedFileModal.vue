@@ -208,23 +208,21 @@ $padver: 16px;
   box-sizing: border-box;
 }
 .file-upl-content {
-  cursor: pointer;
   &:hover {
     span {
       color: rgb(187, 187, 187);
     }
   }
   width: 20px;
- 
   height: 100%;
   display: flex;
-  cursor: pointer;
   justify-content: center;
   align-items: center;
   position: relative;
   margin-right: 5px;
 
   span {
+     cursor: pointer;
     display: block;
     position: relative;
     right: 8px;
@@ -240,6 +238,7 @@ $padver: 16px;
   }
 
   .file-input {
+    cursor: pointer;
     width: 13px;
     position: absolute;
     border-radius: 0px;

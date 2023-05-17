@@ -652,7 +652,8 @@ v-enter-active,
 
 .chat-container-x {
   height: 78%;
-  max-width: 100%;
+  width: 90%;
+  margin: 0% auto;
   overflow-y: scroll;
 }
 
@@ -679,13 +680,10 @@ v-enter-active,
 }
 
 .chat-input-block-x {
-  display: flex;
-  justify-content: center;
   position: relative;
   width: 100%;
   height: 8%;
   max-width: inherit;
-  border-bottom: 1px solid $content-main;
 
   .dark {
     border-bottom: 1px solid $content-main-l;

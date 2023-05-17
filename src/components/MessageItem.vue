@@ -531,10 +531,6 @@ export default {
   }
 }
 
-
-
-
-
 .forward {
   p {
     font-size: 0.8rem;

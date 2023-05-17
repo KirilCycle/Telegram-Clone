@@ -5,20 +5,19 @@
     </div>
 
     <div class="content">
-      <span>
+      <button class="file-select">
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
-      </span>
+      </button>
 
       <input
-        :value="
-          $store.state.chat.chatSettings[$store.state.chat.chatId].v
-        "
+        :value="$store.state.chat.chatSettings[$store.state.chat.chatId].v"
         v-on:input="(e) => textHndl(e.target.value)"
         placeholder="Write a message..."
       />
+    </div>
 
-      <div class="send-btn-wrp">
-        <transition>
+    <div class="send-btn-wrp">
+      <!-- <transition>
           <button class="send-btn" v-show="ableTosend" @click="send">
             <span class="material-symbols-outlined"> send </span>
           </button>
@@ -30,8 +29,7 @@
               keyboard_voice
             </span>
           </button>
-        </transition>
-      </div>
+        </transition> -->
     </div>
   </div>
 </template>
@@ -66,7 +64,7 @@ export default {
     textHndl(v) {
       store.commit("chat/changeChatSettings", {
         id: store.state.chat.chatId,
-        v:v
+        v: v,
       });
     },
 
@@ -137,15 +135,11 @@ export default {
       }
 
       this.sendMsg(
-        this.$store.state.chat.chatSettings[
-          this.$store.state.chat.chatId
-        ].v,
+        this.$store.state.chat.chatSettings[this.$store.state.chat.chatId].v,
         null,
         store.state.message.replyTarget
       );
-      this.$store.state.chat.chatSettings[
-        this.$store.state.chat.chatId
-      ].v = "";
+      this.$store.state.chat.chatSettings[this.$store.state.chat.chatId].v = "";
 
       store.commit("message/setReplyMsgRef", null);
       store.commit("message/setReplyTarget", null);
@@ -164,9 +158,7 @@ export default {
 
     ableTosend() {
       if (
-        this.$store.state.chat.chatSettings[
-          this.$store.state.chat.chatId
-        ].v ||
+        this.$store.state.chat.chatSettings[this.$store.state.chat.chatId].v ||
         store.state.message.forwardTarget
       ) {
         return true;
@@ -179,7 +171,7 @@ export default {
     const recording = ref(null);
     const recordingUrl = ref(null);
 
-   async function startRecording() {
+    async function startRecording() {
       if (navigator.mediaDevices) {
         console.log("start");
         // recording.value = new MediaRecorder(
@@ -201,8 +193,10 @@ export default {
             mediaRecorder.stop();
             console.log(mediaRecorder.state, "S");
 
-            
-            const storageRef = ref(storage, 'recordings/' + Date.now() + '.webm');
+            const storageRef = ref(
+              storage,
+              "recordings/" + Date.now() + ".webm"
+            );
             console.log(blob, "AAAUDIO");
 
             chunks = [];
@@ -245,9 +239,10 @@ export default {
 @import "@/styles/colors";
 
 .send-btn-wrp {
-  position: relative;
   width: 50px;
-  height: 35px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -268,19 +263,6 @@ export default {
   button {
     position: absolute;
   }
-  span {
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    width: 35px;
-    height: 35px;
-    color: gray;
-    flex-shrink: 0;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-  }
 }
 
 .reply-border-wrap {
@@ -292,11 +274,19 @@ export default {
 }
 
 .input-container {
-  width: 100%;
+  width: 90%;
+  margin: 0% auto;
   padding: 0px 10px 0px 6px;
   height: 100%;
   display: flex;
+  flex-direction: row;
   max-height: 60px;
+  position: relative;
+  justify-content: center;
+  bottom: 0;
+  align-items: center;
+  box-sizing: border-box;
+
   &:after {
     content: "";
     display: none;
@@ -319,15 +309,6 @@ export default {
     padding: 14px 10px 14px 20px;
   }
 
-  background: $content-main;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  bottom: 0;
-  align-items: center;
-  box-sizing: border-box;
-
   span {
     font-size: 1.9rem;
     -webkit-user-select: none; /* Safari */
@@ -338,19 +319,36 @@ export default {
 
   .content {
     user-select: none; /* supported by Chrome and Opera */
-
     box-sizing: border-box;
     width: 100%;
-
+    margin-right: 5px;
+    background-color: #fff;
+    border-radius: 20px;
     justify-content: center;
     align-items: center;
     flex-direction: row;
     justify-content: space-around;
     display: flex;
     height: 100%;
+    padding: 0px 30px 0px 10px;
+
+    .file-select {
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      height: 35px;
+      width: 35px;
+      flex-shrink: 0;
+      user-select: none; /* Standard syntax */
+      border-radius: inherit;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     input {
-      width: 90%;
+      width: 100%;
       height: 100%;
       max-height: 50px;
       font-size: 1rem;
@@ -368,7 +366,6 @@ export default {
 }
 
 .dark .input-container {
-  background: $content-main-l;
   .content {
     input {
       color: $text-main-l;
