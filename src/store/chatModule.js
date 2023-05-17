@@ -10,9 +10,13 @@ export const chatModule = {
     chatsCount: 0,
     chatContainerRef: null,
     wasObserved: null,
-    chatKey: '',
+    chatKey: "",
+    chatBottom: null,
   }),
   getters: {
+    getChatBottom(state) {
+      return state.chatBottom;
+    },
     getReplyTarget(state) {
       return state.replyTarget;
     },
@@ -48,6 +52,9 @@ export const chatModule = {
     },
   },
   mutations: {
+    setChatBottom(state, bool) {
+      state.chatBottom = bool;
+    },
     setReplyTarget(state, target) {
       state.replyTarget = target;
     },
@@ -81,9 +88,10 @@ export const chatModule = {
       }
     },
     changeChatSettings(state, settings) {
-      state.chatSettings[settings.id] = { ...state.chatSettings[settings.id], ...settings };
-
-      
+      state.chatSettings[settings.id] = {
+        ...state.chatSettings[settings.id],
+        ...settings,
+      };
     },
     setChatContainerRef(state, ref) {
       state.chatContainerRef = ref;
@@ -98,6 +106,9 @@ export const chatModule = {
   actions: {
     setReplyTarget({ commit, target }) {
       commit("setReplyTarget", target);
+    },
+    setChatBottom({commit, bool}) {
+      commit("setChatBottom", bool)
     },
     setChatKey({ commit, id }) {
       commit("setChatKey", id);
@@ -123,8 +134,8 @@ export const chatModule = {
     addUniqChatSettingsItem({ state, commit, item }) {
       commit("addUniqChatSettingsItem", item);
     },
-    changeChatSettings({ state, commit,settings }) {
-      commit("changeChatSettings",settings);
+    changeChatSettings({ state, commit, settings }) {
+      commit("changeChatSettings", settings);
     },
     setChatContainerRef({ state, commit, ref }) {
       commit("setChatContainerRef", ref);

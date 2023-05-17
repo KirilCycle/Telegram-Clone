@@ -98,6 +98,7 @@ export default {
     });
 
     function handleScrollBtn(isBottom) {
+      store.commit('chat/setChatBottom', isBottom)
       atTheBottom.value = isBottom;
     }
 
@@ -243,7 +244,7 @@ export default {
     }
 
     function show() {
-      console.log(props.parentRef.scrollTop < 10, "SCROLL");
+    
       props.parentRef.scrollIntoView();
 
       const scrollContainer = props.parentRef;

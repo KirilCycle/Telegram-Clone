@@ -17,17 +17,17 @@
     </div>
 
     <div class="send-btn-wrp">
-      <transition>
-        <button class="send-btn" v-show="ableTosend" @click="send">
-          <span class="material-symbols-outlined"> send </span>
-        </button>
-      </transition>
+      <button class="send-btn" v-show="ableTosend" @click="send">
+        <span class="material-symbols-outlined"> send </span>
+      </button>
 
-      <transition>
-        <button @mousedown="startRecording" @mouseup="sendRecording">
-          <span v-show="!ableTosend" class="material-symbols-outlined">
-            keyboard_voice
-          </span>
+      <button v-show="!ableTosend" class="send-btn">
+        <span class="material-symbols-outlined"> keyboard_voice </span>
+      </button>
+
+      <transition name="fade">
+        <button class="scroll-bottom" v-show="!$store.state.chat.chatBottom" >
+          <span class="material-symbols-outlined"> arrow_downward </span>
         </button>
       </transition>
     </div>
@@ -238,30 +238,61 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
-.send-btn-wrp {
+%btn-pattern {
   width: 55px;
-  position: absolute;
-  right: -55px;
- 
   height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  cursor: pointer;
   flex-shrink: 0;
   border-radius: 27.5px;
-  background-color:  $second;
+}
+
+.send-btn-wrp {
+  @extend %btn-pattern;
+  right: -55px;
   color: white;
-  &:hover {
-    background-color: $main;
+
+  .scroll-bottom {
+    @extend %btn-pattern;
+    bottom: 75px;
+    color: $second;
+    background-color: $content-main-dark;
+
+    &:hover {
+      background-color: $hover;
+    }
   }
 
-  button {
-    width: 55px;
-    height: 55px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .send-btn {
+    @extend %btn-pattern;
+    background-color: $second;
+    &:hover {
+      background-color: $main;
+    }
 
     span {
       font-size: 2rem;
     }
+  }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+}
+
+.dark .scroll-bottom {
+  background-color: $content-main-l;
+  &:hover {
+    background-color: $content-main-l;
+    color: $main;
   }
 }
 
@@ -300,7 +331,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin-right: 2px;
-    background-color: #fff;
+    background-color: $content-main-dark;
     border-radius: 20px;
     border-bottom-right-radius: 0px;
     justify-content: center;
@@ -320,8 +351,8 @@ export default {
       bottom: 0px;
       width: 0;
       height: 0;
-      border-top: 25px solid transparent;
-      border-left: 18px solid $content-main;
+      border-top: 20px solid transparent;
+      border-left: 16px solid $content-main-dark;
       border-bottom: 0px solid transparent;
     }
 
@@ -360,6 +391,8 @@ export default {
 
 .dark .input-container {
   .content {
+    background-color: $content-main-l;
+
     &:after {
       border-left: 18px solid $content-main-l;
     }
