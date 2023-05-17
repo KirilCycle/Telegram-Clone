@@ -26,7 +26,11 @@
       </button>
 
       <transition name="fade">
-        <button class="scroll-bottom" v-show="!$store.state.chat.scrollBottomData?.isBottom" >
+        <button
+          @click="scrollToBottom"
+          class="scroll-bottom"
+          v-show="!$store.state.chat.scrollBottomData.isBottom"
+        >
           <span class="material-symbols-outlined"> arrow_downward </span>
         </button>
       </transition>
@@ -171,6 +175,18 @@ export default {
     const recording = ref(null);
     const recordingUrl = ref(null);
 
+    function scrollToBottom() {
+      setTimeout(() => {
+        store.state.chat.scrollBottomData.bottomRef.scrollIntoView({
+          block: "start",
+          inline: "start",
+          behavior: "smooth",
+        });
+      });
+
+    
+    }
+
     async function startRecording() {
       if (navigator.mediaDevices) {
         console.log("start");
@@ -229,6 +245,7 @@ export default {
 
     return {
       startRecording,
+      scrollToBottom,
       sendRecording,
     };
   },
@@ -278,14 +295,15 @@ export default {
     }
   }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
 
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
 }
 
 .dark .scroll-bottom {

@@ -10,11 +10,11 @@
   </div> -->
 
   <message-item
-      v-for="it in msgs"
-      :key="it.id"
-      :message="it"
-      :isMy="it.userId.includes(firstPartOfmyId)"
-    ></message-item>
+    v-for="it in msgs"
+    :key="it.id"
+    :message="it"
+    :isMy="it.userId.includes(firstPartOfmyId)"
+  ></message-item>
 
   <!-- <div ref="msg" class="msg" v-for="msg in msgs" :key="msg.id">
     {{ msg.text }}
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       firstPartOfmyId: store.state.user.user.uid.slice(0, 10),
-    }
+    };
   },
   components: {
     MessageItem,
@@ -87,25 +87,24 @@ export default {
 
       querry.onSnapshot((snapshot) => {
         recentMsgID.value = snapshot.docs[0].id;
-        
       });
     }
 
     onMounted(() => {
       subscribeToSnapshot();
       subscribeToRecentMsg();
+
+      const scrollBotomdata = {
+        bottomRef: scrollAtTheBottom.value,
+        wasPaginated: !chatQuerry.value ? false : true,
+      };
+
+      store.commit("chat/setScrollBottomData", scrollBotomdata);
     });
 
     function handleScrollBtn(isBottom) {
-      const scrollBotomdata = {
-        isBottom,
-        bottomRef:scrollAtTheBottom.value,
-        wasPaginated:  !chatQuerry.value? false : true  
-      }
-
-
-
-      store.commit('chat/setScrollBottomData', scrollBotomdata )
+      
+      store.commit("chat/setScrollBottomData", { isBottom });
       atTheBottom.value = isBottom;
     }
 
@@ -251,7 +250,6 @@ export default {
     }
 
     function show() {
-    
       props.parentRef.scrollIntoView();
 
       const scrollContainer = props.parentRef;
@@ -323,7 +321,7 @@ export default {
 
 .previos-observer {
   position: relative;
-  top:567px;
+  top: 567px;
 }
 
 .next {

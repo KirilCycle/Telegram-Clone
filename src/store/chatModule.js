@@ -11,7 +11,9 @@ export const chatModule = {
     chatContainerRef: null,
     wasObserved: null,
     chatKey: "",
-    scrollBottomData: null
+    scrollBottomData: {
+      isBottom: null
+    }
   }),
   getters: {
     getChatBottom(state) {
@@ -53,7 +55,7 @@ export const chatModule = {
   },
   mutations: {
     setScrollBottomData(state, data) {
-      state.scrollBottomData = data;
+      state.scrollBottomData = { ...state.scrollBottomData, ...data};
     },
     setReplyTarget(state, target) {
       state.replyTarget = target;
