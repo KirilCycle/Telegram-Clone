@@ -27,6 +27,7 @@
 
       <transition name="fade">
         <button
+         ref="scrollBottom"
           @click="scrollToBottom"
           class="scroll-bottom"
           v-show="!$store.state.chat.scrollBottomData.isBottom"
@@ -174,8 +175,11 @@ export default {
   setup(props) {
     const recording = ref(null);
     const recordingUrl = ref(null);
+    const scrollBottom = ref(null)
 
     function scrollToBottom() {
+
+       
       setTimeout(() => {
         store.state.chat.scrollBottomData.bottomRef.scrollIntoView({
           block: "start",
@@ -183,7 +187,7 @@ export default {
           behavior: "smooth",
         });
       });
-
+   
     
     }
 
@@ -247,6 +251,7 @@ export default {
       startRecording,
       scrollToBottom,
       sendRecording,
+      scrollBottom,
     };
   },
 };
@@ -274,7 +279,7 @@ export default {
 
   .scroll-bottom {
     @extend %btn-pattern;
-    bottom: 75px;
+    bottom: 95px;
     color: $second;
     background-color: $content-main-dark;
 

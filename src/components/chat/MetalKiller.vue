@@ -96,17 +96,16 @@ export default {
 
       const scrollBotomdata = {
         bottomRef: scrollAtTheBottom.value,
-        wasPaginated: !chatQuerry.value ? false : true,
       };
 
       store.commit("chat/setScrollBottomData", scrollBotomdata);
     });
 
     function handleScrollBtn(isBottom) {
-      
-      store.commit("chat/setScrollBottomData", { isBottom });
+      store.commit("chat/setScrollBottomData", { isBottom,  wasPaginated: !chatQuerry.value ? false : true, });
       atTheBottom.value = isBottom;
     }
+
 
     function subscribeToSnapshot() {
       unsubscribe.value = chatQuerry.value.onSnapshot(

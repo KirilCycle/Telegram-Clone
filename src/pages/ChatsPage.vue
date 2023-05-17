@@ -11,10 +11,11 @@
         <settings></settings>
 
         <input
+          class="search-chats-input"
           placeholder="Search"
           @input="(e) => serachChat(e.target.value)"
         />
-        <button
+        <!-- <button
           @click="isSearch = !isSearch"
           :class="{
             left_bar_srch_wrap_settings: !isSearch,
@@ -22,7 +23,7 @@
           }"
         >
           <span class="material-symbols-outlined"> language </span>
-        </button>
+        </button> -->
       </div>
 
       <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
@@ -34,59 +35,57 @@
       </div>
     </div>
 
-   
+    <div
+      ref="chat"
+      :class="{
+        'right-side-shoved-back': chatHided,
+        'right-side': !chatHided,
+      }"
+    >
       <div
-        ref="chat"
-        :class="{
-          'right-side-shoved-back': chatHided,
-          'right-side': !chatHided,
-        }"
+        @touchmove.prevent="() => {}"
+        v-if="$store.state.chat.selectedUser"
+        class="chat-nav-x"
       >
-        <div
-          @touchmove.prevent="() => {}"
-          v-if="$store.state.chat.selectedUser"
-          class="chat-nav-x"
+        <button>
+          <span @click="chatHided = false" class="material-symbols-outlined">
+            chevron_left
+          </span>
+        </button>
+
+        <selected-chat-nav></selected-chat-nav>
+
+        <h3>{{ navName }}</h3>
+
+        <chat-settings></chat-settings>
+      </div>
+
+      <div ref="chatContainer" class="chat-container-x">
+        <component
+          :is="currentChatType"
+          :key="$store.state.chat.chatKey"
+          :parentRef="$refs.chatContainer"
         >
-          <button>
-            <span @click="chatHided = false" class="material-symbols-outlined">
-              chevron_left
-            </span>
-          </button>
+        </component>
+      </div>
 
-          <selected-chat-nav></selected-chat-nav>
+      <div
+        v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
+        class="chat-input-block-x"
+      >
+        <div class="input-wrap">
+          <div v-if="$store.state.chat.selectedUser.new">
+            <founded-chat-input-vue
+              :sendMsg="sendMessageToFoundedChat"
+            ></founded-chat-input-vue>
+          </div>
 
-          <h3>{{ navName }}</h3>
-
-          <chat-settings></chat-settings>
-        </div>
-
-        <div ref="chatContainer" class="chat-container-x">
-          <component
-            :is="currentChatType"
-            :key="$store.state.chat.chatKey"
-            :parentRef="$refs.chatContainer"
-          >
-          </component>
-        </div>
-
-        <div
-          v-if="$store.state.chat.chatId || $store.state.chat.selectedUser"
-          class="chat-input-block-x"
-        >
-          <div class="input-wrap">
-            <div v-if="$store.state.chat.selectedUser.new">
-              <founded-chat-input-vue
-                :sendMsg="sendMessageToFoundedChat"
-              ></founded-chat-input-vue>
-            </div>
-
-            <div v-else>
-              <chat-input :sendMsg="addNewMessage"></chat-input>
-            </div>
+          <div v-else>
+            <chat-input :sendMsg="addNewMessage"></chat-input>
           </div>
         </div>
       </div>
-    
+    </div>
   </div>
 </template>
 
@@ -119,12 +118,11 @@ import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import ChatXxx from "@/components/ChatXxx.vue";
 import Chat from "@/components/Chat";
 import AndTheRainWillKillAsAll from "@/components/chat/AndTheRainWillKillAsAll";
-import ParentChat from "@/components/chat/ParentChat.vue"
+import ParentChat from "@/components/chat/ParentChat.vue";
 import Vue from "vue";
 import { computed, reactive } from "vue";
 import { useStore } from "vuex";
-import MetalKiller from '@/components/chat/MetalKiller.vue';
-
+import MetalKiller from "@/components/chat/MetalKiller.vue";
 
 export default {
   components: {
@@ -529,7 +527,6 @@ export default {
 
     const chatContainer = ref(null);
 
-
     return {
       chat,
       chatList,
@@ -747,55 +744,33 @@ v-enter-active,
     align-items: center;
     background-color: $content-main;
 
-    input {
+    .search-chats-input {
       background-color: $dark-input;
-      height: 43px;
+      height: 41px;
       width: 100%;
       padding-right: 5px;
+      transition: border-color 0.6s ease;
+      transition: box-shadow 0.4s ease;
       padding-left: 10px;
       margin-left: 5px;
       font-size: 0.9rem;
+      border-radius: 25px;
       color: $text-main;
-      border-top-left-radius: 25px;
-      border-bottom-left-radius: 25px;
+      border: 1px solid rgb(51, 51, 51);
+
+      &:hover {
+        border: 1px solid rgb(102, 102, 102);
+         transition: border-color 0.6s  ease-out;
+      }
+      &:focus {
+        box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
+        border: 1px solid $dark-input;
+      }
 
       &::placeholder {
         color: #838383;
         font-size: 1rem;
         font-weight: 540;
-      }
-    }
-
-    .left_bar_srch_wrap_settings {
-      width: 43px;
-      height: 43px;
-      background-color: $hover;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-      &:hover {
-        color: rgb(146, 146, 146);
-      }
-      cursor: pointer;
-      span {
-        font-size: 1.2rem;
-        margin: 0% auto;
-        margin-right: 10px;
-      }
-    }
-
-    .left_bar_srch_wrap_settings_active {
-      width: 43px;
-      color: $custom-c3;
-      height: 43px;
-      background-color: $hover;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
-
-      cursor: pointer;
-      span {
-        font-size: 1.2rem;
-        margin: 0% auto;
-        margin-right: 10px;
       }
     }
   }
@@ -832,6 +807,19 @@ v-enter-active,
 
 .dark .left-bar .left_bar_srch-wrap {
   background-color: $content-main-l;
+  .search-chats-input {
+    background-color: $light-input;
+    border: 1px solid rgb(232, 232, 232);
+    &:hover {
+      border: 1px solid rgb(180, 180, 180);
+    }
+
+  
+    &:focus {
+      box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
+      border: 1px solid white;
+    }
+  }
 
   input {
     color: $text-main-l;
@@ -882,8 +870,6 @@ v-enter-active,
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
     transform: translate(0%);
-
-  
   }
 
   .left-bar {
@@ -896,41 +882,12 @@ v-enter-active,
     resize: none;
 
     .left_bar_srch-wrap {
-      input {
+      .search-chats-input {
         border-top-left-radius: 30px;
         border-bottom-left-radius: 30px;
         padding-left: 10px;
         height: 40px;
         font-size: 1.1rem;
-      }
-
-      .left_bar_srch_wrap_settings {
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
-        display: flex;
-        padding-right: 5px;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        width: 40px;
-
-        span {
-          font-size: 1.2rem;
-        }
-      }
-      .left_bar_srch_wrap_settings_active {
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
-        display: flex;
-        padding-right: 5px;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        width: 40px;
-
-        span {
-          font-size: 1.2rem;
-        }
       }
     }
   }
@@ -958,8 +915,6 @@ v-enter-active,
     position: absolute;
     display: block;
     transform: translate(120%);
-
-    
   }
 
   .left-bar {
@@ -970,7 +925,7 @@ v-enter-active,
     resize: none;
 
     .left_bar_srch-wrap {
-      input {
+      .search-chats-input {
         border-top-left-radius: 25px;
         border-bottom-left-radius: 25px;
         height: 40px;
