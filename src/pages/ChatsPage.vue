@@ -10,11 +10,23 @@
       <div class="left_bar_srch-wrap" placeholder="search chat">
         <settings></settings>
 
-        <input
-          class="search-chats-input"
-          placeholder="Search"
-          @input="(e) => serachChat(e.target.value)"
-        />
+        <div class="search-input-container">
+          <div class="magnifying-glass-wrap">
+            <div class="magnifying-glass"></div>
+          </div>
+
+          <input
+            class="search-chats-input"
+            placeholder="Search"
+            :value="serachQ"
+            @input="(e) => serachChat(e.target.value)"
+          />
+
+          <button @click="resetQuerry" v-show="querryExist" class="reset-search-btn">
+            <span class="material-symbols-outlined"> close </span>
+          </button>
+        </div>
+
         <!-- <button
           @click="isSearch = !isSearch"
           :class="{
@@ -166,6 +178,10 @@ export default {
         this.chatKey = changeId;
       }
     },
+    resetQuerry() {
+      store.commit("chat/setQuery", null);
+      this.serachQ = null  
+    },
     async test() {
       const db = firebase.firestore();
       const batch = writeBatch(db);
@@ -266,9 +282,10 @@ export default {
     },
 
     serachChat(query) {
-      query.length > 0
+      query 
         ? store.commit("chat/setQuery", query.toLowerCase())
         : store.commit("chat/setQuery", null);
+      this.serachQ = query  
     },
   },
 
@@ -286,6 +303,13 @@ export default {
         }
       }
     },
+    querryExist() {
+      if (  this.serachQ ) {
+        return true
+      }
+      return false
+     
+    }
   },
 
   setup(data) {
@@ -732,6 +756,61 @@ v-enter-active,
   flex-direction: column;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
 
+  .search-input-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+
+    .magnifying-glass-wrap {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 100%;
+    }
+
+    .reset-search-btn {
+      cursor: pointer;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 100%;
+      right: 0px;
+      &:hover {
+        color: $second;
+      }
+    }
+  }
+
+  .magnifying-glass {
+    flex-shrink: 0;
+    font-size: 4em; /* Adjusted font-size to make it smaller */
+    display: inline-block;
+    width: 0.15em; /* Adjusted width to make it smaller */
+    box-sizing: content-box;
+    height: 0.15em; /* Adjusted height to make it smaller */
+    border: 0.04em solid $second-content; /* Adjusted border width to make it smaller */
+    position: relative;
+    border-radius: 0.125em; /* Adjusted border-radius to make it smaller */
+  }
+
+  .magnifying-glass:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -0.09em; /* Adjusted position to make it smaller */
+    bottom: -0.03em; /* Adjusted position to make it smaller */
+    border-width: 0;
+    background: $second-content;
+    width: 0.125em; /* Adjusted width to make it smaller */
+    height: 0.03em; /* Adjusted height to make it smaller */
+    transform: rotate(45deg);
+  }
+
   .left_bar_srch-wrap {
     flex-shrink: 0;
     min-width: 100%;
@@ -751,7 +830,8 @@ v-enter-active,
       padding-right: 5px;
       transition: border-color 0.6s ease;
       transition: box-shadow 0.4s ease;
-      padding-left: 10px;
+      padding-left: 45px;
+      padding-right: 45px;
       margin-left: 5px;
       font-size: 0.9rem;
       border-radius: 25px;
@@ -760,7 +840,7 @@ v-enter-active,
 
       &:hover {
         border: 1px solid rgb(102, 102, 102);
-         transition: border-color 0.6s  ease-out;
+        transition: border-color 0.6s ease-out;
       }
       &:focus {
         box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
@@ -814,7 +894,6 @@ v-enter-active,
       border: 1px solid rgb(180, 180, 180);
     }
 
-  
     &:focus {
       box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
       border: 1px solid white;
@@ -880,16 +959,6 @@ v-enter-active,
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
     resize: none;
-
-    .left_bar_srch-wrap {
-      .search-chats-input {
-        border-top-left-radius: 30px;
-        border-bottom-left-radius: 30px;
-        padding-left: 10px;
-        height: 40px;
-        font-size: 1.1rem;
-      }
-    }
   }
 }
 
@@ -926,9 +995,7 @@ v-enter-active,
 
     .left_bar_srch-wrap {
       .search-chats-input {
-        border-top-left-radius: 25px;
-        border-bottom-left-radius: 25px;
-        height: 40px;
+        height: 43px;
       }
     }
   }
