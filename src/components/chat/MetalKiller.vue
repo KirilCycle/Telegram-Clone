@@ -1,5 +1,4 @@
 <template>
-  <button v-show="!atTheBottom" @click="show" class="scroll-bottom"></button>
   <div
     v-observer="disableScroll"
     class="block-scroll-to-prevent-stick-to-top"
@@ -98,7 +97,15 @@ export default {
     });
 
     function handleScrollBtn(isBottom) {
-      store.commit('chat/setChatBottom', isBottom)
+      const scrollBotomdata = {
+        isBottom,
+        bottomRef:scrollAtTheBottom.value,
+        wasPaginated:  !chatQuerry.value? false : true  
+      }
+
+
+
+      store.commit('chat/setScrollBottomData', scrollBotomdata )
       atTheBottom.value = isBottom;
     }
 

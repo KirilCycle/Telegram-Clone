@@ -11,11 +11,11 @@ export const chatModule = {
     chatContainerRef: null,
     wasObserved: null,
     chatKey: "",
-    chatBottom: null,
+    scrollBottomData: null
   }),
   getters: {
     getChatBottom(state) {
-      return state.chatBottom;
+      return state.isChatBottom;
     },
     getReplyTarget(state) {
       return state.replyTarget;
@@ -52,8 +52,8 @@ export const chatModule = {
     },
   },
   mutations: {
-    setChatBottom(state, bool) {
-      state.chatBottom = bool;
+    setScrollBottomData(state, data) {
+      state.scrollBottomData = data;
     },
     setReplyTarget(state, target) {
       state.replyTarget = target;
@@ -107,8 +107,8 @@ export const chatModule = {
     setReplyTarget({ commit, target }) {
       commit("setReplyTarget", target);
     },
-    setChatBottom({commit, bool}) {
-      commit("setChatBottom", bool)
+    setScrollBottomData({commit, data}) {
+      commit("setScrollBottomData", data)
     },
     setChatKey({ commit, id }) {
       commit("setChatKey", id);

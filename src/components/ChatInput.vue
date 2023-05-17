@@ -26,7 +26,7 @@
       </button>
 
       <transition name="fade">
-        <button class="scroll-bottom" v-show="!$store.state.chat.chatBottom" >
+        <button class="scroll-bottom" v-show="!$store.state.chat.scrollBottomData?.isBottom" >
           <span class="material-symbols-outlined"> arrow_downward </span>
         </button>
       </transition>

@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <Transition>
+   
       <div
         ref="chat"
         :class="{
@@ -86,7 +86,7 @@
           </div>
         </div>
       </div>
-    </Transition>
+    
   </div>
 </template>
 
