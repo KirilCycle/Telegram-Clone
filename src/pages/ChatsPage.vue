@@ -652,7 +652,7 @@ v-enter-active,
 
 .chat-container-x {
   height: 78%;
-  width: 90%;
+  width: 70%;
   margin: 0% auto;
   overflow-y: scroll;
 }
@@ -683,6 +683,7 @@ v-enter-active,
   position: relative;
   width: 100%;
   height: 8%;
+  padding-top: 4px;
   max-width: inherit;
 
   .dark {
@@ -724,7 +725,7 @@ v-enter-active,
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  width: 310px;
+  width: 400px;
   overflow: hidden;
   resize: horizontal;
   position: relative;

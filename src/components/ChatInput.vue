@@ -12,24 +12,24 @@
       <input
         :value="$store.state.chat.chatSettings[$store.state.chat.chatId].v"
         v-on:input="(e) => textHndl(e.target.value)"
-        placeholder="Write a message..."
+        placeholder="Message"
       />
     </div>
 
     <div class="send-btn-wrp">
-      <!-- <transition>
-          <button class="send-btn" v-show="ableTosend" @click="send">
-            <span class="material-symbols-outlined"> send </span>
-          </button>
-        </transition>
+      <transition>
+        <button class="send-btn" v-show="ableTosend" @click="send">
+          <span class="material-symbols-outlined"> send </span>
+        </button>
+      </transition>
 
-        <transition>
-          <button @mousedown="startRecording" @mouseup="sendRecording">
-            <span v-show="!ableTosend" class="material-symbols-outlined">
-              keyboard_voice
-            </span>
-          </button>
-        </transition> -->
+      <transition>
+        <button @mousedown="startRecording" @mouseup="sendRecording">
+          <span v-show="!ableTosend" class="material-symbols-outlined">
+            keyboard_voice
+          </span>
+        </button>
+      </transition>
     </div>
   </div>
 </template>
@@ -239,75 +239,53 @@ export default {
 @import "@/styles/colors";
 
 .send-btn-wrp {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  position: absolute;
+  right: -55px;
+ 
+  height: 55px;
   flex-shrink: 0;
-  border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .send-btn {
-    width: 100%;
-    height: 100%;
-
-    span {
-      color: $second;
-
-      &:hover {
-        color: $main;
-      }
-    }
+  border-radius: 27.5px;
+  background-color:  $second;
+  color: white;
+  &:hover {
+    background-color: $main;
   }
 
   button {
-    position: absolute;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-size: 2rem;
+    }
   }
 }
 
 .reply-border-wrap {
   width: 100%;
-  height: 50px;
+  height: 55px;
   position: absolute;
   bottom: 100%;
   background: $content-main;
 }
 
 .input-container {
-  width: 90%;
+  width: 70%;
+  position: relative;
   margin: 0% auto;
   padding: 0px 10px 0px 6px;
-  height: 100%;
+  height: 55px;
   display: flex;
   flex-direction: row;
   max-height: 60px;
-  position: relative;
   justify-content: center;
   bottom: 0;
   align-items: center;
   box-sizing: border-box;
-
-  &:after {
-    content: "";
-    display: none;
-    position: absolute;
-    right: -20px;
-    bottom: 0px;
-    width: 0;
-    height: 0;
-
-    border-top: 40px solid transparent;
-    border-left: 20px solid $content-main;
-    border-bottom: 0px solid transparent;
-  }
-
-  @media (min-width: 1800px) {
-    &:after {
-      display: block;
-    }
-    border-radius: 20px 20px 0px 20px;
-    padding: 14px 10px 14px 20px;
-  }
 
   span {
     font-size: 1.9rem;
@@ -321,16 +299,31 @@ export default {
     user-select: none; /* supported by Chrome and Opera */
     box-sizing: border-box;
     width: 100%;
-    margin-right: 5px;
+    margin-right: 2px;
     background-color: #fff;
     border-radius: 20px;
+    border-bottom-right-radius: 0px;
     justify-content: center;
+    position: relative;
     align-items: center;
     flex-direction: row;
     justify-content: space-around;
     display: flex;
     height: 100%;
     padding: 0px 30px 0px 10px;
+
+    &:after {
+      content: "";
+      display: inline;
+      position: absolute;
+      right: -15px;
+      bottom: 0px;
+      width: 0;
+      height: 0;
+      border-top: 25px solid transparent;
+      border-left: 18px solid $content-main;
+      border-bottom: 0px solid transparent;
+    }
 
     .file-select {
       -webkit-user-select: none; /* Safari */
@@ -367,6 +360,9 @@ export default {
 
 .dark .input-container {
   .content {
+    &:after {
+      border-left: 18px solid $content-main-l;
+    }
     input {
       color: $text-main-l;
     }
