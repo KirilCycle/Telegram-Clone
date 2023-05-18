@@ -1,31 +1,28 @@
 <template>
-    <div class="search-info-wrap">
-      <p>Global search</p>
-    </div>
-    <div class="global-users-wrap">
-      <chat-item
-        :pthUrl="us.photoURL"
-        @click="() => handle(us)"
-        v-for="us in founded"
-        :key="us.uid"
-      >
-        <template v-slot:name>
-          <h3>
-            {{
-              us.displayName
-                ? us.displayName
-                : us.email.replace("@gmail.com", "")
-            }}
-          </h3>
-        </template>
-        <template v-slot:last_msg>
-          <p class="username-text">
-            {{ "@" + us.username }}
-          </p>
-        </template>
-      </chat-item>
-    </div>
- 
+  <div class="search-info-wrap">
+    <p>Global search {{ searchState }}</p>
+  </div>
+  <div class="global-users-wrap">
+    <chat-item
+      :pthUrl="us.photoURL"
+      @click="() => handle(us)"
+      v-for="us in founded"
+      :key="us.uid"
+    >
+      <template v-slot:name>
+        <h3>
+          {{
+            us.displayName ? us.displayName : us.email.replace("@gmail.com", "")
+          }}
+        </h3>
+      </template>
+      <template v-slot:last_msg>
+        <p class="username-text">
+          {{ "@" + us.username }}
+        </p>
+      </template>
+    </chat-item>
+  </div>
 </template>
 
 <script>
@@ -44,17 +41,27 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    searchState() {
+        if( !this.loading && !this.founded.length && store.state.chat.query.length > 3) {
+          return `0 users founded by querry ${store.state.chat.query.replaceAll("@", "")} `
+        } else if (this.loading) {
+         return 'Loading...'
+        } return ''
+    },
+  },
 
   setup() {
     console.log(store.state.chat.querry);
 
     const founded = ref([]);
+    const loading = ref(false)
 
     const db = firebase.firestore();
 
     watchEffect(() => {
       if (store.state.chat.query && store.state.chat.query.length > 3) {
+         loading.value = true
         const filteredSearchQuerry = store.state.chat.query.replaceAll("@", "");
 
         const query = db
@@ -71,6 +78,7 @@ export default {
             const user = doc.data();
             users.push(user);
           });
+          loading.value = false
           founded.value = users;
           console.log(users, "FROM LIST");
         });
@@ -108,6 +116,7 @@ export default {
 
     return {
       founded,
+      loading,
       handle,
     };
   },
@@ -139,7 +148,7 @@ h3 {
 }
 
 .search-info-wrap {
-  background-color:  $main;
+  background-color: $main;
   padding: 5px;
   color: white;
   text-align: left;

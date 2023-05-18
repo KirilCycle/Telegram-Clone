@@ -25,7 +25,7 @@
 
           <button
             @click="resetQuerry"
-            v-show="querryExist"
+            v-show="$store.state.chat.query?.length"
             class="reset-search-btn"
           >
             <span class="material-symbols-outlined"> close </span>
@@ -270,7 +270,7 @@ export default {
 
     serachChat(query) {
       query
-        ? store.commit("chat/setQuery", query)
+        ? store.commit("chat/setQuery", query.replaceAll(' ',''))
         : store.commit("chat/setQuery", null);
       
       if (query.replaceAll(" ", "")[0] === "@") {
