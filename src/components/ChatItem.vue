@@ -13,7 +13,7 @@
         <slot name="last_msg"></slot>
       </div>
     </div>
-    <p class="time">{{ time }}</p>
+    <p class="time" >{{ time }}</p>
   </div>
 </template>
 
@@ -28,19 +28,22 @@ export default {
   },
   computed: {
     time() {
-      const timestamp = new Date(
-        this.lastMessageTimeStmp.seconds * 1000 +
-        this.lastMessageTimeStmp.nanoseconds / 1000000
-      );
+      if (this.lastMessageTimeStmp) {
+        const timestamp = new Date(
+          this.lastMessageTimeStmp.seconds * 1000 +
+            this.lastMessageTimeStmp.nanoseconds / 1000000
+        );
+        const hours = timestamp.getHours();
+        const minutes = timestamp.getMinutes();
 
-      const hours = timestamp.getHours();
-      const minutes = timestamp.getMinutes();
+        // Add leading zeros to the hours and minutes if they are single digits
+        const formattedHours = hours.toString().padStart(2, "0");
+        const formattedMinutes = minutes.toString().padStart(2, "0");
 
-      // Add leading zeros to the hours and minutes if they are single digits
-      const formattedHours = hours.toString().padStart(2, "0");
-      const formattedMinutes = minutes.toString().padStart(2, "0");
+        return `${formattedHours}:${formattedMinutes}`;
+      }
 
-      return `${formattedHours}:${formattedMinutes}`;
+      return ''
     },
   },
   props: {

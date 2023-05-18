@@ -22,7 +22,11 @@
             @input="(e) => serachChat(e.target.value)"
           />
 
-          <button @click="resetQuerry" v-show="querryExist" class="reset-search-btn">
+          <button
+            @click="resetQuerry"
+            v-show="querryExist"
+            class="reset-search-btn"
+          >
             <span class="material-symbols-outlined"> close </span>
           </button>
         </div>
@@ -38,11 +42,11 @@
         </button> -->
       </div>
 
-      <div @click="chatHided = true" v-show="!isSearch" class="chat-list">
+      <div @click="chatHided = true" v-show="!isGlobalSearch" class="chat-list">
         <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>
 
-      <div v-if="isSearch" @click="chatHided = true">
+      <div v-if="isGlobalSearch" @click="chatHided = true">
         <founded-chats-list></founded-chats-list>
       </div>
     </div>
@@ -161,7 +165,7 @@ export default {
   },
   data() {
     return {
-      isSearch: false,
+      isGlobalSearch: false,
       value: "",
       chatKey: "s",
       serachQ: "",
@@ -180,26 +184,7 @@ export default {
     },
     resetQuerry() {
       store.commit("chat/setQuery", null);
-      this.serachQ = null  
-    },
-    async test() {
-      const db = firebase.firestore();
-      const batch = writeBatch(db);
-
-      const messagesRef = db
-        .collection("rooms")
-        .doc("chatIds")
-        .collection("messages");
-      batch.set(messagesRef.doc(), { a: "54" });
-
-      await batch
-        .commit()
-        .then(() => {
-          console.log("Batch operation successful");
-        })
-        .catch((error) => {
-          console.error("Batch operation failed:", error);
-        });
+      this.serachQ = null;
     },
 
     async addNewMessage(text, source, replyData) {
@@ -282,10 +267,15 @@ export default {
     },
 
     serachChat(query) {
-      query 
-        ? store.commit("chat/setQuery", query.toLowerCase())
+      query
+        ? store.commit("chat/setQuery", query)
         : store.commit("chat/setQuery", null);
-      this.serachQ = query  
+      this.serachQ = query;
+      if (query.replaceAll(' ','')[0] === "@") {
+        this.isGlobalSearch = true
+      }
+
+
     },
   },
 
@@ -304,12 +294,11 @@ export default {
       }
     },
     querryExist() {
-      if (  this.serachQ ) {
-        return true
+      if (this.serachQ) {
+        return true;
       }
-      return false
-     
-    }
+      return false;
+    },
   },
 
   setup(data) {
@@ -811,6 +800,24 @@ v-enter-active,
     transform: rotate(45deg);
   }
 
+  .magnifying-glass-active {
+    @extend .magnifying-glass;
+    border: 0.04em solid $second;
+  }
+
+   .magnifying-glass-active:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -0.09em; /* Adjusted position to make it smaller */
+    bottom: -0.03em; /* Adjusted position to make it smaller */
+    border-width: 0;
+    background: $second;
+    width: 0.125em; /* Adjusted width to make it smaller */
+    height: 0.03em; /* Adjusted height to make it smaller */
+    transform: rotate(45deg);
+   }
+
   .left_bar_srch-wrap {
     flex-shrink: 0;
     min-width: 100%;
@@ -845,6 +852,9 @@ v-enter-active,
       &:focus {
         box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
         border: 1px solid $dark-input;
+        
+        
+
       }
 
       &::placeholder {
@@ -853,6 +863,7 @@ v-enter-active,
         font-weight: 540;
       }
     }
+
   }
 
   .chat-list {

@@ -7,7 +7,7 @@
         v-for="us in founded"
         :key="us.uid"
       >
-      <template v-slot:name>
+        <template v-slot:name>
           <h3>
             {{
               us.displayName
@@ -15,14 +15,12 @@
                 : us.email.replace("@gmail.com", "")
             }}
           </h3>
-          </template>
-          <template v-slot:last_msg>
-            <p>
-              {{ us.email }}
-            </p>
-          </template>
-
-       
+        </template>
+        <template v-slot:last_msg>
+          <p class="username-text">
+            {{ "@" + us.username }}
+          </p>
+        </template>
       </chat-item>
     </div>
   </div>
@@ -44,12 +42,7 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    takeName() {
-      if (us.display) {
-      }
-    },
-  },
+  computed: {},
 
   setup() {
     console.log(store.state.chat.querry);
@@ -59,36 +52,35 @@ export default {
     const db = firebase.firestore();
 
     watchEffect(() => {
-      const query = db
+      if (store.state.chat.query) {
+        const filteredSearchQuerry = store.state.chat.query.replaceAll("@", "");
 
-        .collection("usersPrew")
-        .where("email", ">=", store.state.chat.query)
-        .where("email", "<=", store.state.chat.query + "z")
-        // .orWhere("displayName", ">=", store.state.chat.querry)
-        // .orWhere("displayName", "<=", store.state.chat.querry + "\uf8ff")
-        .limit(9);
+        const query = db
+          .collection("usersPrew")
+          .where("username", ">=", filteredSearchQuerry)
+          .where("username", "<=", filteredSearchQuerry + "z")
+          .limit(15);
 
-      // Get the query results
-      query.get().then((querySnapshot) => {
-        const users = [];
-        querySnapshot.forEach((doc) => {
-          // Get the document data and add it to the users array
-          const user = doc.data();
-          users.push(user);
+        // Get the query results
+        query.get().then((querySnapshot) => {
+          const users = [];
+          querySnapshot.forEach((doc) => {
+            // Get the document data and add it to the users array
+            const user = doc.data();
+            users.push(user);
+          });
+          founded.value = users;
+          console.log(users, "FROM LIST");
         });
-        founded.value = users;
-        console.log(users, "FROM LIST");
-      });
+      }
     });
 
-
-    function selectedUser (us) {
+    function selectedUser(us) {
       const modiffied = us;
-        modiffied.new = true;
-        store.commit("chat/setSelectedUser", modiffied);
-        store.commit("chat/setChatId", null);
+      modiffied.new = true;
+      store.commit("chat/setSelectedUser", modiffied);
+      store.commit("chat/setChatId", null);
     }
-
 
     function handle(us) {
       const first = us.uid + store.state.user.user.uid;
@@ -105,12 +97,10 @@ export default {
           store.commit("chat/setSelectedUser", us);
           store.commit("chat/setChatId", second);
         } else {
-          selectedUser(us)
+          selectedUser(us);
         }
-
-      
       } else {
-        selectedUser(us)
+        selectedUser(us);
       }
     }
 
@@ -122,19 +112,22 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 @import "@/styles/colors";
-
 
 h3 {
   font-size: 0.9rem;
   font-weight: 550;
-  color:  $text-main;
+  color: $text-main;
 }
-p {
+
+.dark h3 {
+  color: $text-main-l;
+}
+
+.username-text {
   font-size: 0.8rem;
-  color: #616161;
+  color: #448fff;
 }
 
 .text-container {
