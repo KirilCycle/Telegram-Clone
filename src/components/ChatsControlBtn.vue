@@ -1,12 +1,12 @@
 <template>
   <button @click="v = !v" class="control">
     <ul v-if="v" class="chat-controll-actions-list">
+      <li @click="newChatSearchOpen">
+        <span v-show="v" class="material-symbols-outlined"> chat </span>
+        <p >New Chat</p>
+      </li>
       <li>
-          <span v-show="v" class="material-symbols-outlined"> chat </span>
-          <p>New Chat</p>
-        </li>
-        <li>
-          <span v-show="v" class="material-symbols-outlined"> group </span>
+        <span v-show="v" class="material-symbols-outlined"> group </span>
         <p>New Group</p>
       </li>
     </ul>
@@ -16,11 +16,23 @@
 </template>
 
 <script>
+import store from '@/store/store';
 export default {
+  props: {
+    inputRef: Object,
+  },
   data() {
     return {
       v: false,
     };
+  },
+  methods: {
+    newChatSearchOpen() {
+       store.commit("chat/setQuery", '@')
+       this.$emit('globalInvoke')
+       this.inputRef.focus();
+
+    },
   },
 };
 </script>

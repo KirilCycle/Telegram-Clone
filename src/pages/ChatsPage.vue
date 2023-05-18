@@ -4,7 +4,7 @@
   <div class="main">
     <div class="left-bar">
       <div class="btn-controll">
-        <chats-control-btn></chats-control-btn>
+        <chats-control-btn @globalInvoke="isGlobalSearch = true" :inputRef="this.$refs.searchInput"></chats-control-btn>
       </div>
 
       <div class="left_bar_srch-wrap" placeholder="search chat">
@@ -16,9 +16,10 @@
           </div>
 
           <input
+            ref="searchInput"
             class="search-chats-input"
             placeholder="Search"
-            :value="serachQ"
+            :value="$store.state.chat.query"
             @input="(e) => serachChat(e.target.value)"
           />
 
@@ -46,7 +47,7 @@
         <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>
 
-      <div v-if="isGlobalSearch" @click="chatHided = true">
+      <div class="chat-list" v-if="isGlobalSearch" @click="chatHided = true">
         <founded-chats-list></founded-chats-list>
       </div>
     </div>
@@ -185,7 +186,7 @@ export default {
     resetQuerry() {
       store.commit("chat/setQuery", null);
       this.serachQ = null;
-        this.isGlobalSearch = false;
+      this.isGlobalSearch = false;
     },
 
     async addNewMessage(text, source, replyData) {
@@ -271,7 +272,7 @@ export default {
       query
         ? store.commit("chat/setQuery", query)
         : store.commit("chat/setQuery", null);
-      this.serachQ = query;
+      
       if (query.replaceAll(" ", "")[0] === "@") {
         this.isGlobalSearch = true;
       } else {

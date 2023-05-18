@@ -54,7 +54,7 @@ export default {
     const db = firebase.firestore();
 
     watchEffect(() => {
-      if (store.state.chat.query && store.state.chat.query.length > 3 ) {
+      if (store.state.chat.query && store.state.chat.query.length > 3) {
         const filteredSearchQuerry = store.state.chat.query.replaceAll("@", "");
 
         const query = db
