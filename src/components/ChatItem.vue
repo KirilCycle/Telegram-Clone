@@ -13,7 +13,7 @@
         <slot name="last_msg"></slot>
       </div>
     </div>
-    <p class="time" >{{ time }}</p>
+    <p class="time">{{ time }}</p>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
         return `${formattedHours}:${formattedMinutes}`;
       }
 
-      return ''
+      return "";
     },
   },
   props: {
@@ -98,6 +98,26 @@ export default {
     display: flex;
     align-items: center;
 
+
+  }
+
+
+  .chatitem_info_container {
+    text-align: left;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .time {
+    position: absolute;
+    right: 12px;
+    top: 18px;
+    font-size: 0.75rem;
+    color: rgb(78, 78, 78);
+  }
+}
+
+
     .img-wrap {
       margin: 0% auto;
       width: 52px;
@@ -112,22 +132,7 @@ export default {
         object-fit: cover;
       }
     }
-  }
 
-  .chatitem_info_container {
-    text-align: left;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  .time {
-    position: absolute;
-    right: 12px;
-    top: 18px;
-    font-size: 0.85rem;
-    color: rgb(78, 78, 78);
-  }
-}
 
 .dark .cht-i .name {
   color: $text-main-l;
@@ -149,6 +154,9 @@ export default {
       color: #ffff;
     }
   }
+
+ 
+
   .time {
     color: #ffff;
   }
@@ -160,6 +168,7 @@ export default {
   }
 }
 
+
 @media (max-width: 600px) {
   .active {
     background-color: rgba(255, 255, 255, 0);
@@ -169,5 +178,28 @@ export default {
       color: rgb(78, 78, 78);
     }
   }
+
+
+ 
 }
+
+
+
+
+.dark  {
+ 
+  &:hover {
+    background-color: rgb(96, 173, 255);
+    .time {
+      color: rgb(78, 78, 78);
+    }
+  }
+}
+
+
+  .dark 
+    .img-wrap {
+      border: none;
+    }
+  
 </style>
