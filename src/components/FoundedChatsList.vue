@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div>
+    <div class="search-info-wrap">
+      <p>Global search</p>
+    </div>
+    <div class="global-users-wrap">
       <chat-item
         :pthUrl="us.photoURL"
         @click="() => handle(us)"
@@ -23,7 +25,7 @@
         </template>
       </chat-item>
     </div>
-  </div>
+ 
 </template>
 
 <script>
@@ -52,14 +54,14 @@ export default {
     const db = firebase.firestore();
 
     watchEffect(() => {
-      if (store.state.chat.query) {
+      if (store.state.chat.query && store.state.chat.query.length > 3 ) {
         const filteredSearchQuerry = store.state.chat.query.replaceAll("@", "");
 
         const query = db
           .collection("usersPrew")
           .where("username", ">=", filteredSearchQuerry)
           .where("username", "<=", filteredSearchQuerry + "z")
-          .limit(15);
+          .limit(10);
 
         // Get the query results
         query.get().then((querySnapshot) => {
@@ -125,12 +127,21 @@ h3 {
   color: $text-main-l;
 }
 
+
+
 .username-text {
   font-size: 0.8rem;
   color: #448fff;
 }
 
 .text-container {
+  text-align: left;
+}
+
+.search-info-wrap {
+  background-color:  $main;
+  padding: 5px;
+  color: white;
   text-align: left;
 }
 </style>

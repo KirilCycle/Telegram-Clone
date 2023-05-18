@@ -185,6 +185,7 @@ export default {
     resetQuerry() {
       store.commit("chat/setQuery", null);
       this.serachQ = null;
+        this.isGlobalSearch = false;
     },
 
     async addNewMessage(text, source, replyData) {
@@ -271,11 +272,11 @@ export default {
         ? store.commit("chat/setQuery", query)
         : store.commit("chat/setQuery", null);
       this.serachQ = query;
-      if (query.replaceAll(' ','')[0] === "@") {
-        this.isGlobalSearch = true
+      if (query.replaceAll(" ", "")[0] === "@") {
+        this.isGlobalSearch = true;
+      } else {
+        this.isGlobalSearch = false;
       }
-
-
     },
   },
 
@@ -805,7 +806,7 @@ v-enter-active,
     border: 0.04em solid $second;
   }
 
-   .magnifying-glass-active:before {
+  .magnifying-glass-active:before {
     content: "";
     display: inline-block;
     position: absolute;
@@ -816,7 +817,7 @@ v-enter-active,
     width: 0.125em; /* Adjusted width to make it smaller */
     height: 0.03em; /* Adjusted height to make it smaller */
     transform: rotate(45deg);
-   }
+  }
 
   .left_bar_srch-wrap {
     flex-shrink: 0;
@@ -852,9 +853,6 @@ v-enter-active,
       &:focus {
         box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
         border: 1px solid $dark-input;
-        
-        
-
       }
 
       &::placeholder {
@@ -863,7 +861,6 @@ v-enter-active,
         font-weight: 540;
       }
     }
-
   }
 
   .chat-list {
