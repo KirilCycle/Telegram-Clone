@@ -1,6 +1,5 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
       @touchend="stop"
@@ -26,17 +25,19 @@
         ></video>
       </div>
 
-  <div class="reply-block" v-if="message.replyData">
-        <div v-if="message.replyData.img">
-        
-            <small-chat-image :src="message.replyData.img"></small-chat-image>
-         
+      <div class="reply-block" v-if="message.replyData">
+        <div class="reply_block_source_wrap" v-if="message.replyData.source">
+          <small-chat-image
+            :type="message.replyData.source.type"
+            :src="message.replyData.source.src"
+          ></small-chat-image>
         </div>
 
-        <h3>{{ message.replyData.from }}</h3>
-        <p>{{ message.replyData.text }}</p>
+        <div class="reply_block_text_wrap">
+          <h3>{{ message.replyData.from }}</h3>
+          <p>{{ message.replyData.text }}</p>
+        </div>
       </div>
-
 
       <div class="item_body_text">
         <p>{{ message.text }}</p>
@@ -94,17 +95,16 @@ export default {
 
   computed: {
     time() {
-    
-   //test
-        let date = new Date(this.message?.createdAt.seconds * 1000);
+      //test
+      let date = new Date(this.message?.createdAt.seconds * 1000);
 
-        let hours = date.getHours();
+      let hours = date.getHours();
 
-        let minutes = + date.getMinutes();
+      let minutes = +date.getMinutes();
 
-
-        return `${hours}:${minutes.toString().length < 2 ? '0' + minutes:  minutes }`;
-    
+      return `${hours}:${
+        minutes.toString().length < 2 ? "0" + minutes : minutes
+      }`;
     },
 
     emojis() {
@@ -177,10 +177,8 @@ export default {
 
     const msg = ref(null);
 
-
     function touchMoveHandle(e) {
       clearTimeout(myTimeout.value);
-
 
       let elementPosition = msg.value.clientX;
       // msg.value.style.transform = `translateX(${ msg.value.offsetWidth  }px)`
@@ -281,25 +279,38 @@ export default {
     max-width: 93%;
     max-height: 38px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-left: 7px;
     padding-left: 2px;
     overflow: hidden;
-    height: min-content;
     border-left: #fff 3px solid;
+
+.reply_block_source_wrap {
+  width: 20px;
+  height: 100%;
+  display: flex;
+
+}
+
+.reply_block_text_wrap {
+   width: auto;
+   margin-left: 3px;
+   max-width: 70px;
+   height: 100%;
     h3 {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       line-height: normal;
     }
     p {
       color: #d7d7d7;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
+}
+
   }
 
   .item-body {
     width: 100%;
-
     left: 0px;
     display: flex;
     flex-direction: column;
@@ -431,10 +442,9 @@ export default {
     .user-name {
       display: none;
     }
-  
+
     color: white;
     background: rgb(84, 175, 213);
-  
 
     right: 0px;
     margin-left: 10px;
@@ -446,25 +456,7 @@ export default {
     p {
     }
   }
-  .reply-block {
-    max-width: 93%;
-    max-height: 38px;
-    display: flex;
-    flex-direction: column;
-    margin-left: 7px;
-    padding-left: 2px;
-    overflow: hidden;
-    height: min-content;
-    border-left: #fff 3px solid;
-    h3 {
-      font-size: 0.9rem;
-      line-height: normal;
-    }
-    p {
-      color: #d7d7d7;
-      font-size: 0.8rem;
-    }
-  }
+  
 }
 
 @media (max-width: 1115px) {
