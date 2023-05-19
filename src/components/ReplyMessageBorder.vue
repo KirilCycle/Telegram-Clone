@@ -3,10 +3,10 @@
     <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
 
-      <div>
-        <small-chat-image :type="select.source?.type" :src="select.source.src"></small-chat-image>
-      
+      <div v-if="this.$store.state.message.replyTarget.source">
+        <small-chat-image :type="this.$store.state.message.replyTarget.source.type" :src="this.$store.state.message.replyTarget.source.src"></small-chat-image>
       </div>
+
       <div class="text-container">
         <h3>{{ select.from  || select.sender.userName}}</h3>
         <p>{{ select.text.slice(0, 29) }}</p>
@@ -28,11 +28,6 @@ export default {
     required: true,
   },
   components: { SmallChatImage },
-  data() {
-    return {
-      data: this.selected,
-    };
-  },
   methods: {
     reset() {
       store.commit("message/setReplyMsgRef", null);
@@ -52,9 +47,9 @@ export default {
     select() {
       if (this.$store.state.message.replyTarget) {
         
-        console.log(this.$store.state.message.replyTarget.source, 'REP');
+        console.log(this.$store.state.message.replyTarget, 'REP');
         return this.$store.state.message.replyTarget;
-      } else if (this.$store.state.message.forwardTarget) {
+      } else if (this.$tsore.state.message.forwardTarget) {
         
         console.log(this.$store.state.message.forwardTarget.source, 'FOR');
         return this.$store.state.message.forwardTarget;
