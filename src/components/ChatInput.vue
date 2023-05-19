@@ -325,7 +325,7 @@ export default {
 
 .input-container {
   width: 70%;
-  max-width: 1400px;
+  max-width: 1100px;
   position: relative;
   margin: 0% auto;
   padding: 0px 10px 0px 6px;
@@ -389,6 +389,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
     input {
@@ -427,21 +428,33 @@ export default {
   width:90%;
 }
 
-
 %btn-pattern {
   position: static;
 }
-
 .send-btn-wrp {
   margin-left: 10px;
- 
   .scroll-bottom {
     position: absolute;
   }
 
 }
 
+}
 
+
+@media (max-width: 500px) {
+  
+  .input-container  {
+    height: 48px;
+    width: 100%;
+  }
+
+%btn-pattern {
+  height: 48px;
+  width: 48px;
+}
 
 }
+
+
 </style>

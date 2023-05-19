@@ -199,8 +199,7 @@ export default {
   img {
     border-radius: 10px;
     width: 100%;
-    max-height: 100%;
-    max-height: 83vh;
+    max-height: 600px;
   }
 
   video {

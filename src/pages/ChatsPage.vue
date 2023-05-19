@@ -658,13 +658,8 @@ v-enter-active,
   margin: 0% auto;
   overflow-y: scroll;
   overflow-x: hidden;
-  max-width: 1400px;
-
-
-
+  max-width: 1100px;
 }
-
-
 
 .chat-container-x::-webkit-scrollbar {
   display: block;
@@ -672,9 +667,15 @@ v-enter-active,
 }
 
 @media (max-width: 1270px) {
-.chat-container-x {
-  width:90% ;
+  .chat-container-x {
+    width: 90%;
+  }
 }
+
+@media (max-width: 500px) {
+  .chat-container-x {
+    width: 100%;
+  }
 }
 
 .chat-container-x::-webkit-scrollbar-track {
@@ -732,9 +733,9 @@ v-enter-active,
   flex-direction: column;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
 
- @media  (max-width: 1020px) {
-   width: 300px;
- }
+  @media (max-width: 1020px) {
+    width: 300px;
+  }
 
   .search-input-container {
     display: flex;
