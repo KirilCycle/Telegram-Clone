@@ -48,6 +48,7 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "@firebase/auth";
 import { uuidv4 } from "@firebase/util";
+import store from "@/store/store";
 import {   uploadBytesResumable, } from 'firebase/storage';
 
 export default {
@@ -157,7 +158,7 @@ export default {
                   src: downloadURL
                 }
 
-                emit("sendMsgWithFile", capture, resData);
+                emit("sendMsgWithFile", capture, resData,  store.state.message.replyTarget);
                 // Use the download URL to display or share the video with others
               })
               .catch((error) => {
@@ -177,7 +178,7 @@ export default {
                   src: url
                  }
 
-              emit("sendMsgWithFile", capture, resData);
+              emit("sendMsgWithFile", capture, resData, store.state.message.replyTarget);
               resetData()
             });
           })

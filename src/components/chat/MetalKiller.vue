@@ -5,21 +5,21 @@
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
-  <component
+  <!-- <component
    v-for="it in msgs"
     :key="it.id"
     :message="it"
     :isMy="it.userId.includes(firstPartOfmyId)"
      :is="currentChatType(it)"
         >
-  </component>
+  </component> -->
 
-  <!-- <message-item
+  <message-item
     v-for="it in msgs"
     :key="it.id"
     :message="it"
     :isMy="it.userId.includes(firstPartOfmyId)"
-  ></message-item> -->
+  ></message-item>
 
   <div
     ref="scrollAtTheBottom"

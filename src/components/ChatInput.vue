@@ -91,8 +91,6 @@ export default {
           sender: data.sender,
         };
 
-        message.userPhotoURl = this.$store.state.user.user.photoURL;
-
         if (data.source) {
           //   messageisNotReady.value = true;
           message.source = data.source;
