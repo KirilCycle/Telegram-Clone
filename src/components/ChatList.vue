@@ -25,7 +25,6 @@ export default {
     storePath: String,
     required: true,
   },
-  watch: {},
   methods: {
     handleChatSelect(id) {
       this.$store.commit("chat/setChatId", id);
@@ -36,7 +35,7 @@ export default {
       db: firebase.firestore(),
     };
   },
-  created() {},
+
 };
 </script>
 

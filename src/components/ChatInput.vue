@@ -338,9 +338,6 @@ export default {
   align-items: center;
   box-sizing: border-box;
 
-  @media (max-width: 1270px) {
-    width: 80%;
-  }
 
   span {
     font-size: 1.9rem;
@@ -423,5 +420,28 @@ export default {
       color: $text-main-l;
     }
   }
+}
+
+@media (max-width: 1270px) {
+.input-container {
+  width:90%;
+}
+
+
+%btn-pattern {
+  position: static;
+}
+
+.send-btn-wrp {
+  margin-left: 10px;
+ 
+  .scroll-bottom {
+    position: absolute;
+  }
+
+}
+
+
+
 }
 </style>

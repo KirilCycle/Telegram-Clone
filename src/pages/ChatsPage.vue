@@ -338,7 +338,7 @@ export default {
 
     const collectionRef = db.collection("usersLinksToChat");
 
-    const chatList = ref("");
+    const chatList = ref([]);
 
     const listLoaded = ref(null);
 
@@ -659,6 +659,9 @@ v-enter-active,
   overflow-y: scroll;
   overflow-x: hidden;
   max-width: 1400px;
+
+
+
 }
 
 
@@ -670,7 +673,7 @@ v-enter-active,
 
 @media (max-width: 1270px) {
 .chat-container-x {
-  width:80% ;
+  width:90% ;
 }
 }
 
@@ -728,6 +731,10 @@ v-enter-active,
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
+
+ @media  (max-width: 1020px) {
+   width: 300px;
+ }
 
   .search-input-container {
     display: flex;
