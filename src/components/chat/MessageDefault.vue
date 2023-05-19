@@ -9,34 +9,6 @@
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
-      <div v-if="message.sender" class="forward">
-        <p>Forwarded message</p>
-        <h4 @click="() => handle(message.sender.userId)">
-          {{ message.sender?.userName }}
-        </h4>
-      </div>
-
-      <div class="img-wrp" v-if="message.source">
-        <img v-if="message.source.type === 'img'" :src="message.source.src" />
-        <video
-          class="video-player"
-          v-else
-          :src="message.source.src"
-          controls
-        ></video>
-      </div>
-
-  <div class="reply-block" v-if="message.replyData">
-        <div v-if="message.replyData.img">
-        
-            <small-chat-image :src="message.replyData.img"></small-chat-image>
-         
-        </div>
-
-        <h3>{{ message.replyData.from }}</h3>
-        <p>{{ message.replyData.text }}</p>
-      </div>
-
 
       <div class="item_body_text">
         <p>{{ message.text }}</p>
@@ -63,26 +35,18 @@
 <script>
 import { ref } from "vue";
 import store from "@/store/store";
-import { getAuth } from "firebase/auth";
-import ProfileImage from "./ProfileImage.vue";
-import SmallChatImage from "./SmallChatImage.vue";
-import EmojiContainer from "./EmojiContainer.vue";
-import { objectEntries } from "@vueuse/core";
-import EmojiUser from "./EmojiUser.vue";
+import EmojiUser from "../EmojiUser.vue";
 import { replyEmoji } from "@/features/replyUsingEmoji";
+import { objectEntries } from "@vueuse/core";
 
 export default {
   components: {
-    ProfileImage,
-    SmallChatImage,
-    EmojiContainer,
     EmojiUser,
   },
 
   props: {
     message: Object,
     isMy: Boolean,
-    removeMessage: Function,
     required: true,
   },
 
@@ -163,7 +127,6 @@ export default {
   },
 
   setup(props) {
-    const auth = getAuth();
 
     const myTimeout = ref(null);
 
@@ -196,7 +159,6 @@ export default {
       msg,
       open,
       start,
-      auth,
       visible,
     };
   },
@@ -205,45 +167,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
-.img-wrp {
-  width: 100%;
-
-  img {
-    border-radius: 10px;
-    width: 100%;
-    max-height: 600px;
-  }
-
-  video {
-    @extend img;
-    border-radius: 0px;
-  }
-
-  .video-player:hover {
-    cursor: pointer;
-  }
-
-  .video-player::-webkit-media-controls {
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  .video-player:hover::-webkit-media-controls {
-    opacity: 1;
-  }
-
-  .video-player::-webkit-media-controls-start-playback-button {
-    display: none;
-  }
-
-  .video-player:hover::-webkit-media-controls-start-playback-button {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
 
 %no-select {
   -webkit-user-select: none; /* Safari */
@@ -277,26 +200,7 @@ export default {
   position: relative;
   display: flex;
 
-  .reply-block {
-    max-width: 93%;
-    max-height: 38px;
-    display: flex;
-    flex-direction: column;
-    margin-left: 7px;
-    padding-left: 2px;
-    overflow: hidden;
-    height: min-content;
-    border-left: #fff 3px solid;
-    h3 {
-      font-size: 0.9rem;
-      line-height: normal;
-    }
-    p {
-      color: #d7d7d7;
-      font-size: 0.8rem;
-    }
-  }
-
+ 
   .item-body {
     width: 100%;
 
@@ -346,16 +250,7 @@ export default {
     max-width: 70%;
   }
 
-  label {
-    font-size: 0.7rem;
-    position: absolute;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-    right: 8px;
-    color: rgb(223, 222, 222);
-    bottom: 4px;
-  }
+
 }
 
 .dark .item {
@@ -446,25 +341,6 @@ export default {
     p {
     }
   }
-  .reply-block {
-    max-width: 93%;
-    max-height: 38px;
-    display: flex;
-    flex-direction: column;
-    margin-left: 7px;
-    padding-left: 2px;
-    overflow: hidden;
-    height: min-content;
-    border-left: #fff 3px solid;
-    h3 {
-      font-size: 0.9rem;
-      line-height: normal;
-    }
-    p {
-      color: #d7d7d7;
-      font-size: 0.8rem;
-    }
-  }
 }
 
 @media (max-width: 1115px) {
@@ -524,13 +400,4 @@ export default {
   }
 }
 
-.forward {
-  p {
-    font-size: 0.8rem;
-  }
-  h4 {
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-}
 </style>

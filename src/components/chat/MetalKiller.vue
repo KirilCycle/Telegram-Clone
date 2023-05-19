@@ -5,20 +5,21 @@
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
-  <!-- <div  class="msg" v-for="msg in skillets" :key="msg.id">
-    {{ msg.text }}
-  </div> -->
+  <component
+   v-for="it in msgs"
+    :key="it.id"
+    :message="it"
+    :isMy="it.userId.includes(firstPartOfmyId)"
+     :is="currentChatType(it)"
+        >
+  </component>
 
-  <message-item
+  <!-- <message-item
     v-for="it in msgs"
     :key="it.id"
     :message="it"
     :isMy="it.userId.includes(firstPartOfmyId)"
-  ></message-item>
-
-  <!-- <div ref="msg" class="msg" v-for="msg in msgs" :key="msg.id">
-    {{ msg.text }}
-  </div> -->
+  ></message-item> -->
 
   <div
     ref="scrollAtTheBottom"
@@ -36,6 +37,7 @@ import { ref } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 import MessageItem from "../MessageItem.vue";
+import MessageDefault from "./MessageDefault.vue";
 
 export default {
   props: {
@@ -48,6 +50,14 @@ export default {
   },
   components: {
     MessageItem,
+    MessageDefault,
+  },
+  methods: {
+    currentChatType(it) {
+      if (it.id) {
+        return "MessageDefault";
+      } 
+    },
   },
 
   setup(props, { emit }) {
@@ -102,10 +112,12 @@ export default {
     });
 
     function handleScrollBtn(isBottom) {
-      store.commit("chat/setScrollBottomData", { isBottom,  wasPaginated: !chatQuerry.value ? false : true, });
+      store.commit("chat/setScrollBottomData", {
+        isBottom,
+        wasPaginated: !chatQuerry.value ? false : true,
+      });
       atTheBottom.value = isBottom;
     }
-
 
     function subscribeToSnapshot() {
       unsubscribe.value = chatQuerry.value.onSnapshot(
@@ -236,7 +248,6 @@ export default {
       // console.log(msgs.value[middle].text, "next midle");
       // pivotMessage.value = msgs.value[middle].createdAt;
       // console.log("GO NEXT ?", middle, msgs.value[middle].text);
-
       // console.log("XUY TAM A NE NEXT");
       // gettingType.value = null;
     }
@@ -324,7 +335,7 @@ export default {
 }
 
 @media (min-width: 2700px) {
-  .previos-observer  {
+  .previos-observer {
     top: 1367px;
   }
 }
