@@ -4,7 +4,10 @@
   <div class="main">
     <div class="left-bar">
       <div class="btn-controll">
-        <chats-control-btn @globalInvoke="isGlobalSearch = true" :inputRef="this.$refs.searchInput"></chats-control-btn>
+        <chats-control-btn
+          @globalInvoke="isGlobalSearch = true"
+          :inputRef="this.$refs.searchInput"
+        ></chats-control-btn>
       </div>
 
       <div class="left_bar_srch-wrap" placeholder="search chat">
@@ -114,7 +117,6 @@ import { onMounted, ref } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc, writeBatch } from "firebase/firestore";
-import DirectChat from "@/components/DirectChat.vue";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
@@ -132,23 +134,11 @@ import SelectedChat from "@/components/SelectedChat.vue";
 import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
 import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
-import ChatXxx from "@/components/ChatXxx.vue";
-import Chat from "@/components/Chat";
-import AndTheRainWillKillAsAll from "@/components/chat/AndTheRainWillKillAsAll";
-import ParentChat from "@/components/chat/ParentChat.vue";
-import Vue from "vue";
-import { computed, reactive } from "vue";
-import { useStore } from "vuex";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 
 export default {
   components: {
-    DirectChat,
     MetalKiller,
-    ParentChat,
-    AndTheRainWillKillAsAll,
-    ChatXxx,
-    Chat,
     ReplyMessageBorder,
     SelectedChatDynamic,
     NewChat,
@@ -270,9 +260,9 @@ export default {
 
     serachChat(query) {
       query
-        ? store.commit("chat/setQuery", query.replaceAll(' ',''))
+        ? store.commit("chat/setQuery", query.replaceAll(" ", ""))
         : store.commit("chat/setQuery", null);
-      
+
       if (query.replaceAll(" ", "")[0] === "@") {
         this.isGlobalSearch = true;
       } else {
@@ -620,7 +610,7 @@ v-enter-active,
 
   display: flex;
   align-items: center;
-  max-height: 75px;
+  max-height: 60px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
@@ -667,18 +657,21 @@ v-enter-active,
   width: 70%;
   margin: 0% auto;
   overflow-y: scroll;
+  overflow-x: hidden;
+  max-width: 1400px;
 }
 
-@media (min-width: 1400px) {
-  .chat-container-x {
-    max-width: 1400px;
-    margin: 0% auto;
-  }
-}
+
 
 .chat-container-x::-webkit-scrollbar {
   display: block;
   width: 7px;
+}
+
+@media (max-width: 1270px) {
+.chat-container-x {
+  width:80% ;
+}
 }
 
 .chat-container-x::-webkit-scrollbar-track {
@@ -705,18 +698,7 @@ v-enter-active,
   .input-wrap {
     height: 100%;
     width: 100%;
-
-    div {
-      height: 100%;
-    }
-  }
-}
-
-@media (min-width: 1800px) {
-  .chat-input-block-x {
-    .input-wrap {
-      max-width: 1400px;
-    }
+    margin: 0% auto;
   }
 }
 
@@ -760,6 +742,7 @@ v-enter-active,
       align-items: center;
       width: 60px;
       height: 100%;
+      bottom: 2px;
     }
 
     .reset-search-btn {

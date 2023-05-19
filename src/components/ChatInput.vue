@@ -27,7 +27,7 @@
 
       <transition name="fade">
         <button
-         ref="scrollBottom"
+          ref="scrollBottom"
           @click="scrollToBottom"
           class="scroll-bottom"
           v-show="!$store.state.chat.scrollBottomData.isBottom"
@@ -175,11 +175,9 @@ export default {
   setup(props) {
     const recording = ref(null);
     const recordingUrl = ref(null);
-    const scrollBottom = ref(null)
+    const scrollBottom = ref(null);
 
     function scrollToBottom() {
-
-       
       setTimeout(() => {
         store.state.chat.scrollBottomData.bottomRef.scrollIntoView({
           block: "start",
@@ -187,8 +185,6 @@ export default {
           behavior: "smooth",
         });
       });
-   
-    
     }
 
     async function startRecording() {
@@ -279,7 +275,7 @@ export default {
 
   .scroll-bottom {
     @extend %btn-pattern;
-    bottom: 95px;
+    bottom: 75px;
     color: $second;
     background-color: $content-main-dark;
 
@@ -329,6 +325,7 @@ export default {
 
 .input-container {
   width: 70%;
+  max-width: 1400px;
   position: relative;
   margin: 0% auto;
   padding: 0px 10px 0px 6px;
@@ -340,6 +337,10 @@ export default {
   bottom: 0;
   align-items: center;
   box-sizing: border-box;
+
+  @media (max-width: 1270px) {
+    width: 80%;
+  }
 
   span {
     font-size: 1.9rem;
@@ -361,7 +362,6 @@ export default {
     position: relative;
     align-items: center;
     flex-direction: row;
-    justify-content: space-around;
     display: flex;
     height: 100%;
     padding: 0px 30px 0px 10px;
@@ -406,7 +406,7 @@ export default {
       input {
         padding-left: 15px;
         border-radius: 10px;
-        width: 90%;
+        width: 100%;
       }
     }
   }

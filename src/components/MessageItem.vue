@@ -70,18 +70,12 @@ export default {
   props: {
     message: Object,
     isMy: Boolean,
-    next: Object,
-    last: Boolean,
     removeMessage: Function,
     required: true,
   },
 
   data() {
     return {
-      ableTodelete: this.message.userId === store.state.user.user.uid,
-      profilePhotoUrl: this.message.userPhotoURl
-        ? this.message.userPhotoURl
-        : "",
       replyEmoji,
     };
   },
@@ -109,25 +103,6 @@ export default {
   },
 
   methods: {
-    handle(us) {
-      const first = us + store.state.user.user.uid;
-
-      const second = store.state.user.user.uid + us;
-
-      console.log("handle us ", store.state.chat.chatIdList);
-
-      if (store.state.chat.chatIdList) {
-        if (store.state.chat.chatIdList.find((ch) => ch.id === first)) {
-          store.commit("chat/setSelectedUser", us);
-          store.commit("chat/setChatId", first);
-        } else if (store.state.chat.chatIdList.find((ch) => ch.id === second)) {
-          store.commit("chat/setSelectedUser", us);
-          store.commit("chat/setChatId", second);
-        } else {
-        }
-      } else {
-      }
-    },
     handleEmojiClick(emj) {
       //find my id and delete here
       //
@@ -328,6 +303,12 @@ export default {
       padding-right: 35px;
       p {
         font-weight: 200;
+      }
+
+      .time {
+        position: absolute;
+        right: 10px;
+        font-size: 0.7rem;
       }
     }
 

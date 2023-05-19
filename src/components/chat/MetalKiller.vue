@@ -219,17 +219,17 @@ export default {
     }
 
     function next() {
-      if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {
-        gettingType.value = "next";
-        const middle = Math.floor((msgs.value.length - 1) / 2);
-        console.log(msgs.value[middle].text, "next midle");
-        pivotMessage.value = msgs.value[middle].createdAt;
-        console.log("GO NEXT ?", middle, msgs.value[middle].text);
-      } else if (msgs.value[msgs.value.length - 1].id === recentMsgID.value) {
-        console.log("def");
-        console.log("XUY TAM A NE NEXT");
-        gettingType.value = null;
-      }
+      // if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {
+      //   gettingType.value = "next";
+      //   const middle = Math.floor((msgs.value.length - 1) / 2);
+      //   console.log(msgs.value[middle].text, "next midle");
+      //   pivotMessage.value = msgs.value[middle].createdAt;
+      //   console.log("GO NEXT ?", middle, msgs.value[middle].text);
+      // } else if (msgs.value[msgs.value.length - 1].id === recentMsgID.value) {
+      //   console.log("def");
+      //   console.log("XUY TAM A NE NEXT");
+      //   gettingType.value = null;
+      // }
       // chatQuerry.value = null;
       // gettingType.value = "next";
       // const middle = Math.floor((msgs.value.length - 1) / 2);
@@ -321,6 +321,12 @@ export default {
 .previos-observer {
   position: relative;
   top: 567px;
+}
+
+@media (min-width: 2700px) {
+  .previos-observer  {
+    top: 1367px;
+  }
 }
 
 .next {
