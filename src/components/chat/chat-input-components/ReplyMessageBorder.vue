@@ -22,7 +22,7 @@
 
 <script>
 import store from "@/store/store";
-import SmallChatImage from "./SmallChatImage.vue";
+import SmallChatImage from "../../SmallChatImage.vue";
 
 export default {
   props: {

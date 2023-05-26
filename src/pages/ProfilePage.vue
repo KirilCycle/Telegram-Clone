@@ -107,17 +107,13 @@
 <script>
 import store from "@/store/store";
 import { updateProfile, signOut } from "firebase/auth";
-import { nextTick, watch } from "vue";
 import firebase from "firebase/compat/app";
 import { useDark } from "@vueuse/core";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
-import { collection } from "firebase/firestore";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import MessageItem from "../components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
-import SelectedFileModal from "@/components/SelectedFileModal.vue";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import UserImage from "@/components/UserImage.vue";
 import EditSettings from "@/components/EditSettings.vue";

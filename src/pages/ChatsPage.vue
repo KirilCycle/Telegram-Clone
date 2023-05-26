@@ -121,26 +121,21 @@ import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
-import ChatInput from "@/components/ChatInput.vue";
-import NewChat from "@/components/NewChat.vue";
+import ChatInput from "@/components/chat/chat-input-components/ChatInput.vue";
+import NewChat from "@/components/chat/NewChat.vue";
 import { watchEffect } from "vue";
 import ChatisntSelected from "@/components/ChatisntSelected.vue";
-import ReplyMessageBorder from "@/components/ReplyMessageBorder.vue";
 import SelectedChatNav from "@/components/SelectedChatNav.vue";
 import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
 import ChatSettings from "@/components/ChatSettings.vue";
-import SelectedChat from "@/components/SelectedChat.vue";
-import SelectedChatDynamic from "@/components/SelectedChatDynamic.vue";
-import FoundedChatInputVue from "@/components/FoundedChatInput.vue";
+import FoundedChatInputVue from "@/components/chat/chat-input-components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 
 export default {
   components: {
     MetalKiller,
-    ReplyMessageBorder,
-    SelectedChatDynamic,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -148,7 +143,6 @@ export default {
     ChatList,
     ChatsControlBtn,
     Settings,
-    SelectedChat,
     ChatInput,
     SelectedChatNav,
     MessageActions,

@@ -46,7 +46,7 @@ import { onBeforeUpdate, ref, computed, watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
-import ChatInput from "./ChatInput.vue";
+import ChatInput from "./chat/chat-input-components/ChatInput.vue";
 import MessageItem from "./MessageItem.vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import { scrollTo } from "vue-scrollto";

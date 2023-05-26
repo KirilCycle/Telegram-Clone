@@ -1,6 +1,7 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container-main-wrap">
     <div class="content">
+
       <div class="reply-border-wrap" v-if="select">
         <reply-message-border :selected="select"></reply-message-border>
         <div class="send-btn-wrp-fake"></div>
@@ -9,15 +10,18 @@
       <button class="file-select">
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
       </button>
-
+   
       <input
         :value="$store.state.chat.chatSettings[$store.state.chat.chatId].v"
         v-on:input="(e) => textHndl(e.target.value)"
         placeholder="Message"
       />
+
+
     </div>
 
     <div class="send-btn-wrp">
+
       <button class="send-btn" v-show="ableTosend" @click="send">
         <span class="material-symbols-outlined"> send </span>
       </button>
@@ -57,6 +61,7 @@ import { getDatabase, ref as databaseRef, push } from "firebase/database";
 export default {
   components: { SelectedFileModal, ReplyMessageBorder },
   props: {
+    isFoundedUser:Boolean,
     sendMsg: Function,
     required: true,
   },

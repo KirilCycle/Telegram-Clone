@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ChatInput from "./ChatInput.vue";
+import ChatInput from "./chat-input-components/ChatInput.vue";
 
 
 
