@@ -723,7 +723,7 @@ v-enter-active,
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  width: 400px;
+   width: 380px;
   overflow: hidden;
   resize: horizontal;
   position: relative;

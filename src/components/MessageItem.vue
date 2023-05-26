@@ -311,6 +311,7 @@ export default {
 
   .item-body {
     width: 100%;
+
     left: 0px;
     display: flex;
     flex-direction: column;

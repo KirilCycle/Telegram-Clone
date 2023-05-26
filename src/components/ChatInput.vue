@@ -1,10 +1,15 @@
 <template>
-  <div @touchmove.prevent="() => {}" class="input-container">
-    <div class="reply-border-wrap" v-if="select">
-      <reply-message-border :selected="select"></reply-message-border>
-    </div>
+  <div @touchmove.prevent="() => {}" class="input-container-main-wrap">
+     
+
 
     <div class="content">
+      <div class="reply-border-wrap" v-if="select">
+        <reply-message-border :selected="select"></reply-message-border>
+        <div class="send-btn-wrp-fake"></div>
+      </div>
+
+
       <button class="file-select">
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
       </button>
@@ -36,6 +41,10 @@
         </button>
       </transition>
     </div>
+
+
+
+
   </div>
 </template>
 
@@ -266,9 +275,25 @@ export default {
   border-radius: 27.5px;
 }
 
+%main-wrap-pattern {
+  width: 70%;
+}
+.send-btn-wrp-fake {
+   width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 27.5px;
+  right: -59px;
+}
+
 .send-btn-wrp {
   @extend %btn-pattern;
-  right: -55px;
+  right: -59px;
   color: white;
 
   .scroll-bottom {
@@ -312,21 +337,30 @@ export default {
     color: $main;
   }
 }
+.c {
+  padding: 0px 10px 0px 6px;
+  padding: 0px 10px 0px 6px;
+}
 
 .reply-border-wrap {
   width: 100%;
   height: 55px;
   position: absolute;
+  box-sizing: border-box;
   bottom: 100%;
-  background: $content-main;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+
+  
+  
 }
 
-.input-container {
-  width: 70%;
+.input-container-main-wrap{
+  @extend %main-wrap-pattern;
   max-width: 1100px;
   position: relative;
   margin: 0% auto;
-  padding: 0px 10px 0px 6px;
   height: 55px;
   display: flex;
   flex-direction: row;
@@ -335,7 +369,6 @@ export default {
   bottom: 0;
   align-items: center;
   box-sizing: border-box;
-
 
   span {
     font-size: 1.9rem;
@@ -347,11 +380,8 @@ export default {
 
   .content {
     user-select: none; /* supported by Chrome and Opera */
-    box-sizing: border-box;
     width: 100%;
-    margin-right: 2px;
     background-color: $content-main-dark;
-    border-radius: 20px;
     border-bottom-right-radius: 0px;
     justify-content: center;
     position: relative;
@@ -359,7 +389,8 @@ export default {
     flex-direction: row;
     display: flex;
     height: 100%;
-    padding: 0px 30px 0px 10px;
+
+  
 
     &:after {
       content: "";
@@ -408,7 +439,7 @@ export default {
   }
 }
 
-.dark .input-container {
+.dark .input-container-main-wrap {
   .content {
     background-color: $content-main-l;
 
@@ -422,37 +453,33 @@ export default {
 }
 
 @media (max-width: 1270px) {
-.input-container {
-  width:90%;
-}
-
-%btn-pattern {
-  position: static;
-}
-.send-btn-wrp {
-  margin-left: 10px;
-  .scroll-bottom {
-    position: absolute;
+  %main-wrap-pattern {
+    width: 90%;
   }
 
+  %btn-pattern {
+    position: static;
+  }
+  .send-btn-wrp {
+    margin-left: 10px;
+    .scroll-bottom {
+      position: absolute;
+    }
+  }
 }
-
-}
-
 
 @media (max-width: 500px) {
-  
-  .input-container  {
-    height: 48px;
+  %main-wrap-pattern {
     width: 100%;
   }
 
-%btn-pattern {
-  height: 48px;
-  width: 48px;
+  .input-container-main-wrap {
+    height: 48px;
+  }
+
+  %btn-pattern {
+    height: 48px;
+    width: 48px;
+  }
 }
-
-}
-
-
 </style>

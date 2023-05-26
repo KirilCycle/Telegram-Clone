@@ -427,8 +427,8 @@ $def-gray: #b2b2b2;
   position: relative;
 }
 .profile-img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  min-height: 100%;
   object-fit: cover;
 }
 
@@ -489,11 +489,7 @@ img {
   align-items: center;
   justify-content: center;
 
-@media screen and(min-width :1400px) {
-  height: 60px;
-  
-}
-  
+
 
 
   .settings_nav_right_side {
@@ -564,6 +560,9 @@ img {
   border-right: 1px solid rgba(128, 128, 128, 0.237);
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
   &::-webkit-scrollbar {
     display: none;
@@ -604,9 +603,7 @@ img {
     }
   }
 
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+
 
   h2 {
     margin-top: 10px;

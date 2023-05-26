@@ -48,7 +48,7 @@
             v-on:input="(e) => handleTextArea(e.target.value, this)"
           />
         </div>
-        
+
         <div class="info-about-bio-wrap">
           <p>
             Any details such as age, occupation or city. Example: 23 y.o.
@@ -285,7 +285,7 @@ export default {
 
         const querySnapshot = await getDocs(q);
 
-        let res = await querySnapshot.docs[0]?.data();
+        let res =  querySnapshot.docs[0]?.data();
 
         let newData = {};
 
@@ -330,9 +330,10 @@ export default {
 
           if (res) {
             if (res.username === this.$store.state.user.user.username) {
-              await updateDoc(userDoc, newData).then((res) =>
-                console.log(res, "UPDATED SAME USERNAME")
-              );
+              await updateDoc(userDoc, newData).then((res) => {
+                console.log(res, "UPDATED SAME USERNAME");
+                this.$emit("close");
+              });
 
               console.log("ENOTHER DATA", newData);
             } else {
@@ -340,7 +341,7 @@ export default {
             }
           } else {
             await updateDoc(userDoc, newData)
-              .then((res) => console.log(res, "UPDATED"))
+              .then((res) => this.$emit("close"))
               .catch((er) => console.log(er));
 
             console.log("ENOTHER DATA", newData);
@@ -434,11 +435,9 @@ $def-gray: #828282;
   justify-content: center;
   padding: 15px;
 
-  
-  input  {
+  input {
     margin-top: 15px;
     margin-bottom: 15px;
-   
   }
 
   .input-username-wrong {
@@ -567,8 +566,6 @@ $def-gray: #828282;
     height: 10px;
     color: $def-gray;
   }
-
-  
 }
 .page-header {
   color: $text-main;
@@ -580,9 +577,6 @@ $def-gray: #828282;
 .dark .page-header {
   color: $text-main-l;
 }
-
-
-
 
 .save-changes-btn {
   width: 50px;
