@@ -269,9 +269,8 @@ export default {
   @extend %no-select;
 }
 .item {
-  min-width: 150px;
-  max-width: 900px;
-  width: 500px;
+  
+  width: 400px;
   position: relative;
   display: flex;
 
@@ -340,34 +339,18 @@ export default {
     background: $content-main;
     color: $text-main;
     margin-bottom: 7px;
-
-    flex-wrap: wrap;
     position: relative;
-
+     word-break: break-all; 
     display: inline-block;
-
     margin-left: 10px;
     max-width: 500px;
-    word-break: break-all;
-    overflow-wrap: break-word;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
-    width: max-content;
-    min-width: 80px;
-    max-width: 70%;
+    width: 500px;
   }
 
-  label {
-    font-size: 0.7rem;
-    position: absolute;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-    right: 8px;
-    color: rgb(223, 222, 222);
-    bottom: 4px;
-  }
+ 
 }
 
 .dark .item {
@@ -375,7 +358,7 @@ export default {
     background: $content-main-l;
     color: $text-main-l;
 
-    word-break: break-all;
+   
   }
 
   .emoji-c {
@@ -425,9 +408,7 @@ export default {
 .my-item {
   transform: translateX(0px);
   transition: transform 0.2s ease-out;
-  max-width: 600px;
   position: relative;
-  width: max-content;
   display: flex;
 
   .item-body {
@@ -438,7 +419,8 @@ export default {
       font-size: 0.9rem;
       margin-top: 0px;
       padding-left: 6px;
-      padding-right: 35px;
+      padding-right: 65px;
+      width: 100%;
     }
     .user-name {
       display: none;
@@ -455,6 +437,7 @@ export default {
     line-height: 19px;
 
     p {
+      flex-wrap: nowrap;
     }
   }
   
@@ -468,11 +451,9 @@ export default {
 
 @media (max-width: 910px) {
   .my-item {
-    width: min-content;
     display: flex;
-    max-width: 500px;
+    
     .item-body {
-      right: 0px;
       .item_body_text {
         text-align: left;
         font-size: 0.9rem;
@@ -483,7 +464,8 @@ export default {
       .user-name {
         display: none;
       }
-      word-break: break-all;
+      right: 0px;
+    
       padding: 8px;
       color: white;
       display: flex;
@@ -513,6 +495,13 @@ export default {
       width: min-content;
       display: flex;
       max-width: 320px;
+    }
+  }
+   @media (max-width: 380px) {
+    .my-item {
+      width: min-content;
+      display: flex;
+      max-width: 290px;
     }
   }
 }

@@ -70,7 +70,7 @@ export default {
 
 .hide-prev-input-borders-line {
   width: 100%;
-  background-color: $content-main;
+  background-color: $content-main-dark;
   height: 30px;
   bottom: -15px;
   z-index: 0;
@@ -97,9 +97,12 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: $content-main-dark;
   height: 100%;
+}
 
+.dark .conetent {
+  background-color: $content-main-l;
 }
 
 span {

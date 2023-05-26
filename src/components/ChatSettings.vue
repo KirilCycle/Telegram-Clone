@@ -13,6 +13,7 @@ import { collection, getDocs, getDoc, Timestamp } from "firebase/firestore";
 export default {
   methods: {
     async deleteChat() {
+      return
       console.log("pizda maline");
       //user 1
       //user 2
