@@ -49,7 +49,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "@firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import store from "@/store/store";
-import {   uploadBytesResumable, } from 'firebase/storage';
+import { uploadBytesResumable } from "firebase/storage";
 
 export default {
   props: {
@@ -151,14 +151,19 @@ export default {
             // Get the download URL of the uploaded video file
             getDownloadURL(uploadTask.snapshot.ref)
               .then((downloadURL) => {
-                console.log("Download URL:", downloadURL)
+                console.log("Download URL:", downloadURL);
 
                 const resData = {
-                  type:'video',
-                  src: downloadURL
-                }
+                  type: "video",
+                  src: downloadURL,
+                };
 
-                emit("sendMsgWithFile", capture, resData,  store.state.message.replyTarget);
+                emit(
+                  "sendMsgWithFile",
+                  capture,
+                  resData,
+                  store.state.message.replyTarget
+                );
                 // Use the download URL to display or share the video with others
               })
               .catch((error) => {
@@ -172,14 +177,18 @@ export default {
         uploadBytes(storageRef, source)
           .then((snapshot) => {
             getDownloadURL(storageRef).then((url) => {
+              const resData = {
+                type: "img",
+                src: url,
+              };
 
-                const resData = {
-                  type: 'img',
-                  src: url
-                 }
-
-              emit("sendMsgWithFile", capture, resData, store.state.message.replyTarget);
-              resetData()
+              emit(
+                "sendMsgWithFile",
+                capture,
+                resData,
+                store.state.message.replyTarget
+              );
+              resetData();
             });
           })
           .catch((er) => console.log(er, "post er"));
@@ -223,7 +232,7 @@ $padver: 16px;
   margin-right: 5px;
 
   span {
-     cursor: pointer;
+    cursor: pointer;
     display: block;
     position: relative;
     right: 8px;

@@ -82,6 +82,7 @@ export default {
 }
 
 .conetent {
+   border-radius: 20px 20px 0px 0px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
@@ -98,7 +99,7 @@ export default {
   justify-content: space-between;
   background-color: #fff;
   height: 100%;
-  border-radius: 20px;
+
 }
 
 span {

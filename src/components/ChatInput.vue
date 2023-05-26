@@ -1,14 +1,10 @@
 <template>
   <div @touchmove.prevent="() => {}" class="input-container-main-wrap">
-     
-
-
     <div class="content">
       <div class="reply-border-wrap" v-if="select">
         <reply-message-border :selected="select"></reply-message-border>
         <div class="send-btn-wrp-fake"></div>
       </div>
-
 
       <button class="file-select">
         <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
@@ -41,10 +37,6 @@
         </button>
       </transition>
     </div>
-
-
-
-
   </div>
 </template>
 
@@ -279,7 +271,7 @@ export default {
   width: 70%;
 }
 .send-btn-wrp-fake {
-   width: 55px;
+  width: 55px;
   height: 55px;
   display: flex;
   justify-content: center;
@@ -350,13 +342,10 @@ export default {
   bottom: 100%;
   display: flex;
   flex-direction: row;
-  background-color: #fff;
-
-  
   
 }
 
-.input-container-main-wrap{
+.input-container-main-wrap {
   @extend %main-wrap-pattern;
   max-width: 1100px;
   position: relative;
@@ -369,6 +358,8 @@ export default {
   bottom: 0;
   align-items: center;
   box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
 
   span {
     font-size: 1.9rem;
@@ -382,15 +373,13 @@ export default {
     user-select: none; /* supported by Chrome and Opera */
     width: 100%;
     background-color: $content-main-dark;
-    border-bottom-right-radius: 0px;
+    border-radius: 20px 20px 0px 20px;
     justify-content: center;
     position: relative;
     align-items: center;
     flex-direction: row;
     display: flex;
     height: 100%;
-
-  
 
     &:after {
       content: "";
@@ -419,6 +408,7 @@ export default {
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      margin-left: 10px;
     }
 
     input {
