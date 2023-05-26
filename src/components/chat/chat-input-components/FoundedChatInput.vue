@@ -17,16 +17,6 @@
         <span class="material-symbols-outlined"> keyboard_voice </span>
       </button>
 
-      <transition name="fade">
-        <button
-          ref="scrollBottom"
-          @click="scrollToBottom"
-          class="scroll-bottom"
-          v-show="!$store.state.chat.scrollBottomData.isBottom"
-        >
-          <span class="material-symbols-outlined"> arrow_downward </span>
-        </button>
-      </transition>
     </div>
   </div>
 </template>
@@ -44,7 +34,7 @@ export default {
 
   data() {
     return {
-      v: null,
+      v: '',
     };
   },
   methods: {
@@ -53,6 +43,14 @@ export default {
       this.v = "";
     },
   },
+  computed: {
+    ableTosend() {
+      if (this.v.length) {
+         return true
+      }
+      return false
+    }
+  }
 };
 </script>
 
