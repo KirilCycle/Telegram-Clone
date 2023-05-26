@@ -270,7 +270,6 @@ export default {
 }
 .item {
   
-  width: 400px;
   position: relative;
   display: flex;
 
@@ -309,8 +308,6 @@ export default {
   }
 
   .item-body {
-    width: 100%;
-
     left: 0px;
     display: flex;
     flex-direction: column;
@@ -340,14 +337,14 @@ export default {
     color: $text-main;
     margin-bottom: 7px;
     position: relative;
-     word-break: break-all; 
+    overflow-wrap: break-word;
     display: inline-block;
     margin-left: 10px;
     max-width: 500px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
-    width: 500px;
+     width: auto;
   }
 
  
@@ -412,7 +409,7 @@ export default {
   display: flex;
 
   .item-body {
-    right: 0px;
+    
     padding-right: 10px;
     .item_body_text {
       text-align: left;
@@ -429,16 +426,12 @@ export default {
     color: white;
     background: rgb(84, 175, 213);
 
-    right: 0px;
-    margin-left: 10px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
     width: auto;
+    margin-left: 10px;
+  
     line-height: 19px;
 
-    p {
-      flex-wrap: nowrap;
-    }
+  
   }
   
 }
