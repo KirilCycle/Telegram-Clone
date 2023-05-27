@@ -57,6 +57,15 @@ export default {
     notready: Boolean,
     required: true,
   },
+  data() {
+    return {
+      capture: "",
+      v: false,
+      filePreview: null,
+      photo: null,
+      video: null,
+    };
+  },
   methods: {
     uploadImage(event) {
       if (event.target.files[0]) {
@@ -108,19 +117,8 @@ export default {
       }
     },
   },
-  data() {
-    return {
-      capture: "",
-      v: false,
-      filePreview: null,
-      photo: null,
-      video: null,
-    };
-  },
   setup(props) {
     const storage = getStorage();
-
-    const auth = getAuth();
 
     async function postMessage(source, capture, emit, resetData, type) {
       const fileType = source.type.split("/")[0];
@@ -207,6 +205,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/colors";
 $padhor: 10px;
 $padver: 16px;
 
@@ -296,7 +295,7 @@ $padver: 16px;
       input {
         width: 100%;
         border-radius: 0px;
-        border-bottom: 1px solid #52b4ff;
+        border-bottom: 2px solid $second;
         box-sizing: border-box;
         height: 30px;
         font: 1rem sans-serif;
@@ -331,7 +330,7 @@ $padver: 16px;
         font-family: Avenir, Helvetica, Arial, sans-serif;
         cursor: pointer;
         font-weight: 550;
-        color: #0091ff;
+        color: $second;
         border-radius: 5px;
         @extend %paddings-setup;
 

@@ -102,7 +102,7 @@
           </div>
 
           <div v-else>
-            <chat-input :sendMsg="addNewMessage"></chat-input>
+            <chat-input :sendMsg="sendMsg"></chat-input>
           </div>
         </div>
       </div>
@@ -133,6 +133,7 @@ import ChatSettings from "@/components/ChatSettings.vue";
 import FoundedChatInputVue from "@/components/chat/chat-input-components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
+import { sendMsg } from '@/features/sendChatMessage'
 
 export default {
   components: {
@@ -156,6 +157,7 @@ export default {
       chatKey: "s",
       serachQ: "",
       parentChatRef: this.$refs.chatContainer,
+      sendMsg: sendMsg
     };
   },
   mounted() {
@@ -176,7 +178,6 @@ export default {
 
     async addNewMessage(text, source, replyData) {
       const db = firebase.firestore();
-      const chatRefMsg = doc(db, "chatMessages", store.state.chat.chatId);
 
       const auth = getAuth();
 
@@ -195,10 +196,7 @@ export default {
           createdAt: Timestamp.now(),
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
-        if (auth.currentUser.photoURL) {
-          message.userPhotoURl = auth.currentUser.photoURL;
-        }
-
+     
         if (source) {
           //   messageisNotReady.value = true;
           message.source = source;
@@ -252,6 +250,7 @@ export default {
         //i cnat manipulate with index directly
       }
     },
+
 
     serachChat(query) {
       query
@@ -527,14 +526,7 @@ export default {
 
     const chatContainer = ref(null);
 
-    // function appHeight() {
-    //   const doc = document.documentElement
-    //   doc.style.setProperty('--vh', (window.innerHeight*.01) + 'px');
-    // }
-
-    // window.addEventListener('resize', appHeight);
-    // appHeight();
-
+  
     return {
       chat,
       chatList,
@@ -553,11 +545,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
-$custom-c1: rgb(28, 28, 28);
-$custom-c2: rgb(43, 43, 43);
-$custom-c4: rgb(23, 23, 23);
 
-$custom-c3: rgb(0, 128, 255);
 
 .btn-controll {
   z-index: 10;

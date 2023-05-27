@@ -8,7 +8,7 @@
       </div>
 
       <button class="file-select">
-        <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
+        <selected-file-modal></selected-file-modal>
       </button>
    
       <input
