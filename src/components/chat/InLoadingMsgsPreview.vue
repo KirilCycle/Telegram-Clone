@@ -3,9 +3,10 @@
     v-for="msg in $store.state.previewChat.msgs"
     :key="msg.id"
     class="in-loading-msg-preview"
+    v-show="msg.chatId === $store.state.chat.chatId"
   >
     <div class="loading-data-content-wrp">
-       <close-spiner-vue></close-spiner-vue>
+      <close-spiner-vue @click="msg.cancel"></close-spiner-vue>
     </div>
     <img v-if="msg.source.type === 'img'" :src="msg.source.src" />
     <video class="video-player" v-else :src="msg.source.src"></video>
@@ -15,7 +16,7 @@
 <script>
 import store from "@/store/store";
 import MessageSourceContainerVue from "./MessageSourceContainer.vue";
-import CloseSpinerVue from '../UI/CloseSpiner.vue';
+import CloseSpinerVue from "../UI/CloseSpiner.vue";
 export default {
   components: {
     MessageSourceContainerVue,
@@ -30,7 +31,7 @@ export default {
 
 <style lang="scss" scoped>
 .in-loading-msg-preview {
-  width: 300px;
+  width: 250px;
   height: 500px;
   position: relative;
 }
@@ -40,7 +41,7 @@ export default {
   height: 100%;
   position: absolute;
   z-index: 2;
-  
+
   border-radius: 10px;
   backdrop-filter: blur(15px);
   display: flex;

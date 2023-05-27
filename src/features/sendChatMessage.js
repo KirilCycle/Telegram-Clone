@@ -6,7 +6,7 @@ import { doc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
  
- export async function sendMsg(text, source, replyData) {
+ export async function sendMsg(text, source, replyData, chatId) {
       const db = firebase.firestore();
 
       const auth = getAuth();
@@ -38,7 +38,7 @@ import { getAuth } from "firebase/auth";
 
         const chatRefMsg = db
           .collection("chatMessages")
-          .doc(store.state.chat.chatId)
+          .doc(chatId)
           .collection("messages");
 
         console.log(chatRefMsg, "AS SEND");
@@ -53,7 +53,7 @@ import { getAuth } from "firebase/auth";
         const user2usersChatRef = doc(
           db,
           "usersLinksToChat",
-          store.state.chat.chatId.replace(auth.currentUser.uid, "")
+          chatId.replace(auth.currentUser.uid, "")
         );
 
         const lastMsgData = {
@@ -63,16 +63,16 @@ import { getAuth } from "firebase/auth";
         };
 
         await updateDoc(user1usersChatRef, {
-          [store.state.chat.chatId]: {
+          [chatId]: {
             lastMsg: lastMsgData,
-            id: store.state.chat.chatId,
+            id:chatId,
           },
         });
 
         await updateDoc(user2usersChatRef, {
-          [store.state.chat.chatId]: {
+          [chatId]: {
             lastMsg: lastMsgData,
-            id: store.state.chat.chatId,
+            id: chatId,
           },
         });
 

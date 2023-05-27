@@ -39,8 +39,8 @@
 
 .spinner {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
 }
 
 .spinner-inner {
@@ -51,7 +51,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 4px solid #ccc;
+  border: 3px solid #ccc;
   border-top-color: #888;
   animation: spin 1s infinite linear;
 }

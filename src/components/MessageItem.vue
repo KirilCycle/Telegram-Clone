@@ -300,10 +300,10 @@ export default {
     overflow-wrap: break-word;
     display: inline-block;
     margin-left: 10px;
-    max-width: 500px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
+    max-width: 500px;
     width: auto;
   }
 }

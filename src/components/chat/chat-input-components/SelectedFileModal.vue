@@ -126,9 +126,11 @@ export default {
     const storage = getStorage();
 
     async function postMessage(source, capture,  resetAndClose, preview) {
-      const fileType = source.type.split("/")[0];
+    const fileType = source.type.split("/")[0];
 
-      resetAndClose();
+    resetAndClose();
+
+    const chatId = store.state.chat.chatId
 
       if (fileType === "video") {
         console.log(source, "VID");
@@ -139,10 +141,11 @@ export default {
 
         const uploadTask = uploadBytesResumable(storageRef, source);
 
-        console.log(URL.createObjectURL(source), 'SOURCE SUKA');
         store.commit("previewChat/setNextLoadingMsg", {
           id: previewMsgId,
+          cancel: () => uploadTask.cancel(),
           source: { type: "video", src: preview },
+          chatId,
         });
 
         uploadTask.on(
@@ -155,7 +158,7 @@ export default {
             console.log("Upload progress:", progress);
           },
           (error) => {
-            // store.commit("previewChat/removeLoadingMsg", previewMsgId);
+            store.commit("previewChat/removeLoadingMsg", previewMsgId);
             console.error("Error uploading video:", error);
           },
           () => {
@@ -174,13 +177,15 @@ export default {
                 sendMsg(
                   capture,
                   resData,
-                  store.state.message.replyTarget
+                  store.state.message.replyTarget,
+                  chatId
+                  
                 ).finally(
-                  // store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                   store.commit("previewChat/removeLoadingMsg", previewMsgId)
                 );
               })
               .catch((error) => {
-                // store.commit("previewChat/removeLoadingMsg", previewMsgId);
+                 store.commit("previewChat/removeLoadingMsg", previewMsgId);
                 console.error("Error getting download URL:", error);
               });
           }
@@ -195,9 +200,9 @@ export default {
                 src: url,
               };
 
-              sendMsg(capture, resData, store.state.message.replyTarget);
+              sendMsg(capture, resData, store.state.message.replyTarget,chatId);
 
-              resetData();
+              
             });
           })
           .catch((er) => console.log(er, "post er"));
@@ -208,12 +213,7 @@ export default {
       }
     }
 
-    function paplavok() {
-      store.commit("previewChat/setNextLoadingMsg", { id: "paplavoche" });
-    }
-
     return {
-      paplavok,
       postMessage,
     };
   },
