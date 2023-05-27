@@ -2,6 +2,7 @@
   <div class="file-upl-content">
     <span class="material-symbols-outlined"> attach_file </span>
     <input
+      ref="fileInput"
       accept="image/gif, image/jpeg, image/png, video/mp4, video/avi, video/mov, video/wmv, video/flv, video/mkv, video/webm"
       @change="uploadImage"
       class="file-input"
@@ -12,28 +13,29 @@
   <Teleport to="body">
     <div v-if="v" class="bloor">
       <div class="modal">
-        <div class="img-container">
+        <button @click="reset" class="close-btn">
+          <span class="material-symbols-outlined"> close </span>
+        </button>
+
+        <div class="preview-container">
           <img class="content" v-if="localType" :src="preview" />
           <video content="content" v-else :src="preview" controls></video>
         </div>
 
-        <div class="capture-container">
-          <input v-model="capture" type="text" placeholder="Caption" />
-        </div>
-        <div class="modal_manage">
+        <div class="caption-container">
+          <input
+            class="caption"
+            v-model="caption"
+            type="text"
+            placeholder="Caption"
+          />
           <button
-            :class="{ 'btn-disabled': notready }"
-            :disabled="notready"
-            @click="reset"
-          >
-            Cancel
-          </button>
-          <button
+            class="send-btn"
             :class="{ 'btn-disabled': notready }"
             :disabled="notready"
             @click="
               () => {
-                postMessage(source, capture, reset, preview);
+                postMessage(source, caption, reset, preview);
               }
             "
           >
@@ -60,7 +62,7 @@ export default {
   },
   data() {
     return {
-      capture: "",
+      caption: "",
       v: false,
       filePreview: null,
       photo: null,
@@ -111,6 +113,7 @@ export default {
       this.filePreview = "";
       this.capture = "";
       this.v = false;
+      this.$refs.fileInput.value = null;
     },
   },
   computed: {
@@ -125,12 +128,12 @@ export default {
   setup(props) {
     const storage = getStorage();
 
-    async function postMessage(source, capture,  resetAndClose, preview) {
-    const fileType = source.type.split("/")[0];
+    async function postMessage(source, caption, resetAndClose, preview) {
+      const fileType = source.type.split("/")[0];
 
-    resetAndClose();
+      resetAndClose();
 
-    const chatId = store.state.chat.chatId
+      const chatId = store.state.chat.chatId;
 
       if (fileType === "video") {
         console.log(source, "VID");
@@ -175,17 +178,16 @@ export default {
                 };
 
                 sendMsg(
-                  capture,
+                  caption,
                   resData,
                   store.state.message.replyTarget,
                   chatId
-                  
                 ).finally(
-                   store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                  store.commit("previewChat/removeLoadingMsg", previewMsgId)
                 );
               })
               .catch((error) => {
-                 store.commit("previewChat/removeLoadingMsg", previewMsgId);
+                store.commit("previewChat/removeLoadingMsg", previewMsgId);
                 console.error("Error getting download URL:", error);
               });
           }
@@ -200,9 +202,12 @@ export default {
                 src: url,
               };
 
-              sendMsg(capture, resData, store.state.message.replyTarget,chatId);
-
-              
+              sendMsg(
+                caption,
+                resData,
+                store.state.message.replyTarget,
+                chatId
+              );
             });
           })
           .catch((er) => console.log(er, "post er"));
@@ -232,6 +237,24 @@ $padver: 16px;
   padding-left: $padhor;
   box-sizing: border-box;
 }
+
+.close-btn {
+  width: 37px;
+  height: 37px;
+  border-radius: 19.5px;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: $second-content;
+  &:hover {
+    background-color: $hover;
+  }
+}
+
 .file-upl-content {
   &:hover {
     span {
@@ -272,6 +295,16 @@ $padver: 16px;
   }
 }
 
+.caption {
+  width: 100%;
+  border-radius: 0px;
+  box-sizing: border-box;
+  height: 40px;
+  font: 1rem sans-serif;
+  color: $text-main;
+  transition: border-bottom ease-in 0.2s;
+}
+
 .bloor {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -289,83 +322,62 @@ $padver: 16px;
     left: 50%;
     z-index: 121;
     transform: translate(-50%, -50%);
-    background-color: #1c1c1c;
-    min-width: 330px;
-    min-height: 410px;
+    background-color: $content-main-dark;
+    width: 310px;
+    height: 410px;
     border-radius: 15px;
 
-    .img-container {
+    .preview-container {
       width: 100%;
-      height: 65%;
-      background-color: #00000076;
+      margin-top: 25px;
+      height: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
       img {
-        max-height: 85%;
+        object-fit: scale-down;
+        height: 300px;
         max-width: 100%;
       }
       video {
-        @extend img;
+        object-fit: scale-down;
+        height: 300px;
+        width: auto;
       }
     }
 
-    .capture-container {
-      @extend %paddings-setup;
-      input {
-        width: 100%;
-        border-radius: 0px;
-        border-bottom: 2px solid gray;
-        box-sizing: border-box;
-        height: 30px;
-        font: 1rem sans-serif;
-        color: gray;
-        transition: border-bottom ease-in 0.2s;
-        &:focus {
-          border-bottom: 2px solid $second;
-        }
-      }
-    }
-    .modal_manage {
-      position: absolute;
-      background-color: rgba(102, 51, 153, 0);
-      bottom: 0;
-      width: 100%;
+    .caption-container {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: max-content;
-
-      .btn-disabled {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        cursor: pointer;
-        font-weight: 550;
-        color: #535353;
-        border-radius: 5px;
-        @extend %paddings-setup;
-
-        &:hover {
-          background-color: rgba(0, 145, 255, 0);
-          @extend %paddings-setup;
-        }
-      }
-
-      button {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        cursor: pointer;
-        font-weight: 550;
-        color: $second;
-        border-radius: 5px;
-        @extend %paddings-setup;
-
-        &:hover {
-          background-color: rgba(0, 145, 255, 0.083);
-          @extend %paddings-setup;
-        }
-      }
-
-      @extend %paddings-setup;
+      flex-direction: row;
+      margin-top: 5px;
     }
+
+    .send-btn {
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+      cursor: pointer;
+      font-weight: 550;
+      height: 40px;
+      color: white;
+      border-radius: 5px;
+      background-color: $second;
+      display: flex;
+      align-items: center;
+      @extend %paddings-setup;
+
+      &:hover {
+        background-color: $main;
+        @extend %paddings-setup;
+      }
+    }
+
+    @extend %paddings-setup;
   }
+}
+.dark .bloor .modal {
+  background-color: $content-main-dark-l;
+}
+
+.dark .caption {
+  color: $text-main-l;
 }
 </style>
