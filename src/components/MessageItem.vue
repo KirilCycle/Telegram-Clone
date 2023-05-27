@@ -15,15 +15,10 @@
         </h4>
       </div>
 
-      <div class="img-wrp" v-if="message.source">
-        <img v-if="message.source.type === 'img'" :src="message.source.src" />
-        <video
-          class="video-player"
-          v-else
-          :src="message.source.src"
-          controls
-        ></video>
-      </div>
+      <message-source-container-vue
+        v-if="message.source"
+        :source="message.source"
+      ></message-source-container-vue>
 
       <div class="reply-block" v-if="message.replyData">
         <div class="reply_block_source_wrap" v-if="message.replyData.source">
@@ -71,10 +66,12 @@ import EmojiContainer from "./EmojiContainer.vue";
 import { objectEntries } from "@vueuse/core";
 import EmojiUser from "./EmojiUser.vue";
 import { replyEmoji } from "@/features/replyUsingEmoji";
+import MessageSourceContainerVue from "./chat/MessageSourceContainer.vue";
 
 export default {
   components: {
     ProfileImage,
+    MessageSourceContainerVue,
     SmallChatImage,
     EmojiContainer,
     EmojiUser,
@@ -203,45 +200,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
-.img-wrp {
-  width: 100%;
-
-  img {
-    border-radius: 10px;
-    width: 100%;
-    max-height: 600px;
-  }
-
-  video {
-    @extend img;
-    border-radius: 0px;
-  }
-
-  .video-player:hover {
-    cursor: pointer;
-  }
-
-  .video-player::-webkit-media-controls {
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  .video-player:hover::-webkit-media-controls {
-    opacity: 1;
-  }
-
-  .video-player::-webkit-media-controls-start-playback-button {
-    display: none;
-  }
-
-  .video-player:hover::-webkit-media-controls-start-playback-button {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
 
 %no-select {
   -webkit-user-select: none; /* Safari */
@@ -266,7 +224,6 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
 
   @extend %no-select;
 }
@@ -323,7 +280,6 @@ export default {
       padding-right: 6px;
       p {
         font-weight: 200;
-        
       }
 
       .time {

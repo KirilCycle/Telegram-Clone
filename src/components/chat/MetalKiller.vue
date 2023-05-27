@@ -5,7 +5,6 @@
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
-
   <!-- <component
    v-for="it in msgs"
     :key="it.id"
@@ -21,10 +20,7 @@
     :message="it"
     :isMy="it.userId.includes(firstPartOfmyId)"
   ></message-item>
- <in-loading-msgs-preview></in-loading-msgs-preview>
-
-  
-
+  <in-loading-msgs-preview></in-loading-msgs-preview>
   <div
     ref="scrollAtTheBottom"
     class="check-bottom-scroll"
@@ -32,7 +28,6 @@
   ></div>
 
   <div class="next" v-observer="next"></div>
-
 </template>
 
 <script>
@@ -44,7 +39,7 @@ import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 import MessageItem from "../MessageItem.vue";
 import MessageDefault from "./MessageDefault.vue";
-import InLoadingMsgsPreview from './InLoadingMsgsPreview.vue'
+import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
 
 export default {
   props: {
@@ -64,7 +59,7 @@ export default {
     currentChatType(it) {
       if (it.id) {
         return "MessageDefault";
-      } 
+      }
     },
   },
 

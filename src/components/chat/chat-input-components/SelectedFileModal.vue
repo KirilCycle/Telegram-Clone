@@ -39,14 +39,6 @@
           >
             Send
           </button>
-
-          <button
-            :class="{ 'btn-disabled': notready }"
-            :disabled="notready"
-            @click="paplavok"
-          >
-            PAPLAVOK
-          </button>
         </div>
       </div>
     </div>
@@ -133,19 +125,24 @@ export default {
   setup(props) {
     const storage = getStorage();
 
-    async function postMessage(source, capture, emit, resetData, type) {
+    async function postMessage(source, capture, emit, resetAndClose, type) {
       const fileType = source.type.split("/")[0];
+
+      resetAndClose();
 
       if (fileType === "video") {
         console.log(source, "VID");
 
-        // const storageRef = ref(storage, `videos/${source.name + uuidv4()}`);
+        const previewMsgId = uuidv4();
 
         const storageRef = ref(storage, `videos/${source.name + uuidv4()}`);
 
         const uploadTask = uploadBytesResumable(storageRef, source);
 
-        store.commit("previewChat/setNextLoadingMsg", { id: "paplavoche" });
+        store.commit("previewChat/setNextLoadingMsg", {
+          id: previewMsgId,
+          source: { type: "video", src: URL.createObjectURL(source) },
+        });
 
         uploadTask.on(
           "state_changed",
@@ -157,7 +154,7 @@ export default {
             console.log("Upload progress:", progress);
           },
           (error) => {
-            store.commit("previewChat/removeLoadingMsg", "paplavoche");
+            store.commit("previewChat/removeLoadingMsg", previewMsgId);
             console.error("Error uploading video:", error);
           },
           () => {
@@ -173,16 +170,16 @@ export default {
                   src: downloadURL,
                 };
 
-                sendMsg(capture, resData, store.state.message.replyTarget)
-                  .then(
-                    store.commit("previewChat/removeLoadingMsg", "paplavoche")
-                  )
-                  .catch(
-                    store.commit("previewChat/removeLoadingMsg", "paplavoche")
-                  );
+                sendMsg(
+                  capture,
+                  resData,
+                  store.state.message.replyTarget
+                ).finally(
+                  store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                );
               })
               .catch((error) => {
-                store.commit("previewChat/removeLoadingMsg", "paplavoche");
+                store.commit("previewChat/removeLoadingMsg", previewMsgId);
                 console.error("Error getting download URL:", error);
               });
           }

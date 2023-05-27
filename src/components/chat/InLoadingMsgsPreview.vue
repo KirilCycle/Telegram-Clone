@@ -1,6 +1,8 @@
 <template>
   <div>
-     <div v-for="msg in $store.state.previewChat.msgs " :key="msg.id" class="in-loading-msg-prewie"></div>
+     <div v-for="msg in $store.state.previewChat.msgs " :key="msg.id" class="in-loading-msg-prewie">
+       
+     </div>
   </div>
 </template>
 
