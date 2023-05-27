@@ -13,7 +13,8 @@
     <div v-if="v" class="bloor">
       <div class="modal">
         <div class="img-container">
-          <img :src="preview" />
+          <img class="content" v-if="localType" :src="preview" />
+          <video content="content" v-else :src="preview" controls></video>
         </div>
 
         <div class="capture-container">
@@ -50,7 +51,7 @@ import { getAuth } from "@firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import store from "@/store/store";
 import { uploadBytesResumable } from "firebase/storage";
-import { sendMsg } from '@/features/sendChatMessage'
+import { sendMsg } from "@/features/sendChatMessage";
 
 export default {
   props: {
@@ -81,6 +82,7 @@ export default {
         ) {
           this.source = event.target.files[0];
           this.preview = URL.createObjectURL(this.source);
+          this.localType = true;
           this.v = true;
         } else if (
           uploadedTarget.includes(".mp4") ||
@@ -91,11 +93,12 @@ export default {
           uploadedTarget.includes(".mkv") ||
           uploadedTarget.includes(".webm")
         ) {
-          this.preview = null;
           this.source = event.target.files[0];
+          this.preview = URL.createObjectURL(this.source);
+          this.localType = false;
           this.v = true;
 
-          console.log("VIDEO");
+          console.log("VIDEO", this.preview);
         } else {
           this.source = null;
         }
@@ -157,12 +160,7 @@ export default {
                   src: downloadURL,
                 };
 
-                sendMsg(
-                  capture,
-                  resData,
-                  store.state.message.replyTarget
-                );
-                // Use the download URL to display or share the video with others
+                sendMsg(capture, resData, store.state.message.replyTarget);
               })
               .catch((error) => {
                 console.error("Error getting download URL:", error);
@@ -170,7 +168,6 @@ export default {
           }
         );
       } else if (fileType === "image") {
-       
         const storageRef = ref(storage, `images/${source.name + uuidv4()}`);
         uploadBytes(storageRef, source)
           .then((snapshot) => {
@@ -180,12 +177,7 @@ export default {
                 src: url,
               };
 
-              sendMsg(
-                capture,
-                resData,
-                store.state.message.replyTarget
-              );
-
+              sendMsg(capture, resData, store.state.message.replyTarget);
 
               resetData();
             });
@@ -288,6 +280,9 @@ $padver: 16px;
       img {
         max-height: 65%;
         max-width: 100%;
+      }
+      video {
+        @extend img
       }
     }
 

@@ -13,11 +13,6 @@ export default {
     src: String,
     type: String,
   },
-  data() {
-    return {
-      src: this.src,
-    };
-  },
 };
 </script>
 
