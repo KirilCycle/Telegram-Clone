@@ -257,6 +257,7 @@ export default {
   border-radius: 20px;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
   align-items: center;
 }
 
@@ -266,10 +267,10 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
 
+
   @extend %no-select;
 }
 .item {
-  
   position: relative;
   display: flex;
 
@@ -283,28 +284,26 @@ export default {
     overflow: hidden;
     border-left: #fff 3px solid;
 
-.reply_block_source_wrap {
-  width: 20px;
-  height: 100%;
-  display: flex;
-
-}
-
-.reply_block_text_wrap {
-   width: auto;
-   margin-left: 3px;
-   max-width: 70px;
-   height: 100%;
-    h3 {
-      font-size: 0.85rem;
-      line-height: normal;
+    .reply_block_source_wrap {
+      width: 20px;
+      height: 100%;
+      display: flex;
     }
-    p {
-      color: #d7d7d7;
-      font-size: 0.75rem;
-    }
-}
 
+    .reply_block_text_wrap {
+      width: auto;
+      margin-left: 3px;
+      max-width: 70px;
+      height: 100%;
+      h3 {
+        font-size: 0.85rem;
+        line-height: normal;
+      }
+      p {
+        color: #d7d7d7;
+        font-size: 0.75rem;
+      }
+    }
   }
 
   .item-body {
@@ -314,20 +313,24 @@ export default {
     text-align: left;
     margin-top: 0px;
     padding-left: 6px;
-    padding-right: 35px;
+    padding-right: 6px;
 
     .item_body_text {
       font-size: 0.9rem;
+      line-height: 22px;
       margin-top: 0px;
       padding-left: 6px;
-      padding-right: 35px;
+      padding-right: 6px;
       p {
         font-weight: 200;
+        
       }
 
       .time {
+        display: block;
         position: absolute;
         right: 10px;
+        flex-shrink: 0;
         font-size: 0.7rem;
       }
     }
@@ -344,18 +347,14 @@ export default {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
-     width: auto;
+    width: auto;
   }
-
- 
 }
 
 .dark .item {
   .item-body {
     background: $content-main-l;
     color: $text-main-l;
-
-   
   }
 
   .emoji-c {
@@ -409,14 +408,12 @@ export default {
   display: flex;
 
   .item-body {
-    
-    padding-right: 10px;
     .item_body_text {
       text-align: left;
       font-size: 0.9rem;
       margin-top: 0px;
       padding-left: 6px;
-      padding-right: 65px;
+      padding-right: 6px;
       width: 100%;
     }
     .user-name {
@@ -425,76 +422,31 @@ export default {
 
     color: white;
     background: rgb(84, 175, 213);
-
     width: auto;
     margin-left: 10px;
-  
-    line-height: 19px;
-
-  
-  }
-  
-}
-
-@media (max-width: 1115px) {
-  .my-item {
-    right: 0%;
   }
 }
 
-@media (max-width: 910px) {
-  .my-item {
-    display: flex;
-    
+@media (max-width: 925px) {
+  .item {
     .item-body {
-      .item_body_text {
-        text-align: left;
-        font-size: 0.9rem;
-        margin-top: 0px;
-        padding-left: 6px;
-        padding-right: 35px;
-      }
-      .user-name {
-        display: none;
-      }
-      right: 0px;
-    
-      padding: 8px;
-      color: white;
-      display: flex;
-
-      flex-wrap: wrap;
-      position: relative;
-      right: 0px;
-      margin-left: 10px;
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-      width: max-content;
-
-      line-height: 19px;
+      max-width: 400px;
     }
   }
+}
 
-  @media (max-width: 500px) {
-    .my-item {
-      width: min-content;
-      display: flex;
-      max-width: 350px;
-    }
-  }
-
-  @media (max-width: 440px) {
-    .my-item {
-      width: min-content;
-      display: flex;
+@media (max-width: 455px) {
+  .item {
+    .item-body {
       max-width: 320px;
     }
   }
-   @media (max-width: 380px) {
-    .my-item {
-      width: min-content;
-      display: flex;
-      max-width: 290px;
+}
+
+@media (max-width: 370px) {
+  .item {
+    .item-body {
+      max-width: 270px;
     }
   }
 }

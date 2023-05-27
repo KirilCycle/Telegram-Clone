@@ -5,6 +5,7 @@
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
+
   <!-- <component
    v-for="it in msgs"
     :key="it.id"
@@ -27,6 +28,7 @@
     v-desapeared="handleScrollBtn"
   ></div>
   <div class="next" v-observer="next"></div>
+
 </template>
 
 <script>

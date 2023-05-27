@@ -645,6 +645,7 @@ v-enter-active,
   overflow-y: scroll;
   overflow-x: hidden;
   max-width: 1100px;
+  padding-top: 20px;
 }
 
 .chat-container-x::-webkit-scrollbar {
