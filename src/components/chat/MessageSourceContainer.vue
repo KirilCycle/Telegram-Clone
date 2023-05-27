@@ -23,12 +23,13 @@ export default {
   img {
     border-radius: 10px;
     width: 100%;
-    max-height: 600px;
+    max-height: 500px;
   }
 
   video {
     @extend img;
-    border-radius: 0px;
+     border-radius: 10px;
+     width: 100%;
   }
 
   .video-player:hover {

@@ -269,8 +269,8 @@ export default {
     flex-direction: column;
     text-align: left;
     margin-top: 0px;
-    padding-left: 6px;
-    padding-right: 6px;
+
+
 
     .item_body_text {
       font-size: 0.9rem;
@@ -291,7 +291,8 @@ export default {
       }
     }
 
-    padding: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px ;
     background: $content-main;
     color: $text-main;
     margin-bottom: 7px;

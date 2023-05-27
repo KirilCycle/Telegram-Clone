@@ -33,7 +33,7 @@
             :disabled="notready"
             @click="
               () => {
-                postMessage(source, capture, $emit, reset, type);
+                postMessage(source, capture, reset, preview);
               }
             "
           >
@@ -125,7 +125,7 @@ export default {
   setup(props) {
     const storage = getStorage();
 
-    async function postMessage(source, capture, emit, resetAndClose, type) {
+    async function postMessage(source, capture,  resetAndClose, preview) {
       const fileType = source.type.split("/")[0];
 
       resetAndClose();
@@ -139,9 +139,10 @@ export default {
 
         const uploadTask = uploadBytesResumable(storageRef, source);
 
+        console.log(URL.createObjectURL(source), 'SOURCE SUKA');
         store.commit("previewChat/setNextLoadingMsg", {
           id: previewMsgId,
-          source: { type: "video", src: URL.createObjectURL(source) },
+          source: { type: "video", src: preview },
         });
 
         uploadTask.on(
@@ -154,7 +155,7 @@ export default {
             console.log("Upload progress:", progress);
           },
           (error) => {
-            store.commit("previewChat/removeLoadingMsg", previewMsgId);
+            // store.commit("previewChat/removeLoadingMsg", previewMsgId);
             console.error("Error uploading video:", error);
           },
           () => {
@@ -175,11 +176,11 @@ export default {
                   resData,
                   store.state.message.replyTarget
                 ).finally(
-                  store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                  // store.commit("previewChat/removeLoadingMsg", previewMsgId)
                 );
               })
               .catch((error) => {
-                store.commit("previewChat/removeLoadingMsg", previewMsgId);
+                // store.commit("previewChat/removeLoadingMsg", previewMsgId);
                 console.error("Error getting download URL:", error);
               });
           }

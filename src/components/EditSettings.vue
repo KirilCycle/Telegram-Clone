@@ -68,6 +68,8 @@
         <span class="material-symbols-outlined"> done </span>
       </button>
     </transition>
+
+   
   </div>
 </template>
 
@@ -285,7 +287,7 @@ export default {
 
         const querySnapshot = await getDocs(q);
 
-        let res =  querySnapshot.docs[0]?.data();
+        let res = querySnapshot.docs[0]?.data();
 
         let newData = {};
 
@@ -398,6 +400,7 @@ $def-gray: #828282;
   background-color: $content-main;
   box-sizing: border-box;
 }
+
 
 .dark .edit-wrap {
   background-color: $content-main-l;
