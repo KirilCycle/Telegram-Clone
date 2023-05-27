@@ -50,6 +50,7 @@ import { getAuth } from "@firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import store from "@/store/store";
 import { uploadBytesResumable } from "firebase/storage";
+import { sendMsg } from '@/features/sendChatMessage'
 
 export default {
   props: {
@@ -156,8 +157,7 @@ export default {
                   src: downloadURL,
                 };
 
-                emit(
-                  "sendMsgWithFile",
+                sendMsg(
                   capture,
                   resData,
                   store.state.message.replyTarget
@@ -170,7 +170,7 @@ export default {
           }
         );
       } else if (fileType === "image") {
-        emit("notready", true);
+       
         const storageRef = ref(storage, `images/${source.name + uuidv4()}`);
         uploadBytes(storageRef, source)
           .then((snapshot) => {
@@ -180,12 +180,13 @@ export default {
                 src: url,
               };
 
-              emit(
-                "sendMsgWithFile",
+              sendMsg(
                 capture,
                 resData,
                 store.state.message.replyTarget
               );
+
+
               resetData();
             });
           })

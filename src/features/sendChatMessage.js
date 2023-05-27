@@ -14,10 +14,10 @@ import { getAuth } from "firebase/auth";
       const nextVerify = text.length > 0 || source;
 
       if (text.length < 2000 && nextVerify) {
-        const message = {
+         const message = {
           userName: auth.currentUser.displayName
             ? auth.currentUser.displayName.slice(0, 25)
-            : auth.currentUser.username.slice(
+            : auth.currentUser.email.slice(
                 0,
                 auth.currentUser.email.indexOf("@")
               ),
@@ -81,4 +81,4 @@ import { getAuth } from "firebase/auth";
       }
     }
 
-
+   
