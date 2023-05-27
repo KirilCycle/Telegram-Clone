@@ -24,7 +24,7 @@
           <button
             :class="{ 'btn-disabled': notready }"
             :disabled="notready"
-            @click="v = false"
+            @click="reset"
           >
             Cancel
           </button>
@@ -38,6 +38,14 @@
             "
           >
             Send
+          </button>
+
+          <button
+            :class="{ 'btn-disabled': notready }"
+            :disabled="notready"
+            @click="paplavok"
+          >
+            PAPLAVOK
           </button>
         </div>
       </div>
@@ -56,7 +64,6 @@ import { sendMsg } from "@/features/sendChatMessage";
 export default {
   props: {
     files: Array,
-    notready: Boolean,
     required: true,
   },
   data() {
@@ -65,6 +72,7 @@ export default {
       v: false,
       filePreview: null,
       photo: null,
+      notready: false,
       video: null,
     };
   },
@@ -110,6 +118,7 @@ export default {
       this.preview = "";
       this.filePreview = "";
       this.capture = "";
+      this.v = false;
     },
   },
   computed: {
@@ -136,15 +145,19 @@ export default {
 
         const uploadTask = uploadBytesResumable(storageRef, source);
 
+        store.commit("previewChat/setNextLoadingMsg", { id: "paplavoche" });
+
         uploadTask.on(
           "state_changed",
           (snapshot) => {
             // Handle upload progress
+
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload progress:", progress);
           },
           (error) => {
+            store.commit("previewChat/removeLoadingMsg", "paplavoche");
             console.error("Error uploading video:", error);
           },
           () => {
@@ -160,9 +173,16 @@ export default {
                   src: downloadURL,
                 };
 
-                sendMsg(capture, resData, store.state.message.replyTarget);
+                sendMsg(capture, resData, store.state.message.replyTarget)
+                  .then(
+                    store.commit("previewChat/removeLoadingMsg", "paplavoche")
+                  )
+                  .catch(
+                    store.commit("previewChat/removeLoadingMsg", "paplavoche")
+                  );
               })
               .catch((error) => {
+                store.commit("previewChat/removeLoadingMsg", "paplavoche");
                 console.error("Error getting download URL:", error);
               });
           }
@@ -190,7 +210,12 @@ export default {
       }
     }
 
+    function paplavok() {
+      store.commit("previewChat/setNextLoadingMsg", { id: "paplavoche" });
+    }
+
     return {
+      paplavok,
       postMessage,
     };
   },
@@ -274,15 +299,16 @@ $padver: 16px;
     .img-container {
       width: 100%;
       height: 65%;
+      background-color: #00000076;
       display: flex;
       align-items: center;
       justify-content: center;
       img {
-        max-height: 65%;
+        max-height: 85%;
         max-width: 100%;
       }
       video {
-        @extend img
+        @extend img;
       }
     }
 
@@ -291,11 +317,15 @@ $padver: 16px;
       input {
         width: 100%;
         border-radius: 0px;
-        border-bottom: 2px solid $second;
+        border-bottom: 2px solid gray;
         box-sizing: border-box;
         height: 30px;
         font: 1rem sans-serif;
         color: gray;
+        transition: border-bottom ease-in 0.2s;
+        &:focus {
+          border-bottom: 2px solid $second;
+        }
       }
     }
     .modal_manage {
