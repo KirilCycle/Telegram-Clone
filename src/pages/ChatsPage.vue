@@ -527,6 +527,14 @@ export default {
 
     const chatContainer = ref(null);
 
+    // function appHeight() {
+    //   const doc = document.documentElement
+    //   doc.style.setProperty('--vh', (window.innerHeight*.01) + 'px');
+    // }
+
+    // window.addEventListener('resize', appHeight);
+    // appHeight();
+
     return {
       chat,
       chatList,
@@ -550,23 +558,6 @@ $custom-c2: rgb(43, 43, 43);
 $custom-c4: rgb(23, 23, 23);
 
 $custom-c3: rgb(0, 128, 255);
-
-.main {
-  display: flex;
-  justify-content: center;
-  background-color: $custom-c2;
-  background-color: #1c1c1c;
-  background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
-  min-width: 100%;
-  position: relative;
-  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-  height: calc(var(--vh, 1vh) * 100);
-}
-
-.dark .main {
-  background-color: #44b09e;
-  background-image: linear-gradient(315deg, #44b09e 0%, #e0d2c7 74%);
-}
 
 .btn-controll {
   z-index: 10;
@@ -701,15 +692,22 @@ v-enter-active,
   }
 }
 
+.last-cccc {
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+}
+
 .main {
   display: flex;
   justify-content: center;
-  background-color: $custom-c2;
-
   min-width: 100%;
   position: relative;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
+}
+.dark .main {
+  background-color: #44b09e;
+  background-image: linear-gradient(315deg, #44b09e 0%, #e0d2c7 74%);
 }
 
 .left-bar {
@@ -718,7 +716,7 @@ v-enter-active,
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-   width: 380px;
+  width: 380px;
   overflow: hidden;
   resize: horizontal;
   position: relative;
@@ -951,9 +949,6 @@ v-enter-active,
     min-height: none;
     max-height: none;
     height: none;
-    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-    height: calc(var(--vh, 1vh) * 100);
-    resize: none;
   }
 }
 
@@ -983,8 +978,6 @@ v-enter-active,
 
   .left-bar {
     width: 100%;
-    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-    height: calc(var(--vh, 1vh) * 100);
     position: relative;
     resize: none;
 
