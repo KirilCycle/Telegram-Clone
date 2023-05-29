@@ -1,6 +1,6 @@
 <template>
   <div class="select-radios-wrp">
-    <h3>{{ header }}</h3>
+    <h3 >{{ header }}</h3>
 
     <div class="btns-container">
       <label v-for="it in btnsArray" :key="it.name" class="container">
@@ -12,17 +12,16 @@
           :value="it.value"
           :name="it.name"
         />
-        <p>
+        <span> </span>
+        <p class="option-title">
           {{ it.title }}
         </p>
-        <span> </span>
       </label>
     </div>
   </div>
 </template>
 
 <script>
-import { useDark } from "@vueuse/core";
 export default {
   props: {
     header: String,
@@ -41,14 +40,21 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
+
+.option-title {
+  margin-left: 40%;
+}
+
 .select-radios-wrp {
   width: 100%;
   height: auto;
-  padding: 10px 10px 0px 20px;
+  padding: 10px 20px 0px 20px;
   margin-top: 10px;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   background: $content-main;
+  text-align: left;
 
   h3 {
     color: gray;
@@ -57,23 +63,24 @@ export default {
   }
 
   .btns-container {
-    width: 140px;
+    width: 100%;
     padding: 20px 0px 35px 0px;
     display: flex;
     flex-direction: column;
     z-index: 10;
     height: max-content;
-
+    box-sizing: border-box;
     color: $text-main;
     font-weight: normal;
     font-size: 1.1rem;
-    text-align: right;
 
     .container {
       position: relative;
+      cursor: pointer;
 
       input[type="radio"] {
         display: none;
+        cursor: pointer;
       }
 
       span {
@@ -86,6 +93,7 @@ export default {
         left: 0px;
         top: 0px;
         transition: 300ms ease-in-out;
+        cursor: pointer;
       }
     }
 
