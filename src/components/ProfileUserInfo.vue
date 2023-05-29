@@ -68,6 +68,7 @@ export default {
     width: 80%;
     height: 100%;
     margin-top: 10px;
+    text-align: left;
 
     .info-text {
       color: $text-main;

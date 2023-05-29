@@ -1,106 +1,106 @@
 <template>
   <div @click="moreContentV = false" class="wrap">
-    <!-- <h1 @click="logout">LOOOOOOOOOOOOOOOGGGGGGGG</h1> -->
-    <nav class="settings-nav">
-      <button @click="$emit('close')" class="settings-btn">
-        <span class="material-symbols-outlined"> arrow_back </span>
-      </button>
-      <h1 class="settings">Settings</h1>
-
-      <div class="settings_nav_right_side">
-        <button
-          @click="() => handleEditComponent(-310, true)"
-          class="settings-btn"
-        >
-          <span class="material-symbols-outlined"> edit </span>
+  
+      <nav class="settings-nav">
+        <button @click="$emit('close')" class="settings-btn">
+          <span class="material-symbols-outlined"> arrow_back </span>
         </button>
+        <h1 class="settings">Settings</h1>
 
-        <button @click.stop="moreContentV = true" class="settings-btn">
-          <span class="material-symbols-outlined"> more_vert </span>
-
-          <div v-if="moreContentV" class="more-content">
-            <ul class="more_list">
-              <li @click="logoutV = true">
-                <span class="material-symbols-outlined"> logout </span>
-                <p>Logout</p>
-              </li>
-            </ul>
-          </div>
-        </button>
-
-        <teleport to="body">
-          <div
-            v-if="logoutV"
-            @click="
-              () => {
-                moreContentV = false;
-                logoutV = false;
-              }
-            "
-            class="logout-alert"
+        <div class="settings_nav_right_side">
+          <button
+            @click="() => handleEditComponent(-310, true)"
+            class="settings-btn"
           >
-            <div class="logout-modal">
-              <h2>Messanger Name</h2>
-              <p>Are you sure you want to log out?</p>
+            <span class="material-symbols-outlined"> edit </span>
+          </button>
 
-              <div class="logoout_modal_btns_wrp">
-                <button @click="logout">LOG OUT</button>
-                <button @click="handleCancel">CANCEL</button>
+          <button @click.stop="moreContentV = true" class="settings-btn">
+            <span class="material-symbols-outlined"> more_vert </span>
+
+            <div v-if="moreContentV" class="more-content">
+              <ul class="more_list">
+                <li @click="logoutV = true">
+                  <span class="material-symbols-outlined"> logout </span>
+                  <p>Logout</p>
+                </li>
+              </ul>
+            </div>
+          </button>
+
+          <teleport to="body">
+            <div
+              v-if="logoutV"
+              @click="
+                () => {
+                  moreContentV = false;
+                  logoutV = false;
+                }
+              "
+              class="logout-alert"
+            >
+              <div class="logout-modal">
+                <h2>Messanger Name</h2>
+                <p>Are you sure you want to log out?</p>
+
+                <div class="logoout_modal_btns_wrp">
+                  <button @click="logout">LOG OUT</button>
+                  <button @click="handleCancel">CANCEL</button>
+                </div>
               </div>
             </div>
+          </teleport>
+        </div>
+      </nav>
+
+      <div class="user-image-wrp">
+        <user-image>
+          <div class="profile-img-wrap">
+            <img class="profile-img" :src="$store.state.user.user?.photoURL" />
           </div>
-        </teleport>
+          <div class="profile_img_wrap_text_wrp">
+            <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
+            <h3 class="email">{{ $store.state.user.user.email }}</h3>
+          </div>
+        </user-image>
       </div>
-    </nav>
 
-    <div class="user-image-wrp">
-      <user-image>
-        <div class="profile-img-wrap">
-          <img class="profile-img" :src="$store.state.user.user?.photoURL" />
-        </div>
-        <div class="profile_img_wrap_text_wrp">
-          <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
-          <h3 class="email">{{ $store.state.user.user.email }}</h3>
-        </div>
-      </user-image>
-    </div>
+      <div class="profile-user-info-wrp">
+        <profile-user-info
+          :bio="$store.state.user.user.bio"
+          :username="$store.state.user.user.username"
+        ></profile-user-info>
+      </div>
+      <!-- <div ref="edit" class="edit-panel">
+        <edit-settings
+          @close="() => handleEditComponent(0, false)"
+        ></edit-settings>
+      </div> -->
 
-    <div class="profile-user-info-wrp">
-      <profile-user-info
-        :bio="$store.state.user.user.bio"
-        :username="$store.state.user.user.username"
-      ></profile-user-info>
-    </div>
-    <div ref="edit" class="edit-panel">
-      <edit-settings
-        @close="() => handleEditComponent(0, false)"
-      ></edit-settings>
-    </div>
+      <div class="profile-user-info-wrp">
+        <radio-select
+          :header="'Theme'"
+          :selected="prevTheme"
+          :btnsRadioList="themeVariations"
+        ></radio-select>
+      </div>
 
-    <div class="profile-user-info-wrp">
-      <radio-select
-        :header="'Theme'"
-        :selected="prevTheme"
-        :btnsRadioList="themeVariations"
-      ></radio-select>
-    </div>
+      <div class="profile-user-info-wrp">
+        <radio-select
+          :header="'I have cool reuseful'"
+          :selected="prevTheme"
+          :btnsRadioList="options"
+        ></radio-select>
+      </div>
 
-    <div class="profile-user-info-wrp">
-      <radio-select
-        :header="'I have cool reuseful'"
-        :selected="prevTheme"
-        :btnsRadioList="options"
-      ></radio-select>
-    </div>
-
-    <div class="profile-user-info-wrp">
-      <radio-select
-        :header="'radio btns list'"
-        :selected="prevTheme"
-        :btnsRadioList="options2"
-      ></radio-select>
-    </div>
-
+      <div class="profile-user-info-wrp">
+        <radio-select
+          :header="'radio btns list'"
+          :selected="prevTheme"
+          :btnsRadioList="options2"
+        ></radio-select>
+      </div>
+ 
   </div>
 </template>
 
@@ -119,7 +119,6 @@ import UserImage from "@/components/UserImage.vue";
 import EditSettings from "@/components/EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
-
 
 export default {
   components: {
@@ -141,15 +140,24 @@ export default {
       isLoading: false,
       logoutV: false,
       moreContentV: false,
-      
     };
   },
   computed: {
     prevTheme() {
-     if (localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light') {
-       return localStorage.getItem('vueuse-color-scheme') !== 'auto' ? 'dark'  :  'light'
-     } return 'dark'
-    }
+      if (
+        localStorage.getItem("vueuse-color-scheme") !== "auto"
+          ? "dark"
+          : "light"
+      ) {
+        return localStorage.getItem("vueuse-color-scheme") !== "auto"
+          ? "dark"
+          : "light";
+      }
+      return "dark";
+    },
+  },
+  mounted() {
+   this.$emit('move')
   },
   created() {},
   methods: {
@@ -359,7 +367,6 @@ export default {
       }
     }
 
-    
     const isDark = useDark();
 
     function setLightTheme() {
@@ -375,28 +382,53 @@ export default {
     }
 
     const themeVariations = ref([
-      {name:'light', value:'light', execute: setDarkTheme, title:'Light' },
-      {name:'dark', value:'dark', execute: setLightTheme, title:'Dark' }
-
+      { name: "light", value: "light", execute: setDarkTheme, title: "Light" },
+      { name: "dark", value: "dark", execute: setLightTheme, title: "Dark" },
     ]);
 
-    const options = ref([  
-      {name:'option', value:'option', execute: () => {}, title:'option' },
-      {name:'option2', value:'option2', execute: () => {}, title:'option2' }])
+    const options = ref([
+      { name: "option", value: "option", execute: () => {}, title: "option" },
+      {
+        name: "option2",
+        value: "option2",
+        execute: () => {},
+        title: "option2",
+      },
+    ]);
 
-      const options2 = ref([  
-      {name:'option3', value:'option3', execute: () => {}, title:'option3' },
-      {name:'option4', value:'option4', execute: () => {}, title:'option4' },
-      {name:'option5', value:'option5', execute: () => {}, title:'option5' },
-      {name:'option6', value:'option6', execute: () => {}, title:'option6' }    
-    ])
+    const options2 = ref([
+      {
+        name: "option3",
+        value: "option3",
+        execute: () => {},
+        title: "option3",
+      },
+      {
+        name: "option4",
+        value: "option4",
+        execute: () => {},
+        title: "option4",
+      },
+      {
+        name: "option5",
+        value: "option5",
+        execute: () => {},
+        title: "option5",
+      },
+      {
+        name: "option6",
+        value: "option6",
+        execute: () => {},
+        title: "option6",
+      },
+    ]);
 
     return {
       logout,
       themeVariations,
       uploadPhoto,
       options,
-      options2
+      options2,
     };
   },
 };
@@ -430,7 +462,7 @@ $def-gray: #b2b2b2;
 
 .profile_img_wrap_text_wrp {
   .fisrt-name {
-    z-index:12;
+    z-index: 12;
     font-size: 1.2rem;
     font-weight: 700;
     color: #ffffff;
@@ -457,7 +489,6 @@ $def-gray: #b2b2b2;
 
 .dark .settings {
   color: $text-main-l;
-
 }
 
 img {
@@ -473,7 +504,6 @@ img {
 }
 
 .settings-nav {
-  
   width: 100%;
   background-color: $content-main;
   height: 8%;
@@ -484,9 +514,6 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-
-
-
 
   .settings_nav_right_side {
     width: 80px;
@@ -513,9 +540,8 @@ img {
   top: 8%;
 
   @media screen and(min-width: 1400px) {
-    top: 60px
+    top: 60px;
   }
-
 }
 
 .more-content {
@@ -553,6 +579,7 @@ img {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   height: 100%;
+  width: 100%;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
   overflow-y: auto;
   overflow-x: hidden;
@@ -598,8 +625,6 @@ img {
       font-size: 1.1rem;
     }
   }
-
-
 
   h2 {
     margin-top: 10px;

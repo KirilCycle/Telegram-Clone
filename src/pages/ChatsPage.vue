@@ -3,6 +3,12 @@
 
   <div class="main">
     <div class="left-bar">
+      <div ref="settings" class="settings-wrap">
+        <div v-if="settingsVisible" class="profile-component-wrap">
+          <profile-page-vue @move="moveSettings"></profile-page-vue>
+        </div>
+      </div>
+
       <div class="btn-controll">
         <chats-control-btn
           @globalInvoke="isGlobalSearch = true"
@@ -11,7 +17,7 @@
       </div>
 
       <div class="left_bar_srch-wrap" placeholder="search chat">
-        <settings></settings>
+        <settings @click="handleSettings"></settings>
 
         <div class="search-input-container">
           <div class="magnifying-glass-wrap">
@@ -133,11 +139,13 @@ import ChatSettings from "@/components/ChatSettings.vue";
 import FoundedChatInputVue from "@/components/chat/chat-input-components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
-import { sendMsg } from '@/features/sendChatMessage'
+import { sendMsg } from "@/features/sendChatMessage";
+import ProfilePageVue from "./ProfilePage.vue";
 
 export default {
   components: {
     MetalKiller,
+    ProfilePageVue,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -155,9 +163,10 @@ export default {
       isGlobalSearch: false,
       value: "",
       chatKey: "s",
+      settingsVisible: null,
       serachQ: "",
       parentChatRef: this.$refs.chatContainer,
-      sendMsg: sendMsg
+      sendMsg: sendMsg,
     };
   },
   mounted() {
@@ -170,6 +179,15 @@ export default {
         this.chatKey = changeId;
       }
     },
+    handleSettings() {
+      this.settingsVisible = true;
+    },
+
+    moveSettings() {
+       
+      this.$refs.settings.style.transform = `translateX(0%)`;
+    },
+
     resetQuerry() {
       store.commit("chat/setQuery", null);
       this.serachQ = null;
@@ -196,7 +214,7 @@ export default {
           createdAt: Timestamp.now(),
           // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
-     
+
         if (source) {
           //   messageisNotReady.value = true;
           message.source = source;
@@ -250,7 +268,6 @@ export default {
         //i cnat manipulate with index directly
       }
     },
-
 
     serachChat(query) {
       query
@@ -526,7 +543,6 @@ export default {
 
     const chatContainer = ref(null);
 
-  
     return {
       chat,
       chatList,
@@ -546,6 +562,24 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
+.profile-component-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  background-color: rgb(109, 103, 103);
+}
+
+.settings-wrap {
+  width: 100%;
+  background-color: red;
+  height: 100%;
+  position: absolute;
+  max-width: 400px;
+  z-index: 30;
+  transform: translateX(-120%);
+  transition: transform 0.3s ease;
+}
 
 .btn-controll {
   z-index: 10;

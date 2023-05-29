@@ -13,6 +13,8 @@
   <Teleport to="body">
     <div v-if="v" class="bloor">
       <div class="modal">
+        <h3 class="action-header">{{ actionName }}</h3>
+
         <button @click="reset" class="close-btn">
           <span class="material-symbols-outlined"> close </span>
         </button>
@@ -64,6 +66,7 @@ export default {
     return {
       caption: "",
       v: false,
+      localType: null,
       filePreview: null,
       photo: null,
       notready: false,
@@ -123,6 +126,13 @@ export default {
       } else if (this.video) {
         return "video";
       }
+    },
+
+    actionName() {
+      if (this.localType) {
+        return `Send Photo`;
+      }
+      return `Send Video`;
     },
   },
   setup(props) {
@@ -253,6 +263,17 @@ $padver: 16px;
   &:hover {
     background-color: $hover;
   }
+}
+
+.action-header {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  color: $text-main;
+}
+
+.dark .action-header  {
+   color: $text-main-l;
 }
 
 .file-upl-content {

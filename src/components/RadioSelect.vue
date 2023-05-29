@@ -3,7 +3,6 @@
     <h3>{{ header }}</h3>
 
     <div class="btns-container">
-     
       <label v-for="it in btnsArray" :key="it.name" class="container">
         <input
           class="radio-button"
@@ -13,9 +12,10 @@
           :value="it.value"
           :name="it.name"
         />
-       {{ it.title}}
-        <span>
-        </span>
+        <p>
+          {{ it.title }}
+        </p>
+        <span> </span>
       </label>
     </div>
   </div>
@@ -36,8 +36,6 @@ export default {
       btnsArray: this.btnsRadioList,
     };
   },
-
- 
 };
 </script>
 
@@ -56,7 +54,6 @@ export default {
     color: gray;
     font-weight: normal;
     font-size: 1.1rem;
-
   }
 
   .btns-container {
@@ -66,12 +63,11 @@ export default {
     flex-direction: column;
     z-index: 10;
     height: max-content;
-        
+
     color: $text-main;
     font-weight: normal;
     font-size: 1.1rem;
     text-align: right;
-   
 
     .container {
       position: relative;
@@ -90,44 +86,37 @@ export default {
         left: 0px;
         top: 0px;
         transition: 300ms ease-in-out;
-
       }
-      
     }
-    
-    
+
     .container + .container {
       margin-top: 39px;
     }
-  
-    .container span:after {
-        
-        content: "";
-        visibility:visible;
-        background-color: $main;
-        position: absolute;
-        z-index: 11;
-        top: 50%;
-        display: block;
-        left: 50%;
-        height: 15px;
-        width: 15px;
-        transform: translate(-50%, -50%) scale(0);
-        border-radius: 50%;
-        transition: 300ms ease-in-out;
-    } 
 
+    .container span:after {
+      content: "";
+      visibility: visible;
+      background-color: $main;
+      position: absolute;
+      z-index: 11;
+      top: 50%;
+      display: block;
+      left: 50%;
+      height: 15px;
+      width: 15px;
+      transform: translate(-50%, -50%) scale(0);
+      border-radius: 50%;
+      transition: 300ms ease-in-out;
+    }
   }
 
-  .container input[type="radio"]:checked ~ span::after{
+  .container input[type="radio"]:checked ~ span::after {
     transform: translate(-50%, -50%) scale(1);
   }
 
   .container input[type="radio"]:checked ~ span {
     border: 2px solid $main;
   }
-
-
 }
 
 .dark .select-radios-wrp {
@@ -135,9 +124,7 @@ export default {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
   .btns-container {
-    color: $text-main-l
+    color: $text-main-l;
   }
-  
 }
-
 </style>
