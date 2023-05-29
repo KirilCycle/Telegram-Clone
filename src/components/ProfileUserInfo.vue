@@ -36,7 +36,7 @@ export default {
 @import "@/styles/colors";
 .user-info-container {
   height: auto;
-  padding: 15px 10px 15px 10px;
+  padding: 15px 5px 15px 5px;
   background-color: $content-main;
   width: 100%;
   box-sizing: border-box;

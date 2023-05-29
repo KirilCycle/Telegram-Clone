@@ -5,7 +5,7 @@
     <div class="left-bar">
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
-          <profile-page-vue @move="moveSettings"></profile-page-vue>
+          <profile-page-vue @close="closeSettings" @shove="() => shoveSettings('0%')"></profile-page-vue>
         </div>
       </div>
 
@@ -183,9 +183,17 @@ export default {
       this.settingsVisible = true;
     },
 
-    moveSettings() {
-       
-      this.$refs.settings.style.transform = `translateX(0%)`;
+    closeSettings() {
+       this.shoveSettings('-120%')
+       const shoveBackTimeTransiiton = 280
+       setTimeout(() => {
+          this.settingsVisible = false;
+       },shoveBackTimeTransiiton)
+    
+    },
+
+    shoveSettings(pos) {
+      this.$refs.settings.style.transform = `translateX(${pos})`;
     },
 
     resetQuerry() {
@@ -576,6 +584,7 @@ export default {
   height: 100%;
   position: absolute;
   max-width: 400px;
+  min-width: 250px;
   z-index: 30;
   transform: translateX(-120%);
   transition: transform 0.3s ease;
@@ -739,7 +748,7 @@ v-enter-active,
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  width: 380px;
+  width: 350px;
   overflow: hidden;
   resize: horizontal;
   position: relative;

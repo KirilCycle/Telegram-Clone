@@ -157,7 +157,7 @@ export default {
     },
   },
   mounted() {
-   this.$emit('move')
+   this.$emit('shove')
   },
   created() {},
   methods: {
@@ -537,6 +537,7 @@ img {
 
 .user-image-wrp {
   position: relative;
+  width: 100%;
   top: 8%;
 
   @media screen and(min-width: 1400px) {
