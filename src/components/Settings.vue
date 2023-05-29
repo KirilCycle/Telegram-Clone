@@ -52,7 +52,6 @@ export default {
   opacity: 0;
 }
 
-
 .menu-btn-wrap {
   cursor: pointer;
   border-radius: 5px;
@@ -68,6 +67,7 @@ export default {
   }
   .menu-btn {
     width: 35px;
+    cursor: pointer;
     height: 10px;
     display: flex;
     justify-content: center;
@@ -77,6 +77,7 @@ export default {
 
     span {
       width: 45%;
+      cursor: pointer;
       height: 2px;
       background-color: #8b8b8b;
     }
@@ -104,7 +105,6 @@ export default {
     }
   }
 }
-
 
 .profile-component-wrap {
   z-index: 120;

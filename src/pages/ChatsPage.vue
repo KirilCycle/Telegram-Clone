@@ -583,11 +583,12 @@ export default {
   background-color: red;
   height: 100%;
   position: absolute;
-  max-width: 400px;
-  min-width: 250px;
+  overflow: hidden;
+  max-width: 390px;
+  min-width: 220px;
   z-index: 30;
   transform: translateX(-120%);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
 .btn-controll {

@@ -9,7 +9,7 @@
 
         <div class="settings_nav_right_side">
           <button
-            @click="() => handleEditComponent(-310, true)"
+            @click="() => handleEditComponent(true)"
             class="settings-btn"
           >
             <span class="material-symbols-outlined"> edit </span>
@@ -71,11 +71,11 @@
           :username="$store.state.user.user.username"
         ></profile-user-info>
       </div>
-      <!-- <div ref="edit" class="edit-panel">
+      <div ref="edit" class="edit-panel">
         <edit-settings
-          @close="() => handleEditComponent(0, false)"
+          @close="() => handleEditComponent( false)"
         ></edit-settings>
-      </div> -->
+      </div>
 
       <div class="profile-user-info-wrp">
         <radio-select
@@ -161,9 +161,10 @@ export default {
   },
   created() {},
   methods: {
-    async handleEditComponent(pos, state) {
+    async handleEditComponent( state) {
       this.inEdit = state;
-      this.$refs.edit.style.transform = `translateX(${pos}px)`;
+      state? this.$refs.edit.style.transform = `translateX(-100%)` :  this.$refs.edit.style.transform = `translateX(0%)`
+
     },
 
     logout() {
@@ -440,13 +441,13 @@ $def-gray: #b2b2b2;
 @import "@/styles/colors";
 
 .edit-panel {
-  width: 310px;
+  width: 100%;
   position: absolute;
-  left: 310px;
+  left: 100%;
   height: 100%;
   z-index: 25;
   transform: translateX(0);
-  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  transition:  transform 0.4s ease-in-out;
 }
 
 .profile-img-wrap {
