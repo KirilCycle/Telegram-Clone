@@ -1,26 +1,40 @@
 <template>
-  <div>
-    <message-item-vue
-      v-for="it in msgs"
+  <div class="fake-wrp">
+
+    <group-message-item-vue
+      v-for="(it, index) in msgs"
       :key="it.id"
       :message="it"
       :isMy="it.userId.includes('my')"
-    ></message-item-vue>
+      :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
+    >
+    </group-message-item-vue>
   </div>
 </template>
 
 <script>
-import MessageItemVue from "@/components/MessageItem.vue";
 import { uuidv4 } from "@firebase/util";
+import GroupMessageItemVue from "@/components/chat/GroupMessageItem.vue";
 export default {
   components: {
-    MessageItemVue,
+    GroupMessageItemVue,
   },
   data() {
     return {
       msgs: [],
       msgGroupUtil: 0,
+      currentGroupId: ''
     };
+  },
+  methods: {
+    getGroupRole (userId,nextUserId) {
+       if (userId !== nextUserId ) {
+        return 'close'
+      }
+       return 'no'
+      
+
+    }
   },
   mounted() {
     const imgExample =
@@ -58,7 +72,7 @@ export default {
     };
 
     let currentMsg = "my";
-    let groupCount = 3
+    let groupCount = 3;
 
     for (let i = 1; i <= 52; i++) {
       const isToday = Math.ceil(i / 10) % 2 === 0;
@@ -78,8 +92,7 @@ export default {
         currentMsg === "my" ? (currentMsg = "somebody") : (currentMsg = "my");
         this.msgGroupUtil = 0;
 
-         groupCount = Math.floor(Math.random() * 4)
-
+        groupCount = Math.floor(Math.random() * 4);
       }
 
       const userId = currentMsg;
@@ -92,4 +105,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.fake-wrp{
+    height: auto;
+    background-color: #4b4b4b;
+}
+</style>
