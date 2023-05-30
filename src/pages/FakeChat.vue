@@ -77,7 +77,8 @@ export default {
         "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
         "Sed euismod nisi nec mauris ullamcorper, nec commodo tortor efficitur.",
         "Fusce condimentum risus sed dolor ullamcorper rhoncus.",
-        "Nullam consectetur mauris a nisl semper, a semper libero mattis.",
+        "hello",
+        'hi',
         "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
         
       ];

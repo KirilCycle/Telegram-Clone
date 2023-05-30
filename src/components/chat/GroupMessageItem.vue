@@ -6,23 +6,8 @@
       :class="{ 'my-message': isMy }"
     >
       <p>{{ message.text }}</p>
-      <!-- <p class="time">{{ time }}</p> -->
-
-      <!-- <div class="emoji-wrap" v-if="emojis">
-        <div
-          class="emoji-c"
-          v-for="em in emojis"
-          :key="em[0]"
-        >
-          <p>
-            {{ em[0] }}
-          </p>
-          <emoji-user :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
-        </div>
-      </div> -->
+      <div v-show="groupRole === 'close'" :class="[isMy ? myTail : tail]"></div>
     </div>
-
-    <div v-show="groupRole === 'close'" class="tail"></div>
   </div>
   <div v-show="groupRole === 'close'" class="group-space"></div>
 </template>
@@ -49,6 +34,8 @@ export default {
   data() {
     return {
       replyEmoji,
+      myTail: "my-tail",
+      tail: "tail",
     };
   },
 
@@ -159,34 +146,84 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+.time {
+  cursor: pointer;
+  direction: ltr;
+  display: inline-flex;
+  float: right;
+  font-size: 0.7rem;
+  line-height: 1;
+  pointer-events: none;
+  width: 40px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  vertical-align: middle;
+  visibility: hidden;
+  z-index: 1;
+  color: gray;
+}
+
+.inner-time {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  height: 10px;
+  line-height: 1;
+  padding: inherit;
+  pointer-events: all;
+  position: absolute;
+  right: 0;
+  visibility: visible;
+  white-space: nowrap;
+}
+
+
 
 .message-wrap {
   width: 100%;
   background-color: #ffffff5f;
-  padding: 2px;
+  padding: 1px 10px 1px 10px;
+  position: relative;
+  box-sizing: border-box;
 }
 
 %message-pattern {
   color: white;
-  padding: 12px;
+  padding: 8px;
   width: max-content;
   max-width: 600px;
   line-height: 20px;
   text-align: left;
+  font-size: 0.9rem;
   overflow-wrap: break-word;
   word-break: normal;
+  position: relative;
+  z-index: 3;
+  box-sizing: border-box;
+  border-radius: 20px;
 }
 
 .message {
   @extend %message-pattern;
-  background-color: black;
+  background-color: $content-main;
+
+
 }
 
 .my-message {
   @extend %message-pattern;
-  background-color: green;
+  background-color: $main;
   margin-left: auto;
+  
 }
+
+@media (max-height ) {
+  
+}
+
+
+
 %no-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
