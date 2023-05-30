@@ -1,35 +1,32 @@
 <template>
   <div class="source-wrp">
     <img v-if="source.type === 'img'" :src="source.src" />
-    <video
-      class="video-player"
-      v-else
-      :src="source.src"
-      controls
-    ></video>
+    <video class="video-player" v-else :src="source.src" controls></video>
   </div>
 </template>
 
 <script>
 export default {
-    props: {source: Object}
+  props: { source: Object },
 };
 </script>
 
 <style lang="scss" scoped>
 .source-wrp {
   width: 100%;
+  position: relative;
+ 
 
   img {
-    border-radius: 10px;
+    border-radius: 20px 20px 0px 0px;
     width: 100%;
     max-height: 500px;
   }
 
   video {
-    @extend img;
-     border-radius: 10px;
-     width: 100%;
+    width: 100%;
+     border-radius: 20px 20px 0px 0px;
+    max-height: 500px;
   }
 
   .video-player:hover {
@@ -58,6 +55,3 @@ export default {
   }
 }
 </style>
-
-
-

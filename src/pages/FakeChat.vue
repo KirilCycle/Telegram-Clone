@@ -1,13 +1,13 @@
 <template>
   <div class="fake-wrp">
-   <div :key="it.id" v-for="(it, index) in msgs"  @click="() => del(it.id)">
-    <group-message-item-vue
-      :message="it"
-      :isMy="it.userId.includes('my')"
-      :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
-    >
-    </group-message-item-vue>
-   </div>
+    <div :key="it.id" v-for="(it, index) in msgs" @click="() => del(it.id)">
+      <group-message-item-vue
+        :message="it"
+        :isMy="it.userId.includes('my')"
+        :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
+      >
+      </group-message-item-vue>
+    </div>
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
     },
 
     del(id) {
-      console.log(id,'sss')
+      console.log(id, "sss");
       this.msgs = this.msgs.filter((el) => el.id !== id);
     },
 
@@ -78,9 +78,8 @@ export default {
         "Sed euismod nisi nec mauris ullamcorper, nec commodo tortor efficitur.",
         "Fusce condimentum risus sed dolor ullamcorper rhoncus.",
         "hello",
-        'hi',
+        "hi",
         "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-        
       ];
       return texts[Math.floor(Math.random() * texts.length)];
     };
@@ -107,7 +106,6 @@ export default {
       const daysAgo = isToday ? 0 : Math.ceil(i / 10);
       const createdAt = generateTimestamp(daysAgo);
 
-
       const id = i + uuidv4();
 
       this.msgGroupUtil += 1;
@@ -123,10 +121,10 @@ export default {
 
       const text = generateRandomText();
 
-      let result = {id, text, createdAt, userId}
+      let result = { id, text, createdAt, userId };
 
-      if (Math.floor(Math.random() * 10) === 1 ) {
-        result.source = {type: 'img' ,src:imgExample}
+      if (Math.floor(Math.random() * 10) === 1) {
+        result.source = { type: "img", src: imgExample };
       }
 
       this.msgs.push(result);

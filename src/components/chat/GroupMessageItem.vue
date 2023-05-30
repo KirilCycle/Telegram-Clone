@@ -1,11 +1,18 @@
 <template>
-  <div class="message-wrap">
+  <div ref="msg" class="message-wrap">
     <div
-      v-on:click.prevent.right="(e) => handleSelectMsg(e)"
+      v-on:click.right="(e) => handleSelectMsg(e)"
+      @contextmenu.prevent="messageActions"
       class="message"
       :class="{ 'my-message': isMy }"
     >
-      <p>{{ message.text }}</p>
+      <message-source-container-vue
+        v-if="message.source"
+        :source="message.source"
+      >
+      </message-source-container-vue>
+    
+      <p class="text">{{ message.text }}</p>
     </div>
     <span
       v-show="groupRole === 'close'"
@@ -13,6 +20,7 @@
     ></span>
   </div>
   <div v-show="groupRole === 'close'" class="group-space"></div>
+   <standart-alert-vue :description="'Do you want to delete this message ?'" :header="'Delete message'" :action1="act1" :action2="act2"></standart-alert-vue>
 </template>
 
 <script>
@@ -21,10 +29,14 @@ import store from "@/store/store";
 import EmojiUser from "../EmojiUser.vue";
 import { replyEmoji } from "@/features/replyUsingEmoji";
 import { objectEntries } from "@vueuse/core";
+import MessageSourceContainerVue from "./MessageSourceContainer.vue";
+import StandartAlertVue from '../UI/StandartAlert.vue';
 
 export default {
   components: {
     EmojiUser,
+    MessageSourceContainerVue,
+    StandartAlertVue,
   },
 
   props: {
@@ -39,6 +51,14 @@ export default {
       replyEmoji,
       myTail: "my-tail",
       tail: "tail",
+      act1: {
+        title:'sus',
+         executeFn: () => alert('ssss')
+      },
+      act2: {
+        title: 'sus',
+        executeFn: () => alert('ssss')
+      }
     };
   },
 
@@ -66,9 +86,6 @@ export default {
 
   methods: {
     handleEmojiClick(emj) {
-      //find my id and delete here
-      //
-
       console.log(emj);
     },
     handleTouch(e) {
@@ -85,6 +102,20 @@ export default {
       console.log(store.state.message.selectedMsgData, "SELECTED");
 
       store.commit("message/setVisible", true);
+    },
+
+    handleSelectMsg(e) {
+      store.commit("message/setReplyMsgRef", this.$refs.msg);
+      store.commit("message/setClickCoords", {
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      store.commit("message/setSelectdMsg", this.message);
+      store.commit("message/setVisible", true);
+
+      console.log(store.state.message.selectedMsgData, "SELECTED");
+      console.log(store.state.message, "FROM REDUX");
     },
 
     handleSelectMsg(e) {
@@ -211,9 +242,9 @@ export default {
 
 %message-pattern {
   color: white;
-  padding: 8px;
+  padding: 0px 0px 10px 0px;
   width: max-content;
-  max-width: 600px;
+  max-width: 500px;
   line-height: 20px;
   text-align: left;
   font-size: 0.9rem;
@@ -223,6 +254,12 @@ export default {
   z-index: 3;
   box-sizing: border-box;
   border-radius: 20px;
+}
+
+.text {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
 }
 
 .message {

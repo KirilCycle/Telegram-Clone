@@ -150,7 +150,6 @@ h4 {
 
 .link {
   color: rgb(105, 105, 105);
-
   text-decoration: none;
   
   &:hover {
@@ -158,6 +157,22 @@ h4 {
     text-decoration:underline
   }
 
+}
+
+.info-tx {
+  color: gray;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  position: absolute;
+  top: -12px;
+  left: 2%;
+  padding: 0px 3px 0px 3px;
+  background-color:  $body-color;
+  pointer-events: none;
+  height: min-content;
 }
 
 .wronginput {
