@@ -6,8 +6,11 @@
       :class="{ 'my-message': isMy }"
     >
       <p>{{ message.text }}</p>
-      <div v-show="groupRole === 'close'" :class="[isMy ? myTail : tail]"></div>
     </div>
+    <span
+      v-show="groupRole === 'close'"
+      :class="{ 'tail-left': !isMy, 'tail-right': isMy }"
+    ></span>
   </div>
   <div v-show="groupRole === 'close'" class="group-space"></div>
 </template>
@@ -178,7 +181,25 @@ export default {
   white-space: nowrap;
 }
 
+.tail-left {
+  position: absolute;
+  bottom: 1px;
+  left: 0px;
+  width: 0;
+  height: 0;
+  border-bottom: 22px solid $content-main;
+  border-left: 28px solid transparent;
+}
 
+.tail-right {
+  width: 0;
+  height: 0;
+  border-bottom: 20px solid $main;
+  border-right: 28px solid transparent;
+  position: absolute;
+  right: 0px;
+  bottom: 1px;
+}
 
 .message-wrap {
   width: 100%;
@@ -207,22 +228,16 @@ export default {
 .message {
   @extend %message-pattern;
   background-color: $content-main;
-
-
 }
 
 .my-message {
   @extend %message-pattern;
   background-color: $main;
   margin-left: auto;
-  
 }
 
-@media (max-height ) {
-  
+@media (max-height) {
 }
-
-
 
 %no-select {
   -webkit-user-select: none; /* Safari */

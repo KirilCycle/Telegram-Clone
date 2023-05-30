@@ -107,10 +107,6 @@ export default {
       const daysAgo = isToday ? 0 : Math.ceil(i / 10);
       const createdAt = generateTimestamp(daysAgo);
 
-      let hasVideo = false;
-      if (Math.floor(Math.random() * 10) === 3) {
-        hasVideo = true;
-      }
 
       const id = i + uuidv4();
 
@@ -127,7 +123,13 @@ export default {
 
       const text = generateRandomText();
 
-      this.msgs.push(createMessage(id, text, createdAt, userId));
+      let result = {id, text, createdAt, userId}
+
+      if (Math.floor(Math.random() * 10) === 1 ) {
+        result.source = {type: 'img' ,src:imgExample}
+      }
+
+      this.msgs.push(result);
     }
   },
 };
