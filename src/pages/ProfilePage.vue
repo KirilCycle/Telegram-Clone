@@ -1,106 +1,99 @@
 <template>
   <div @click="moreContentV = false" class="wrap">
-  
-      <nav class="settings-nav">
-        <button @click="$emit('close')" class="settings-btn">
-          <span class="material-symbols-outlined"> arrow_back </span>
+    <nav class="settings-nav">
+      <button @click="$emit('close')" class="settings-btn">
+        <span class="material-symbols-outlined"> arrow_back </span>
+      </button>
+      <h1 class="settings">Settings</h1>
+
+      <div class="settings_nav_right_side">
+        <button @click="() => handleEditComponent(true)" class="settings-btn">
+          <span class="material-symbols-outlined"> edit </span>
         </button>
-        <h1 class="settings">Settings</h1>
 
-        <div class="settings_nav_right_side">
-          <button
-            @click="() => handleEditComponent(true)"
-            class="settings-btn"
+        <button @click.stop="moreContentV = true" class="settings-btn">
+          <span class="material-symbols-outlined"> more_vert </span>
+
+          <div v-if="moreContentV" class="more-content">
+            <ul class="more_list">
+              <li @click="logoutV = true">
+                <span class="material-symbols-outlined"> logout </span>
+                <p>Logout</p>
+              </li>
+            </ul>
+          </div>
+        </button>
+
+        <teleport to="body">
+          <div
+            v-if="logoutV"
+            @click="
+              () => {
+                moreContentV = false;
+                logoutV = false;
+              }
+            "
+            class="logout-alert"
           >
-            <span class="material-symbols-outlined"> edit </span>
-          </button>
+            <div class="logout-modal">
+              <h2>Messanger Name</h2>
+              <p>Are you sure you want to log out?</p>
 
-          <button @click.stop="moreContentV = true" class="settings-btn">
-            <span class="material-symbols-outlined"> more_vert </span>
-
-            <div v-if="moreContentV" class="more-content">
-              <ul class="more_list">
-                <li @click="logoutV = true">
-                  <span class="material-symbols-outlined"> logout </span>
-                  <p>Logout</p>
-                </li>
-              </ul>
-            </div>
-          </button>
-
-          <teleport to="body">
-            <div
-              v-if="logoutV"
-              @click="
-                () => {
-                  moreContentV = false;
-                  logoutV = false;
-                }
-              "
-              class="logout-alert"
-            >
-              <div class="logout-modal">
-                <h2>Messanger Name</h2>
-                <p>Are you sure you want to log out?</p>
-
-                <div class="logoout_modal_btns_wrp">
-                  <button @click="logout">LOG OUT</button>
-                  <button @click="handleCancel">CANCEL</button>
-                </div>
+              <div class="logoout_modal_btns_wrp">
+                <button @click="logout">LOG OUT</button>
+                <button @click="handleCancel">CANCEL</button>
               </div>
             </div>
-          </teleport>
+          </div>
+        </teleport>
+      </div>
+    </nav>
+
+    <div class="user-image-wrp">
+      <user-image>
+        <div class="profile-img-wrap">
+          <img class="profile-img" :src="$store.state.user.user?.photoURL" />
         </div>
-      </nav>
+        <div class="profile_img_wrap_text_wrp">
+          <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
+          <h3 class="email">{{ $store.state.user.user.email }}</h3>
+        </div>
+      </user-image>
+    </div>
 
-      <div class="user-image-wrp">
-        <user-image>
-          <div class="profile-img-wrap">
-            <img class="profile-img" :src="$store.state.user.user?.photoURL" />
-          </div>
-          <div class="profile_img_wrap_text_wrp">
-            <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
-            <h3 class="email">{{ $store.state.user.user.email }}</h3>
-          </div>
-        </user-image>
-      </div>
+    <div class="profile-user-info-wrp">
+      <profile-user-info
+        :bio="$store.state.user.user.bio"
+        :username="$store.state.user.user.username"
+      ></profile-user-info>
+    </div>
+    <div ref="edit" class="edit-panel">
+      <edit-settings @close="() => handleEditComponent(false)"></edit-settings>
+    </div>
 
-      <div class="profile-user-info-wrp">
-        <profile-user-info
-          :bio="$store.state.user.user.bio"
-          :username="$store.state.user.user.username"
-        ></profile-user-info>
-      </div>
-      <div ref="edit" class="edit-panel">
-        <edit-settings
-          @close="() => handleEditComponent( false)"
-        ></edit-settings>
-      </div>
+    <div class="profile-user-info-wrp">
+      <radio-select
+        :header="'Theme'"
+        :selected="prevTheme"
+        :btnsRadioList="themeVariations"
+      ></radio-select>
+    </div>
 
-      <div class="profile-user-info-wrp">
-        <radio-select
-          :header="'Theme'"
-          :selected="prevTheme"
-          :btnsRadioList="themeVariations"
-        ></radio-select>
-      </div>
+    <div class="profile-user-info-wrp">
+      <radio-select
+        :header="'I have cool reuseful'"
+        :selected="prevTheme"
+        :btnsRadioList="options"
+      ></radio-select>
+    </div>
 
-      <div class="profile-user-info-wrp">
-        <radio-select
-          :header="'I have cool reuseful'"
-          :selected="prevTheme"
-          :btnsRadioList="options"
-        ></radio-select>
-      </div>
-
-      <div class="profile-user-info-wrp">
-        <radio-select
-          :header="'radio btns list'"
-          :selected="prevTheme"
-          :btnsRadioList="options2"
-        ></radio-select>
-      </div>
- 
+    <div class="profile-user-info-wrp">
+      <radio-select
+        :header="'radio btns list'"
+        :selected="prevTheme"
+        :btnsRadioList="options2"
+      ></radio-select>
+    </div>
   </div>
 </template>
 
@@ -157,14 +150,15 @@ export default {
     },
   },
   mounted() {
-   this.$emit('shove')
+    this.$emit("shove");
   },
   created() {},
   methods: {
-    async handleEditComponent( state) {
+    async handleEditComponent(state) {
       this.inEdit = state;
-      state? this.$refs.edit.style.transform = `translateX(-100%)` :  this.$refs.edit.style.transform = `translateX(0%)`
-
+      state
+        ? (this.$refs.edit.style.transform = `translateX(-100%)`)
+        : (this.$refs.edit.style.transform = `translateX(0%)`);
     },
 
     logout() {
@@ -447,7 +441,7 @@ $def-gray: #b2b2b2;
   height: 100%;
   z-index: 25;
   transform: translateX(0);
-  transition:  transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
 .profile-img-wrap {
@@ -510,24 +504,39 @@ img {
   height: 8%;
   max-height: 60px;
   position: fixed;
+  box-sizing: border-box;
   top: 0px;
   z-index: 15;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  padding-left: 5px;
+  padding-right: 5px;
+  
   .settings_nav_right_side {
-    width: 80px;
-    height: 100%;
-    margin-right: 12px;
+    width: auto;
     display: flex;
     justify-content: space-between;
+
+  .settings-btn  + .settings-btn {
+    margin-left: 5px;
+  }
+
   }
 
   .settings-btn {
-    color: $def-gray;
-    margin: 12px;
     cursor: pointer;
+    color: $def-gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+
+    &:hover {
+      background-color: $hover;
+    }
   }
 }
 

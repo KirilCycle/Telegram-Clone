@@ -185,7 +185,7 @@ export default {
 
     closeSettings() {
        this.shoveSettings('-120%')
-       const shoveBackTimeTransiiton = 280
+       const shoveBackTimeTransiiton = 380
        setTimeout(() => {
           this.settingsVisible = false;
        },shoveBackTimeTransiiton)
@@ -588,7 +588,7 @@ export default {
   min-width: 220px;
   z-index: 30;
   transform: translateX(-120%);
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .btn-controll {

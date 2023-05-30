@@ -513,6 +513,10 @@ $def-gray: #828282;
     border-radius: 50%;
     overflow: hidden;
 
+    &:hover {
+      
+    }
+
     .img-bloor {
       position: absolute;
       background-color: #0000005b;

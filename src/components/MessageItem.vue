@@ -1,10 +1,12 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <div
-      v-on:click.right="(e) => handleSelectMsg(e)"
-      @touchend="stop"
+   <!-- <p>
+     @touchend="stop"
       @touchstart="(e) => start(e, handleTouch)"
       @touchmove="(e) => touchMoveHandle(e)"
+   </p> -->
+    <div
+      v-on:click.right="(e) => handleSelectMsg(e)"
       @contextmenu.prevent="messageActions"
       class="item-body"
     >
