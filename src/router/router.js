@@ -6,6 +6,8 @@ import { async } from "@firebase/util";
 import ChatsPage from "@/pages/ChatsPage";
 import firebase from "firebase/compat/app";
 
+
+
 const isAuthed = ref(store.state.user.user);
 
 export const routes = [
@@ -30,6 +32,12 @@ export const routes = [
     name: "reg",
     component: () => import("@/pages/RegPage.vue"),
   },
+  {
+    path: "/fake",
+    name: "fake",
+    component: () => import("@/pages/FakeChat.vue"),
+  },
+
   {
     path: "/chats",
     name: "chats",

@@ -1,12 +1,25 @@
 <template>
-  <div></div>
+  <div>
+    <message-item-vue
+      v-for="it in msgs"
+      :key="it.id"
+      :message="it"
+      :isMy="it.userId.includes('my')"
+    ></message-item-vue>
+  </div>
 </template>
 
 <script>
+import MessageItemVue from "@/components/MessageItem.vue";
+import { uuidv4 } from "@firebase/util";
 export default {
+  components: {
+    MessageItemVue,
+  },
   data() {
     return {
       msgs: [],
+      msgGroupUtil: 0,
     };
   },
   mounted() {
@@ -40,11 +53,12 @@ export default {
       };
     };
 
-    const createMessage = (id, text, createdAt, hasVideo = false) => {
-      return { id, text, createdAt };
+    const createMessage = (id, text, createdAt, userId) => {
+      return { id, text, createdAt, userId };
     };
 
-    const msgs = [];
+    let currentMsg = "my";
+    let groupCount = 3
 
     for (let i = 1; i <= 52; i++) {
       const isToday = Math.ceil(i / 10) % 2 === 0;
@@ -56,14 +70,24 @@ export default {
         hasVideo = true;
       }
 
-      const id = i % 2 === 0 ? "my" : "somebody";
+      const id = i + uuidv4();
+
+      this.msgGroupUtil += 1;
+
+      if (this.msgGroupUtil > groupCount) {
+        currentMsg === "my" ? (currentMsg = "somebody") : (currentMsg = "my");
+        this.msgGroupUtil = 0;
+
+         groupCount = Math.floor(Math.random() * 4)
+
+      }
+
+      const userId = currentMsg;
+
       const text = generateRandomText();
 
-      this.msgs.push(createMessage(id, text, createdAt, hasVideo));
+      this.msgs.push(createMessage(id, text, createdAt, userId));
     }
-    
-
-
   },
 };
 </script>
