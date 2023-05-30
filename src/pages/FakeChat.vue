@@ -1,9 +1,7 @@
 <template>
   <div class="fake-wrp">
-   <div   :key="it.id" v-for="(it, index) in msgs"  @click="() => del(it.id)">
+   <div :key="it.id" v-for="(it, index) in msgs"  @click="() => del(it.id)">
     <group-message-item-vue
-    
-     
       :message="it"
       :isMy="it.userId.includes('my')"
       :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
