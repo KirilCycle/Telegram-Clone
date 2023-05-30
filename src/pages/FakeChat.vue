@@ -1,14 +1,15 @@
 <template>
   <div class="fake-wrp">
-
+   <div   :key="it.id" v-for="(it, index) in msgs"  @click="() => del(it.id)">
     <group-message-item-vue
-      v-for="(it, index) in msgs"
-      :key="it.id"
+    
+     
       :message="it"
       :isMy="it.userId.includes('my')"
       :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
     >
     </group-message-item-vue>
+   </div>
   </div>
 </template>
 
@@ -23,18 +24,40 @@ export default {
     return {
       msgs: [],
       msgGroupUtil: 0,
-      currentGroupId: ''
+      currentGroupId: "",
+      months: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
     };
   },
   methods: {
-    getGroupRole (userId,nextUserId) {
-       if (userId !== nextUserId ) {
-        return 'close'
+    getGroupRole(userId, nextUserId) {
+      if (userId !== nextUserId) {
+        return "close";
       }
-       return 'no'
-      
 
-    }
+      return null;
+    },
+
+    del(id) {
+      console.log(id,'sss')
+      this.msgs = this.msgs.filter((el) => el.id !== id);
+    },
+
+    getMonthName(monthIndex) {
+      return this.months[monthIndex];
+    },
   },
   mounted() {
     const imgExample =
@@ -106,8 +129,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fake-wrp{
-    height: auto;
-    background-color: #4b4b4b;
+.fake-wrp {
+  height: auto;
+  background-color: #4b4b4b;
 }
 </style>

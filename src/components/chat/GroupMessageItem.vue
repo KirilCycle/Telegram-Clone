@@ -1,9 +1,6 @@
 <template>
   <div ref="msg" :class="{ 'my-item': isMy }" class="item">
-    <div
-      v-on:click.right="(e) => handleSelectMsg(e)"
-      class="item-body"
-    >
+    <div v-on:click.right="(e) => handleSelectMsg(e)" class="item-body">
       <div class="item_body_text">
         <p>{{ message.text }}</p>
         <p class="time">{{ time }}</p>
@@ -11,7 +8,6 @@
 
       <div class="emoji-wrap" v-if="emojis">
         <div
-          @click="() => replyEmoji(em[0], message)"
           class="emoji-c"
           v-for="em in emojis"
           :key="em[0]"
@@ -23,10 +19,10 @@
         </div>
       </div>
     </div>
-     <div v-show="groupRole === 'close'" class="tail">
-     </div>
 
+    <div v-show="groupRole === 'close'" class="tail"></div>
   </div>
+  <div v-show="groupRole === 'close'" class="group-space"></div>
 </template>
 
 <script>
@@ -179,13 +175,8 @@ export default {
   align-items: center;
 }
 
-.tail {
-    position: absolute;
-    left: 0px;
-    height: 10px;
-    width: 10px;
-    bottom: 0px;
-    background-color: #fff;
+.group-space {
+  height: 10px;
 }
 
 .emoji-wrap {
@@ -196,16 +187,19 @@ export default {
 
   @extend %no-select;
 }
+
+
+
 .item {
   min-width: 150px;
   max-width: 900px;
   width: 500px;
   position: relative;
   display: flex;
+  
 
   .item-body {
     width: 100%;
-
     left: 0px;
     display: flex;
     flex-direction: column;
@@ -213,6 +207,7 @@ export default {
     margin-top: 0px;
     padding-left: 6px;
     padding-right: 35px;
+    z-index: 3;
 
     .item_body_text {
       font-size: 0.9rem;
@@ -233,7 +228,7 @@ export default {
     padding: 8px;
     background: $content-main;
     color: $text-main;
-    margin-bottom: 7px;
+    margin-bottom: 2px;
 
     flex-wrap: wrap;
     position: relative;
@@ -244,13 +239,25 @@ export default {
     max-width: 500px;
     word-break: break-all;
     overflow-wrap: break-word;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-top-left-radius: 20px;
+    border-radius: 20px;
     width: max-content;
     min-width: 80px;
     max-width: 70%;
   }
+
+.tail {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  bottom: 2px;
+  left: 3px;
+  width: 0;
+  height: 0;
+  border-bottom: 25px solid  $content-main;
+  border-left: 25px solid transparent;
+  z-index: 1;
+}
+
 }
 
 .dark .item {
@@ -328,7 +335,7 @@ export default {
     }
 
     color: white;
-    background: rgb(84, 175, 213);
+    background: $main;
 
     right: 0px;
     margin-left: 10px;
@@ -337,9 +344,12 @@ export default {
     width: auto;
     line-height: 19px;
 
-    p {
-    }
   }
+
+.tail {
+  border-bottom: 25px solid  $main;
+}
+
 }
 
 @media (max-width: 1115px) {
@@ -374,8 +384,6 @@ export default {
       position: relative;
       right: 0px;
       margin-left: 10px;
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
       width: max-content;
 
       line-height: 19px;
