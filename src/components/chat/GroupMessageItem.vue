@@ -1,10 +1,12 @@
 <template>
-  <div  class="message-wrap">
-   
-    <div v-on:click.prevent.right="(e) => handleSelectMsg(e)" class="message" :class="{ 'my-message': isMy }">
-    
-        <p>{{ message.text }}</p>
-        <!-- <p class="time">{{ time }}</p> -->
+  <div class="message-wrap">
+    <div
+      v-on:click.prevent.right="(e) => handleSelectMsg(e)"
+      class="message"
+      :class="{ 'my-message': isMy }"
+    >
+      <p>{{ message.text }}</p>
+      <!-- <p class="time">{{ time }}</p> -->
 
       <!-- <div class="emoji-wrap" v-if="emojis">
         <div
@@ -158,6 +160,33 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 
+.message-wrap {
+  width: 100%;
+  background-color: #ffffff5f;
+  padding: 2px;
+}
+
+%message-pattern {
+  color: white;
+  padding: 12px;
+  width: max-content;
+  max-width: 600px;
+  line-height: 20px;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.message {
+  @extend %message-pattern;
+  background-color: black;
+}
+
+.my-message {
+  @extend %message-pattern;
+  background-color: green;
+  margin-left: auto;
+}
 %no-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -187,6 +216,4 @@ export default {
 
   @extend %no-select;
 }
-
-
 </style>

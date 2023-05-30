@@ -69,11 +69,17 @@ export default {
 
     const generateRandomText = () => {
       const texts = [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipisciLorem ipsum dolor sit amet, consectetur adipiscing elit.ng elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Sed euismod nisi nec mauris ullamcorper, nec commodo tortor efficitur. sus suuuus suuus suuuus suuus suuuus sus",
+        "Fusce condimentum risus sed dolor ullamcorper rhoncus.",
+        "Nullam consectetur mauris a nisl semper, a semper libero mattis.",
+        "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
+        "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
         "Sed euismod nisi nec mauris ullamcorper, nec commodo tortor efficitur.",
         "Fusce condimentum risus sed dolor ullamcorper rhoncus.",
         "Nullam consectetur mauris a nisl semper, a semper libero mattis.",
         "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+        
       ];
       return texts[Math.floor(Math.random() * texts.length)];
     };
