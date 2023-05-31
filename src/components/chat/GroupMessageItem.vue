@@ -318,7 +318,6 @@ export default {
 
 %message-pattern {
   color: white;
-  padding: 0px 0px 10px 0px;
   width: max-content;
   max-width: 500px;
   line-height: 20px;
@@ -329,13 +328,14 @@ export default {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: 15px;
 }
 
 .text {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .message {

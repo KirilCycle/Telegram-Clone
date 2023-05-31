@@ -15,17 +15,16 @@ export default {
 .source-wrp {
   width: 100%;
   position: relative;
- 
 
   img {
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
     width: 100%;
     max-height: 500px;
   }
 
   video {
     width: 100%;
-     border-radius: 20px 20px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
     max-height: 500px;
   }
 
