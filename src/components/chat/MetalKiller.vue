@@ -341,7 +341,7 @@ export default {
 
 .check-bottom-scroll {
   position: relative;
-  bottom: 50px;
+  bottom: 90px;
 }
 
 .block-scroll-to-prevent-stick-to-top {

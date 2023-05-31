@@ -3,7 +3,7 @@
     <span class="material-symbols-outlined"> attach_file </span>
     <input
       ref="fileInput"
-      accept="image/gif, image/jpeg, image/png, video/mp4, video/avi, video/mov, video/wmv, video/flv, video/mkv, video/webm"
+      accept="image/gif, image/jpeg, image/png, video/mp4, video/avi, video/mov, video/wmv, video/flv, video/mkv, video/webm, .xls,.xlsx,.xlsb,.txt,.csv,.tsv"
       @change="uploadImage"
       class="file-input"
       type="file"
@@ -145,10 +145,9 @@ export default {
 
       const chatId = store.state.chat.chatId;
 
+      const previewMsgId = uuidv4();
       if (fileType === "video") {
         console.log(source, "VID");
-
-        const previewMsgId = uuidv4();
 
         const storageRef = ref(storage, `videos/${source.name + uuidv4()}`);
 
@@ -204,7 +203,26 @@ export default {
         );
       } else if (fileType === "image") {
         const storageRef = ref(storage, `images/${source.name + uuidv4()}`);
-        uploadBytes(storageRef, source)
+
+        // const uploadTask = uploadBytesResumable(storageRef, source);
+
+        //   store.commit("previewChat/setNextLoadingMsg", {
+        //   id: previewMsgId,
+        //   cancel: () => uploadTask.cancel(),
+        //   source: { type: "img", src: preview },
+        //   chatId,
+        // });
+
+        const uploadTask = uploadBytesResumable(storageRef, source);
+
+        store.commit("previewChat/setNextLoadingMsg", {
+          id: previewMsgId,
+          cancel: () => uploadTask.cancel(),
+          source: { type: "img", src: preview },
+          chatId,
+        });
+
+        uploadTask(storageRef, source)
           .then((snapshot) => {
             getDownloadURL(storageRef).then((url) => {
               const resData = {
@@ -217,10 +235,15 @@ export default {
                 resData,
                 store.state.message.replyTarget,
                 chatId
+              ).finally(
+                store.commit("previewChat/removeLoadingMsg", previewMsgId)
               );
             });
           })
-          .catch((er) => console.log(er, "post er"));
+          .catch((er) => {
+            console.log(er, "post er");
+            store.commit("previewChat/removeLoadingMsg", previewMsgId);
+          });
 
         console.log("PHT");
       } else {
@@ -272,8 +295,8 @@ $padver: 16px;
   color: $text-main;
 }
 
-.dark .action-header  {
-   color: $text-main-l;
+.dark .action-header {
+  color: $text-main-l;
 }
 
 .file-upl-content {

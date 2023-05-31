@@ -1,5 +1,4 @@
 <template>
-
   <div ref="msg" class="message-wrap">
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
@@ -12,12 +11,12 @@
         :source="message.source"
       >
       </message-source-container-vue>
-  <div v-if="message.sender" class="forward">
-    <p>Forwarded message</p>
-    <h4>
-      {{ message.sender?.userName }}
-    </h4>
-  </div>
+      <div v-if="message.sender" class="forward">
+        <p>Forwarded message</p>
+        <h4>
+          {{ message.sender?.userName }}
+        </h4>
+      </div>
 
       <div class="reply-block" v-if="message.replyData">
         <div class="reply_block_source_wrap" v-if="message.replyData.source">
@@ -172,7 +171,6 @@ export default {
   flex-wrap: nowrap;
   color: white;
   font-size: 0.7rem;
-  
 
   h4 {
     margin-left: 3px;
@@ -181,12 +179,9 @@ export default {
     font-weight: 600;
   }
   p {
-
   }
   position: relative;
   top: 10px;
- 
-
 }
 
 .reply-block {
@@ -350,7 +345,33 @@ export default {
   margin-left: auto;
 }
 
-@media (max-height) {
+@media (max-width: 650px) {
+  .my-message {
+    max-width: 400px;
+  }
+
+  .message {
+     max-width: 400px;
+  }
+}
+
+@media (max-width: 490px) {
+  .my-message {
+    max-width: 320px;
+  }
+
+  .message {
+     max-width: 320px;
+  }
+}
+@media (max-width: 350px) {
+  .my-message {
+    max-width: 300px;
+  }
+
+  .message {
+     max-width: 300px;
+  }
 }
 
 %no-select {
