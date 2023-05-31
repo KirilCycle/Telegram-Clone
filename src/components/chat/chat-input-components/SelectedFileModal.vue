@@ -204,25 +204,16 @@ export default {
       } else if (fileType === "image") {
         const storageRef = ref(storage, `images/${source.name + uuidv4()}`);
 
-        // const uploadTask = uploadBytesResumable(storageRef, source);
-
-        //   store.commit("previewChat/setNextLoadingMsg", {
-        //   id: previewMsgId,
-        //   cancel: () => uploadTask.cancel(),
-        //   source: { type: "img", src: preview },
-        //   chatId,
-        // });
-
         const uploadTask = uploadBytesResumable(storageRef, source);
 
         store.commit("previewChat/setNextLoadingMsg", {
           id: previewMsgId,
           cancel: () => uploadTask.cancel(),
-          source: { type: "img", src: preview },
+          source: { type: "video", src: preview },
           chatId,
         });
 
-        uploadTask(storageRef, source)
+        uploadTask
           .then((snapshot) => {
             getDownloadURL(storageRef).then((url) => {
               const resData = {
@@ -235,17 +226,16 @@ export default {
                 resData,
                 store.state.message.replyTarget,
                 chatId
-              ).finally(
+              ).then(() =>
                 store.commit("previewChat/removeLoadingMsg", previewMsgId)
               );
             });
           })
           .catch((er) => {
-            console.log(er, "post er");
             store.commit("previewChat/removeLoadingMsg", previewMsgId);
+            console.log(er, "post er");
           });
-
-        console.log("PHT");
+        // console.log("PHT");
       } else {
         // Code to handle other file types
       }
