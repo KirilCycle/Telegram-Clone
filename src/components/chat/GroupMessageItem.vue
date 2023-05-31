@@ -171,6 +171,8 @@ export default {
   flex-wrap: nowrap;
   color: white;
   font-size: 0.7rem;
+  position: relative;
+  top: 10px;
 
   h4 {
     margin-left: 3px;
@@ -178,10 +180,7 @@ export default {
     cursor: pointer;
     font-weight: 600;
   }
-  p {
-  }
-  position: relative;
-  top: 10px;
+
 }
 
 .reply-block {
@@ -361,7 +360,7 @@ export default {
   }
 
   .message {
-     max-width: 320px;
+    max-width: 320px;
   }
 }
 @media (max-width: 350px) {

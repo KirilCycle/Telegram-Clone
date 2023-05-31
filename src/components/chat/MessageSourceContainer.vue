@@ -1,7 +1,9 @@
 <template>
   <div class="source-wrp">
-    <img v-if="source.type === 'img'" :src="source.src" />
-    <video class="video-player" v-else :src="source.src" controls></video>
+    
+      <img v-if="source.type === 'img'" :src="source.src" />
+      <video class="video-player" v-else :src="source.src" controls></video>
+    
   </div>
 </template>
 
@@ -18,14 +20,16 @@ export default {
 
   img {
     border-radius: 10px 10px 0px 0px;
-    width: 100%;
     max-height: 500px;
+    width: max-content;
+    max-width: 500px;
   }
 
   video {
-    width: 100%;
     border-radius: 10px 10px 0px 0px;
     max-height: 500px;
+    width: max-content;
+    max-width: 500px;
   }
 
   .video-player:hover {

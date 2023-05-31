@@ -209,7 +209,7 @@ export default {
         store.commit("previewChat/setNextLoadingMsg", {
           id: previewMsgId,
           cancel: () => uploadTask.cancel(),
-          source: { type: "video", src: preview },
+          source: { type: "img", src: preview },
           chatId,
         });
 
@@ -236,9 +236,7 @@ export default {
             console.log(er, "post er");
           });
         // console.log("PHT");
-      } else {
-        // Code to handle other file types
-      }
+      } 
     }
 
     return {
