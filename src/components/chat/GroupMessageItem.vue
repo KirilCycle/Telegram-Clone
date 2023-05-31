@@ -165,6 +165,7 @@ export default {
   max-width: 100%;
   overflow: hidden;
   padding-left: 10px;
+  padding-right: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;

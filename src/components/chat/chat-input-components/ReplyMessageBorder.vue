@@ -3,7 +3,7 @@
     <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
 
-      <div v-if="this.$store.state.message.replyTarget.source">
+      <div v-if="this.$store.state.message.replyTarget?.source">
         <small-chat-image
           :type="this.$store.state.message.replyTarget.source.type"
           :src="this.$store.state.message.replyTarget.source.src"
@@ -50,8 +50,7 @@ export default {
       if (this.$store.state.message.replyTarget) {
         console.log(this.$store.state.message.replyTarget, "REP");
         return this.$store.state.message.replyTarget;
-      } else if (this.$tsore.state.message.forwardTarget) {
-        console.log(this.$store.state.message.forwardTarget.source, "FOR");
+      } else if (this.$store.state.message.forwardTarget) {
         return this.$store.state.message.forwardTarget;
       }
       return false;
