@@ -145,31 +145,31 @@ export default {
   user-select: none; /* Standard syntax */
 }
 
-
-%emoji {
+.emoji-c {
+  background-color: rgba(245, 245, 245, 0.175);
   width: max-content;
-  padding: 1px;
+  padding: 3px;
   height: auto;
+  font-size: 17px;
   position: relative;
-  border-radius: 20px;
   display: flex;
   flex-direction: row;
   cursor: pointer;
   align-items: center;
+  border-radius: 13px;
+  &:hover {
+    background-color: #ffffff4e;
+  }
 }
 
- .emoji-c {
-    background-color: $content-main-l;
-    border: 1px solid $main;
-  }
-
 .emoji-wrap {
-  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
+  padding: 2px 0px 2px 10px;
   @extend %no-select;
+
 }
 
 .inner-time {
