@@ -24,7 +24,8 @@
           <p>
             {{ em[0] }}
           </p>
-          <emoji-user :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
+          <p v-if="em[1].length > 3">{{em[1].length}}</p>
+          <emoji-user v-else :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
         </div>
       </div>
     </div>
@@ -162,12 +163,16 @@ export default {
   }
 }
 
+.emoji-c + .emoji-c {
+  margin-left: 2px;
+}
+
 .emoji-wrap {
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 2px 0px 2px 10px;
+  padding: 2px 10px 2px 10px;
   @extend %no-select;
 
 }

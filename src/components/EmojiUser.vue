@@ -58,7 +58,9 @@ import firebase from "firebase/compat/app";
     }
   }
 
-  .circle {
-    margin-left: 3px;
+  .circle + .circle {
+    margin-left: -10px;
   }
+
+ 
 </style>
