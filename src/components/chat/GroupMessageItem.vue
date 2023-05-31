@@ -1,4 +1,5 @@
 <template>
+
   <div ref="msg" class="message-wrap">
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
@@ -11,6 +12,26 @@
         :source="message.source"
       >
       </message-source-container-vue>
+  <div v-if="message.sender" class="forward">
+    <p>Forwarded message</p>
+    <h4>
+      {{ message.sender?.userName }}
+    </h4>
+  </div>
+
+      <div class="reply-block" v-if="message.replyData">
+        <div class="reply_block_source_wrap" v-if="message.replyData.source">
+          <small-chat-image-vue
+            :type="message.replyData.source.type"
+            :src="message.replyData.source.src"
+          ></small-chat-image-vue>
+        </div>
+
+        <div class="reply_block_text_wrap">
+          <h3>{{ message.replyData.from }}</h3>
+          <p>{{ message.replyData.text }}</p>
+        </div>
+      </div>
 
       <p class="text">{{ message.text }}</p>
 
@@ -24,8 +45,13 @@
           <p>
             {{ em[0] }}
           </p>
-          <p v-if="em[1].length > 3">{{em[1].length}}</p>
-          <emoji-user v-else :key="id" v-for="id in em[1]" :senderid="id"></emoji-user>
+          <p v-if="em[1].length > 3">{{ em[1].length }}</p>
+          <emoji-user
+            v-else
+            :key="id"
+            v-for="id in em[1]"
+            :senderid="id"
+          ></emoji-user>
         </div>
       </div>
     </div>
@@ -44,11 +70,13 @@ import EmojiUser from "../EmojiUser.vue";
 import { replyEmoji } from "@/features/replyUsingEmoji";
 import { objectEntries } from "@vueuse/core";
 import MessageSourceContainerVue from "./MessageSourceContainer.vue";
+import SmallChatImageVue from "../SmallChatImage.vue";
 
 export default {
   components: {
     EmojiUser,
     MessageSourceContainerVue,
+    SmallChatImageVue,
   },
 
   props: {
@@ -122,6 +150,77 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+
+.emoji-wrap {
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  @extend %no-select;
+}
+
+.forward {
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  color: white;
+  font-size: 0.7rem;
+  
+
+  h4 {
+    margin-left: 3px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  p {
+
+  }
+  position: relative;
+  top: 10px;
+ 
+
+}
+
+.reply-block {
+  width: 100%;
+  max-height: 34px;
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  padding-left: 2px;
+  margin-right: 10px;
+  padding-top: 10px;
+  overflow: hidden;
+
+  .reply_block_source_wrap {
+    width: 20px;
+    height: 100%;
+    display: flex;
+  }
+
+  .reply_block_text_wrap {
+    width: auto;
+    margin-left: 3px;
+    max-width: 70px;
+    height: 100%;
+    h3 {
+      font-size: 0.85rem;
+      line-height: normal;
+    }
+    p {
+      color: #d7d7d7;
+      font-size: 0.75rem;
+    }
+  }
+}
+
 .time {
   cursor: pointer;
   direction: ltr;
@@ -174,7 +273,6 @@ export default {
   flex-wrap: wrap;
   padding: 2px 10px 2px 10px;
   @extend %no-select;
-
 }
 
 .inner-time {
@@ -273,14 +371,5 @@ export default {
 
 .group-space {
   height: 10px;
-}
-
-.emoji-wrap {
-  max-width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  @extend %no-select;
 }
 </style>
