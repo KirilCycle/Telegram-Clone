@@ -5,7 +5,9 @@
         <div class="emoji-container">
           <div class="emoji-list">
             <div
-              @click="() => replyEmoji(em,  $store.state.message.selectedMsgData)"
+              @click="
+                () => replyEmoji(em, $store.state.message.selectedMsgData)
+              "
               v-for="em in emojis"
               :key="em + 1"
             >
@@ -237,8 +239,13 @@ export default {
     let x = store.state.message?.coords?.x;
     let y = store.state.message?.coords?.y;
 
-    if (y && window.innerHeight - y < 220) {
-      y -= 160;
+    const estimatedSpace = 190;
+
+    if (window.innerHeight - y < 220) {
+      y -= estimatedSpace;
+    }
+    if (window.innerWidth - x < 220) {
+      x -= estimatedSpace;
     }
 
     if (x && y) {
@@ -254,6 +261,7 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
+  z-index: 10;
 }
 
 .msg-actions {

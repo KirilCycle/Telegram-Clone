@@ -5,21 +5,29 @@
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
-  <!-- <component
-   v-for="it in msgs"
+  <!-- <div :key="it.id" v-for="(it, index) in msgs" @click="() => del(it.id)">
+      <group-message-item-vue
+        :message="it"
+        :isMy="it.userId.includes('my')"
+        :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
+      >
+      </group-message-item-vue>
+    </div> -->
+  <group-message-item-vue
+    v-for="(it, index) in msgs"
     :key="it.id"
     :message="it"
     :isMy="it.userId.includes(firstPartOfmyId)"
-     :is="currentChatType(it)"
-        >
-  </component> -->
+    :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
+  >
+  </group-message-item-vue>
 
-  <message-item
+  <!-- <message-item
     v-for="it in msgs"
     :key="it.id"
     :message="it"
     :isMy="it.userId.includes(firstPartOfmyId)"
-  ></message-item>
+  ></message-item> -->
   <in-loading-msgs-preview></in-loading-msgs-preview>
   <div
     ref="scrollAtTheBottom"
@@ -40,8 +48,15 @@ import store from "@/store/store";
 import MessageItem from "../MessageItem.vue";
 import MessageDefault from "./MessageDefault.vue";
 import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
+import GroupMessageItemVue from "./GroupMessageItem.vue";
 
 export default {
+  components: {
+    MessageItem,
+    MessageDefault,
+    InLoadingMsgsPreview,
+    GroupMessageItemVue,
+  },
   props: {
     parentRef: Object,
   },
@@ -50,16 +65,18 @@ export default {
       firstPartOfmyId: store.state.user.user.uid.slice(0, 10),
     };
   },
-  components: {
-    MessageItem,
-    MessageDefault,
-    InLoadingMsgsPreview,
-  },
   methods: {
     currentChatType(it) {
       if (it.id) {
         return "MessageDefault";
       }
+    },
+    getGroupRole(userId, nextUserId) {
+      if (userId !== nextUserId) {
+        return "close";
+      }
+
+      return null;
     },
   },
 
@@ -89,7 +106,6 @@ export default {
     const firstGettinWas = ref(null);
     const scrollWasDisabled = ref(null);
     const recentMsgID = ref(null);
-    const loading = ref(null);
 
     function subscribeToRecentMsg() {
       let querry = db
@@ -136,34 +152,31 @@ export default {
               .map((doc) => ({ id: doc.id, ...doc.data() }))
               .reverse();
           }
-          
 
-          loading.value = false;
-
-          if (atTheBottom.value && gettingType.value !== "next") {
-            // setTimeout(() => {
-            //   scrollAtTheBottom.value.scrollIntoView({
-            //     block: "start",
-            //     inline: "start",
-            //     behavior: "smooth",
-            //   });
-            // });
+          if (atTheBottom.value) {
+            setTimeout(() => {
+              scrollAtTheBottom.value.scrollIntoView({
+                block: "start",
+                inline: "start",
+                behavior: "smooth",
+              });
+            });
           }
         }
       );
     }
 
     watchEffect(() => {
-      // if (msgs.value.length > 5 && !isFirstSrllWasExecuted.value) {
-      //   setTimeout(() => {
-      //     scrollAtTheBottom.value.scrollIntoView({
-      //       block: "start",
-      //       inline: "start",
-      //     });
-      //     console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
-      //     isFirstSrllWasExecuted.value = true;
-      //   });
-      // }
+      if (msgs.value.length > 5 && !isFirstSrllWasExecuted.value) {
+        setTimeout(() => {
+          scrollAtTheBottom.value.scrollIntoView({
+            block: "start",
+            inline: "start",
+          });
+          console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
+          isFirstSrllWasExecuted.value = true;
+        });
+      }
     });
 
     watchEffect(() => {
@@ -230,27 +243,25 @@ export default {
         gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
 
-       
+        //-2 as i want see more new data
         pivotMessage.value = msgs.value[middle].createdAt;
-        loading.value = true
         console.log(msgs.value[middle].text, "prev midle");
         console.log("GO ?", middle);
       }
     }
 
     function next() {
-      if ( !loading.value) {
-
-        // if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {
-        //   gettingType.value = "next";
-        //   const middle = Math.floor((msgs.value.length - 1) / 2);
-        //   console.log(msgs.value[middle].text, "Next midle");
-        //   pivotMessage.value = msgs.value[middle].createdAt;
-        // } else if (msgs.value[msgs.value.length - 1].id === recentMsgID.value) {
-        //   console.log("XUY TAM A NE NEXT");
-        //   gettingType.value = null;
-        // }
-      }
+      // if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {
+      //   gettingType.value = "next";
+      //   const middle = Math.floor((msgs.value.length - 1) / 2);
+      //   console.log(msgs.value[middle].text, "next midle");
+      //   pivotMessage.value = msgs.value[middle].createdAt;
+      //   console.log("GO NEXT ?", middle, msgs.value[middle].text);
+      // } else if (msgs.value[msgs.value.length - 1].id === recentMsgID.value) {
+      //   console.log("def");
+      //   console.log("XUY TAM A NE NEXT");
+      //   gettingType.value = null;
+      // }
       // chatQuerry.value = null;
       // gettingType.value = "next";
       // const middle = Math.floor((msgs.value.length - 1) / 2);
@@ -262,7 +273,7 @@ export default {
     }
 
     function disableScroll() {
-      if (gettingType.value === "prev" && limit.value === msgs.value.length ) {
+      if (gettingType.value === "prev" && limit.value === msgs.value.length) {
         console.log("redirect");
         show();
       }
@@ -340,7 +351,7 @@ export default {
 
 .previos-observer {
   position: relative;
-  top: 267px;
+  top: 567px;
 }
 
 @media (min-width: 2700px) {
@@ -351,7 +362,7 @@ export default {
 
 .next {
   position: relative;
-  bottom: 267px;
+  bottom: 407px;
 }
 
 @media (min-height: 1200px) {

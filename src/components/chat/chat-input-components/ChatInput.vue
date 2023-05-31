@@ -365,6 +365,7 @@ export default {
   box-sizing: border-box;
   padding-left: 10px;
   padding-right: 10px;
+  z-index: 5;
 
   span {
     font-size: 1.9rem;
