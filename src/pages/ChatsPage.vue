@@ -63,10 +63,7 @@
 
     <div
       ref="chat"
-      :class="{
-        'right-side-shoved-back': chatHided,
-        'right-side': !chatHided,
-      }"
+      class="right-side"
     >
       <div
         @touchmove.prevent="() => {}"
@@ -729,9 +726,9 @@ v-enter-active,
 
 .main {
   display: flex;
-  justify-content: center;
   min-width: 100%;
   position: relative;
+  flex-direction: row;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
 }
@@ -958,22 +955,11 @@ v-enter-active,
 }
 
 @media (max-width: 798px) {
-  .right-side-shoved-back {
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-    width: 100%;
+   .right-side {
+    transform: translateX(40%);
     position: absolute;
-    height: 100vh;
-    transform: translate(0%);
-    overflow-x: hidden;
-  }
-  .right-side {
-    width: 100%;
-    position: absolute;
-    overflow-x: hidden;
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-    height: 100vh;
-    transform: translate(60%);
-  }
+
+   }
 
   .left-bar {
     width: 60%;
@@ -981,6 +967,7 @@ v-enter-active,
     max-height: none;
     height: none;
     left: 0px;
+    margin-left: 0px;
   }
 }
 
@@ -988,26 +975,6 @@ v-enter-active,
   .chat-list-hided {
     display: none;
   }
-  .right-side-shoved-back {
-    width: 100%;
-    min-height: 100%;
-    position: fixed;
-    z-index: 100;
-    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-    height: calc(var(--vh, 1vh) * 100);
-
-    transform: translate(0%);
-  }
-  .right-side {
-    width: 100%;
-    z-index: 100;
-    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-    height: calc(var(--vh, 1vh) * 100);
-    position: absolute;
-    display: block;
-    transform: translate(120%);
-  }
-
   .left-bar {
     width: 100%;
     position: relative;
