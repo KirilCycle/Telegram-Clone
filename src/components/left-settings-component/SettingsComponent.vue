@@ -51,7 +51,7 @@
 
     <top-settings-navbar-vue :title="'Settings'">
       <template v-slot:close-btn>
-        <control-button @click="$emit('close')" >
+        <control-button @click="$emit('close')">
           <span class="material-symbols-outlined"> arrow_back </span>
         </control-button>
       </template>
@@ -61,17 +61,12 @@
         </control-button>
       </template>
       <template v-slot:action2>
-        <control-button @click.stop="moreContentV = true" >
+        <control-button @click.stop="moreContentV = true">
           <span class="material-symbols-outlined"> more_vert </span>
-          <optiosn-list-vue :optionsList="settingsOptions"></optiosn-list-vue>
-          <!-- <div v-if="moreContentV" class="more-content">
-            <ul class="more_list">
-              <li @click="logoutV = true">
-                <span class="material-symbols-outlined"> logout </span>
-                <p>Logout</p>
-              </li>
-            </ul>
-          </div> -->
+          <optiosn-list-vue
+            v-show="moreContentV"
+            :optionsList="settingsOptions"
+          ></optiosn-list-vue>
         </control-button>
       </template>
     </top-settings-navbar-vue>
@@ -131,13 +126,13 @@ import { useDark } from "@vueuse/core";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
-import {  ref } from "firebase/storage";
+import { ref } from "firebase/storage";
 import UserImage from "@/components/UserImage.vue";
 import EditSettings from "./EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
-import OptiosnListVue from '../UI/lists/OptiosnList.vue';
+import OptiosnListVue from "../UI/lists/OptiosnList.vue";
 
 export default {
   components: {
@@ -162,11 +157,12 @@ export default {
       logoutV: false,
       moreContentV: false,
       settingsOptions: [
-       {
-        htmlIcoEl: `<span class="material-symbols-outlined"> logout </span>`,
-        description: 'log out',
-        execute: () => alert('sus')
-       },
+        {
+          htmlIcoEl: `<span class="material-symbols-outlined"> logout </span>`,
+          description: "log out",
+          execute: () => alert("sus"),
+        },
+       
       ],
     };
   },
@@ -206,9 +202,6 @@ export default {
       this.logoutV = false;
       this.moreContentV = false;
     },
-
-  
-   
   },
   setup(props) {
     console.log(store.state.user);
@@ -223,8 +216,6 @@ export default {
           // An error happened.
         });
     }
-
-    
 
     const isDark = useDark();
 
@@ -361,51 +352,7 @@ img {
   width: 100%;
 }
 
-.settings-nav {
-  width: 100%;
-  background-color: $content-main;
-  height: 8%;
-  max-height: 60px;
-  position: fixed;
-  box-sizing: border-box;
-  top: 0px;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 5px;
-  padding-right: 5px;
 
-  .settings_nav_right_side {
-    width: auto;
-    display: flex;
-    justify-content: space-between;
-
-    .settings-btn + .settings-btn {
-      margin-left: 5px;
-    }
-  }
-
-  .settings-btn {
-    cursor: pointer;
-    color: $def-gray;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-
-    &:hover {
-      background-color: $hover;
-    }
-  }
-}
-
-.dark .settings-nav {
-  background-color: $content-main-l;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.237);
-}
 
 .user-image-wrp {
   position: relative;
@@ -417,38 +364,6 @@ img {
   }
 }
 
-.more-content {
-  width: 180px;
-  height: max-content;
-  position: absolute;
-  z-index: 55;
-  right: 15px;
-  background-color: $transition-colors;
-  top: 45px;
-  backdrop-filter: blur(3px);
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 7px 2px 7px 2px;
-  li {
-    list-style: none;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 5px;
-    justify-content: space-around;
-    font-size: 1rem;
-    height: 30px;
-  }
-  li :hover {
-    background-color: $hover;
-    color: $text-main;
-  }
-}
-
-.dark .more-content {
-  background-color: $transition-colors-l;
-}
 
 .wrap {
   background-color: $content-main-dark;

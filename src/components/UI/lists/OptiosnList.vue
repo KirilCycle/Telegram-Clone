@@ -3,7 +3,7 @@
     <ul class="more_list">
       <li @click="op.execute" :key="op.description" v-for="op in optionsList">
         <div v-html="op.htmlIcoEl"></div>
-        <p>{{op.description}}</p>
+        <p>{{ op.description }}</p>
       </li>
     </ul>
   </div>
@@ -11,9 +11,9 @@
 
 <script>
 export default {
-    props: {
-        optionsList: Array 
-    } 
+  props: {
+    optionsList: Array,
+  },
 };
 </script>
 
@@ -41,10 +41,24 @@ export default {
     justify-content: space-around;
     font-size: 1rem;
     height: 30px;
+    transition: transform 0.4s ease;
+    &:hover {
+      background-color: #1b1b1beb;
+      color: #e4e4e4;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
-  li :hover {
-    background-color: $hover;
-    color: $text-main;
+}
+
+.dark .more-content {
+  li {
+    &:hover {
+      background-color: #0b0b0b0f;
+      color: #424242;
+    }
   }
 }
 
