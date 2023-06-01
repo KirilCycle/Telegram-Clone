@@ -22,6 +22,7 @@ $def-gray: #b2b2b2;
   justify-content: center;
   align-items: center;
   width: 40px;
+  flex-shrink: 0;
   height: 40px;
   border-radius: 20px;
 

@@ -1,11 +1,19 @@
 <template>
   <div v-if="$store.state.user.user" class="edit-wrap">
-    <nav class="edti-nav">
+    <!-- <nav class="edti-nav">
       <button @click="() => $emit('close')">
         <span class="material-symbols-outlined"> arrow_back </span>
       </button>
       <h1 class="page-header">Edit Profile</h1>
-    </nav>
+    </nav> -->
+   
+   <top-settings-navbar-vue :title="'Edit Profile'">
+    <template v-slot:close-btn>
+      <control-button @click="() => $emit('close')">
+        <span class="material-symbols-outlined"> arrow_back </span>
+      </control-button>
+    </template>
+   </top-settings-navbar-vue>
 
     <div class="edit-content">
       <div class="image-container">
@@ -68,8 +76,6 @@
         <span class="material-symbols-outlined"> done </span>
       </button>
     </transition>
-
-   
   </div>
 </template>
 
@@ -87,8 +93,12 @@ import store from "@/store/store";
 import { reactive } from "vue";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
+import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
 
 export default {
+  components: {
+    TopSettingsNavbarVue
+  },
   props: {
     v: Boolean,
   },
@@ -112,7 +122,6 @@ export default {
       shortLength: false,
     };
   },
-
   computed: {
     usernameState() {
       if (this.usernameExist) {
@@ -358,13 +367,6 @@ export default {
     const db = firebase.firestore();
 
     const data = reactive({});
-
-    const unsub = onSnapshot(
-      doc(db, "usersPrew", store.state.user.user.uid),
-      (doc) => {
-        store.commit("user/setUser", doc.data());
-      }
-    );
   },
 };
 </script>
@@ -400,7 +402,6 @@ $def-gray: #828282;
   background-color: $content-main;
   box-sizing: border-box;
 }
-
 
 .dark .edit-wrap {
   background-color: $content-main-l;
@@ -496,6 +497,7 @@ $def-gray: #828282;
   max-width: 100%;
   padding: 5px;
   color: gray;
+  text-align: left;
 }
 .edit-content {
   width: 100%;
@@ -514,7 +516,6 @@ $def-gray: #828282;
     overflow: hidden;
 
     &:hover {
-      
     }
 
     .img-bloor {

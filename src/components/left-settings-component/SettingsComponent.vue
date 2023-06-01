@@ -49,11 +49,11 @@
       </div>
     </nav> -->
 
-    <top-settings-navbar-vue>
+    <top-settings-navbar-vue :title="'Settings'">
       <template v-slot:close-btn>
-        <control-btn @click="$emit('close')" class="settings-btn">
+        <control-button @click="$emit('close')" >
           <span class="material-symbols-outlined"> arrow_back </span>
-        </control-btn>
+        </control-button>
       </template>
       <template v-slot:action1>
         <control-button @click="() => handleEditComponent(true)">
@@ -61,16 +61,17 @@
         </control-button>
       </template>
       <template v-slot:action2>
-        <control-button @click.stop="moreContentV = true" class="settings-btn">
+        <control-button @click.stop="moreContentV = true" >
           <span class="material-symbols-outlined"> more_vert </span>
-          <div v-if="moreContentV" class="more-content">
+          <optiosn-list-vue :optionsList="settingsOptions"></optiosn-list-vue>
+          <!-- <div v-if="moreContentV" class="more-content">
             <ul class="more_list">
               <li @click="logoutV = true">
                 <span class="material-symbols-outlined"> logout </span>
                 <p>Logout</p>
               </li>
             </ul>
-          </div>
+          </div> -->
         </control-button>
       </template>
     </top-settings-navbar-vue>
@@ -125,25 +126,24 @@
 
 <script>
 import store from "@/store/store";
-import { updateProfile, signOut } from "firebase/auth";
-import firebase from "firebase/compat/app";
+import { signOut } from "firebase/auth";
 import { useDark } from "@vueuse/core";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { uuidv4 } from "@firebase/util";
-import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import {  ref } from "firebase/storage";
 import UserImage from "@/components/UserImage.vue";
-import EditSettings from "@/components/EditSettings.vue";
+import EditSettings from "./EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
+import OptiosnListVue from '../UI/lists/OptiosnList.vue';
 
 export default {
   components: {
     UserImage,
     EditSettings,
+    OptiosnListVue,
     ProfileUserInfo,
     RadioSelect,
     TopSettingsNavbarVue,
@@ -161,6 +161,13 @@ export default {
       isLoading: false,
       logoutV: false,
       moreContentV: false,
+      settingsOptions: [
+       {
+        htmlIcoEl: `<span class="material-symbols-outlined"> logout </span>`,
+        description: 'log out',
+        execute: () => alert('sus')
+       },
+      ],
     };
   },
   computed: {
@@ -200,12 +207,7 @@ export default {
       this.moreContentV = false;
     },
 
-   
-
   
-
-   
-
    
   },
   setup(props) {

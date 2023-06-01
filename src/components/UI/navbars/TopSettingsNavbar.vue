@@ -1,7 +1,10 @@
 <template>
   <nav class="settings-nav">
     <slot name="close-btn" @click="() => this.$emit('sclose')"></slot>
-    <h1 class="settings-title">Settings</h1>
+
+    <div class="settings-title-wrap">
+       <h1 class="settings-title">{{title}}</h1>
+    </div>   
 
     <div class="settings_nav_right_side">
       <div class="action-wrap">
@@ -15,9 +18,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        title: String
+    }
+};
 </script>
-
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
@@ -49,12 +55,17 @@ export default {};
 
 .dark .settings-nav {
   background-color: $content-main-l;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.237);
+}
+
+.settings-title-wrap {
+    text-align: left;
+    width: 100%;
+    padding-left: 10px;
 }
 
 .settings-title {
   color: $text-main;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 550;
   margin: 0% auto;
 }
