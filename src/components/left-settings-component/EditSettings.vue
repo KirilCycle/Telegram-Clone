@@ -6,14 +6,14 @@
       </button>
       <h1 class="page-header">Edit Profile</h1>
     </nav> -->
-   
-   <top-settings-navbar-vue :title="'Edit Profile'">
-    <template v-slot:close-btn>
-      <control-button @click="() => $emit('close')">
-        <span class="material-symbols-outlined"> arrow_back </span>
-      </control-button>
-    </template>
-   </top-settings-navbar-vue>
+
+    <top-settings-navbar-vue :title="'Edit Profile'">
+      <template v-slot:close-btn>
+        <control-button @click="() => $emit('close')">
+          <span class="material-symbols-outlined"> arrow_back </span>
+        </control-button>
+      </template>
+    </top-settings-navbar-vue>
 
     <div class="edit-content">
       <div class="image-container">
@@ -84,20 +84,23 @@ import {
   collection,
   query,
   where,
+  getDoc,
+  doc,
   getDocs,
   onSnapshot,
 } from "firebase/firestore";
 import firebase from "firebase/compat/app";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { setDoc, updateDoc } from "firebase/firestore";
 import store from "@/store/store";
 import { reactive } from "vue";
+import { updateStoreUser } from "@/features/updateStoreUser";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
 
 export default {
   components: {
-    TopSettingsNavbarVue
+    TopSettingsNavbarVue,
   },
   props: {
     v: Boolean,
@@ -153,7 +156,7 @@ export default {
       }
     },
   },
-  watch: {},
+
   methods: {
     async handleUsername() {
       this.checkUsername = false;
@@ -323,9 +326,10 @@ export default {
                 photoURL: url,
               };
 
-              updateDoc(userDoc, newData).then((res) =>
-                console.log(res, "UPDATED p")
-              );
+              updateDoc(userDoc, newData).then((res) => {
+                this.$emit("close");
+                updateStoreUser();
+              });
             });
           });
         } else {
@@ -344,6 +348,7 @@ export default {
               await updateDoc(userDoc, newData).then((res) => {
                 console.log(res, "UPDATED SAME USERNAME");
                 this.$emit("close");
+                updateStoreUser();
               });
 
               console.log("ENOTHER DATA", newData);
@@ -352,7 +357,10 @@ export default {
             }
           } else {
             await updateDoc(userDoc, newData)
-              .then((res) => this.$emit("close"))
+              .then((res) => {
+                this.$emit("close");
+                updateStoreUser();
+              })
               .catch((er) => console.log(er));
 
             console.log("ENOTHER DATA", newData);
@@ -361,12 +369,6 @@ export default {
         // To update age and favorite color:
       }
     },
-  },
-
-  setup() {
-    const db = firebase.firestore();
-
-    const data = reactive({});
   },
 };
 </script>

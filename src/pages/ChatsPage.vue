@@ -856,7 +856,7 @@ v-enter-active,
       padding-left: 45px;
       padding-right: 45px;
       margin-left: 5px;
-      font-size: 0.9rem;
+      font-size: 1rem;
       border-radius: 25px;
       color: $text-main;
       border: 1px solid rgb(51, 51, 51);

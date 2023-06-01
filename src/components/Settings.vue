@@ -1,11 +1,11 @@
 <template>
-  <button @click="v = true" class="menu-btn-wrap">
+  <control-button @click="v = true" class="menu-btn-wrap">
     <button class="menu-btn">
       <span></span>
       <span></span>
       <span></span>
     </button>
-  </button>
+  </control-button>
 </template>
 
 <script>
