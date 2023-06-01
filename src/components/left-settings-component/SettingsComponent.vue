@@ -1,17 +1,17 @@
 <template>
   <div @click="moreContentV = false" class="wrap">
     <nav class="settings-nav">
-      <button @click="$emit('close')" class="settings-btn">
+      <control-btn @click="$emit('close')" class="settings-btn">
         <span class="material-symbols-outlined"> arrow_back </span>
-      </button>
+      </control-btn>
       <h1 class="settings">Settings</h1>
 
       <div class="settings_nav_right_side">
-        <button @click="() => handleEditComponent(true)" class="settings-btn">
+        <control-button @click="() => handleEditComponent(true)">
           <span class="material-symbols-outlined"> edit </span>
-        </button>
+        </control-button>
 
-        <button @click.stop="moreContentV = true" class="settings-btn">
+        <control-button @click.stop="moreContentV = true" class="settings-btn">
           <span class="material-symbols-outlined"> more_vert </span>
 
           <div v-if="moreContentV" class="more-content">
@@ -22,7 +22,7 @@
               </li>
             </ul>
           </div>
-        </button>
+        </control-button>
 
         <teleport to="body">
           <div
@@ -48,6 +48,24 @@
         </teleport>
       </div>
     </nav>
+
+    <top-settings-navbar-vue>
+      <template v-slot:close-btn>
+        <control-btn @click="$emit('close')" class="settings-btn">
+          <span class="material-symbols-outlined"> arrow_back </span>
+        </control-btn>
+      </template>
+      <template v-slot:action1>
+        <control-button @click="() => handleEditComponent(true)">
+          <span class="material-symbols-outlined"> edit </span>
+        </control-button>
+      </template>
+      <template v-slot:action2>
+        <control-button @click.stop="moreContentV = true" class="settings-btn">
+          <span class="material-symbols-outlined"> more_vert </span>
+        </control-button>
+      </template>
+    </top-settings-navbar-vue>
 
     <div class="user-image-wrp">
       <user-image>
@@ -112,6 +130,7 @@ import UserImage from "@/components/UserImage.vue";
 import EditSettings from "@/components/EditSettings.vue";
 import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
+import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
 
 export default {
   components: {
@@ -119,6 +138,7 @@ export default {
     EditSettings,
     ProfileUserInfo,
     RadioSelect,
+    TopSettingsNavbarVue,
   },
   data() {
     return {
@@ -512,16 +532,15 @@ img {
   justify-content: center;
   padding-left: 5px;
   padding-right: 5px;
-  
+
   .settings_nav_right_side {
     width: auto;
     display: flex;
     justify-content: space-between;
 
-  .settings-btn  + .settings-btn {
-    margin-left: 5px;
-  }
-
+    .settings-btn + .settings-btn {
+      margin-left: 5px;
+    }
   }
 
   .settings-btn {
@@ -577,12 +596,15 @@ img {
     justify-content: space-around;
     font-size: 1rem;
     height: 30px;
-
-    &:hover {
-      background-color: $hover;
-      color: $text-main;
-    }
   }
+  li :hover {
+    background-color: $hover;
+    color: $text-main;
+  }
+}
+
+.dark .more-content {
+  background-color: $transition-colors-l;
 }
 
 .wrap {

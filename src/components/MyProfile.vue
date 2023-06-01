@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import ProfilePage from "@/pages/ProfilePage.vue";
+import ProfilePage from "@/components/left-settings-component/SettingsComponent.vue";
 import { getAuth } from 'firebase/auth';
 import  { ref } from 'vue';
 export  default {

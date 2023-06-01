@@ -6,34 +6,13 @@
       <span></span>
     </button>
   </button>
-
-  <!-- <teleport to="body">
-    <Transition  name="fade">
-    <div v-if="v" class="profile-component-wrap">
-        <profile-page @close="v = false"></profile-page>
-    </div>
-    </Transition>
-  </teleport> -->
 </template>
 
 <script>
-import ProfilePage from "@/pages/ProfilePage.vue";
-import { getAuth } from "firebase/auth";
-import { ref } from "vue";
 export default {
-  components: { ProfilePage },
   data() {
     return {
       v: false,
-    };
-  },
-  setup() {
-    const auth = getAuth();
-
-    const photo = ref(auth.currentUser.photoURL);
-
-    return {
-      photo,
     };
   },
 };

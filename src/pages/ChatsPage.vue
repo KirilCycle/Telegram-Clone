@@ -112,17 +112,18 @@
         </div>
       </div>
     </div>
+
+
   </div>
 </template>
 
 <script>
-import { collection, getDocs, getDoc, Timestamp } from "firebase/firestore";
+import {  Timestamp } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { onMounted, ref } from "vue";
-import { getDatabase, onValue } from "firebase/database";
-import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { doc, setDoc, writeBatch } from "firebase/firestore";
+import { ref } from "vue";
+import { updateDoc, } from "firebase/firestore";
+import { doc,  writeBatch } from "firebase/firestore";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
@@ -139,7 +140,7 @@ import FoundedChatInputVue from "@/components/chat/chat-input-components/Founded
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 import { sendMsg } from "@/features/sendChatMessage";
-import ProfilePageVue from "./ProfilePage.vue";
+import ProfilePageVue from "../components/left-settings-component/SettingsComponent.vue";
 
 export default {
   components: {
@@ -724,10 +725,7 @@ v-enter-active,
   }
 }
 
-.last-cccc {
-  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-  height: calc(var(--vh, 1vh) * 100);
-}
+
 
 .main {
   display: flex;
@@ -969,11 +967,12 @@ v-enter-active,
     overflow-x: hidden;
   }
   .right-side {
-    width: 40%;
+    width: 100%;
+    position: absolute;
     overflow-x: hidden;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     height: 100vh;
-    transform: translate(0%);
+    transform: translate(60%);
   }
 
   .left-bar {
@@ -981,6 +980,7 @@ v-enter-active,
     min-height: none;
     max-height: none;
     height: none;
+    left: 0px;
   }
 }
 
