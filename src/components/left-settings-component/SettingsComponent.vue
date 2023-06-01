@@ -1,6 +1,6 @@
 <template>
-  <div @click="moreContentV = false" class="wrap">
-    <nav class="settings-nav">
+  <div class="wrap" @click="moreContentV = false">
+    <!-- <nav class="settings-nav">
       <control-btn @click="$emit('close')" class="settings-btn">
         <span class="material-symbols-outlined"> arrow_back </span>
       </control-btn>
@@ -47,7 +47,7 @@
           </div>
         </teleport>
       </div>
-    </nav>
+    </nav> -->
 
     <top-settings-navbar-vue>
       <template v-slot:close-btn>
@@ -63,6 +63,14 @@
       <template v-slot:action2>
         <control-button @click.stop="moreContentV = true" class="settings-btn">
           <span class="material-symbols-outlined"> more_vert </span>
+          <div v-if="moreContentV" class="more-content">
+            <ul class="more_list">
+              <li @click="logoutV = true">
+                <span class="material-symbols-outlined"> logout </span>
+                <p>Logout</p>
+              </li>
+            </ul>
+          </div>
         </control-button>
       </template>
     </top-settings-navbar-vue>
@@ -172,7 +180,7 @@ export default {
   mounted() {
     this.$emit("shove");
   },
-  created() {},
+
   methods: {
     async handleEditComponent(state) {
       this.inEdit = state;
@@ -192,133 +200,13 @@ export default {
       this.moreContentV = false;
     },
 
-    async handleChanging() {
-      this.isLoading = true;
-      if (this.value.length > 4 && this.newFile) {
-        const symphols = ["@", "#", "$", "!", "+", "|", "/"];
+   
 
-        for (let i = 0; i < this.value.length; i++) {
-          for (let j = 0; j < symphols.length; j++) {
-            if (this.value[i].includes(symphols[j])) {
-              return;
-            }
-          }
-        }
+  
 
-        const storage = getStorage();
-        const auth = getAuth();
+   
 
-        const storageRef = ref(
-          storage,
-          `images/${this.newFile.name + uuidv4()}`
-        );
-
-        uploadBytes(storageRef, this.newFile)
-          .then((snapshot) => {
-            storageRef._location.path_, "Uploaded a blob or file!";
-
-            getDownloadURL(storageRef)
-              .then((url) => {
-                updateProfile(auth.currentUser, {
-                  photoURL: url,
-                  displayName: this.value,
-                })
-                  .then(() => {
-                    async function chnagePrewUser(userId, changes) {
-                      const db = firebase.firestore();
-
-                      const frankDocRef = doc(db, "usersPrew", userId);
-
-                      await updateDoc(frankDocRef, changes);
-                    }
-
-                    chnagePrewUser(auth.currentUser.uid, {
-                      photoURL: url,
-                      displayName: this.value,
-                    })
-                      .then(() => {
-                        console.log("good", url);
-                        this.isLoading = false;
-                        this.inEdit = false;
-                      })
-                      .catch((er) => console.log(er, "huynya peredelivay"));
-                  })
-                  .catch((error) => {
-                    this.inEdit = false;
-                    this.isLoading = false;
-                    console.log("huynya", error);
-                  });
-              })
-              .catch((er) => {
-                this.inEdit = false;
-                this.isLoading = false;
-              });
-          })
-
-          .catch((er) => {
-            this.inEdit = false;
-            this.isLoading = false;
-          });
-      } else {
-        console.log("gimno peredelivay");
-      }
-
-      //photo handle
-    },
-
-    changeDisplayName() {
-      const symphols = ["@", "#", "$", "!", "+", "|", "/", "."];
-
-      let ready = true;
-
-      for (let i = 0; i < this.value.length; i++) {
-        for (let j = 0; j < symphols.length; j++) {
-          if (this.value[i].includes(symphols[j])) {
-            ready = false;
-            this.wrongVal = true;
-            return;
-          }
-        }
-      }
-
-      if (ready) {
-        updateProfile(this.user, {
-          displayName: this.value,
-        })
-          .then(() => {
-            this.changedName = this.value.trim();
-            this.preparedToChangeName = false;
-          })
-          .catch((error) => {});
-      }
-    },
-
-    showPrewiePhoto(e) {
-      if (e.target.files[0]) {
-        const uploadedTarget = e.target.files[0];
-
-        if (
-          uploadedTarget.name.includes(".png") ||
-          uploadedTarget.name.includes(".jpg") ||
-          uploadedTarget.name.includes(".jpeg") ||
-          uploadedTarget.name.includes(".svg")
-        ) {
-          this.profilePhoto = URL.createObjectURL(uploadedTarget);
-
-          this.newFile = uploadedTarget;
-
-          console.log(this.newFile);
-          // selectedPhoto.value = e.target.files[0]
-        } else {
-          console.log("no");
-        }
-      }
-    },
-
-    cancelChangings() {
-      this.inEdit = false;
-      this.profilePhoto = this.user.photoURL;
-    },
+   
   },
   setup(props) {
     console.log(store.state.user);
@@ -334,53 +222,7 @@ export default {
         });
     }
 
-    function uploadPhoto(e) {
-      if (e.target.files[0]) {
-        const uploadedTarget = e.target.files[0];
-
-        if (
-          uploadedTarget.name.includes(".png") ||
-          uploadedTarget.name.includes(".jpg") ||
-          uploadedTarget.name.includes(".jpeg") ||
-          uploadedTarget.name.includes(".svg")
-        ) {
-          const storage = getStorage();
-          const auth = getAuth();
-
-          const storageRef = ref(
-            storage,
-            `images/${uploadedTarget.name + uuidv4()}`
-          );
-
-          uploadBytes(storageRef, uploadedTarget)
-            .then((snapshot) => {
-              console.log(
-                storageRef._location.path_,
-                "Uploaded a blob or file!"
-              );
-
-              getDownloadURL(storageRef)
-                .then((url) => {
-                  updateProfile(auth.currentUser, {
-                    photoURL: url,
-                  })
-                    .then(() => {
-                      console.log("good", url);
-                    })
-                    .catch((error) => {
-                      console.log("huynya", error);
-                    });
-                })
-                .catch((er) => console.log("er", er));
-            })
-            .catch((er) => console.log(er, "post er"));
-
-          console.log(e.target.files[0]);
-        } else {
-          console.log("no");
-        }
-      }
-    }
+    
 
     const isDark = useDark();
 
@@ -441,7 +283,6 @@ export default {
     return {
       logout,
       themeVariations,
-      uploadPhoto,
       options,
       options2,
     };
