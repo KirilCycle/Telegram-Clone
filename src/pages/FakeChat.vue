@@ -1,16 +1,22 @@
 <template>
   <div class="main">
+  
     <div ref="leftbars" class="left-bar">
-      <div class="LEFTBAR-SUS"></div>
+    
+    
+      <div @click.stop="() => shoveRightSide(true)" class="LEFTBAR-SUS"></div>
     </div>
+  
+  
     <div
-      @click.stop="() => shoveRightSide(true)"
+      @click.stop="() => shoveRightSide(false)"
       ref="rightsides"
       class="right-side"
     >
-      <div @click.stop="() => shoveRightSide(false)" class="test-block"></div>
+      
+      <div @click.stop="() => shoveRightSide(true)" class="test-block"></div>
     </div>
-    <div class="save"></div>
+   
   </div>
 </template>
 
@@ -35,10 +41,10 @@ export default {
     });
 
     function shoveRightSide(isBack) {
-      if (window.innerWidth < 899) {
+      if (window.innerWidth < 999) {
         const leftBarWdth = leftbar.value.offsetWidth;
 
-        if (isBack) {
+        if (!isBack) {
           // this.$refs.settings.style.transform = `translateX(${pos})`;
           console.log(leftBarWdth, rightside.value);
           rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
@@ -83,7 +89,6 @@ export default {
     top: 0;
     flex-shrink: 0;
     width: 300px;
-   
 }
 
 .right-side {
@@ -103,21 +108,27 @@ export default {
   background-color: green;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .right-side {
     flex-shrink: 0;
     position: absolute;
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1000px) {
   .right-side {
     transform: translateX(0px) !important;
-      position: relative;
+    position: relative;
   }
 
   .left-bar {
     position: relative;
+  }
+}
+
+@media (max-width: 650px) {
+  .left-bar {
+    width: 100%;
   }
 }
 </style>

@@ -1,11 +1,31 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
 
+ <!-- <div ref="leftbars" class="left-bar">
+    
+    
+      <div @click.stop="() => shoveRightSide(true)" class="LEFTBAR-SUS"></div>
+    </div>
+  
+  
+    <div
+      @click.stop="() => shoveRightSide(false)"
+      ref="rightsides"
+      class="right-side"
+    >
+      
+      <div @click.stop="() => shoveRightSide(true)" class="test-block"></div>
+    </div> -->
+
+
   <div class="main">
-    <div class="left-bar">
+    <div @click.stop="() => shoveRightSide(true)" ref="leftbars" class="left-bar" >
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
-          <profile-page-vue @close="closeSettings" @shove="() => shoveSettings('0%')"></profile-page-vue>
+          <profile-page-vue
+            @close="closeSettings"
+            @shove="() => shoveSettings('0%')"
+          ></profile-page-vue>
         </div>
       </div>
 
@@ -61,10 +81,8 @@
       </div>
     </div>
 
-    <div
-      ref="chat"
-      class="right-side"
-    >
+    <div @click.stop="() => shoveRightSide(false)" ref="chat"
+      class="right-side">
       <div
         @touchmove.prevent="() => {}"
         v-if="$store.state.chat.selectedUser"
@@ -109,18 +127,16 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script>
-import {  Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import store from "@/store/store";
-import { ref } from "vue";
-import { updateDoc, } from "firebase/firestore";
-import { doc,  writeBatch } from "firebase/firestore";
+import { ref, onMounted } from "vue";
+import { updateDoc } from "firebase/firestore";
+import { doc, writeBatch } from "firebase/firestore";
 import FoundedChatsList from "@/components/FoundedChatsList.vue";
 import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
@@ -181,12 +197,11 @@ export default {
     },
 
     closeSettings() {
-       this.shoveSettings('-120%')
-       const shoveBackTimeTransiiton = 380
-       setTimeout(() => {
-          this.settingsVisible = false;
-       },shoveBackTimeTransiiton)
-    
+      this.shoveSettings("-120%");
+      const shoveBackTimeTransiiton = 380;
+      setTimeout(() => {
+        this.settingsVisible = false;
+      }, shoveBackTimeTransiiton);
     },
 
     shoveSettings(pos) {
@@ -530,6 +545,34 @@ export default {
       store.commit("chat/changeChatSettings", settings);
     }
 
+
+
+    const rightside = ref(null);
+    const leftbar = ref(null);
+    onMounted(() => {
+      rightside.value = document.querySelector(".right-side");
+      leftbar.value = document.querySelector(".left-bar");
+      shoveRightSide(true);
+    });
+
+    function shoveRightSide(isBack) {
+      if (window.innerWidth < 999) {
+        const leftBarWdth = leftbar.value.offsetWidth;
+
+        if (!isBack) {
+          // this.$refs.settings.style.transform = `translateX(${pos})`;
+          console.log(leftBarWdth, rightside.value);
+          rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
+          return;
+        }
+        rightside.value.style.transform = `translateX(${0}px)`;
+      }
+    }
+
+
+
+
+
     const chat = ref(null);
     const chatHided = ref(false);
 
@@ -550,6 +593,9 @@ export default {
 
     return {
       chat,
+      rightside,
+      leftbar,
+      shoveRightSide,
       chatList,
       chatContainer,
       chatHided,
@@ -596,24 +642,6 @@ export default {
   position: absolute;
   transition: transform 0.1s ease-out;
   transform: translateY(100px);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
-v-enter-active,
-.v-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 
 .chat-nav-x {
@@ -722,13 +750,13 @@ v-enter-active,
   }
 }
 
-
-
 .main {
   display: flex;
-  min-width: 100%;
+  width: 100%;
   position: relative;
-  flex-direction: row;
+  overflow: hidden;
+  max-height: 100%;
+  min-height: 100%;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
 }
@@ -745,17 +773,17 @@ v-enter-active,
   -ms-user-select: none; /* Internet Explorer/Edge */
   width: 350px;
   overflow: hidden;
-  resize: horizontal;
-  position: relative;
-  flex-shrink: 0;
   background-color: $content-main;
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
-
-  @media (max-width: 1020px) {
-    width: 300px;
-  }
+  display: flex;
+  left: 0;
+  max-width: none;
+  position: fixed;
+  top: 0;
+  flex-shrink: 0;
+  width: 300px;
 
   .search-input-container {
     display: flex;
@@ -929,11 +957,16 @@ v-enter-active,
 }
 
 .right-side {
-  width: 100%;
-  height: 100vh;
-  position: relative;
   overflow-y: hidden;
   background-color: $body-color;
+  width: 100vw;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 30px;
+  position: fixed;
+  background-color: rgb(30, 30, 30);
+  transition: transform 0.5s ease-in;
+
 }
 
 .dark .right-side {
@@ -954,37 +987,29 @@ v-enter-active,
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
 
-@media (max-width: 798px) {
-   .right-side {
-    transform: translateX(40%);
+
+@media (max-width: 1000px) {
+  .right-side {
+    flex-shrink: 0;
     position: absolute;
-
-   }
-
-  .left-bar {
-    width: 60%;
-    min-height: none;
-    max-height: none;
-    height: none;
-    left: 0px;
-    margin-left: 0px;
   }
 }
 
-@media (max-width: 600px) {
-  .chat-list-hided {
-    display: none;
+@media (min-width: 1000px) {
+  .right-side {
+    transform: translateX(0px) !important;
+    position: relative;
   }
+
+  .left-bar {
+    position: relative;
+  }
+}
+
+@media (max-width: 650px) {
   .left-bar {
     width: 100%;
-    position: relative;
-    resize: none;
-
-    .left_bar_srch-wrap {
-      .search-chats-input {
-        height: 43px;
-      }
-    }
   }
 }
+
 </style>
