@@ -1,8 +1,25 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
 
+ <!-- <div ref="leftbars" class="left-bar">
+    
+    
+      <div @click.stop="() => shoveRightSide(true)" class="LEFTBAR-SUS"></div>
+    </div>
+  
+  
+    <div
+      @click.stop="() => shoveRightSide(false)"
+      ref="rightsides"
+      class="right-side"
+    >
+      
+      <div @click.stop="() => shoveRightSide(true)" class="test-block"></div>
+    </div> -->
+
+
   <div class="main">
-    <div ref="leftbars" class="left-bar">
+    <div @click.stop="() => shoveRightSide(true)" ref="leftbars" class="left-bar" >
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
           <profile-page-vue
@@ -55,11 +72,7 @@
         </button> -->
       </div>
 
-      <div
-        @click.prevent="() => shoveRightSide(true)"
-        v-show="!isGlobalSearch"
-        class="chat-list"
-      >
+      <div @click="chatHided = true" v-show="!isGlobalSearch" class="chat-list">
         <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
       </div>
 
@@ -68,17 +81,15 @@
       </div>
     </div>
 
-    <div ref="chat" class="right-side">
+    <div @click.stop="() => shoveRightSide(false)" ref="chat"
+      class="right-side">
       <div
         @touchmove.prevent="() => {}"
         v-if="$store.state.chat.selectedUser"
         class="chat-nav-x"
       >
         <button>
-          <span
-            @click.stop="() => shoveRightSide(false)"
-            class="material-symbols-outlined"
-          >
+          <span @click="chatHided = false" class="material-symbols-outlined">
             chevron_left
           </span>
         </button>
@@ -91,10 +102,12 @@
       </div>
 
       <div ref="chatContainer" class="chat-container-x">
-        <!-- <metal-killer :key="sus" v-if="this.$store.state.chat.chatId" parentRef="$refs.chatContainer"></metal-killer>
-        <new-chat :key="sus228"  v-if="this.$store.state.chat.selectedUser?.new"></new-chat> -->
-         <chat-settings v-if="this.$store.state.chat.chatId"></chat-settings>
-           <chat-settings  v-if="this.$store.state.chat.selectedUser?.new"></chat-settings>
+        <component
+          :is="currentChatType"
+          :key="$store.state.chat.chatKey"
+          :parentRef="$refs.chatContainer"
+        >
+        </component>
       </div>
 
       <div
@@ -165,7 +178,6 @@ export default {
       chatKey: "s",
       settingsVisible: null,
       serachQ: "",
-      chatWasSelected: null,
       parentChatRef: this.$refs.chatContainer,
       sendMsg: sendMsg,
     };
@@ -310,7 +322,6 @@ export default {
       }
       return false;
     },
-
   },
 
   setup(data) {
@@ -534,6 +545,8 @@ export default {
       store.commit("chat/changeChatSettings", settings);
     }
 
+
+
     const rightside = ref(null);
     const leftbar = ref(null);
     onMounted(() => {
@@ -556,11 +569,14 @@ export default {
       }
     }
 
+
+
+
+
     const chat = ref(null);
     const chatHided = ref(false);
 
     watchEffect(() => {
-      console.log("NAXUYA ?");
       if (store.state.chat.selectedUser?.new) {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
@@ -583,7 +599,7 @@ export default {
       chatList,
       chatContainer,
       chatHided,
-      // currentChatType,
+      currentChatType,
       sendMessageToFoundedChat,
       resetSelectedChat,
       saveChatSettings,
@@ -739,6 +755,8 @@ export default {
   width: 100%;
   position: relative;
   overflow: hidden;
+  max-height: 100%;
+  min-height: 100%;
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--vh, 1vh) * 100);
 }
@@ -765,6 +783,7 @@ export default {
   position: fixed;
   top: 0;
   flex-shrink: 0;
+  width: 300px;
 
   .search-input-container {
     display: flex;
@@ -946,7 +965,8 @@ export default {
   padding: 30px;
   position: fixed;
   background-color: rgb(30, 30, 30);
-  transition: transform 0.5s ease-out;
+  transition: transform 0.5s ease-in;
+
 }
 
 .dark .right-side {
@@ -966,6 +986,7 @@ export default {
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
+
 
 @media (max-width: 1000px) {
   .right-side {
@@ -989,9 +1010,6 @@ export default {
   .left-bar {
     width: 100%;
   }
-
-  
-
-
 }
+
 </style>

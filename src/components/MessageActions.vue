@@ -33,7 +33,7 @@
             <button>Coppy Text</button>
           </li>
           <!-- v-if="$store.state.user.user.uid === "  -->
-          <li v-if="ableToDelete" @click="deleteMsg" class="delete-action">
+          <li @click="deleteMsg" class="delete-action">
             <span class="material-symbols-outlined"> delete </span>
             <button>Delete</button>
           </li>
@@ -59,9 +59,6 @@ import ForwardModal from "./ForwardModal.vue";
 export default {
   data() {
     return {
-      ableToDelete:
-        store.state.message.selectedMsgData.userId ===
-        store.state.user.user.uid,
       db: firebase.firestore(),
       v: false,
       replyEmoji,
@@ -189,8 +186,6 @@ export default {
     },
 
     selectText() {
-      const el = this.$store.state.message.replyMsgRef;
-
       const text = this.$store.state.message.selectedMsgData.text;
       navigator.clipboard
         .writeText(text)
@@ -203,30 +198,18 @@ export default {
     },
 
     async deleteMsg() {
-      if (
-        store.state.message.selectedMsgData.userId === store.state.user.user.uid
-      ) {
-        // const chatRef = doc(db, "chatMessages", store.state.chat.chatId);
+      try {
+        console.log("EXECUTE FN");
 
-        try {
-          console.log("EXECUTE FN");
+        let res = this.db
+          .collection("chatMessages")
+          .doc(store.state.chat.chatId)
+          .collection("messages")
+          .doc(store.state.message.selectedMsgData.id);
 
-          let res = this.db
-            .collection("chatMessages")
-            .doc(store.state.chat.chatId)
-            .collection("messages")
-            .doc(store.state.message.selectedMsgData.id);
-
-          res.delete();
-
-          console.log(
-            store.state.chat.chatId,
-            " msg =>",
-            store.state.message.selectedMsgData.id
-          );
-        } catch (e) {
-          console.log(e);
-        }
+        res.delete();
+      } catch (e) {
+        console.log(e);
       }
     },
 

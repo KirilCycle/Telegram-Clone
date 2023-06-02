@@ -107,26 +107,6 @@ export default {
     const scrollWasDisabled = ref(null);
     const recentMsgID = ref(null);
 
-    function resetChatSettings() {
-      msgs.value = null;
-      pivotMessage.value = null;
-      recentMsgID.value = null;
-      isFirstSrllWasExecuted.value = null;
-      gettingType.value = null;
-      unsubscribe.value();
-    }
-
-    watchEffect(() => {
-      if (store.state.chat.chatId !== lastChatId.value) {
-        console.log("CHAT ID CHAGED ");
-        if (unsubscribe.value) {
-          resetChatSettings();
-          console.log("CHAT RESETED ? ");
-        }
-        lastChatId.value = store.state.chat.chatId;
-      }
-    });
-
     function subscribeToRecentMsg() {
       let querry = db
         .collection("chatMessages")
@@ -196,6 +176,14 @@ export default {
           console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
           isFirstSrllWasExecuted.value = true;
         });
+      }
+    });
+
+    watchEffect(() => {
+      if (store.state.chat.chatId !== lastChatId.value) {
+        console.log("HA > ");
+        store.commit("chat/setChatKey", store.state.chat.chatId);
+        lastChatId.value = store.state.chat.chatId;
       }
     });
 
