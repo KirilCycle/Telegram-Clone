@@ -1,6 +1,8 @@
 <template>
   <div class="main">
-    <div ref="leftbars" class="left-bar"></div>
+    <div ref="leftbars" class="left-bar">
+      <div class="LEFTBAR-SUS"></div>
+    </div>
     <div
       @click.stop="() => shoveRightSide(true)"
       ref="rightsides"
@@ -57,40 +59,65 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  width: 100%;
+  height: 100vh;
+  max-height: 100%;
+  min-height: 100%;
+  overflow: hidden;
   display: flex;
-  overflow-x: hidden;
+  position: relative;
+  width: 100%;
 }
+
+.LEFTBAR-SUS {
+  width: 70px;
+  height: 70px;
+  background-color: #8a8a8a;
+}
+
 .left-bar {
-  width: 350px;
-  flex-shrink: 0;
-  height: 100vh;
-  background-color: #616161;
+    display: flex;
+    left: 0;
+    max-width: none;
+    position: fixed;
+    background-color: rebeccapurple;
+    top: 0;
+    flex-shrink: 0;
+    width: 300px;
+   
 }
+
 .right-side {
-  width: 70%;
-  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  border: 1px solid red;
+  height: 100%;
   padding: 30px;
+  position: fixed;
   background-color: rgb(30, 30, 30);
   transition: transform 0.4s ease-in-out;
-
-  .test-block {
-    width: 70%;
-    height: 300px;
-    background-color: green;
-  }
 }
+
+.test-block {
+  width: 70%;
+  height: 300px;
+  background-color: green;
+}
+
 @media (max-width: 900px) {
   .right-side {
-    width: 100%;
     flex-shrink: 0;
     position: absolute;
   }
 }
 
 @media (min-width: 900px) {
-  .right-side {transform: translateX(0px)!important}
+  .right-side {
+    transform: translateX(0px) !important;
+      position: relative;
+  }
 
-
+  .left-bar {
+    position: relative;
+  }
 }
 </style>
