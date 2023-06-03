@@ -19,7 +19,7 @@
 
 
   <div class="main">
-    <div @click.stop="() => shoveRightSide(true)" ref="leftbars" class="left-bar" >
+    <div ref="leftbars" class="left-bar" >
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
           <profile-page-vue
@@ -72,24 +72,23 @@
         </button> -->
       </div>
 
-      <div @click="chatHided = true" v-show="!isGlobalSearch" class="chat-list">
-        <chat-list :storePath="'chat'" :chatList="chatList"></chat-list>
+      <div @click.stop="() => shoveRightSide(false)" class="chat-list">
+        <chat-list v-show="!isGlobalSearch" :storePath="'chat'" :chatList="chatList"></chat-list>
+        <founded-chats-list v-if="isGlobalSearch"></founded-chats-list>
       </div>
 
-      <div class="chat-list" v-if="isGlobalSearch" @click="chatHided = true">
-        <founded-chats-list></founded-chats-list>
-      </div>
+      
     </div>
 
-    <div @click.stop="() => shoveRightSide(false)" ref="chat"
+    <div  ref="chat"
       class="right-side">
       <div
         @touchmove.prevent="() => {}"
         v-if="$store.state.chat.selectedUser"
         class="chat-nav-x"
       >
-        <button>
-          <span @click="chatHided = false" class="material-symbols-outlined">
+        <button @click.stop="() => shoveRightSide(false)">
+          <span class="material-symbols-outlined">
             chevron_left
           </span>
         </button>
@@ -552,7 +551,7 @@ export default {
     onMounted(() => {
       rightside.value = document.querySelector(".right-side");
       leftbar.value = document.querySelector(".left-bar");
-      shoveRightSide(true);
+      shoveRightSide(false);
     });
 
     function shoveRightSide(isBack) {
@@ -561,7 +560,7 @@ export default {
 
         if (!isBack) {
           // this.$refs.settings.style.transform = `translateX(${pos})`;
-          console.log(leftBarWdth, rightside.value);
+          console.log(leftBarWdth, rightside.value, 'GO SVOVE');
           rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
           return;
         }
@@ -648,12 +647,10 @@ export default {
   position: relative;
   width: 100%;
   background-color: $content-main;
-  height: 8%;
+  height: 3.5rem;
   text-align: left;
-
   display: flex;
   align-items: center;
-  max-height: 60px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
@@ -735,7 +732,7 @@ export default {
 .chat-input-block-x {
   position: relative;
   width: 100%;
-  height: 8%;
+  height: 3.5rem;
   padding-top: 4px;
   max-width: inherit;
 
@@ -864,7 +861,7 @@ export default {
     min-width: 100%;
     box-sizing: border-box;
     padding: 5px 13px 5px 5px;
-    height: 8%;
+    height: 3.5rem;
     max-height: 60px;
     display: flex;
     flex-direction: row;
@@ -962,7 +959,7 @@ export default {
   width: 100vw;
   box-sizing: border-box;
   height: 100%;
-  padding: 30px;
+  padding-bottom: 30px;
   position: fixed;
   background-color: rgb(30, 30, 30);
   transition: transform 0.5s ease-in;

@@ -156,10 +156,6 @@ export default {
               ...doc.data(),
             }));
             
-          
-            
-           
-
           } else {
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -169,7 +165,7 @@ export default {
           if (atTheBottom.value) {
             setTimeout(() => {
               scrollAtTheBottom.value.scrollIntoView({
-                block: "start",
+                block: "start", 
                 inline: "start",
                 behavior: "smooth",
               });
@@ -280,26 +276,24 @@ export default {
     }
 
     function disableScroll() {
-      // if (gettingType.value === "prev" && msgs.value === limit.value ) {
-      //   console.log("stop scrolling");
-      //   show()
-      // }
+      if (gettingType.value === "prev" && msgs.value === limit.value ) {
+        console.log("stop scrolling");
+        show()
+      }
     }
 
     function show() {
-      // props.parentRef.scrollIntoView();
-      // const scrollContainer = props.parentRef;
-      // const containerHeight = scrollContainer.clientHeight;
-      // const contentHeight = scrollContainer.scrollHeight;
-      // // Calculate the position to scroll to (middle of the list)
-      // let scrollToPosition = (contentHeight - containerHeight) / 2;
-      // if (scrollToPosition > 700) {
-      //    scrollToPosition += 500
-      // }
-      // // Scroll to the desired position
-      // scrollContainer.scrollTo({
-      //   top: scrollToPosition,
-      // });
+      props.parentRef.scrollIntoView();
+      const scrollContainer = props.parentRef;
+      const containerHeight = scrollContainer.clientHeight;
+      const contentHeight = scrollContainer.scrollHeight;
+      // Calculate the position to scroll to (middle of the list)
+      let scrollToPosition = (contentHeight - containerHeight) / 2;
+       
+      // Scroll to the desired position
+      scrollContainer.scrollTo({
+        top: scrollToPosition,
+      });
     }
 
     return {

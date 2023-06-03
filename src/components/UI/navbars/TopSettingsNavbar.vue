@@ -30,8 +30,7 @@ export default {
 .settings-nav {
   width: 100%;
   background-color: $content-main;
-  height: 8%;
-  max-height: 60px;
+  height: 3.5rem;
   position: fixed;
   box-sizing: border-box;
   top: 0px;
