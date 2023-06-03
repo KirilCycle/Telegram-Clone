@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { onMounted, watchEffect } from "vue";
+import { onBeforeMount, onMounted, watchEffect } from "vue";
 import { uuidv4 } from "@firebase/util";
 import firebase from "firebase/compat/app";
 import { ref, watch } from "vue";
@@ -51,6 +51,7 @@ import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
 import GroupMessageItemVue from "./GroupMessageItem.vue";
 
 export default {
+  emits: ["shoveIsAvaible"],
   components: {
     MessageItem,
     MessageDefault,
@@ -138,6 +139,8 @@ export default {
       subscribeToSnapshot();
       subscribeToRecentMsg();
 
+      emit("shoveIsAvaible", true);
+
       const scrollBotomdata = {
         bottomRef: scrollAtTheBottom.value,
       };
@@ -145,17 +148,14 @@ export default {
       store.commit("chat/setScrollBottomData", scrollBotomdata);
     });
 
-    
-
     function subscribeToSnapshot() {
       unsubscribe.value = chatQuerry.value.onSnapshot(
         (snapshot, parameters) => {
           if (gettingType.value === "prev" || gettingType.value === "next") {
-               msgs.value = snapshot.docs.map((doc) => ({
+            msgs.value = snapshot.docs.map((doc) => ({
               id: doc.id,
               ...doc.data(),
             }));
-            
           } else {
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -165,7 +165,7 @@ export default {
           if (atTheBottom.value) {
             setTimeout(() => {
               scrollAtTheBottom.value.scrollIntoView({
-                block: "start", 
+                block: "start",
                 inline: "start",
                 behavior: "smooth",
               });
@@ -222,11 +222,28 @@ export default {
 
     watchEffect(() => {
       if (msgs.value.length > 5 && !isFirstSrllWasExecuted.value) {
+        //       var target = document.getElementById("target");
+        // target.parentNode.scrollTop = target.offsetTop;
+
         setTimeout(() => {
-          scrollAtTheBottom.value.scrollIntoView({
-            block: "start",
-            inline: "start",
-          });
+          // scrollAtTheBottom.value.scrollIntoView({
+          //   behavior: "smooth",
+          //   block: "nearest",
+          //   inline: "start",
+          // });
+
+            
+      const scrollContainer = props.parentRef;
+      const containerHeight = scrollContainer.clientHeight;
+      const contentHeight = scrollContainer.scrollHeight;
+      // Calculate the position to scroll to (middle of the list)
+      let scrollToPosition = (contentHeight - containerHeight);
+
+      // Scroll to the desired position
+      scrollContainer.scrollTo({
+        top: 100000,
+      });
+
           console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
           isFirstSrllWasExecuted.value = true;
         });
@@ -276,9 +293,9 @@ export default {
     }
 
     function disableScroll() {
-      if (gettingType.value === "prev" && msgs.value === limit.value ) {
+      if (gettingType.value === "prev" && msgs.value === limit.value) {
         console.log("stop scrolling");
-        show()
+        show();
       }
     }
 
@@ -289,7 +306,7 @@ export default {
       const contentHeight = scrollContainer.scrollHeight;
       // Calculate the position to scroll to (middle of the list)
       let scrollToPosition = (contentHeight - containerHeight) / 2;
-       
+
       // Scroll to the desired position
       scrollContainer.scrollTo({
         top: scrollToPosition,

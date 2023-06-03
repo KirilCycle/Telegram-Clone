@@ -1,7 +1,7 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
 
- <!-- <div ref="leftbars" class="left-bar">
+  <!-- <div ref="leftbars" class="left-bar">
     
     
       <div @click.stop="() => shoveRightSide(true)" class="LEFTBAR-SUS"></div>
@@ -17,9 +17,8 @@
       <div @click.stop="() => shoveRightSide(true)" class="test-block"></div>
     </div> -->
 
-
   <div class="main">
-    <div ref="leftbars" class="left-bar" >
+    <div ref="leftbars" class="left-bar">
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
           <profile-page-vue
@@ -72,25 +71,24 @@
         </button> -->
       </div>
 
-      <div @click.stop="() => shoveRightSide(false)" class="chat-list">
-        <chat-list v-show="!isGlobalSearch" :storePath="'chat'" :chatList="chatList"></chat-list>
+      <div @click="() => shoveRightSide(true)" class="chat-list">
+        <chat-list
+          v-show="!isGlobalSearch"
+          :storePath="'chat'"
+          :chatList="chatList"
+        ></chat-list>
         <founded-chats-list v-if="isGlobalSearch"></founded-chats-list>
       </div>
-
-      
     </div>
 
-    <div  ref="chat"
-      class="right-side">
+    <div ref="chat" class="right-side">
       <div
         @touchmove.prevent="() => {}"
         v-if="$store.state.chat.selectedUser"
         class="chat-nav-x"
       >
         <button @click.stop="() => shoveRightSide(false)">
-          <span class="material-symbols-outlined">
-            chevron_left
-          </span>
+          <span class="material-symbols-outlined"> chevron_left </span>
         </button>
 
         <selected-chat-nav></selected-chat-nav>
@@ -105,6 +103,7 @@
           :is="currentChatType"
           :key="$store.state.chat.chatKey"
           :parentRef="$refs.chatContainer"
+          @shoveIsAvaible="handleShove"
         >
         </component>
       </div>
@@ -153,8 +152,10 @@ import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 import { sendMsg } from "@/features/sendChatMessage";
 import ProfilePageVue from "../components/left-settings-component/SettingsComponent.vue";
+import { useEventListener } from "@vueuse/core";
 
 export default {
+  emits: ["shoveIsAvaible"],
   components: {
     MetalKiller,
     ProfilePageVue,
@@ -544,8 +545,6 @@ export default {
       store.commit("chat/changeChatSettings", settings);
     }
 
-
-
     const rightside = ref(null);
     const leftbar = ref(null);
     onMounted(() => {
@@ -554,23 +553,24 @@ export default {
       shoveRightSide(false);
     });
 
+    const shoveAvaible = ref(false);
+
     function shoveRightSide(isBack) {
-      if (window.innerWidth < 999) {
-        const leftBarWdth = leftbar.value.offsetWidth;
-
-        if (!isBack) {
-          // this.$refs.settings.style.transform = `translateX(${pos})`;
-          console.log(leftBarWdth, rightside.value, 'GO SVOVE');
-          rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
-          return;
+     setTimeout(() => {
+   console.log(   'SUUUUUSUS EXEXEXEXEEX');
+       if (window.innerWidth < 999) {
+          const leftBarWdth = leftbar.value.offsetWidth;
+  
+          if (!isBack) {
+            // this.$refs.settings.style.transform = `translateX(${pos})`;
+            console.log(leftBarWdth, rightside.value, "GO SVOVE");
+            rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
+            return;
+          }
+          rightside.value.style.transform = `translateX(${0}px)`;
         }
-        rightside.value.style.transform = `translateX(${0}px)`;
-      }
+     })
     }
-
-
-
-
 
     const chat = ref(null);
     const chatHided = ref(false);
@@ -587,11 +587,15 @@ export default {
     });
 
     const rer = ref(0);
-
     const chatContainer = ref(null);
+
+    function handleShove(bool) {
+      shoveAvaible.value = bool;
+    }
 
     return {
       chat,
+      handleShove,
       rightside,
       leftbar,
       shoveRightSide,
@@ -962,8 +966,7 @@ export default {
   padding-bottom: 30px;
   position: fixed;
   background-color: rgb(30, 30, 30);
-  transition: transform 0.5s ease-in;
-
+  transition: transform 0.4s ease-in;
 }
 
 .dark .right-side {
@@ -983,7 +986,6 @@ export default {
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 }
-
 
 @media (max-width: 1000px) {
   .right-side {
@@ -1008,5 +1010,4 @@ export default {
     width: 100%;
   }
 }
-
 </style>
