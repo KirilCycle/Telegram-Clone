@@ -42,7 +42,7 @@
 import { onMounted, watchEffect } from "vue";
 import { uuidv4 } from "@firebase/util";
 import firebase from "firebase/compat/app";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 import MessageItem from "../MessageItem.vue";
@@ -87,7 +87,7 @@ export default {
     const gettingType = ref(null);
     const msgs = ref([]);
     const pivotMessage = ref(null);
-    const limit = ref(52);
+    const limit = ref(42);
     const chatQuerry = ref(null);
     const messagesRef = ref(
       db
@@ -107,6 +107,13 @@ export default {
     const scrollWasDisabled = ref(null);
     const recentMsgID = ref(null);
 
+    function resetPrevListener() {
+      if (unsubscribe.value) {
+        unsubscribe.value();
+        subscribeToSnapshot();
+      }
+    }
+
     function subscribeToRecentMsg() {
       let querry = db
         .collection("chatMessages")
@@ -120,6 +127,13 @@ export default {
       });
     }
 
+    function handleScrollBtn(isBottom) {
+      store.commit("chat/setScrollBottomData", {
+        isBottom,
+        wasPaginated: !chatQuerry.value ? false : true,
+      });
+      atTheBottom.value = isBottom;
+    }
     onMounted(() => {
       subscribeToSnapshot();
       subscribeToRecentMsg();
@@ -131,22 +145,21 @@ export default {
       store.commit("chat/setScrollBottomData", scrollBotomdata);
     });
 
-    function handleScrollBtn(isBottom) {
-      store.commit("chat/setScrollBottomData", {
-        isBottom,
-        wasPaginated: !chatQuerry.value ? false : true,
-      });
-      atTheBottom.value = isBottom;
-    }
+    
 
     function subscribeToSnapshot() {
       unsubscribe.value = chatQuerry.value.onSnapshot(
         (snapshot, parameters) => {
           if (gettingType.value === "prev" || gettingType.value === "next") {
-            msgs.value = snapshot.docs.map((doc) => ({
+               msgs.value = snapshot.docs.map((doc) => ({
               id: doc.id,
               ...doc.data(),
             }));
+            
+          
+            
+           
+
           } else {
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -166,6 +179,51 @@ export default {
       );
     }
 
+    watch(
+      [pivotMessage, gettingType],
+      () => {
+        switch (gettingType.value) {
+          case "prev":
+            chatQuerry.value = db
+              .collection("chatMessages")
+              .doc(store.state.chat.chatId)
+              .collection("messages")
+              .orderBy("createdAt")
+              .limitToLast(limit.value)
+              .endBefore(pivotMessage.value);
+            resetPrevListener();
+
+            console.log("WAS");
+            break;
+          case "next":
+            chatQuerry.value = db
+              .collection("chatMessages")
+              .doc(store.state.chat.chatId)
+              .collection("messages")
+              .orderBy("createdAt")
+              .startAfter(pivotMessage.value)
+              .limit(limit.value);
+
+            resetPrevListener();
+
+            console.log("WAS 2");
+            break;
+          default:
+            chatQuerry.value = db
+              .collection("chatMessages")
+              .doc(store.state.chat.chatId)
+              .collection("messages")
+              .orderBy("createdAt", "desc")
+              .limit(limit.value);
+
+            resetPrevListener();
+
+            console.log("WAS DEF");
+        }
+      },
+      { immediate: true }
+    );
+
     watchEffect(() => {
       if (msgs.value.length > 5 && !isFirstSrllWasExecuted.value) {
         setTimeout(() => {
@@ -184,57 +242,6 @@ export default {
         console.log("HA > ");
         store.commit("chat/setChatKey", store.state.chat.chatId);
         lastChatId.value = store.state.chat.chatId;
-      }
-    });
-
-    watchEffect(() => {
-      switch (gettingType.value) {
-        case "prev":
-          chatQuerry.value = db
-            .collection("chatMessages")
-            .doc(store.state.chat.chatId)
-            .collection("messages")
-            .orderBy("createdAt")
-            .limitToLast(limit.value)
-            .endBefore(pivotMessage.value);
-
-          if (unsubscribe.value) {
-            unsubscribe.value();
-            subscribeToSnapshot();
-          }
-
-          console.log("WAS");
-          break;
-        case "next":
-          chatQuerry.value = db
-            .collection("chatMessages")
-            .doc(store.state.chat.chatId)
-            .collection("messages")
-            .orderBy("createdAt")
-            .startAfter(pivotMessage.value)
-            .limit(limit.value);
-
-          if (unsubscribe.value) {
-            unsubscribe.value();
-            subscribeToSnapshot();
-          }
-
-          console.log("WAS 2");
-          break;
-        default:
-          chatQuerry.value = db
-            .collection("chatMessages")
-            .doc(store.state.chat.chatId)
-            .collection("messages")
-            .orderBy("createdAt", "desc")
-            .limit(limit.value);
-
-          if (unsubscribe.value) {
-            unsubscribe.value();
-            subscribeToSnapshot();
-          }
-
-          console.log("WAS DEF");
       }
     });
 
@@ -273,41 +280,31 @@ export default {
     }
 
     function disableScroll() {
-      if (gettingType.value === "prev" && limit.value === msgs.value.length) {
-        console.log("redirect");
-        show();
-      }
+      // if (gettingType.value === "prev" && msgs.value === limit.value ) {
+      //   console.log("stop scrolling");
+      //   show()
+      // }
     }
 
     function show() {
-      props.parentRef.scrollIntoView();
-
-      const scrollContainer = props.parentRef;
-      const containerHeight = scrollContainer.clientHeight;
-      const contentHeight = scrollContainer.scrollHeight;
-
-      // Calculate the position to scroll to (middle of the list)
-      const scrollToPosition = (contentHeight - containerHeight) / 2;
-
-      // Scroll to the desired position
-      scrollContainer.scrollTo({
-        top: scrollToPosition,
-      });
+      // props.parentRef.scrollIntoView();
+      // const scrollContainer = props.parentRef;
+      // const containerHeight = scrollContainer.clientHeight;
+      // const contentHeight = scrollContainer.scrollHeight;
+      // // Calculate the position to scroll to (middle of the list)
+      // let scrollToPosition = (contentHeight - containerHeight) / 2;
+      // if (scrollToPosition > 700) {
+      //    scrollToPosition += 500
+      // }
+      // // Scroll to the desired position
+      // scrollContainer.scrollTo({
+      //   top: scrollToPosition,
+      // });
     }
-
-    const skillets = ref([
-      { id: 1, text: "" },
-      { id: 11234, text: "" },
-      { id: 12331239, text: "" },
-      { id: 22, text: "" },
-      { id: 2345, text: "" },
-      { id: 22221, text: "" },
-    ]);
 
     return {
       show,
       bottom,
-      skillets,
       previous,
       disableScroll,
       isBottom,
@@ -327,6 +324,16 @@ export default {
   width: 300px;
   height: 300px;
   background-color: #13b05a;
+}
+
+.super-pop {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  right: 0px;
+  background-color: #fff;
+  bottom: 0px;
+  z-index: 300;
 }
 
 .scroll-bottom {
@@ -351,7 +358,7 @@ export default {
 
 .previos-observer {
   position: relative;
-  top: 567px;
+  top: 267px;
 }
 
 @media (min-width: 2700px) {
