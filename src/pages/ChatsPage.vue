@@ -1,22 +1,5 @@
 <template>
   <message-actions v-if="$store.state.message.visible"></message-actions>
-
-  <!-- <div ref="leftbars" class="left-bar">
-    
-    
-      <div @click.stop="() => shoveRightSide(true)" class="LEFTBAR-SUS"></div>
-    </div>
-  
-  
-    <div
-      @click.stop="() => shoveRightSide(false)"
-      ref="rightsides"
-      class="right-side"
-    >
-      
-      <div @click.stop="() => shoveRightSide(true)" class="test-block"></div>
-    </div> -->
-
   <div class="main">
     <div ref="leftbars" class="left-bar">
       <div ref="settings" class="settings-wrap">
@@ -59,16 +42,6 @@
             <span class="material-symbols-outlined"> close </span>
           </button>
         </div>
-
-        <!-- <button
-          @click="isSearch = !isSearch"
-          :class="{
-            left_bar_srch_wrap_settings: !isSearch,
-            left_bar_srch_wrap_settings_active: isSearch,
-          }"
-        >
-          <span class="material-symbols-outlined"> language </span>
-        </button> -->
       </div>
 
       <div @click="() => shoveRightSide(true)" class="chat-list">
@@ -79,6 +52,8 @@
         ></chat-list>
         <founded-chats-list v-if="isGlobalSearch"></founded-chats-list>
       </div>
+
+      <div class="resize-handler"></div>
     </div>
 
     <div ref="chat" class="right-side">
@@ -103,7 +78,6 @@
           :is="currentChatType"
           :key="$store.state.chat.chatKey"
           :parentRef="$refs.chatContainer"
-          @shoveIsAvaible="handleShove"
         >
         </component>
       </div>
@@ -367,6 +341,11 @@ export default {
     const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
+    function saveLastLeftBarWidth() {
+      localStorage.setItem("leftbarwidth", leftbar.value.offsetWidth + "px");
+    console.log(  'WTF YO');
+    }
+
     const collectionRef = db.collection("usersLinksToChat");
 
     const chatList = ref([]);
@@ -551,25 +530,45 @@ export default {
       rightside.value = document.querySelector(".right-side");
       leftbar.value = document.querySelector(".left-bar");
       shoveRightSide(false);
+      if (localStorage.getItem("leftbarwidth")) {
+        console.log("ha ?", localStorage.getItem("leftbarwidth"));
+        leftbar.value.style.width = localStorage.getItem("leftbarwidth");
+      }
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const resizedElement = entry.target;
+          const newWidth = resizedElement.clientWidth;
+
+          if (!isShoved.value) {
+            rightside.value.style.transform = `translateX(${newWidth}px)`;
+          }
+        }
+      });
+
+      const resizableDiv = leftbar.value;
+
+      resizeObserver.observe(resizableDiv);
     });
 
-    const shoveAvaible = ref(false);
+    const isShoved = ref(null);
 
     function shoveRightSide(isBack) {
-     setTimeout(() => {
-   console.log(   'SUUUUUSUS EXEXEXEXEEX');
-       if (window.innerWidth < 999) {
+      setTimeout(() => {
+        if (window.innerWidth < 999) {
           const leftBarWdth = leftbar.value.offsetWidth;
-  
+
           if (!isBack) {
             // this.$refs.settings.style.transform = `translateX(${pos})`;
             console.log(leftBarWdth, rightside.value, "GO SVOVE");
             rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
+            isShoved.value = false;
             return;
           }
           rightside.value.style.transform = `translateX(${0}px)`;
+          isShoved.value = true;
         }
-     })
+      });
     }
 
     const chat = ref(null);
@@ -589,16 +588,12 @@ export default {
     const rer = ref(0);
     const chatContainer = ref(null);
 
-    function handleShove(bool) {
-      shoveAvaible.value = bool;
-    }
-
     return {
       chat,
-      handleShove,
       rightside,
       leftbar,
       shoveRightSide,
+      saveLastLeftBarWidth,
       chatList,
       chatContainer,
       chatHided,
@@ -615,6 +610,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
+
+.resize-handler {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  height: 25px;
+  width: 25px;
+  background-color: #fff;
+}
 
 .profile-component-wrap {
   width: 100%;
@@ -774,17 +778,18 @@ export default {
   -ms-user-select: none; /* Internet Explorer/Edge */
   width: 350px;
   overflow: hidden;
+  resize: horizontal;
+  max-width: 450px;
+  min-width: 200px;
   background-color: $content-main;
   display: flex;
   flex-direction: column;
   border-right: 1px solid rgba(128, 128, 128, 0.237);
   display: flex;
   left: 0;
-  max-width: none;
   position: fixed;
   top: 0;
   flex-shrink: 0;
-  width: 300px;
 
   .search-input-container {
     display: flex;
@@ -1007,7 +1012,7 @@ export default {
 
 @media (max-width: 650px) {
   .left-bar {
-    width: 100%;
+    width: 100% !important;
   }
 }
 </style>
