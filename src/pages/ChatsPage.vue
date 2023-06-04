@@ -62,9 +62,11 @@
         v-if="$store.state.chat.selectedUser"
         class="chat-nav-x"
       >
-        <button @click.stop="() => shoveRightSide(false)">
-          <span class="material-symbols-outlined"> chevron_left </span>
-        </button>
+        <control-button class="chat-move" @click.stop="handleChatPosition">
+          <span ref="chatArrow" class="material-symbols-outlined">
+            chevron_left
+          </span>
+        </control-button>
 
         <selected-chat-nav></selected-chat-nav>
 
@@ -154,6 +156,7 @@ export default {
       serachQ: "",
       parentChatRef: this.$refs.chatContainer,
       sendMsg: sendMsg,
+      chatMoveStyle: "chat-move-back",
     };
   },
   mounted() {
@@ -298,52 +301,25 @@ export default {
     },
   },
 
+
   setup(data) {
-    // function Fn1(res) {
-    //   console.log( "res Fn1",res);
-    //   return "res Fn1";
-    // }
-    // function Fn2(res) {
-    //   console.log( "res Fn2",res);
-    //   return "res Fn2";
-    // }
-    // function Fn3(res) {
-    //   console.log( "res Fn3",res);
-    //   return "res Fn3";
-    // }
-    // function Fn4(res) {
-    //   console.log( "res Fn4",res);
-    //   return "res Fn4";
-    // }
-    // function Fn5(res) {
-    //  console.log( "res Fn5",res);
-    //   return "res Fn5";
-    // }
-
-    // const fns = ref([Fn1, Fn2, Fn3, Fn4, Fn5,]);
-
-    // // Fn1(Fn2(Fn3(Fn4(Fn5))))
-
-    // let iterations = ref(fns.value.length);
-
-    // function useAllOfThem(res) {
-    //   if (iterations.value !== 0) {
-    //     const resPrev = fns.value[iterations.value - 1](res);
-
-    //     iterations.value -= 1;
-
-    //     useAllOfThem(resPrev)
-    //   }
-    // }
-
-    // useAllOfThem();
+    function handleChatPosition() {
+      if (isShoved.value) {
+        shoveRightSide(false);
+        chatArrow.value.style.transform = "rotate(180deg)"
+        return;
+      }
+       chatArrow.value.style.transform = "rotate(0deg)"
+      shoveRightSide(true);
+    }
+    
+    const chatArrow = ref(null)
 
     const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
     function saveLastLeftBarWidth() {
       localStorage.setItem("leftbarwidth", leftbar.value.offsetWidth + "px");
-    console.log(  'WTF YO');
     }
 
     const collectionRef = db.collection("usersLinksToChat");
@@ -555,7 +531,7 @@ export default {
 
     function shoveRightSide(isBack) {
       setTimeout(() => {
-        if (window.innerWidth < 999) {
+        if (window.innerWidth < 1000) {
           const leftBarWdth = leftbar.value.offsetWidth;
 
           if (!isBack) {
@@ -602,6 +578,8 @@ export default {
       resetSelectedChat,
       saveChatSettings,
       listLoaded,
+      handleChatPosition,
+      chatArrow,
       rer,
     };
   },
@@ -663,22 +641,25 @@ export default {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 
-  span {
-    display: none;
-    user-select: none; /* supported by Chrome and Opera */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    max-height: 90%;
+  .chat-move-back {
+    transition: transform 0.3 ease-in-out;
+    transform: rotate(180deg);
+    @extend.chat-move;
   }
 
-  @media (max-width: 798px) {
+  .chat-move {
+    display: none;
     span {
-      color: #2b7cff;
-      cursor: pointer;
-      font-size: 1.8rem;
-      display: block;
+        transition: transform 0.7 ease-in;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .chat-move {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
     }
   }
 
@@ -971,7 +952,7 @@ export default {
   padding-bottom: 30px;
   position: fixed;
   background-color: rgb(30, 30, 30);
-  transition: transform 0.4s ease-in;
+  transition: transform 0.25s ease-in;
 }
 
 .dark .right-side {
@@ -1013,6 +994,10 @@ export default {
 @media (max-width: 650px) {
   .left-bar {
     width: 100% !important;
+    max-width: 650px;
   }
+
+
+
 }
 </style>
