@@ -1,5 +1,6 @@
 <template>
   <TransitionGroup name="list" class="chat-list-wrap" tag="div">
+   
     <chat-list-item
       @click="() => handleChatSelect(cht.id)"
       v-for="cht in chatList"

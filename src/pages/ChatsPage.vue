@@ -131,7 +131,6 @@ import ProfilePageVue from "../components/left-settings-component/SettingsCompon
 import { useEventListener } from "@vueuse/core";
 
 export default {
-  emits: ["shoveIsAvaible"],
   components: {
     MetalKiller,
     ProfilePageVue,
@@ -325,28 +324,35 @@ export default {
       shoveRightSide(true);
     }
 
-    // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
+ 
 
     function saveLastLeftBarWidth() {
       localStorage.setItem("leftbarwidth", leftbar.value.offsetWidth + "px");
     }
+
+    
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
         const source = doc.data();
 
         const formated = Object.values(source);
-        // Do something with the document data
-        store.commit("chat/setChatIdList", formated);
 
+        store.commit("chat/setChatIdList", formated);
+      
+         
+        
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
 
         listLoaded.value = true;
-
-        if (formated.length > store.state.chat.chatsCount) {
-          for (let i = 0; i < formated.length; i++) {
+         
+        const chatsLength = formated.length
+        
+        if (chatsLength !== store.state.chat.chatsCount) {
+        
+        for (let i = 0; i < chatsLength; i++) {
             store.commit("chat/addUniqChatSettingsItem", {
               id: formated[i].id,
               v: "",
@@ -354,6 +360,11 @@ export default {
               scrollPosition: null,
               limit: 0,
             });
+
+          console.log(  're puc ');
+          
+          store.commit('chat/setChatsCount',chatsLength)
+
           }
         }
       } else {
@@ -502,12 +513,17 @@ export default {
     onMounted(() => {
       rightside.value = document.querySelector(".right-side");
       leftbar.value = document.querySelector(".left-bar");
+      
+      //i need shov eright side, as by default she will overlap, and user wont be able select chat (650-1000px)
       shoveRightSide(false);
+      
+      //same width as user set before
       if (localStorage.getItem("leftbarwidth")) {
         console.log("ha ?", localStorage.getItem("leftbarwidth"));
         leftbar.value.style.width = localStorage.getItem("leftbarwidth");
       }
 
+      //right-side should have relative width to left-bar even during left-bar resize
       const resizeObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           const resizedElement = entry.target;
@@ -535,9 +551,14 @@ export default {
           isShoved.value = false;
           return;
         }
+          if ( chatArrow.value) {
+             chatArrow.value.style.transform = "rotate(0deg)";
+          }
         rightside.value.style.transform = `translateX(${0}px)`;
         isShoved.value = true;
       }
+
+     
     }
 
     watchEffect(() => {
@@ -545,7 +566,6 @@ export default {
         currentChatType.value = "NewChat";
       } else if (store.state.chat.chatId) {
         currentChatType.value = "MetalKiller";
-        //MetalKiller
       } else {
         currentChatType.value = "ChatisntSelected";
       }

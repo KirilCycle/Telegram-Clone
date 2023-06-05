@@ -6,14 +6,13 @@ export const chatModule = {
     selectedUser: null,
     query: null,
     chatSettings: {},
-    chatIdList: [],
     chatsCount: 0,
     chatContainerRef: null,
     wasObserved: null,
     chatKey: "",
     scrollBottomData: {
-      isBottom: null
-    }
+      isBottom: null,
+    },
   }),
   getters: {
     getChatBottom(state) {
@@ -52,13 +51,19 @@ export const chatModule = {
     getChatContainerRef(state) {
       return state.chatContainerRef;
     },
+    getChatsCount(state) {
+      return state.chatsCount;
+    },
   },
   mutations: {
     setScrollBottomData(state, data) {
-      state.scrollBottomData = { ...state.scrollBottomData, ...data};
+      state.scrollBottomData = { ...state.scrollBottomData, ...data };
     },
     setReplyTarget(state, target) {
       state.replyTarget = target;
+    },
+    setChatsCount(state, number) {
+      state.chatsCount = number;
     },
     setChatKey(state, key) {
       state.chatKey = key;
@@ -109,8 +114,8 @@ export const chatModule = {
     setReplyTarget({ commit, target }) {
       commit("setReplyTarget", target);
     },
-    setScrollBottomData({commit, data}) {
-      commit("setScrollBottomData", data)
+    setScrollBottomData({ commit, data }) {
+      commit("setScrollBottomData", data);
     },
     setChatKey({ commit, id }) {
       commit("setChatKey", id);
