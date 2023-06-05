@@ -16,17 +16,18 @@
     </template>
     </top-settings-navbar>
 
-    <user-image>
-      <div class="profile-img-wrap">
-        <img
-          class="profile-img"
-          :src="$store.state.chat?.selectedUser?.photoURL"
-        />
-      </div>
-      <h2 class="fisrtname">
+
+     <user-photo-vue>
+      <template #img>
+        <img :src="$store.state.chat?.selectedUser?.photoURL" />
+      </template>
+      <template #firstxt>
         {{ $store.state.chat?.selectedUser?.displayName }}
-      </h2>
-    </user-image>
+      </template>
+      <template #secondtxt>
+       {{  $store.state.chat?.selectedUser?.username }}
+      </template>
+    </user-photo-vue>
 
     <profile-user-info
       v-if="rerender"
@@ -42,14 +43,15 @@ import UserImage from "./UserImage.vue";
 import ProfileUserInfo from "./ProfileUserInfo.vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";
-import TopSettingsNavbarVue from './UI/navbars/TopSettingsNavbar.vue';
 import TopSettingsNavbar from './UI/navbars/TopSettingsNavbar.vue';
+import UserPhotoVue from './UserPhoto.vue';
 
 export default {
   components: {
     UserImage,
     ProfileUserInfo,
     TopSettingsNavbar,
+    UserPhotoVue,
   },
 
   data() {

@@ -71,17 +71,17 @@
       </template>
     </top-settings-navbar-vue>
 
-    <div class="user-image-wrp">
-      <user-image>
-        <div class="profile-img-wrap">
-          <img class="profile-img" :src="$store.state.user.user?.photoURL" />
-        </div>
-        <div class="profile_img_wrap_text_wrp">
-          <h2 class="fisrt-name">{{ $store.state.user.user.displayName }}</h2>
-          <h3 class="email">{{ $store.state.user.user.email }}</h3>
-        </div>
-      </user-image>
-    </div>
+    <user-photo-vue>
+      <template #img>
+        <img :src="$store.state.user.user?.photoURL" />
+      </template>
+      <template #firstxt>
+        {{ $store.state.user.user.displayName }}
+      </template>
+      <template #secondtxt>
+       {{ $store.state.user.user.email }}
+      </template>
+    </user-photo-vue>
 
     <div class="profile-user-info-wrp">
       <profile-user-info
@@ -133,10 +133,12 @@ import ProfileUserInfo from "@/components/ProfileUserInfo.vue";
 import RadioSelect from "@/components/RadioSelect.vue";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
 import OptiosnListVue from "../UI/lists/OptiosnList.vue";
+import UserPhotoVue from "../UserPhoto.vue";
 
 export default {
   components: {
     UserImage,
+    UserPhotoVue,
     EditSettings,
     OptiosnListVue,
     ProfileUserInfo,
@@ -162,7 +164,6 @@ export default {
           description: "log out",
           execute: () => alert("sus"),
         },
-       
       ],
     };
   },
@@ -352,8 +353,6 @@ img {
   width: 100%;
 }
 
-
-
 .user-image-wrp {
   position: relative;
   width: 100%;
@@ -363,7 +362,6 @@ img {
     top: 60px;
   }
 }
-
 
 .wrap {
   background-color: $content-main-dark;
