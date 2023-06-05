@@ -301,34 +301,35 @@ export default {
     },
   },
 
-
   setup(data) {
+    const chatArrow = ref(null);
+    const db = firebase.firestore();
+    const collectionRef = db.collection("usersLinksToChat");
+    const chatList = ref([]);
+    const listLoaded = ref(null);
+    const currentChatType = ref("ChatisntSelected");
+    const auth = getAuth();
+    const rightside = ref(null);
+    const leftbar = ref(null);
+    const isShoved = ref(null);
+    const chat = ref(null);
+    const chatContainer = ref(null);
+
     function handleChatPosition() {
       if (isShoved.value) {
         shoveRightSide(false);
-        chatArrow.value.style.transform = "rotate(180deg)"
+        chatArrow.value.style.transform = "rotate(180deg)";
         return;
       }
-       chatArrow.value.style.transform = "rotate(0deg)"
+      chatArrow.value.style.transform = "rotate(0deg)";
       shoveRightSide(true);
     }
-    
-    const chatArrow = ref(null)
 
-    const db = firebase.firestore();
     // const docRef = doc(db, "usersLinksToChat", "loVxhSxDf7dbHOJ6Sjmtdr1tyZ52");
 
     function saveLastLeftBarWidth() {
       localStorage.setItem("leftbarwidth", leftbar.value.offsetWidth + "px");
     }
-
-    const collectionRef = db.collection("usersLinksToChat");
-
-    const chatList = ref([]);
-
-    const listLoaded = ref(null);
-
-    const currentChatType = ref("ChatisntSelected");
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
@@ -359,8 +360,6 @@ export default {
         console.log("No such document!");
       }
     });
-
-    const auth = getAuth();
 
     async function sendMessageToFoundedChat(v, source) {
       const nextVerify = v.length > 0 || source;
@@ -500,8 +499,6 @@ export default {
       store.commit("chat/changeChatSettings", settings);
     }
 
-    const rightside = ref(null);
-    const leftbar = ref(null);
     onMounted(() => {
       rightside.value = document.querySelector(".right-side");
       leftbar.value = document.querySelector(".left-bar");
@@ -527,28 +524,21 @@ export default {
       resizeObserver.observe(resizableDiv);
     });
 
-    const isShoved = ref(null);
-
     function shoveRightSide(isBack) {
-      setTimeout(() => {
-        if (window.innerWidth < 1000) {
-          const leftBarWdth = leftbar.value.offsetWidth;
+      if (window.innerWidth < 1000) {
+        const leftBarWdth = leftbar.value.offsetWidth;
 
-          if (!isBack) {
-            // this.$refs.settings.style.transform = `translateX(${pos})`;
-            console.log(leftBarWdth, rightside.value, "GO SVOVE");
-            rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
-            isShoved.value = false;
-            return;
-          }
-          rightside.value.style.transform = `translateX(${0}px)`;
-          isShoved.value = true;
+        if (!isBack) {
+          // this.$refs.settings.style.transform = `translateX(${pos})`;
+          console.log(leftBarWdth, rightside.value, "GO SVOVE");
+          rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
+          isShoved.value = false;
+          return;
         }
-      });
+        rightside.value.style.transform = `translateX(${0}px)`;
+        isShoved.value = true;
+      }
     }
-
-    const chat = ref(null);
-    const chatHided = ref(false);
 
     watchEffect(() => {
       if (store.state.chat.selectedUser?.new) {
@@ -561,8 +551,7 @@ export default {
       }
     });
 
-    const rer = ref(0);
-    const chatContainer = ref(null);
+ 
 
     return {
       chat,
@@ -572,7 +561,6 @@ export default {
       saveLastLeftBarWidth,
       chatList,
       chatContainer,
-      chatHided,
       currentChatType,
       sendMessageToFoundedChat,
       resetSelectedChat,
@@ -580,7 +568,6 @@ export default {
       listLoaded,
       handleChatPosition,
       chatArrow,
-      rer,
     };
   },
 };
@@ -650,7 +637,7 @@ export default {
   .chat-move {
     display: none;
     span {
-        transition: transform 0.7 ease-in;
+      transition: transform 0.7 ease-in;
     }
   }
 
@@ -992,12 +979,13 @@ export default {
 }
 
 @media (max-width: 650px) {
+  .right-side {
+    transition: transform 0.4s ease-in;
+  }
+
   .left-bar {
     width: 100% !important;
     max-width: 650px;
   }
-
-
-
 }
 </style>

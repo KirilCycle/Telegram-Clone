@@ -1,6 +1,6 @@
-import MainInput from '@/components/UI/MainInput'
-import MainButton from '@/components/UI/MainButton'
-import ControlButton from "@/components/UI/ControlButton.vue"
+import MainInput from '@/components/UI/inputs/MainInput'
+import MainButton from '@/components/UI/buttons/MainButton'
+import ControlButton from "@/components/UI/buttons/ControlButton.vue"
 
 export default [
     MainInput,

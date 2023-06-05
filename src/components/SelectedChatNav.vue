@@ -12,9 +12,9 @@
 </template>
 
 <script>
-// import UserProfile from "./UserProfile.vue";
+import UserProfile from "./UserProfile.vue";
 
-const UserProfile = () => import("@/components/UserProfile.vue")
+// const UserProfile = () => import("@/components/UserProfile.vue")
 
 
 export default {
