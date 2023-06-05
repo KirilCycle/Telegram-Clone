@@ -536,7 +536,7 @@ export default {
 }
 
 .chat-container-x::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.603);
+  background: rgba(133, 133, 133, 0.646);
   border-radius: 20px;
 }
 

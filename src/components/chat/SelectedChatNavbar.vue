@@ -86,7 +86,7 @@ export default {
   }
 
   h3 {
-    font-weight: 500;
+    font-weight:510;
     font-size: 1.1rem;
     color: $text-main;
     left: 82px;

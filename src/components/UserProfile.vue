@@ -1,11 +1,20 @@
 <template>
   <div :class="'user-profile'">
-    <nav>
-      <button @click="$emit('close')">
+   
+    <!-- <nav>
+      <control-button @click="$emit('close')">
         <span class="material-symbols-outlined"> close </span>
-      </button>
+      </control-button>
       <h3>User Info</h3>
-    </nav>
+    </nav> -->
+
+    <top-settings-navbar :title="'User Info'">
+    <template #close-btn> 
+     <control-button @click="$emit('close')">
+        <span class="material-symbols-outlined"> close </span>
+      </control-button>
+    </template>
+    </top-settings-navbar>
 
     <user-image>
       <div class="profile-img-wrap">
@@ -33,11 +42,14 @@ import UserImage from "./UserImage.vue";
 import ProfileUserInfo from "./ProfileUserInfo.vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";
+import TopSettingsNavbarVue from './UI/navbars/TopSettingsNavbar.vue';
+import TopSettingsNavbar from './UI/navbars/TopSettingsNavbar.vue';
 
 export default {
   components: {
     UserImage,
     ProfileUserInfo,
+    TopSettingsNavbar,
   },
 
   data() {
@@ -116,52 +128,7 @@ $def-gray: #828282;
   object-fit: cover;
 }
 
-nav {
-  width: 100%;
-  background-color: $content-main;
-  height: 8%;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
 
-  h3 {
-    margin-left: 20px;
-    color: $text-main;
-  }
-
-  button {
-    width: 60px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-
-    span {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      border-radius: 20px;
-      height: 40px;
-      color: $def-gray;
-      &:hover {
-        background-color: $hover;
-      }
-    }
-  }
-
-}
-
-.dark nav {
-  background-color: $content-main-l;
-
-  h3 {
-    margin-left: 20px;
-    color: $text-main-l;
-  }
-
-}
 .user-profile {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
