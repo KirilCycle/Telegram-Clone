@@ -1,7 +1,9 @@
 <template>
-  <button @click="deleteChat" class="chat-settings">
+ <div class="wrap"> 
+  <control-button @click="deleteChat" class="chat-settings">
     <span class="material-symbols-outlined"> more_vert </span>
-  </button>
+  </control-button>
+ </div>
 </template>
 
 <script>
@@ -68,22 +70,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
-.chat-settings {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: gray;
-  border-radius: 20px;
+.wrap {
   position: absolute;
   right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  height: 100%;
 
-  &:hover {
-    background-color: $hover;
-  }
+  display: flex;
+  align-items: center;
+ 
 }
 </style>

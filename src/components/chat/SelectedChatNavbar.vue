@@ -97,8 +97,8 @@ export default {
 
 .selected-user-info {
   max-width: 75%;
-  width: auto;
-  word-wrap: none;
+
+   white-space: nowrap;
   display: flex;
   align-items: center;
   justify-content: center;
