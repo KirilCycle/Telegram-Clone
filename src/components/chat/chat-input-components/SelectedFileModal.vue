@@ -56,11 +56,12 @@ import { uuidv4 } from "@firebase/util";
 import store from "@/store/store";
 import { uploadBytesResumable } from "firebase/storage";
 import { sendMsg } from "@/features/sendChatMessage";
+import { sendMessageToFoundedChat } from "@/features/sendMsgToFoundedChat";
 
 export default {
   props: {
-    files: Array,
-    required: true,
+    isFounded: Boolean,
+    requiered: true
   },
   data() {
     return {
@@ -186,14 +187,18 @@ export default {
                   src: downloadURL,
                 };
 
-                sendMsg(
-                  caption,
-                  resData,
-                  store.state.message.replyTarget,
-                  chatId
-                ).finally(
-                  store.commit("previewChat/removeLoadingMsg", previewMsgId)
-                );
+                props.isFounded?
+                   sendMessageToFoundedChat(caption, chatId, resData).finally(
+                      store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                    )
+                  : sendMsg(
+                      caption,
+                      resData,
+                      store.state.message.replyTarget,
+                      chatId
+                    ).finally(
+                      store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                    );
               })
               .catch((error) => {
                 store.commit("previewChat/removeLoadingMsg", previewMsgId);
@@ -221,14 +226,20 @@ export default {
                 src: url,
               };
 
-              sendMsg(
-                caption,
-                resData,
-                store.state.message.replyTarget,
-                chatId
-              ).then(() =>
-                store.commit("previewChat/removeLoadingMsg", previewMsgId)
-              );
+              if( props.isFounded ) {
+                sendMessageToFoundedChat(caption, chatId, resData).finally(
+                   store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                 ).catch((e) => console.log(e))
+              } else {
+                sendMsg(
+                   caption,
+                   resData,
+                   store.state.message.replyTarget,
+                   chatId
+                 ).finally(
+                   store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                 );
+              }
             });
           })
           .catch((er) => {
@@ -236,7 +247,7 @@ export default {
             console.log(er, "post er");
           });
         // console.log("PHT");
-      } 
+      }
     }
 
     return {

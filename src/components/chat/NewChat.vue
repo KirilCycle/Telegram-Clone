@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     sayHi() {
-      this.sendMessageToFoundedChat('Hi')
+      this.sendMessageToFoundedChat('Hi',this.$store.state.chat.selectedUser.uid )
     },
   },
   computed: {

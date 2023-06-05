@@ -2,7 +2,7 @@
   <div @touchmove.prevent="() => {}" class="input-container-main-wrap">
     <div class="content">
      <button class="file-select">
-        <selected-file-modal @sendMsgWithFile="sendMsg"></selected-file-modal>
+        <selected-file-modal :isFounded="true" ></selected-file-modal>
       </button>
 
       <input v-model="v" placeholder="Write a first message" />
@@ -23,7 +23,8 @@
 
 <script>
 import store from "@/store/store";
-import SelectedFileModal from "./SelectedFileModal.vue";
+import SelectedFileModal from "./SelectedFileModal.vue"
+import { sendMessageToFoundedChat } from "@/features/sendMsgToFoundedChat"
 
 export default {
   components: { SelectedFileModal },
@@ -39,7 +40,7 @@ export default {
   },
   methods: {
     async send() {
-      this.sendMsg(this.v);
+      sendMessageToFoundedChat(this.v, this.$store.state.chat.selectedUser.uid);
       this.v = "";
     },
   },

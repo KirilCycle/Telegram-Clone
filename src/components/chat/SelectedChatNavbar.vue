@@ -6,9 +6,12 @@
       </span>
     </control-button>
 
+<div class="selected-user-info">
     <selected-chat-user-vue></selected-chat-user-vue>
-
     <h3>{{ navName }}</h3>
+</div>
+
+
 
     <chat-settings-vue></chat-settings-vue>
   </div>
@@ -86,10 +89,24 @@ export default {
     font-weight: 500;
     font-size: 1.1rem;
     color: $text-main;
-    position: absolute;
     left: 82px;
     top: 30%;
+    margin-left: 7px;
   }
+}
+
+.selected-user-info {
+  max-width: 75%;
+  width: auto;
+  word-wrap: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-direction: row;
+  padding-left: 10px;
+  padding-right: 10px;
+
 }
 
 .dark .chat-nav-x {

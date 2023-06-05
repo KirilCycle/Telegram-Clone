@@ -48,12 +48,14 @@ opacity: 0;
 
 
 .chat_nav_img_wrap {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   overflow: hidden;
-  left: 30px;
-  position: relative;
+  border: 1px solid gray;
+  flex-shrink: 0;
+  cursor: pointer;
+
 
   img {
     width: 100%;
