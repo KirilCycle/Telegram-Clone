@@ -57,8 +57,12 @@
     </div>
 
     <div ref="chat" class="right-side">
-      <div
-        @touchmove.prevent="() => {}"
+      <selected-chat-navbar-vue
+        :arrowAction="handleChatPosition"
+        @setArrowRef="setArrowRef"
+      ></selected-chat-navbar-vue>
+      <!-- <div
+        @touchmove.prevent
         v-if="$store.state.chat.selectedUser"
         class="chat-nav-x"
       >
@@ -73,7 +77,7 @@
         <h3>{{ navName }}</h3>
 
         <chat-settings></chat-settings>
-      </div>
+      </div> -->
 
       <div ref="chatContainer" class="chat-container-x">
         <component
@@ -119,7 +123,7 @@ import ChatInput from "@/components/chat/chat-input-components/ChatInput.vue";
 import NewChat from "@/components/chat/NewChat.vue";
 import { watchEffect } from "vue";
 import ChatisntSelected from "@/components/ChatisntSelected.vue";
-import SelectedChatNav from "@/components/SelectedChatNav.vue";
+import SelectedChatNav from "@/components/chat/SelectedChatUser.vue";
 import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
 import ChatSettings from "@/components/ChatSettings.vue";
@@ -129,11 +133,14 @@ import MetalKiller from "@/components/chat/MetalKiller.vue";
 import { sendMsg } from "@/features/sendChatMessage";
 import ProfilePageVue from "../components/left-settings-component/SettingsComponent.vue";
 import { useEventListener } from "@vueuse/core";
+import SelectedChatNavbarVue from "@/components/chat/SelectedChatNavbar.vue";
+import { getUser } from "@/features/getUser"
 
 export default {
   components: {
     MetalKiller,
     ProfilePageVue,
+    SelectedChatNavbarVue,
     NewChat,
     ChatisntSelected,
     FoundedChatsList,
@@ -142,9 +149,7 @@ export default {
     ChatsControlBtn,
     Settings,
     ChatInput,
-    SelectedChatNav,
     MessageActions,
-    ChatSettings,
   },
   data() {
     return {
@@ -279,19 +284,6 @@ export default {
   },
 
   computed: {
-    navName() {
-      const user = store.state.chat.selectedUser;
-
-      if (user) {
-        if (user?.displayName) {
-          return user.displayName;
-        } else {
-          return user.email
-            ? user.email.slice(0, user.email.indexOf("@"))
-            : "loading";
-        }
-      }
-    },
     querryExist() {
       if (this.serachQ) {
         return true;
@@ -324,13 +316,9 @@ export default {
       shoveRightSide(true);
     }
 
- 
-
     function saveLastLeftBarWidth() {
       localStorage.setItem("leftbarwidth", leftbar.value.offsetWidth + "px");
     }
-
-    
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
@@ -339,20 +327,17 @@ export default {
         const formated = Object.values(source);
 
         store.commit("chat/setChatIdList", formated);
-      
-         
-        
+
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
 
         listLoaded.value = true;
-         
-        const chatsLength = formated.length
-        
+
+        const chatsLength = formated.length;
+
         if (chatsLength !== store.state.chat.chatsCount) {
-        
-        for (let i = 0; i < chatsLength; i++) {
+          for (let i = 0; i < chatsLength; i++) {
             store.commit("chat/addUniqChatSettingsItem", {
               id: formated[i].id,
               v: "",
@@ -361,10 +346,9 @@ export default {
               limit: 0,
             });
 
-          console.log(  're puc ');
-          
-          store.commit('chat/setChatsCount',chatsLength)
+            console.log("re puc ");
 
+            store.commit("chat/setChatsCount", chatsLength);
           }
         }
       } else {
@@ -476,7 +460,9 @@ export default {
                     .then(() => {
                       console.log("Batch operation successful");
                       store.commit("chat/setChatId", chatId);
-                      store.commit("chat/setSelectedUser", userId2);
+                      getUser(userId2).then((response) =>
+                        store.commit("chat/setSelectedUser", response)
+                      );
                     })
                     .catch((error) => {
                       console.error("Batch operation failed:", error);
@@ -513,10 +499,10 @@ export default {
     onMounted(() => {
       rightside.value = document.querySelector(".right-side");
       leftbar.value = document.querySelector(".left-bar");
-      
+
       //i need shov eright side, as by default she will overlap, and user wont be able select chat (650-1000px)
       shoveRightSide(false);
-      
+
       //same width as user set before
       if (localStorage.getItem("leftbarwidth")) {
         console.log("ha ?", localStorage.getItem("leftbarwidth"));
@@ -551,14 +537,16 @@ export default {
           isShoved.value = false;
           return;
         }
-          if ( chatArrow.value) {
-             chatArrow.value.style.transform = "rotate(0deg)";
-          }
+        if (chatArrow.value) {
+          chatArrow.value.style.transform = "rotate(0deg)";
+        }
         rightside.value.style.transform = `translateX(${0}px)`;
         isShoved.value = true;
       }
+    }
 
-     
+    function setArrowRef(ref) {
+      chatArrow.value = ref;
     }
 
     watchEffect(() => {
@@ -570,8 +558,6 @@ export default {
         currentChatType.value = "ChatisntSelected";
       }
     });
-
- 
 
     return {
       chat,
@@ -587,6 +573,7 @@ export default {
       saveChatSettings,
       listLoaded,
       handleChatPosition,
+      setArrowRef,
       chatArrow,
     };
   },
@@ -634,58 +621,6 @@ export default {
   position: absolute;
   transition: transform 0.1s ease-out;
   transform: translateY(100px);
-}
-
-.chat-nav-x {
-  position: relative;
-  width: 100%;
-  background-color: $content-main;
-  height: 3.5rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-
-  .chat-move-back {
-    transition: transform 0.3 ease-in-out;
-    transform: rotate(180deg);
-    @extend.chat-move;
-  }
-
-  .chat-move {
-    display: none;
-    span {
-      transition: transform 0.7 ease-in;
-    }
-  }
-
-  @media (max-width: 1000px) {
-    .chat-move {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 10px;
-    }
-  }
-
-  h3 {
-    font-weight: 500;
-    font-size: 1.1rem;
-    color: $text-main;
-    position: absolute;
-    left: 82px;
-    top: 30%;
-  }
-}
-
-.dark .chat-nav-x {
-  background-color: $content-main-l;
-
-  h3 {
-    color: $text-main-l;
-  }
 }
 
 .chat-container-x {
