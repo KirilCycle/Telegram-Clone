@@ -65,11 +65,11 @@
 <script>
 import { ref } from "vue";
 import store from "@/store/store";
-import EmojiUser from "../EmojiUser.vue";
+import EmojiUser from "../../EmojiUser.vue";
 import { replyEmoji } from "@/features/replyUsingEmoji";
 import { objectEntries } from "@vueuse/core";
-import MessageSourceContainerVue from "./MessageSourceContainer.vue";
-import SmallChatImageVue from "../SmallChatImage.vue";
+import MessageSourceContainerVue from "../MessageSourceContainer.vue";
+import SmallChatImageVue from "../../SmallChatImage.vue";
 
 export default {
   components: {
@@ -312,7 +312,7 @@ export default {
 }
 
 %message-pattern {
-  color: white;
+  color: rgb(207, 0, 0);
   width: max-content;
   max-width: 500px;
   line-height: 20px;

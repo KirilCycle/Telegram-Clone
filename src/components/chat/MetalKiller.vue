@@ -5,14 +5,6 @@
   ></div>
   <div class="previos-observer" v-observer="previous"></div>
 
-  <!-- <div :key="it.id" v-for="(it, index) in msgs" @click="() => del(it.id)">
-      <group-message-item-vue
-        :message="it"
-        :isMy="it.userId.includes('my')"
-        :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
-      >
-      </group-message-item-vue>
-    </div> -->
   <group-message-item-vue
     v-for="(it, index) in msgs"
     :key="it.id"
@@ -22,12 +14,6 @@
   >
   </group-message-item-vue>
 
-  <!-- <message-item
-    v-for="it in msgs"
-    :key="it.id"
-    :message="it"
-    :isMy="it.userId.includes(firstPartOfmyId)"
-  ></message-item> -->
   <in-loading-msgs-preview></in-loading-msgs-preview>
   <div
     ref="scrollAtTheBottom"
@@ -42,21 +28,18 @@
 import { onBeforeMount, onMounted, watchEffect } from "vue";
 import { uuidv4 } from "@firebase/util";
 import firebase from "firebase/compat/app";
-import { ref, watch } from "vue";
+import { ref, watch, defineAsyncComponent } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
-import MessageItem from "../MessageItem.vue";
-import MessageDefault from "./MessageDefault.vue";
 import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
-import GroupMessageItemVue from "./GroupMessageItem.vue";
+import { isDesktop } from "@/features/isDesktop"
+// import GroupMessageItemVue from "./GroupMessageItem.vue";
 
 export default {
   emits: ["shoveIsAvaible"],
   components: {
-    MessageItem,
-    MessageDefault,
     InLoadingMsgsPreview,
-    GroupMessageItemVue,
+    GroupMessageItemVue:  defineAsyncComponent(() => import(`./${isDesktop()? 'group-msg-item' : 'group-msg-item-mobile'}/GroupMessageItem.vue`)) ,
   },
   props: {
     parentRef: Object,
@@ -79,6 +62,7 @@ export default {
 
       return null;
     },
+    
   },
 
   setup(props, { emit }) {

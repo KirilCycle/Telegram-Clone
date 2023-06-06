@@ -111,19 +111,15 @@ import { getAuth } from "firebase/auth";
 import { uuidv4 } from "@firebase/util";
 import ChatList from "@/components/ChatList.vue";
 import ChatInput from "@/components/chat/chat-input-components/ChatInput.vue";
-import NewChat from "@/components/chat/NewChat.vue";
 import { watchEffect } from "vue";
 import ChatisntSelected from "@/components/ChatisntSelected.vue";
-import SelectedChatNav from "@/components/chat/SelectedChatUser.vue";
 import MessageActions from "@/components/MessageActions.vue";
 import Settings from "@/components/Settings.vue";
-import ChatSettings from "@/components/ChatSettings.vue";
 import FoundedChatInputVue from "@/components/chat/chat-input-components/FoundedChatInput.vue";
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 import { sendMsg } from "@/features/sendChatMessage";
 import { sendMsgToFoundedChat } from "@/features/sendMsgToFoundedChat";
-import { useEventListener } from "@vueuse/core";
 import SelectedChatNavbarVue from "@/components/chat/SelectedChatNavbar.vue";
 import { getUser } from "@/features/getUser";
 import { defineAsyncComponent } from "vue";
@@ -135,7 +131,6 @@ export default {
       import("../components/left-settings-component/SettingsComponent.vue")
     ),
     SelectedChatNavbarVue,
-    NewChat,
     ChatisntSelected,
     FoundedChatsList,
     FoundedChatInputVue,

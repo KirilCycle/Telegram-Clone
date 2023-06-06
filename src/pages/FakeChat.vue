@@ -22,7 +22,7 @@
 
 <script>
 import { uuidv4 } from "@firebase/util";
-import GroupMessageItemVue from "@/components/chat/GroupMessageItem.vue";
+import GroupMessageItemVue from "@/components/chat/group-msg-item/GroupMessageItem.vue";
 import { onMounted, ref } from "vue";
 export default {
   components: {
