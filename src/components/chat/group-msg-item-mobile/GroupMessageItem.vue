@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="touch-area"
-    ref="msg"
-    class="message-wrap"
-  >
+  <div id="touch-area" ref="msg" class="message-wrap">
     <div
       v-on:click="handleSelectMsg"
       class="message"
@@ -97,6 +93,7 @@ export default {
       startY: null,
       msgIsHooked: null,
       cont: 0,
+      isReplyMovement: null,
     };
   },
 
@@ -121,19 +118,23 @@ export default {
       return false;
     },
   },
-   mounted() {
-    this.setListeners()
-   },
+  mounted() {
+    this.setListeners();
+  },
   methods: {
     handleEmojiClick(emj) {
       console.log(emj);
     },
 
     setListeners() {
-      const ref =   this.$refs.msg
-      ref.addEventListener('touchmove', this.handleTouchMove, { passive: true })
-      ref.addEventListener('touchstart', this.handleTouchStart,  { passive: true })
-      ref.addEventListener('touchend', this.handleTouchEnd,  { passive: true })
+      const ref = this.$refs.msg;
+      ref.addEventListener("touchmove", this.handleTouchMove, {
+        passive: true,
+      });
+      ref.addEventListener("touchstart", this.handleTouchStart, {
+        passive: true,
+      });
+      ref.addEventListener("touchend", this.handleTouchEnd, { passive: true });
     },
 
     handleTouchStart(event) {
@@ -141,6 +142,12 @@ export default {
       this.startX = event.touches[0].clientX;
       this.startY = event.touches[0].clientY;
     },
+
+    reply() {
+      alert("go");
+      return false;
+    },
+
     handleTouchMove(event) {
       // Calculate the horizontal distance between the initial touch position and the current touch position
       const currentX = event.touches[0].clientX;
@@ -148,20 +155,25 @@ export default {
       const deltaX = this.startX - currentX;
       const deltaY = this.startY - currentY;
 
-     
-      
-
       const verify = this.msgIsHooked ? true : deltaY >= -10 && deltaY <= 10;
 
+      let verify2;
+
+      if (deltaX < 100) {
+        this.isReplyMovement = false;
+        verify2 = true;
+      } else {
+        this.isReplyMovement = true;
+        verify2 = false;
+      }
       // Check if the touch movement is towards the left side and ignore case where we trying scroll at Y crd
-      if (deltaX > 10 && deltaX < 100 && verify) {
+      if (deltaX > 10 && verify2 && verify) {
         this.$refs.msg.style.transform = `translateX(${-deltaX}px)`;
         this.$refs.msg.style.transition = `none`;
         // Perform the desired action for left movement
- 
-        this.msgIsHooked = true 
-     
-      } 
+
+        this.msgIsHooked = true;
+      }
 
       //  console.log(  number ,min,  max,      number >= min , number <= max);
     },
@@ -169,7 +181,18 @@ export default {
       this.msgIsHooked = false;
       this.$refs.msg.style.transform = `translateX(${0}px)`;
       this.$refs.msg.style.transition = ` transform 0.5s ease`;
-    
+      if (this.isReplyMovement) {
+        const msgData = this.message;
+
+        console.log(msgData, "SSS");
+
+        store.commit("message/setReplyTarget", {
+          text: msgData.text,
+          from: msgData.userName,
+          ...(msgData.source ? { source: msgData.source } : {}),
+        });
+      }
+      this.isReplyMovement = null;
     },
   },
 
