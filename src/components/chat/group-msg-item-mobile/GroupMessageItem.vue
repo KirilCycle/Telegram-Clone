@@ -1,8 +1,8 @@
 <template>
   <div ref="msg" class="message-wrap">
     <div
-      v-on:click.right="(e) => handleSelectMsg(e)"
-      @contextmenu.prevent="messageActions"
+      v-on:touchstart="(e) => startPress(e)"
+      v-on:touchend="endPress"
       class="message"
       :class="{ 'my-message': isMy }"
     >
@@ -137,8 +137,31 @@ export default {
     const msg = ref(null);
     const visible = ref(false);
 
+    const pressTimeout = ref(null);
+
+    function startPress(e) {
+      pressTimeout.value = setTimeout(() => {
+        handleSelectMsg(e)
+      }, 2000);
+    }
+
+   function handleSelectMsg(e) {
+      store.commit("message/setReplyMsgRef");
+
+      store.commit("message/setSelectdMsg", props.message);
+      store.commit("message/setVisible", true);
+
+      console.log(store.state.message.selectedMsgData, "SELECTED");
+    }
+
+    function endPress() {
+      clearTimeout( pressTimeout.value) 
+    }
+
     return {
       // photoSrc,
+      startPress,
+      endPress,
       stop,
       msg,
       visible,
@@ -180,7 +203,6 @@ export default {
     cursor: pointer;
     font-weight: 600;
   }
-
 }
 
 .reply-block {
@@ -350,7 +372,7 @@ export default {
   }
 
   .message {
-     max-width: 400px;
+    max-width: 400px;
   }
 }
 
@@ -369,7 +391,7 @@ export default {
   }
 
   .message {
-     max-width: 300px;
+    max-width: 300px;
   }
 }
 

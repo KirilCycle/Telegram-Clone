@@ -32,14 +32,14 @@ import { ref, watch, defineAsyncComponent } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
-import { isDesktop } from "@/features/isDesktop"
+import {  isTouchDevice } from "@/features/isTouchDevice"
 // import GroupMessageItemVue from "./GroupMessageItem.vue";
 
 export default {
   emits: ["shoveIsAvaible"],
   components: {
     InLoadingMsgsPreview,
-    GroupMessageItemVue:  defineAsyncComponent(() => import(`./${isDesktop()? 'group-msg-item' : 'group-msg-item-mobile'}/GroupMessageItem.vue`)) ,
+    GroupMessageItemVue:  defineAsyncComponent(() => import(`./${isTouchDevice()?  'group-msg-item-mobile' : 'group-msg-item'}/GroupMessageItem.vue`)) ,
   },
   props: {
     parentRef: Object,

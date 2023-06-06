@@ -2,7 +2,7 @@
   <div ref="msg" class="message-wrap">
     <div
       v-on:click.right="(e) => handleSelectMsg(e)"
-      @contextmenu.prevent="messageActions"
+      @contextmenu.prevent
       class="message"
       :class="{ 'my-message': isMy }"
     >
