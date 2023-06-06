@@ -1,9 +1,6 @@
 <template>
   <div
     id="touch-area"
-    @touchstart="handleTouchStart"
-    @touchmove="handleTouchMove"
-    @touchend="handleTouchEnd"
     ref="msg"
     class="message-wrap"
   >
@@ -79,7 +76,6 @@ import SmallChatImageVue from "../../SmallChatImage.vue";
 
 export default {
   components: {
-    
     EmojiUser,
     MessageSourceContainerVue,
     SmallChatImageVue,
@@ -100,6 +96,7 @@ export default {
       startX: null,
       startY: null,
       msgIsHooked: null,
+      cont: 0,
     };
   },
 
@@ -124,10 +121,19 @@ export default {
       return false;
     },
   },
-
+   mounted() {
+    this.setListeners()
+   },
   methods: {
     handleEmojiClick(emj) {
       console.log(emj);
+    },
+
+    setListeners() {
+      const ref =   this.$refs.msg
+      ref.addEventListener('touchmove', this.handleTouchMove, { passive: true })
+      ref.addEventListener('touchstart', this.handleTouchStart,  { passive: true })
+      ref.addEventListener('touchend', this.handleTouchEnd,  { passive: true })
     },
 
     handleTouchStart(event) {
@@ -142,32 +148,34 @@ export default {
       const deltaX = this.startX - currentX;
       const deltaY = this.startY - currentY;
 
-      var number = deltaY;
-      var min = -15;
-      var max = 15;
+     
+      
 
-      const verify = this.msgIsHooked? true :  number >= min && number <= max
+      const verify = this.msgIsHooked ? true : deltaY >= -10 && deltaY <= 10;
 
       // Check if the touch movement is towards the left side and ignore case where we trying scroll at Y crd
-      if (deltaX > 10 && verify) {
+      if (deltaX > 10 && deltaX < 100 && verify) {
         this.$refs.msg.style.transform = `translateX(${-deltaX}px)`;
+        this.$refs.msg.style.transition = `none`;
         // Perform the desired action for left movement
-        this.msgIsHooked = true
-      }
+ 
+        this.msgIsHooked = true 
+     
+      } 
 
       //  console.log(  number ,min,  max,      number >= min , number <= max);
     },
     handleTouchEnd() {
+      this.msgIsHooked = false;
       this.$refs.msg.style.transform = `translateX(${0}px)`;
-      this.msgIsHooked = false
+      this.$refs.msg.style.transition = ` transform 0.5s ease`;
+    
     },
   },
 
   setup(props) {
     const msg = ref(null);
     const visible = ref(false);
-
- 
 
     function handleSelectMsg(event) {
       const clickX = event.clientX || event.touches[0].clientX;
@@ -356,7 +364,7 @@ export default {
   padding: 1px 10px 1px 10px;
   position: relative;
   box-sizing: border-box;
-  transition: transform 0.3 ease-in-out;
+  transition: transform 0.5s ease;
 }
 
 %message-pattern {
@@ -365,7 +373,7 @@ export default {
   max-width: 500px;
   line-height: 20px;
   text-align: left;
-  font-size: 0.9rem;
+  font-size: 1rem;
   overflow-wrap: break-word;
   word-break: normal;
   position: relative;
@@ -377,8 +385,8 @@ export default {
 .text {
   padding-left: 8px;
   padding-right: 8px;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .message {

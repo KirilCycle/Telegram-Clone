@@ -58,6 +58,7 @@ export default {
     height: 60px;
     display: flex;
     justify-content: center;
+    overflow: hidden;
     align-items: center;
     font-size: 2rem;
     font-weight: 600;

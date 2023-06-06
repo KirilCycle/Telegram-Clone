@@ -19,6 +19,7 @@ $def-gray: #b2b2b2;
   color: $def-gray;
   display: flex;
   justify-content: center;
+  overflow: hidden;
   align-items: center;
   width: 40px;
   flex-shrink: 0;

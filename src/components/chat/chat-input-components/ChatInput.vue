@@ -265,6 +265,7 @@ export default {
   width: 55px;
   height: 55px;
   display: flex;
+  overflow: hidden;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -293,6 +294,7 @@ export default {
   @extend %btn-pattern;
   right: -59px;
   color: white;
+  
 
   .scroll-bottom {
     @extend %btn-pattern;
