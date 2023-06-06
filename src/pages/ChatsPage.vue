@@ -4,10 +4,21 @@
     <div ref="leftbars" class="left-bar">
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
-          <profile-page-vue
+          <!-- <profile-page-vue
             @close="closeSettings"
             @shove="() => shoveSettings('0%')"
-          ></profile-page-vue>
+          ></profile-page-vue> -->
+
+          <!-- <settings-component
+            @close="closeSettings"
+            @shove="() => shoveSettings('0%')"
+          ></settings-component> -->
+          <settings-component
+            
+            @close="closeSettings"
+            @shove="() => shoveSettings('0%')">
+          
+          </settings-component>
         </div>
       </div>
 
@@ -52,8 +63,6 @@
         ></chat-list>
         <founded-chats-list v-if="isGlobalSearch"></founded-chats-list>
       </div>
-
-     
     </div>
 
     <div ref="chat" class="right-side">
@@ -113,16 +122,18 @@ import FoundedChatInputVue from "@/components/chat/chat-input-components/Founded
 import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 import { sendMsg } from "@/features/sendChatMessage";
-import ProfilePageVue from "../components/left-settings-component/SettingsComponent.vue";
 import { sendMsgToFoundedChat } from "@/features/sendMsgToFoundedChat";
 import { useEventListener } from "@vueuse/core";
 import SelectedChatNavbarVue from "@/components/chat/SelectedChatNavbar.vue";
 import { getUser } from "@/features/getUser";
+import { defineAsyncComponent } from "vue";
 
 export default {
   components: {
     MetalKiller,
-    ProfilePageVue,
+    SettingsComponent: defineAsyncComponent(() =>
+      import("../components/left-settings-component/SettingsComponent.vue")
+    ),
     SelectedChatNavbarVue,
     NewChat,
     ChatisntSelected,
@@ -444,8 +455,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
-
-
 
 .profile-component-wrap {
   width: 100%;
