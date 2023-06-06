@@ -1,8 +1,13 @@
 <template>
-  <div ref="msg" class="message-wrap">
+  <div
+    id="touch-area"
+    @touchstart="handleTouchStart"
+    @touchmove="handleTouchMove"
+    ref="msg"
+    class="message-wrap"
+  >
     <div
-      v-on:touchstart="(e) => startPress(e)"
-      v-on:touchend="endPress"
+      v-on:click="handleSelectMsg"
       class="message"
       :class="{ 'my-message': isMy }"
     >
@@ -67,7 +72,7 @@ import { ref } from "vue";
 import store from "@/store/store";
 import EmojiUser from "../../EmojiUser.vue";
 import { replyEmoji } from "@/features/replyUsingEmoji";
-import { objectEntries } from "@vueuse/core";
+import { objectEntries, useSwipe } from "@vueuse/core";
 import MessageSourceContainerVue from "../MessageSourceContainer.vue";
 import SmallChatImageVue from "../../SmallChatImage.vue";
 
@@ -90,6 +95,8 @@ export default {
       replyEmoji,
       myTail: "my-tail",
       tail: "tail",
+      startX: null,
+      startY: null,
     };
   },
 
@@ -119,17 +126,30 @@ export default {
     handleEmojiClick(emj) {
       console.log(emj);
     },
-    handleSelectMsg(e) {
-      store.commit("message/setReplyMsgRef", this.$refs.msg);
-      store.commit("message/setClickCoords", {
-        x: e.clientX,
-        y: e.clientY,
-      });
 
-      store.commit("message/setSelectdMsg", this.message);
-      store.commit("message/setVisible", true);
+    handleTouchStart(event) {
+      // Store the initial touch position
+      this.startX = event.touches[0].clientX;
+      this.startY = event.touches[0].clientY;
+    },
+    handleTouchMove(event) {
+      // Calculate the horizontal distance between the initial touch position and the current touch position
+      const currentX = event.touches[0].clientX;
+      const currentY = event.touches[0].clientY;
+      const deltaX = this.startX - currentX;
+      const deltaY = this.startY - currentY;
 
-      console.log(store.state.message.selectedMsgData, "SELECTED");
+      var number = deltaY ; // число, которое нужно проверить
+      var min =  -8; // минимальное значение диапазона
+      var max =  8; // максимальное значение диапазона
+
+      // Check if the touch movement is towards the left side
+      if (deltaX > 0 && number >= min && number <= max) {
+        console.log("Moving towards the left", deltaY);
+        // Perform the desired action for left movement
+      }
+
+//  console.log(  number ,min,  max,      number >= min , number <= max);
     },
   },
 
@@ -137,31 +157,30 @@ export default {
     const msg = ref(null);
     const visible = ref(false);
 
-    const pressTimeout = ref(null);
-
-    function startPress(e) {
-      pressTimeout.value = setTimeout(() => {
-        handleSelectMsg(e)
-      }, 2000);
+    function moveToReply(event) {
+      const clickX = event.clientX || event.touches[0].clientX;
+      const clickY = event.clientY || event.touches[0].clientY;
     }
 
-   function handleSelectMsg(e) {
-      store.commit("message/setReplyMsgRef");
+    function handleSelectMsg(event) {
+      const clickX = event.clientX || event.touches[0].clientX;
+      const clickY = event.clientY || event.touches[0].clientY;
 
+      store.commit("message/setReplyMsgRef");
       store.commit("message/setSelectdMsg", props.message);
       store.commit("message/setVisible", true);
+      store.commit("message/setClickCoords", {
+        x: clickX,
+        y: clickY,
+      });
 
       console.log(store.state.message.selectedMsgData, "SELECTED");
     }
 
-    function endPress() {
-      clearTimeout( pressTimeout.value) 
-    }
-
     return {
       // photoSrc,
-      startPress,
-      endPress,
+      moveToReply,
+      handleSelectMsg,
       stop,
       msg,
       visible,
