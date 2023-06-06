@@ -1,54 +1,6 @@
 <template>
   <div class="wrap" @click="moreContentV = false">
-    <!-- <nav class="settings-nav">
-      <control-btn @click="$emit('close')" class="settings-btn">
-        <span class="material-symbols-outlined"> arrow_back </span>
-      </control-btn>
-      <h1 class="settings">Settings</h1>
-
-      <div class="settings_nav_right_side">
-        <control-button @click="() => handleEditComponent(true)">
-          <span class="material-symbols-outlined"> edit </span>
-        </control-button>
-
-        <control-button @click.stop="moreContentV = true" class="settings-btn">
-          <span class="material-symbols-outlined"> more_vert </span>
-
-          <div v-if="moreContentV" class="more-content">
-            <ul class="more_list">
-              <li @click="logoutV = true">
-                <span class="material-symbols-outlined"> logout </span>
-                <p>Logout</p>
-              </li>
-            </ul>
-          </div>
-        </control-button>
-
-        <teleport to="body">
-          <div
-            v-if="logoutV"
-            @click="
-              () => {
-                moreContentV = false;
-                logoutV = false;
-              }
-            "
-            class="logout-alert"
-          >
-            <div class="logout-modal">
-              <h2>Messanger Name</h2>
-              <p>Are you sure you want to log out?</p>
-
-              <div class="logoout_modal_btns_wrp">
-                <button @click="logout">LOG OUT</button>
-                <button @click="handleCancel">CANCEL</button>
-              </div>
-            </div>
-          </div>
-        </teleport>
-      </div>
-    </nav> -->
-
+  
     <top-settings-navbar-vue :title="'Settings'">
       <template v-slot:close-btn>
         <control-button @click="$emit('close')">

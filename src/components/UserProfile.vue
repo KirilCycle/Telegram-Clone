@@ -1,23 +1,14 @@
 <template>
   <div :class="'user-profile'">
-   
-    <!-- <nav>
-      <control-button @click="$emit('close')">
-        <span class="material-symbols-outlined"> close </span>
-      </control-button>
-      <h3>User Info</h3>
-    </nav> -->
-
     <top-settings-navbar :title="'User Info'">
-    <template #close-btn> 
-     <control-button @click="$emit('close')">
-        <span class="material-symbols-outlined"> close </span>
-      </control-button>
-    </template>
+      <template #close-btn>
+        <control-button @click="$emit('close')">
+          <span class="material-symbols-outlined"> close </span>
+        </control-button>
+      </template>
     </top-settings-navbar>
 
-
-     <user-photo-vue>
+    <user-photo-vue>
       <template #img>
         <img :src="$store.state.chat?.selectedUser?.photoURL" />
       </template>
@@ -25,15 +16,17 @@
         {{ $store.state.chat?.selectedUser?.displayName }}
       </template>
       <template #secondtxt>
-       {{  $store.state.chat?.selectedUser?.username }}
+        {{ $store.state.chat?.selectedUser?.username }}
       </template>
     </user-photo-vue>
 
-    <profile-user-info
-      v-if="rerender"
-      :bio="$store.state.chat?.selectedUser?.bio"
-      :username="$store.state.chat?.selectedUser?.username"
-    ></profile-user-info>
+    <div class="profile-user-info-wrp">
+      <profile-user-info
+        v-if="rerender"
+        :bio="$store.state.chat?.selectedUser?.bio"
+        :username="$store.state.chat?.selectedUser?.username"
+      ></profile-user-info>
+    </div>
   </div>
 </template>
 
@@ -43,8 +36,8 @@ import UserImage from "./UserImage.vue";
 import ProfileUserInfo from "./ProfileUserInfo.vue";
 import { watchEffect } from "vue";
 import { ref } from "vue";
-import TopSettingsNavbar from './UI/navbars/TopSettingsNavbar.vue';
-import UserPhotoVue from './UserPhoto.vue';
+import TopSettingsNavbar from "./UI/navbars/TopSettingsNavbar.vue";
+import UserPhotoVue from "./UserPhoto.vue";
 
 export default {
   components: {
@@ -131,6 +124,12 @@ $def-gray: #828282;
 }
 
 
+.profile-user-info-wrp {
+  position: relative;
+    top: 8%;
+  width: 100%;
+}
+
 .user-profile {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -155,13 +154,6 @@ $def-gray: #828282;
   position: relative;
   overflow: hidden;
 
-  img {
-    background: #46464600;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    max-height: 100%;
-  }
   h3 {
     color: #c8c8c8;
     position: absolute;

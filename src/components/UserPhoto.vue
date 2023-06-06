@@ -37,9 +37,9 @@ export default {
 }
 
 img {
-  background: #46464600;
-  min-width: 100%;
-  height: auto;
+  background: #a7131300;
+  min-width: 10%;
+  height: 10px;
 }
 
 .profile-img-wrap {
@@ -83,6 +83,9 @@ img {
   position: relative;
   top: 8%;
   width: 100%;
+
 }
+
+
 </style>
 UserImage

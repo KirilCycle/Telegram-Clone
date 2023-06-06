@@ -1,6 +1,5 @@
 <template>
   <TransitionGroup name="list" class="chat-list-wrap" tag="div">
-   
     <chat-list-item
       @click="() => handleChatSelect(cht.id)"
       v-for="cht in chatList"
@@ -29,6 +28,10 @@ export default {
   methods: {
     handleChatSelect(id) {
       this.$store.commit("chat/setChatId", id);
+      var url = window.location.href;
+      console.log(url, "CHNAGED");
+      // Replace the URL without refreshing the page
+      // window.history.replaceState({}, document.title, url);
     },
   },
   data() {
@@ -36,7 +39,6 @@ export default {
       db: firebase.firestore(),
     };
   },
-
 };
 </script>
 

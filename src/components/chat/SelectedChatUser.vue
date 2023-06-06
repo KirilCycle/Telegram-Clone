@@ -1,32 +1,43 @@
 <template>
-  <div @click="v = true" class="chat_nav_img_wrap">
+  <div @click="loadComponent" class="chat_nav_img_wrap">
     <img :src="$store.state.chat?.selectedUser?.photoURL" />
   </div>
   <Teleport to="body">
     <Transition>
       <div v-if="v" >
-        <user-profile @close="v = false"></user-profile>
+      <component @close="v = false" :is="userProfile"></component>
+        <!-- <user-profile @close="v = false"></user-profile> -->
       </div>
     </Transition>
   </Teleport>
 </template>
 
 <script>
-import UserProfile from "../UserProfile.vue";
-
+// import UserProfile from "../UserProfile.vue";
+import { ref } from 'vue';
 // const UserProfile = () => import("@/components/UserProfile.vue")
 
 
 export default {
-  components: { UserProfile  },
+  components: {},
   props: {
     userPhotoUrl: String,
     required: true,
   },
-  data() {
+setup() {
+    const userProfile = ref(null);
+    const v = ref(false)
+
+    async function loadComponent() {
+      const { default: UserProfile } = await import("../UserProfile.vue");
+      userProfile.value = UserProfile;
+      v.value = true
+    }
+
     return {
-      url: this.userPhotoUrl,
-      v: false,
+      userProfile,
+      loadComponent,
+      v,
     };
   },
 };

@@ -53,31 +53,15 @@
         <founded-chats-list v-if="isGlobalSearch"></founded-chats-list>
       </div>
 
-      <div class="resize-handler"></div>
+     
     </div>
 
     <div ref="chat" class="right-side">
       <selected-chat-navbar-vue
+        v-show="$store.state.chat.chatId"
         :arrowAction="handleChatPosition"
         @setArrowRef="setArrowRef"
       ></selected-chat-navbar-vue>
-      <!-- <div
-        @touchmove.prevent
-        v-if="$store.state.chat.selectedUser"
-        class="chat-nav-x"
-      >
-        <control-button class="chat-move" @click.stop="handleChatPosition">
-          <span ref="chatArrow" class="material-symbols-outlined">
-            chevron_left
-          </span>
-        </control-button>
-
-        <selected-chat-nav></selected-chat-nav>
-
-        <h3>{{ navName }}</h3>
-
-        <chat-settings></chat-settings>
-      </div> -->
 
       <div ref="chatContainer" class="chat-container-x">
         <component
@@ -94,8 +78,7 @@
       >
         <div class="input-wrap">
           <div v-if="$store.state.chat.selectedUser.new">
-            <founded-chat-input-vue
-            ></founded-chat-input-vue>
+            <founded-chat-input-vue></founded-chat-input-vue>
           </div>
 
           <div v-else>
@@ -131,10 +114,10 @@ import ChatsControlBtn from "@/components/ChatsControlBtn.vue";
 import MetalKiller from "@/components/chat/MetalKiller.vue";
 import { sendMsg } from "@/features/sendChatMessage";
 import ProfilePageVue from "../components/left-settings-component/SettingsComponent.vue";
-import { sendMsgToFoundedChat } from "@/features/sendMsgToFoundedChat"
+import { sendMsgToFoundedChat } from "@/features/sendMsgToFoundedChat";
 import { useEventListener } from "@vueuse/core";
 import SelectedChatNavbarVue from "@/components/chat/SelectedChatNavbar.vue";
-import { getUser } from "@/features/getUser"
+import { getUser } from "@/features/getUser";
 
 export default {
   components: {
@@ -356,8 +339,6 @@ export default {
       }
     });
 
-   
-
     function resetSelectedChat() {
       store.commit("chat/setSelectedUser", null);
       store.commit("chat/setChatId", null);
@@ -395,6 +376,7 @@ export default {
         for (let entry of entries) {
           const resizedElement = entry.target;
           const newWidth = resizedElement.clientWidth;
+          localStorage.setItem("leftbarwidth", newWidth + "px");
 
           if (!isShoved.value) {
             rightside.value.style.transform = `translateX(${newWidth}px)`;
@@ -463,14 +445,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
-.resize-handler {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  height: 25px;
-  width: 25px;
-  background-color: #fff;
-}
+
 
 .profile-component-wrap {
   width: 100%;
