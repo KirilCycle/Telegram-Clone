@@ -146,27 +146,9 @@ export default {
     };
   },
   mounted() {
-    this.setPrevChat();
+    store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
   },
   methods: {
-    async setPrevChat() {
-      this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
-
-      const chatIdFromHash = window.location.hash
-        .substring(1)
-        .replaceAll("#", "")
-        .replaceAll("/", "");
-
-      if (chatIdFromHash) {
-        let myId = this.$store.state.user.user.uid;
-        const enotherUser = await getUser(
-          chatIdFromHash.replace(myId, "")
-        );
-
-        this.$store.commit("chat/setSelectedUser", enotherUser);
-        this.$store.commit("chat/setChatId", chatIdFromHash);
-      }
-    },
     update(changeId) {
       if (changeId !== this.chatKey) {
         console.log("UPDATED");
@@ -305,6 +287,33 @@ export default {
     const isShoved = ref(null);
     const chat = ref(null);
     const chatContainer = ref(null);
+
+    async function setPrevChat() {
+      const chatIdFromHash = window.location.hash
+        .substring(1)
+        .replaceAll("#", "")
+        .replaceAll("/", "");
+
+      if (chatIdFromHash) {
+        let myId = store.state.user.user.uid;
+        const enotherUser = await getUser(chatIdFromHash.replace(myId, ""));
+
+        store.commit("chat/setSelectedUser", enotherUser);
+        store.commit("chat/setChatId", chatIdFromHash);
+      }
+    }
+
+    const stopWatch = watchEffect(() => {
+      if (listLoaded.value && chatList.value.length) {
+        console.log('go x');
+        setPrevChat();
+        stopWatch();
+      } if (!window.location.hash) {
+     
+        stopWatch();
+      }
+       
+    });
 
     function handleChatPosition() {
       if (isShoved.value) {
