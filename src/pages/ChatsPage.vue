@@ -4,20 +4,10 @@
     <div ref="leftbars" class="left-bar">
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
-          <!-- <profile-page-vue
-            @close="closeSettings"
-            @shove="() => shoveSettings('0%')"
-          ></profile-page-vue> -->
-
-          <!-- <settings-component
-            @close="closeSettings"
-            @shove="() => shoveSettings('0%')"
-          ></settings-component> -->
           <settings-component
-            
             @close="closeSettings"
-            @shove="() => shoveSettings('0%')">
-          
+            @shove="() => shoveSettings('0%')"
+          >
           </settings-component>
         </div>
       </div>
@@ -67,7 +57,7 @@
 
     <div ref="chat" class="right-side">
       <selected-chat-navbar-vue
-        v-show="$store.state.chat.chatId"
+        v-show="$store.state.chat.chatId || $store.state.chat.selectedUser?.new"
         :arrowAction="handleChatPosition"
         @setArrowRef="setArrowRef"
       ></selected-chat-navbar-vue>
@@ -86,7 +76,7 @@
         class="chat-input-block-x"
       >
         <div class="input-wrap">
-          <div v-if="$store.state.chat.selectedUser.new">
+          <div v-if="$store.state.chat.selectedUser?.new">
             <founded-chat-input-vue></founded-chat-input-vue>
           </div>
 
@@ -123,6 +113,8 @@ import { sendMsgToFoundedChat } from "@/features/sendMsgToFoundedChat";
 import SelectedChatNavbarVue from "@/components/chat/SelectedChatNavbar.vue";
 import { getUser } from "@/features/getUser";
 import { defineAsyncComponent } from "vue";
+import useEventListener from "use-event-listener";
+import NewChat from "@/components/chat/NewChat.vue";
 
 export default {
   components: {
@@ -131,6 +123,7 @@ export default {
       import("../components/left-settings-component/SettingsComponent.vue")
     ),
     SelectedChatNavbarVue,
+    NewChat,
     ChatisntSelected,
     FoundedChatsList,
     FoundedChatInputVue,
@@ -153,9 +146,27 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
+    this.setPrevChat();
   },
   methods: {
+    async setPrevChat() {
+      this.$store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
+
+      const chatIdFromHash = window.location.hash
+        .substring(1)
+        .replaceAll("#", "")
+        .replaceAll("/", "");
+
+      if (chatIdFromHash) {
+        let myId = this.$store.state.user.user.uid;
+        const enotherUser = await getUser(
+          chatIdFromHash.replace(myId, "")
+        );
+
+        this.$store.commit("chat/setSelectedUser", enotherUser);
+        this.$store.commit("chat/setChatId", chatIdFromHash);
+      }
+    },
     update(changeId) {
       if (changeId !== this.chatKey) {
         console.log("UPDATED");
@@ -334,8 +345,6 @@ export default {
               scrollPosition: null,
               limit: 0,
             });
-
-            console.log("re puc ");
 
             store.commit("chat/setChatsCount", chatsLength);
           }
@@ -749,11 +758,11 @@ export default {
   background-color: $body-color;
   width: 100vw;
   box-sizing: border-box;
-  background-image: url('../components/UI/images/Jhone.jpg');
-  background-image: url('https://f.vividscreen.info/soft/2404dd397349330e01bfaedfd35261ee/IOS-13-Grey-1920x1200.jpg');
-   background-position: center; /* Center the image */
+  background-image: url("../components/UI/images/Jhone.jpg");
+  background-image: url("https://f.vividscreen.info/soft/2404dd397349330e01bfaedfd35261ee/IOS-13-Grey-1920x1200.jpg");
+  background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; 
+  background-size: cover;
   height: 100%;
   padding-bottom: 30px;
   position: fixed;
@@ -763,7 +772,6 @@ export default {
 
 .dark .right-side {
   background-color: #7ee8fa;
-
 }
 
 .right-side-shoved-back {
@@ -776,7 +784,6 @@ export default {
 }
 .dark .right-side-shoved-back {
   background-color: #7ee8fa;
- 
 }
 
 @media (max-width: 1000px) {

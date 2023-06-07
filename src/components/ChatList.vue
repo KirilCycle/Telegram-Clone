@@ -28,8 +28,7 @@ export default {
   methods: {
     handleChatSelect(id) {
       this.$store.commit("chat/setChatId", id);
-      var url = window.location.href;
-      console.log(url, "CHNAGED");
+      this.$router.push({ hash: `#${id}` });
       // Replace the URL without refreshing the page
       // window.history.replaceState({}, document.title, url);
     },

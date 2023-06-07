@@ -62,7 +62,12 @@ export const routes = [
     name: "chats",
     component:ChatsPage,
     beforeEnter: async (to, from) => {
-      //  await sus().then((res) => {return res})
+      //i cant use transaction or bacth when user created 
+      //so i need check it, and add in case connection was lost
+      //Authentication not the same as usersPrew, two different users objects
+      //i cant allow Authentication user object show to enother user during search or conversation, as this objects keep pasword, and other
+      //private data
+      
       const mainExecute = new Promise(function (resolve, reject) {
         const db = firebase.firestore();
         firebase.auth().onAuthStateChanged(function (user) {

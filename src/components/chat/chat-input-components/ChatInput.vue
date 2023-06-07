@@ -12,7 +12,7 @@
 
       <input
          @keydown.enter="send"
-        :value="$store.state.chat.chatSettings[$store.state.chat.chatId].v"
+        :value="chatSettingsWait"
         v-on:input="(e) => textHndl(e.target.value)"
         placeholder="Message"
       />
@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       text: null,
+      vBeforeListInitial: '',
     };
   },
   methods: {
@@ -163,9 +164,17 @@ export default {
       return null;
     },
 
+    chatSettingsWait() {
+      if (this.$store.state.chat.chatSettings[this.$store.state.chat.chatId]) {
+         return this.$store.state.chat.chatSettings[this.$store.state.chat.chatId].v
+      } else {
+        return  this.vBeforeListInitial
+      }
+    },
+
     ableTosend() {
       if (
-        this.$store.state.chat.chatSettings[this.$store.state.chat.chatId].v ||
+        this.$store.state.chat?.chatSettings[this.$store.state.chat.chatId]?.v ||
         store.state.message.forwardTarget
       ) {
         return true;
