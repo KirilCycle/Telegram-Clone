@@ -749,6 +749,11 @@ export default {
   background-color: $body-color;
   width: 100vw;
   box-sizing: border-box;
+  background-image: url('../components/UI/images/Jhone.jpg');
+  background-image: url('https://f.vividscreen.info/soft/2404dd397349330e01bfaedfd35261ee/IOS-13-Grey-1920x1200.jpg');
+   background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; 
   height: 100%;
   padding-bottom: 30px;
   position: fixed;
@@ -758,7 +763,7 @@ export default {
 
 .dark .right-side {
   background-color: #7ee8fa;
-  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+
 }
 
 .right-side-shoved-back {
@@ -771,7 +776,7 @@ export default {
 }
 .dark .right-side-shoved-back {
   background-color: #7ee8fa;
-  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+ 
 }
 
 @media (max-width: 1000px) {

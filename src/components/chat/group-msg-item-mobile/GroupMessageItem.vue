@@ -143,11 +143,6 @@ export default {
       this.startY = event.touches[0].clientY;
     },
 
-    reply() {
-      alert("go");
-      return false;
-    },
-
     handleTouchMove(event) {
       // Calculate the horizontal distance between the initial touch position and the current touch position
       const currentX = event.touches[0].clientX;

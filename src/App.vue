@@ -17,24 +17,16 @@ import "firebase/compat/auth";
 import { ref, set } from "firebase/database";
 import { useDark } from "@vueuse/core";
 
-
-
-
-
 import "firebase/compat/firestore";
 
-
 import { initializeAuth, browserLocalPersistence } from "firebase/auth";
-import { onMounted,   } from "vue";
-import { getFirestore,  } from "firebase/firestore";
+import { onMounted } from "vue";
+import { getFirestore } from "firebase/firestore";
 
 import { setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-
-const isDark = useDark()
-
-
+const isDark = useDark();
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -62,75 +54,8 @@ const auth = initializeAuth(app, {
   // No popupRedirectResolver defined
 });
 
-// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-
-// const auths = getAuth();
-// signOut(auths).then(() => {
-//   // Sign-out successful.
-// }).catch((error) => {
-//   // An error happened.
-// });
 const db = getFirestore(app);
 
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) {
-    async function checkNeccessaryData() {
-      
-      const docRef = doc(db, "usersLinksToChat", user.uid);
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        console.log("cc action");
-        await setDoc(doc(db, "usersLinksToChat", user.uid), {
-          //
-        });
-      }
-      
-
-      const prewuserSnapRef = doc(db, "usersPrew", user.uid);
-      const prewuserSnap = await getDoc(prewuserSnapRef);
-
-      function wordGenerator() {
-
-        const words = ['Guffy','Sniper','Big', 'Cold','Master','RockStar','Dangerous','Hot','Sexy','Nice']
-
-        return words[Math.floor(Math.random() * 10) + 1]
-      }
-
-      if (!prewuserSnap.exists()) {
-        console.log("cpu action");
-        await setDoc(doc(db, "usersPrew", user.uid), {
-          uid: user.uid,
-          photoURl: `https://robohash.org/${user.uid}.png`,
-          email: user.email,
-          username: user.email.slice(0, user.email.indexOf("@")) + wordGenerator()
-        });
-      }
-    }
-
-    
-    async function setUserToStore() {
-      
-      const prewuserSnapRef = doc(db, "usersPrew", user.uid);
-      const prewuserSnap = await getDoc(prewuserSnapRef);
-      
-      console.log(prewuserSnap.data(), "USER");
-      store.commit("user/setUser", prewuserSnap.data());
-      store.commit("user/setAuthData", auth);
-      store.commit("user/setAuth", true);
-      store.commit("user/setDb", db);
-      router.push({ name: window.location.hash.replace("#/", "") });
-    }
-    
-    
-    checkNeccessaryData().then((res) =>  setUserToStore())
-    
-    // window.location.hash.replace('#/', '')
-  } else {
-
-    console.log("NOO :(")
-  }
-});
 
 const firestore = firebase.firestore();
 
@@ -145,22 +70,20 @@ onMounted(() => {
 
 store.commit("user/setFireBase", firebase);
 
-
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   // We execute the same script as before
   let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
 });
-
 </script>
 
 <style lang="scss">
-@import '@/styles/colors.scss';
+@import "@/styles/colors.scss";
 
 .profile {
   position: absolute;
@@ -263,18 +186,18 @@ body {
   min-height: 100vh;
   /* mobile viewport bug fix */
   font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
   min-height: -webkit-fill-available;
 }
 
-.dark  body{
+.dark body {
   transition: background-color 0.5s ease;
   background-color: $body-color-l;
 }
 
-html,body{
-    -webkit-overflow-scrolling : touch !important;
-    overflow: auto !important;
+html,
+body {
+  -webkit-overflow-scrolling: touch !important;
+  overflow: auto !important;
 }
-
 </style>

@@ -89,6 +89,7 @@ export default {
   padding: 0px 10px 0px 10px;
   right: 0%;
   position: absolute;
+  z-index: 10;
   box-sizing: border-box;
   height: 100%;
   width: 100%;
