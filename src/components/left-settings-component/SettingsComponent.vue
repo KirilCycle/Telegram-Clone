@@ -1,6 +1,5 @@
 <template>
   <div class="wrap" @click="moreContentV = false">
-  
     <top-settings-navbar-vue :title="'Settings'">
       <template v-slot:close-btn>
         <control-button @click="$emit('close')">
@@ -31,7 +30,7 @@
         {{ $store.state.user.user.displayName }}
       </template>
       <template #secondtxt>
-       {{ $store.state.user.user.email }}
+        {{ $store.state.user.user.email }}
       </template>
     </user-photo-vue>
 
@@ -86,6 +85,8 @@ import RadioSelect from "@/components/RadioSelect.vue";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
 import OptiosnListVue from "../UI/lists/OptiosnList.vue";
 import UserPhotoVue from "../UserPhoto.vue";
+import firebase from "firebase/compat/app";
+
 
 export default {
   components: {
@@ -114,7 +115,17 @@ export default {
         {
           htmlIcoEl: `<span class="material-symbols-outlined"> logout </span>`,
           description: "log out",
-          execute: () => alert("sus"),
+          execute: () => {
+            firebase
+              .auth()
+              .signOut()
+              .then(function () {
+                 
+              })
+              .catch(function (error) {
+                // An error happened.
+              });
+          },
         },
       ],
     };

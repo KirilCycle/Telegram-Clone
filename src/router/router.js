@@ -38,11 +38,8 @@ async function setUserToStore(user, db) {
   console.log(user, "USER");
   store.commit("user/setUser", user);
   store.commit("user/setAuth", true);
-  store.commit("user/setDb", db);
   console.log("user setted");
 }
-
-const isAuth = ref(store.state.user.user);
 
 export const routes = [
   {
@@ -63,7 +60,7 @@ export const routes = [
   {
     path: "/",
     name: "chats",
-    component: ChatsPage,
+    component:ChatsPage,
     beforeEnter: async (to, from) => {
       //  await sus().then((res) => {return res})
       const mainExecute = new Promise(function (resolve, reject) {
@@ -78,7 +75,7 @@ export const routes = [
                 console.log("cc action");
                 await setDoc(doc(db, "usersLinksToChat", user.uid), {
                   //
-                }).catch(() => resolve(false));
+                }).catch((er) => reject(er));
               }
 
               const prewuserSnapRef = doc(db, "usersPrew", user.uid);
@@ -95,23 +92,25 @@ export const routes = [
                     wordGenerator(),
                 })
                   .then((res) => setUserToStore(res))
-                  .catch(() => resolve(false));
+                  .catch(() => reject(er));
               } else {
                 setUserToStore(prewuserSnap.data(), db);
                 resolve(true);
               }
             }
+
             checkNeccessaryData();
           } else {
             console.log("NOO :(");
-            resolve(false);
+            reject('no');
           }
         });
       });
 
-      await mainExecute.then((res) => {
-        return res;
-      });
+      await mainExecute
+        
+
+        
     },
   },
 ];
