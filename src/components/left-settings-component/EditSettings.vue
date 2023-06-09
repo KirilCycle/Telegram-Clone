@@ -67,14 +67,14 @@
     </div>
 
     <transition name="bounce">
-      <button
+      <main-button
         v-show="somethingChanged"
         ref="commit"
         @click="commitProfileChanges"
         class="save-changes-btn"
       >
         <span class="material-symbols-outlined"> done </span>
-      </button>
+      </main-button>
     </transition>
   </div>
 </template>
@@ -97,10 +97,12 @@ import { updateStoreUser } from "@/features/updateStoreUser";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
+import MainButton from '../UI/buttons/MainButton.vue';
 
 export default {
   components: {
     TopSettingsNavbarVue,
+    MainButton,
   },
   props: {
     v: Boolean,

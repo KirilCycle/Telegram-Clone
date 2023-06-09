@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <div>
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <div class="emoji-container">
@@ -42,7 +42,7 @@
     </div>
 
     <forward-modal @close="close" v-if="v"></forward-modal>
-  </Teleport>
+ </div>
 </template>
 
 <script>

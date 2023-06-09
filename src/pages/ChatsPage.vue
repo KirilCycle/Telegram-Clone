@@ -1,5 +1,13 @@
 <template>
-  <message-actions v-if="$store.state.message.visible"></message-actions>
+  <Teleport to="body">
+    <transition name="fade">
+      <message-actions
+        :key="'d'"
+        v-if="$store.state.message.visible"
+      ></message-actions>
+    </transition>
+  </Teleport>
+
   <div class="main">
     <div ref="leftbars" class="left-bar">
       <div ref="settings" class="settings-wrap">
@@ -289,9 +297,6 @@ export default {
     const chatContainer = ref(null);
 
     async function setPrevChat(chatIdFromHash) {
-    
-
-
       if (chatIdFromHash) {
         let myId = store.state.user.user.uid;
         const enotherUser = await getUser(chatIdFromHash.replace(myId, ""));
@@ -302,25 +307,22 @@ export default {
     }
 
     const stopWatch = watchEffect(() => {
-      if (listLoaded.value && chatList.value.length ) {
-       
-      
+      if (listLoaded.value && chatList.value.length) {
         const chatIdFromHash = window.location.hash
-        .substring(1)
-        .replaceAll("#", "")
-        .replaceAll("/", "");
+          .substring(1)
+          .replaceAll("#", "")
+          .replaceAll("/", "");
 
-          setPrevChat(chatIdFromHash)
+        setPrevChat(chatIdFromHash);
         // if (store.state.chat.chatSettings[chatIdFromHash]) {
-        // } 
+        // }
 
-        stopWatch();
-      } if (!window.location.hash) {
         stopWatch();
       }
-       
+      if (!window.location.hash) {
+        stopWatch();
+      }
     });
-
 
     function handleChatPosition() {
       if (isShoved.value) {
@@ -475,6 +477,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
 
 .profile-component-wrap {
   width: 100%;

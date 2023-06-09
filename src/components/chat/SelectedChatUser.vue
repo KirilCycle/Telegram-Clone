@@ -3,12 +3,12 @@
     <img :src="$store.state.chat?.selectedUser?.photoURL" />
   </div>
   <Teleport to="body">
-    <Transition>
+     <transition name="fade">
       <div v-if="v" >
      
         <user-profile @close="v = false"></user-profile>
       </div>
-    </Transition>
+     </transition>
   </Teleport>
 </template>
 
@@ -36,18 +36,15 @@ export default {
 
 <style lang="scss" scoped>
 
-.v-enter-active,
-.v-leave-active {
-transition: opacity 0.3s ease;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
 }
 
-.v-enter-from {
-    transition: opacity 0.3s ease;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
-.v-leave-to {
-opacity: 0;
-}
-
 
 .chat_nav_img_wrap {
   width: 42px;

@@ -72,7 +72,7 @@
   </div>
   <Teleport to="body">
     <transition name="fade">
-      <div v-show="logoutV" class="modal-alert-wrap">
+      <div v-if="logoutV" class="modal-alert-wrap">
         <standart-alert-vue
           :header="'log out'"
           :description="'Are u shure you want to log out'"
