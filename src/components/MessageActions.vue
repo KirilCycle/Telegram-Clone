@@ -19,8 +19,9 @@
           <div class="emoji_container_smll_circl"></div>
         </div>
 
-        <ul class="actions-list">
-          <li @click="prepareToReply">
+        <ul class="actions-list-wrp">
+          <optiosn-list-vue :optionsList="messageActions"> </optiosn-list-vue>
+          <!-- <li @click="prepareToReply">
             <span class="material-symbols-outlined"> reply </span>
             <button>Reply</button>
           </li>
@@ -31,18 +32,18 @@
           <li @click="selectText">
             <span class="material-symbols-outlined"> file_copy </span>
             <button>Coppy Text</button>
-          </li>
+          </li> -->
           <!-- v-if="$store.state.user.user.uid === "  -->
-          <li @click="deleteMsg" class="delete-action">
+          <!-- <li @click="deleteMsg" class="delete-action">
             <span class="material-symbols-outlined"> delete </span>
             <button>Delete</button>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
 
     <forward-modal @close="close" v-if="v"></forward-modal>
- </div>
+  </div>
 </template>
 
 <script>
@@ -53,10 +54,14 @@ import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { replyEmoji } from "@/features/replyUsingEmoji";
-
 import ForwardModal from "./ForwardModal.vue";
+import OptiosnListVue from "./UI/lists/OptiosnList.vue";
 
 export default {
+  components: {
+    ForwardModal,
+    OptiosnListVue,
+  },
   data() {
     return {
       db: firebase.firestore(),
@@ -68,10 +73,29 @@ export default {
         userId: this.$store.state.user.user.uid,
         selectedMsgData: this.$store.state.message.selectedMsgData,
       },
+      messageActions: [
+        {
+          description: 'reply',
+          htmlIcoEl: `  <span class="material-symbols-outlined"> reply </span>`,
+          execute: this.prepareToReply
+        },
+        {
+          description: 'forward',
+          htmlIcoEl: `  <span class="material-symbols-outlined"> forward </span>`,
+          execute: this.prepareToReply
+        },
+        {
+          description: 'coppy ot clipboard',
+          htmlIcoEl: `<span class="material-symbols-outlined"> file_copy </span>`,
+          execute: this.prepareToReply
+        },
+        {
+          description: 'delete',
+          htmlIcoEl: `<span class="material-symbols-outlined"> delete </span>`,
+          execute: this.prepareToReply
+        },
+      ],
     };
-  },
-  components: {
-    ForwardModal,
   },
   methods: {
     prepareToReply() {
@@ -251,7 +275,7 @@ export default {
   top: 0%;
   width: 200px;
   border-radius: 5px;
-  background-color: $content-main;
+
   position: absolute;
   height: min-content;
   display: flex;
@@ -313,59 +337,22 @@ export default {
       background-color: $content-main;
     }
   }
+  
 
-  .actions-list {
+  .actions-list-wrp {
     width: 100%;
-    font-size: 1rem;
-    font-weight: normal;
     box-sizing: border-box;
+    position: absolute;
 
-    li {
-      font-family: Avenir, Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      color: $text-main;
-      padding: 5px 12px 5px 12px;
-      box-sizing: border-box;
-      display: flex;
-      border-radius: 3px;
-      align-items: center;
-      flex-direction: row;
-      cursor: pointer;
-
-      button {
-        height: 100%;
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      span {
-        font-size: 0.8rem sans-serif;
-        font-weight: 300;
-      }
-
-      &:hover {
-        background-color: $hover;
-      }
-    }
-    .delete-action {
-      color: #e02b2b;
-    }
+    top: 40px;
+   
   }
 }
-
-
 
 .dark .msg-actions {
   background-color: $content-main-l;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  .actions-list {
-    li {
-      color: $text-main-l;
-    }
-    .delete-action {
-      color: #e02b2b;
-    }
-  }
+  
 }
 
 .dark .msg-actions .emoji-container {

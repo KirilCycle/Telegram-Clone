@@ -14,10 +14,13 @@
       <template v-slot:action2>
         <control-button @click.stop="moreContentV = true">
           <span class="material-symbols-outlined"> more_vert </span>
-          <optiosn-list-vue
-            v-show="moreContentV"
-            :optionsList="settingsOptions"
-          ></optiosn-list-vue>
+
+          <div class="options-list-wrap">
+            <optiosn-list-vue
+              v-show="moreContentV"
+              :optionsList="settingsOptions"
+            ></optiosn-list-vue>
+          </div>
         </control-button>
       </template>
     </top-settings-navbar-vue>
@@ -276,6 +279,13 @@ $def-gray: #b2b2b2;
   opacity: 0;
 }
 
+.options-list-wrap {
+  width: 180px;
+  position: absolute;
+  top: 85px;
+  right: 15px;
+}
+
 .modal-alert-wrap {
   width: 100%;
   height: 100%;
@@ -295,26 +305,6 @@ $def-gray: #b2b2b2;
   z-index: 25;
   transform: translateX(0);
   transition: transform 0.4s ease-in-out;
-}
-
-.profile_img_wrap_text_wrp {
-  .fisrt-name {
-    z-index: 12;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #ffffff;
-    position: absolute;
-    bottom: 23px;
-    left: 20px;
-  }
-  .email {
-    color: #c8c8c8;
-    position: absolute;
-    bottom: 3px;
-    left: 20px;
-    font-size: 1rem;
-    z-index: 10;
-  }
 }
 
 .settings {
@@ -371,41 +361,6 @@ $def-gray: #b2b2b2;
       font-size: 1rem;
       margin-top: 6px;
     }
-  }
-
-  .profile-edit-container {
-    position: relative;
-    display: flex;
-    width: 100%;
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-    input {
-      margin-top: 15px;
-      width: 75%;
-      height: 35px;
-      background-color: #303030;
-      border-radius: 5px;
-      color: #ffffff;
-      font-weight: 500;
-      padding-left: 5px;
-      font-size: 1.1rem;
-    }
-  }
-
-  h2 {
-    margin-top: 10px;
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-    font-weight: normal;
-  }
-
-  .value-alert {
-    margin-top: 10px;
-    color: rgb(61, 61, 61);
   }
 }
 

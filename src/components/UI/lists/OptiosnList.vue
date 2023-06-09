@@ -20,27 +20,27 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 .more-content {
-  width: 180px;
+  width: 100%;
   height: max-content;
   position: absolute;
   z-index: 55;
-  right: 15px;
-  background-color: $transition-colors;
-  top: 45px;
+  background-color: rgba(36, 36, 36, 0.916);
   backdrop-filter: blur(3px);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 7px 2px 7px 2px;
+  padding: 5px 2px 5px 2px;
   li {
     list-style: none;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    cursor: pointer;
+    color: #878787;
     border-radius: 5px;
     justify-content: space-around;
     font-size: 1rem;
-    height: 30px;
+    height: 25px;
     transition: transform 0.4s ease;
     &:hover {
       background-color: #1b1b1beb;
