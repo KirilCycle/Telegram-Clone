@@ -24,7 +24,9 @@
 
     <user-photo-vue>
       <template #img>
-        <img :src="$store.state.user.user?.photoURL" />
+        <profile-image
+          :source="$store.state.user.user?.photoURL"
+        ></profile-image>
       </template>
       <template #firstxt>
         {{ $store.state.user.user.displayName }}
@@ -68,6 +70,18 @@
       ></radio-select>
     </div>
   </div>
+  <Teleport to="body">
+    <transition name="fade">
+      <div v-show="logoutV" class="modal-alert-wrap">
+        <standart-alert-vue
+          :header="'log out'"
+          :description="'Are u shure you want to log out'"
+          :action="{ title: 'yes', executeFn: logout }"
+          @close="() => closeMoreContent(() => (this.logoutV = false))"
+        ></standart-alert-vue>
+      </div>
+    </transition>
+  </Teleport>
 </template>
 
 <script>
@@ -86,12 +100,15 @@ import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
 import OptiosnListVue from "../UI/lists/OptiosnList.vue";
 import UserPhotoVue from "../UserPhoto.vue";
 import firebase from "firebase/compat/app";
-
+import ProfileImage from "../UI/img-components/ProfileImage.vue";
+import StandartAlertVue from "../UI/alerts/StandartAlert.vue";
 
 export default {
   components: {
     UserImage,
     UserPhotoVue,
+    StandartAlertVue,
+    ProfileImage,
     EditSettings,
     OptiosnListVue,
     ProfileUserInfo,
@@ -116,15 +133,7 @@ export default {
           htmlIcoEl: `<span class="material-symbols-outlined"> logout </span>`,
           description: "log out",
           execute: () => {
-            firebase
-              .auth()
-              .signOut()
-              .then(function () {
-                 
-              })
-              .catch(function (error) {
-                // An error happened.
-              });
+            this.logoutV = true;
           },
         },
       ],
@@ -149,6 +158,11 @@ export default {
   },
 
   methods: {
+    closeMoreContent(secondAction) {
+      this.moreContentV = false;
+      secondAction();
+    },
+
     async handleEditComponent(state) {
       this.inEdit = state;
       state
@@ -252,6 +266,27 @@ $custom-c4: rgb(31, 31, 31);
 $def-gray: #b2b2b2;
 @import "@/styles/colors";
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.modal-alert-wrap {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.705);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 200;
+}
+
 .edit-panel {
   width: 100%;
   position: absolute;
@@ -260,17 +295,6 @@ $def-gray: #b2b2b2;
   z-index: 25;
   transform: translateX(0);
   transition: transform 0.4s ease-in-out;
-}
-
-.profile-img-wrap {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.profile-img {
-  width: auto;
-  min-height: 100%;
-  object-fit: cover;
 }
 
 .profile_img_wrap_text_wrp {
@@ -302,12 +326,6 @@ $def-gray: #b2b2b2;
 
 .dark .settings {
   color: $text-main-l;
-}
-
-img {
-  background: #46464600;
-  min-width: 100%;
-  height: auto;
 }
 
 .profile-user-info-wrp {
@@ -393,68 +411,5 @@ img {
 
 .dark .wrap {
   background-color: $content-main-l;
-}
-
-.logout-alert {
-  width: 100%;
-  height: 100%;
-  background-color: #00000089;
-  position: absolute;
-  z-index: 300;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .logout-modal {
-    width: 315px;
-    height: 150px;
-    background: #1f1f1f;
-    border-radius: 10px;
-    padding: 15px;
-    position: relative;
-    box-sizing: border-box;
-
-    h2 {
-      font-size: 1.3rem;
-      color: white;
-      position: static;
-    }
-
-    p {
-      font-size: 1rem;
-      color: white;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    .logoout_modal_btns_wrp {
-      width: 100%;
-      height: max-content;
-      display: flex;
-      flex-direction: row-reverse;
-
-      button {
-        width: 32%;
-        height: 35px;
-        font-weight: 550;
-        color: rgb(45, 108, 255);
-        font-size: 1rem;
-        margin-right: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-
-        &:hover {
-          transition: 0.3s ease-in-out;
-          background-color: rgba(45, 108, 255, 0.055);
-        }
-      }
-    }
-    .logoout_modal_btns_wrp :last-child {
-      &:hover {
-        background-color: rgba(255, 0, 0, 0.056);
-      }
-      color: red;
-    }
-  }
 }
 </style>

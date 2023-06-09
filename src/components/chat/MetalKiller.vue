@@ -108,7 +108,9 @@ export default {
         .limit(1);
 
       querry.onSnapshot((snapshot) => {
-        recentMsgID.value = snapshot.docs[0].id;
+        if (snapshot.docs.length) {
+          recentMsgID.value = snapshot.docs[0].id;
+        }
       });
     }
 

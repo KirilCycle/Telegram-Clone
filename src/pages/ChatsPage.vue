@@ -288,11 +288,9 @@ export default {
     const chat = ref(null);
     const chatContainer = ref(null);
 
-    async function setPrevChat() {
-      const chatIdFromHash = window.location.hash
-        .substring(1)
-        .replaceAll("#", "")
-        .replaceAll("/", "");
+    async function setPrevChat(chatIdFromHash) {
+    
+
 
       if (chatIdFromHash) {
         let myId = store.state.user.user.uid;
@@ -304,16 +302,25 @@ export default {
     }
 
     const stopWatch = watchEffect(() => {
-      if (listLoaded.value && chatList.value.length) {
-        console.log('go x');
-        setPrevChat();
+      if (listLoaded.value && chatList.value.length ) {
+       
+      
+        const chatIdFromHash = window.location.hash
+        .substring(1)
+        .replaceAll("#", "")
+        .replaceAll("/", "");
+
+          setPrevChat(chatIdFromHash)
+        // if (store.state.chat.chatSettings[chatIdFromHash]) {
+        // } 
+
         stopWatch();
       } if (!window.location.hash) {
-     
         stopWatch();
       }
        
     });
+
 
     function handleChatPosition() {
       if (isShoved.value) {

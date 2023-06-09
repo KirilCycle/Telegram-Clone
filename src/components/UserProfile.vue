@@ -10,7 +10,7 @@
 
     <user-photo-vue>
       <template #img>
-        <img :src="$store.state.chat?.selectedUser?.photoURL" />
+        <profile-image  :src="$store.state.chat?.selectedUser?.photoURL"></profile-image>
       </template>
       <template #firstxt>
         {{ $store.state.chat?.selectedUser?.displayName }}
@@ -38,11 +38,13 @@ import { watchEffect } from "vue";
 import { ref } from "vue";
 import TopSettingsNavbar from "./UI/navbars/TopSettingsNavbar.vue";
 import UserPhotoVue from "./UserPhoto.vue";
+import ProfileImage from './UI/img-components/ProfileImage.vue';
 
 export default {
   components: {
     UserImage,
     ProfileUserInfo,
+    ProfileImage,
     TopSettingsNavbar,
     UserPhotoVue,
   },

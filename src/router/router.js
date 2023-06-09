@@ -74,7 +74,7 @@ export const routes = [
           if (user) {
             async function checkNeccessaryData() {
               const docRef = doc(db, "usersLinksToChat", user.uid);
-              const docSnap = await getDoc(docRef);
+              const docSnap = await getDoc(docRef)
 
               if (!docSnap.exists()) {
                 console.log("cc action");

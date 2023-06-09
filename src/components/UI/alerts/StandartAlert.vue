@@ -4,11 +4,11 @@
     <p class="description">{{ description }}</p>
     <div class="actions-wrp">
       <div class="actions-content">
-        <button class="action" @click="action1.executeFn">
-          {{ action1.title }}
+        <button class="action" @click="action.executeFn">
+          {{ action.title }}
         </button>
-        <button class="action" @click="action2.executeFn">
-          {{ action2.title }}
+        <button @click="$emit('close')" class="action">
+           cancel
         </button>
       </div>
     </div>
@@ -20,8 +20,7 @@ export default {
   props: {
     header: String,
     description: String,
-    action1: Object,
-    action2: Object,
+    action: Object,
   },
 };
 </script>
@@ -32,14 +31,14 @@ export default {
   width: 320px;
   background-color: $content-main-dark;
   height: max-content;
-  padding: 10px 15px 10px 15px;
+  padding: 25px 20px 25px 20px;
   border-radius: 10px;
   text-align: left;
   color: #ffff;
 }
 
 .actions-header {
-  font-size: 1.29rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 

@@ -2,14 +2,14 @@
   <div class="user-image-wrp">
     <user-image>
       <div class="profile-img-wrap">
-         <slot name="img"></slot>
+        <slot name="img"></slot>
       </div>
       <div class="profile_img_wrap_text_wrp">
         <h2 class="fisrt-name">
-        <slot name="firstxt"></slot>
+          <slot name="firstxt"></slot>
         </h2>
         <h3 class="email">
-        <slot name="secondtxt"></slot>
+          <slot name="secondtxt"></slot>
         </h3>
       </div>
     </user-image>
@@ -18,7 +18,6 @@
 
 <script>
 import UserImage from "./UserImage.vue";
-
 
 export default {
   components: { UserImage },
@@ -36,21 +35,21 @@ export default {
   }
 }
 
-img {
-  background: #a7131300;
-  min-width: 10%;
-  height: 10px;
-}
 
 .profile-img-wrap {
   width: 100%;
   height: 100%;
   position: relative;
-}
-.profile-img {
-  width: auto;
+  background-color: #222222;
+  display: flex;
+  height: inherit;
   min-height: 100%;
-  object-fit: cover;
+  min-width: 100%;
+  position: relative;
+  width: inherit;
+
+  
+
 }
 
 .profile_img_wrap_text_wrp {
@@ -73,19 +72,12 @@ img {
   }
 }
 
-img {
-  background: #46464600;
-  min-width: 100%;
-  height: auto;
-}
+
 
 .profile-user-info-wrp {
   position: relative;
   top: 8%;
   width: 100%;
-
 }
-
-
 </style>
 UserImage
