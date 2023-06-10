@@ -282,7 +282,7 @@ $def-gray: #b2b2b2;
 .options-list-wrap {
   width: 180px;
   position: absolute;
-  top: 85px;
+  top: 55px;
   right: 15px;
 }
 

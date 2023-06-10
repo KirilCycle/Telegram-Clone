@@ -22,12 +22,12 @@ export default {
 .more-content {
   width: 100%;
   height: max-content;
-  position: absolute;
   z-index: 55;
   background-color: rgba(36, 36, 36, 0.916);
   backdrop-filter: blur(3px);
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   padding: 5px 5px 5px 5px;
   box-sizing: border-box;
   li {
@@ -41,7 +41,7 @@ export default {
     cursor: pointer;
     color: #ffffff;
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     height: 25px;
     transition: transform 0.4s ease;
     &:hover {
@@ -61,9 +61,9 @@ export default {
 
 .dark .more-content {
   li {
+    color: $text-main-l;
     &:hover {
       background-color: #0b0b0b0f;
-      color: #424242;
     }
   }
 }

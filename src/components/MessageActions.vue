@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
-        <div class="emoji-container">
+        <div @wheel="(e) => handleScroll(e)" class="emoji-container">
           <div class="emoji-list">
             <div
               @click="
@@ -14,29 +14,10 @@
               {{ em }}
             </div>
           </div>
-
-          <div class="emoji_container_circl"></div>
-          <div class="emoji_container_smll_circl"></div>
         </div>
 
         <ul class="actions-list">
-          <li @click="prepareToReply">
-            <span class="material-symbols-outlined"> reply </span>
-            <button>Reply</button>
-          </li>
-          <li @click.stop="v = true">
-            <span class="material-symbols-outlined"> forward </span>
-            <button>Forward</button>
-          </li>
-          <li @click="selectText">
-            <span class="material-symbols-outlined"> file_copy </span>
-            <button>Coppy Text</button>
-          </li>
-          <!-- v-if="$store.state.user.user.uid === "  -->
-          <li @click="deleteMsg" class="delete-action">
-            <span class="material-symbols-outlined"> delete </span>
-            <button>Delete</button>
-          </li>
+          <optiosn-list-vue :optionsList="messageActions"></optiosn-list-vue>
         </ul>
       </div>
     </div>
@@ -53,8 +34,8 @@ import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { replyEmoji } from "@/features/replyUsingEmoji";
-
 import ForwardModal from "./ForwardModal.vue";
+import OptiosnListVue from "./UI/lists/OptiosnList.vue";
 
 export default {
   data() {
@@ -62,16 +43,59 @@ export default {
       db: firebase.firestore(),
       v: false,
       replyEmoji,
-      emojis: ["😘", "👎", "👍", "😂", "🐳", "😈", "😘"],
+      emojis: [
+        "😘",
+        "👎",
+        "👍",
+        "😂",
+        "🐳",
+        "😈",
+        "💋",
+        "😡",
+        "🥶",
+        "👿",
+        "🤢",
+        "😱",
+        "😋",
+        "😀",
+        "😆",
+        "🤩",
+        "🤑",
+        "🤠",
+        "🤬",
+      ],
       emojiOptions: {
         chatId: this.$store.state.chat.chatId,
         userId: this.$store.state.user.user.uid,
         selectedMsgData: this.$store.state.message.selectedMsgData,
       },
+      messageActions: [
+        {
+          description: "reply",
+          htmlIcoEl: `  <span class="material-symbols-outlined"> reply </span>`,
+          execute: this.prepareToReply,
+        },
+        {
+          description: "forward",
+          htmlIcoEl: `  <span class="material-symbols-outlined"> forward </span>`,
+          execute: () => (this.v = true),
+        },
+        {
+          description: "coppy",
+          htmlIcoEl: `<span class="material-symbols-outlined"> file_copy </span>`,
+          execute: this.selectText,
+        },
+        {
+          description: "delete",
+          htmlIcoEl: `<span class="material-symbols-outlined"> delete </span>`,
+          execute: this.prepareToReply,
+        },
+      ],
     };
   },
   components: {
     ForwardModal,
+    OptiosnListVue,
   },
   methods: {
     prepareToReply() {
@@ -216,6 +240,11 @@ export default {
     close() {
       store.commit("message/setVisible", false);
     },
+    handleScroll(event) {
+      event.preventDefault();
+      const scrollContainer = document.querySelector(".emoji-container");
+      scrollContainer.scrollLeft += event.deltaY;
+    },
   },
 
   mounted() {
@@ -251,7 +280,6 @@ export default {
   top: 0%;
   width: 200px;
   border-radius: 5px;
-  background-color: $content-main;
   position: absolute;
   height: min-content;
   display: flex;
@@ -259,26 +287,28 @@ export default {
   padding: 5px;
 
   .emoji-container {
-    width: auto;
+    width: 200px;
+    overflow-x: auto;
+    overflow-y: hidden;
     height: 35px;
     display: flex;
     flex-direction: row;
     position: absolute;
     top: -49px;
-    background-color: $content-main;
+    background-color: $transition-colors;
     border-radius: 30px;
 
     .emoji-list {
       width: 100%;
       height: 35px;
       align-items: center;
-
       flex-direction: row;
       display: flex;
 
       div {
         margin: 0.5px;
         cursor: pointer;
+        flex-shrink: 0;
         height: 30px;
         width: 30px;
         border-radius: 15px;
@@ -291,27 +321,21 @@ export default {
         }
       }
     }
+  }
+  .emoji-container::-webkit-scrollbar {
+    width: 0em;
+    height: 0em;
+    background-color: transparent;
+  }
 
-    .emoji_container_circl {
-      width: 25px;
-      height: 25px;
-      border-radius: 12.5px;
-      position: absolute;
-      z-index: -1;
-      right: 5px;
-      bottom: -7px;
-      background-color: $content-main;
-    }
+  /* Hide scrollbar thumb */
+  .emoji-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 
-    .emoji_container_smll_circl {
-      width: 13px;
-      height: 13px;
-      position: absolute;
-      right: 14px;
-      border-radius: 5px;
-      bottom: -23px;
-      background-color: $content-main;
-    }
+  /* Hide scrollbar track */
+  .emoji-container::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 
   .actions-list {
@@ -346,21 +370,6 @@ export default {
       &:hover {
         background-color: $hover;
       }
-    }
-    .delete-action {
-      color: #e02b2b;
-    }
-  }
-}
-
-
-
-.dark .msg-actions {
-  background-color: $content-main-l;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  .actions-list {
-    li {
-      color: $text-main-l;
     }
     .delete-action {
       color: #e02b2b;
