@@ -3,7 +3,7 @@
     <ul class="more_list">
       <li @click="op.execute" :key="op.description" v-for="op in optionsList">
         <div v-html="op.htmlIcoEl"></div>
-        <p>{{ op.description }}</p>
+        <p class="action-name">{{ op.description }}</p>
       </li>
     </ul>
   </div>
@@ -28,32 +28,36 @@ export default {
   backdrop-filter: blur(3px);
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 5px 2px 5px 2px;
+  padding: 5px 5px 5px 5px;
+  box-sizing: border-box;
   li {
     list-style: none;
+    box-sizing: border-box;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 17px;
     cursor: pointer;
-    color: #878787;
+    color: #ffffff;
     border-radius: 5px;
-    justify-content: space-around;
     font-size: 1rem;
     height: 25px;
     transition: transform 0.4s ease;
     &:hover {
-      background-color: #1b1b1beb;
+      background-color: #c4c4c419;
       color: #e4e4e4;
     }
 
     &:active {
       transform: scale(0.95);
     }
+
+    .action-name {
+      margin-left: 10px;
+    }
   }
 }
-
-
 
 .dark .more-content {
   li {

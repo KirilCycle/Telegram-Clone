@@ -14,9 +14,6 @@
               {{ em }}
             </div>
           </div>
-
-          <div class="emoji_container_circl"></div>
-          <div class="emoji_container_smll_circl"></div>
         </div>
 
         <ul class="actions-list-wrp">
@@ -75,24 +72,24 @@ export default {
       },
       messageActions: [
         {
-          description: 'reply',
+          description: "reply",
           htmlIcoEl: `  <span class="material-symbols-outlined"> reply </span>`,
-          execute: this.prepareToReply
+          execute: this.prepareToReply,
         },
         {
-          description: 'forward',
+          description: "forward",
           htmlIcoEl: `  <span class="material-symbols-outlined"> forward </span>`,
-          execute: this.prepareToReply
+          execute: () => (this.v = true),
         },
         {
-          description: 'coppy ot clipboard',
+          description: "coppy ot clipboard",
           htmlIcoEl: `<span class="material-symbols-outlined"> file_copy </span>`,
-          execute: this.prepareToReply
+          execute: this.selectText,
         },
         {
-          description: 'delete',
+          description: "delete",
           htmlIcoEl: `<span class="material-symbols-outlined"> delete </span>`,
-          execute: this.prepareToReply
+          execute: this.prepareToReply,
         },
       ],
     };
@@ -273,38 +270,41 @@ export default {
 
 .msg-actions {
   top: 0%;
-  width: 200px;
+  width: 220px;
+  box-sizing: border-box;
   border-radius: 5px;
-
   position: absolute;
-  height: min-content;
+  height: 149px;
   display: flex;
-  justify-content: center;
-  padding: 5px;
+  flex-direction: row;
 
   .emoji-container {
-    width: auto;
-    height: 35px;
+    width: max-content;
     display: flex;
+    height: 100%;
     flex-direction: row;
-    position: absolute;
-    top: -49px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    position: relative;
     background-color: $content-main;
     border-radius: 30px;
 
     .emoji-list {
-      width: 100%;
-      height: 35px;
+      width: 35px;
+      flex-shrink: 0;
+      box-sizing: border-box;
       align-items: center;
-
-      flex-direction: row;
+      flex-direction: column;
+      padding: 2px;
       display: flex;
+      justify-content: center;
 
       div {
         margin: 0.5px;
         cursor: pointer;
         height: 30px;
         width: 30px;
+        flex-shrink: 0;
         border-radius: 15px;
         display: flex;
         align-items: center;
@@ -315,44 +315,37 @@ export default {
         }
       }
     }
-
-    .emoji_container_circl {
-      width: 25px;
-      height: 25px;
-      border-radius: 12.5px;
-      position: absolute;
-      z-index: -1;
-      right: 5px;
-      bottom: -7px;
-      background-color: $content-main;
-    }
-
-    .emoji_container_smll_circl {
-      width: 13px;
-      height: 13px;
-      position: absolute;
-      right: 14px;
-      border-radius: 5px;
-      bottom: -23px;
-      background-color: $content-main;
-    }
   }
-  
+
+  .emoji-container::-webkit-scrollbar {
+    width: 0em;
+    background-color: transparent;
+  }
+
+  /* Hide scrollbar for IE, Edge, and Firefox */
+
+  /* Hide scrollbar thumb */
+  .emoji-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  /* Hide scrollbar track */
+  .emoji-container::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
 
   .actions-list-wrp {
     width: 100%;
     box-sizing: border-box;
-    position: absolute;
-
-    top: 40px;
-   
+    position: static;
+    margin-left: 10px;
+    height: min-content;
   }
 }
 
 .dark .msg-actions {
   background-color: $content-main-l;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  
 }
 
 .dark .msg-actions .emoji-container {
