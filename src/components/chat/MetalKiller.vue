@@ -32,17 +32,24 @@ import { ref, watch, defineAsyncComponent } from "vue";
 import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
-import {  isTouchDevice } from "@/features/isTouchDevice"
+import { isTouchDevice } from "@/features/isTouchDevice";
 // import GroupMessageItemVue from "./GroupMessageItem.vue";
 
 export default {
   emits: ["shoveIsAvaible"],
-  components: {
-    InLoadingMsgsPreview,
-    GroupMessageItemVue:  defineAsyncComponent(() => import(`./${isTouchDevice()?  'group-msg-item-mobile' : 'group-msg-item'}/GroupMessageItem.vue`)) ,
-  },
   props: {
     parentRef: Object,
+  },
+  components: {
+    InLoadingMsgsPreview,
+    GroupMessageItemVue: defineAsyncComponent(() => {
+      console.log(store.state.chat)
+      return import(
+        `./${
+          isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
+        }/GroupMessageItem.vue`
+      )
+    }),
   },
   data() {
     return {
@@ -62,7 +69,6 @@ export default {
 
       return null;
     },
-    
   },
 
   setup(props, { emit }) {
@@ -218,17 +224,14 @@ export default {
           //   inline: "start",
           // });
 
-            
-      const scrollContainer = props.parentRef;
-      const containerHeight = scrollContainer.clientHeight;
-      const contentHeight = scrollContainer.scrollHeight;
-      // Calculate the position to scroll to (middle of the list)
-      let scrollToPosition = (contentHeight - containerHeight);
+          const scrollContainer = props.parentRef;
 
-      // Scroll to the desired position
-      scrollContainer.scrollTo({
-        top: 100000,
-      });
+          // Calculate the position to scroll to (middle of the list)
+
+          // Scroll to the desired position
+          scrollContainer.scrollTo({
+            top: 100000,
+          });
 
           console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
           isFirstSrllWasExecuted.value = true;

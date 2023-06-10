@@ -88,7 +88,7 @@ export default {
         {
           description: "delete",
           htmlIcoEl: `<span class="material-symbols-outlined"> delete </span>`,
-          execute: this.prepareToReply,
+          execute: this.deleteMsg,
         },
       ],
     };

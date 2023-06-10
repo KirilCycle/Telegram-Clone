@@ -1,7 +1,5 @@
 export const chatModule = {
   state: () => ({
-    replyMsgRef: null,
-    replyTarget: null,
     chatId: null,
     selectedUser: null,
     query: null,
