@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Teleport to="body">
     <div @click="close" @touch="close" class="msg-action-wrap">
       <div ref="modal" class="msg-actions">
         <div class="emoji-container">
@@ -14,11 +14,13 @@
               {{ em }}
             </div>
           </div>
+
+          <div class="emoji_container_circl"></div>
+          <div class="emoji_container_smll_circl"></div>
         </div>
 
-        <ul class="actions-list-wrp">
-          <optiosn-list-vue :optionsList="messageActions"> </optiosn-list-vue>
-          <!-- <li @click="prepareToReply">
+        <ul class="actions-list">
+          <li @click="prepareToReply">
             <span class="material-symbols-outlined"> reply </span>
             <button>Reply</button>
           </li>
@@ -29,18 +31,18 @@
           <li @click="selectText">
             <span class="material-symbols-outlined"> file_copy </span>
             <button>Coppy Text</button>
-          </li> -->
+          </li>
           <!-- v-if="$store.state.user.user.uid === "  -->
-          <!-- <li @click="deleteMsg" class="delete-action">
+          <li @click="deleteMsg" class="delete-action">
             <span class="material-symbols-outlined"> delete </span>
             <button>Delete</button>
-          </li> -->
+          </li>
         </ul>
       </div>
     </div>
 
     <forward-modal @close="close" v-if="v"></forward-modal>
-  </div>
+  </Teleport>
 </template>
 
 <script>
@@ -51,14 +53,10 @@ import { deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 import { replyEmoji } from "@/features/replyUsingEmoji";
+
 import ForwardModal from "./ForwardModal.vue";
-import OptiosnListVue from "./UI/lists/OptiosnList.vue";
 
 export default {
-  components: {
-    ForwardModal,
-    OptiosnListVue,
-  },
   data() {
     return {
       db: firebase.firestore(),
@@ -70,29 +68,10 @@ export default {
         userId: this.$store.state.user.user.uid,
         selectedMsgData: this.$store.state.message.selectedMsgData,
       },
-      messageActions: [
-        {
-          description: "reply",
-          htmlIcoEl: `  <span class="material-symbols-outlined"> reply </span>`,
-          execute: this.prepareToReply,
-        },
-        {
-          description: "forward",
-          htmlIcoEl: `  <span class="material-symbols-outlined"> forward </span>`,
-          execute: () => (this.v = true),
-        },
-        {
-          description: "coppy ot clipboard",
-          htmlIcoEl: `<span class="material-symbols-outlined"> file_copy </span>`,
-          execute: this.selectText,
-        },
-        {
-          description: "delete",
-          htmlIcoEl: `<span class="material-symbols-outlined"> delete </span>`,
-          execute: this.prepareToReply,
-        },
-      ],
     };
+  },
+  components: {
+    ForwardModal,
   },
   methods: {
     prepareToReply() {
@@ -270,41 +249,38 @@ export default {
 
 .msg-actions {
   top: 0%;
-  width: 220px;
-  box-sizing: border-box;
+  width: 200px;
   border-radius: 5px;
+  background-color: $content-main;
   position: absolute;
-  height: 149px;
+  height: min-content;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  padding: 5px;
 
   .emoji-container {
-    width: max-content;
+    width: auto;
+    height: 35px;
     display: flex;
-    height: 100%;
     flex-direction: row;
-    overflow-y: scroll;
-    box-sizing: border-box;
-    position: relative;
+    position: absolute;
+    top: -49px;
     background-color: $content-main;
     border-radius: 30px;
 
     .emoji-list {
-      width: 35px;
-      flex-shrink: 0;
-      box-sizing: border-box;
+      width: 100%;
+      height: 35px;
       align-items: center;
-      flex-direction: column;
-      padding: 2px;
+
+      flex-direction: row;
       display: flex;
-      justify-content: center;
 
       div {
         margin: 0.5px;
         cursor: pointer;
         height: 30px;
         width: 30px;
-        flex-shrink: 0;
         border-radius: 15px;
         display: flex;
         align-items: center;
@@ -315,37 +291,81 @@ export default {
         }
       }
     }
+
+    .emoji_container_circl {
+      width: 25px;
+      height: 25px;
+      border-radius: 12.5px;
+      position: absolute;
+      z-index: -1;
+      right: 5px;
+      bottom: -7px;
+      background-color: $content-main;
+    }
+
+    .emoji_container_smll_circl {
+      width: 13px;
+      height: 13px;
+      position: absolute;
+      right: 14px;
+      border-radius: 5px;
+      bottom: -23px;
+      background-color: $content-main;
+    }
   }
 
-  .emoji-container::-webkit-scrollbar {
-    width: 0em;
-    background-color: transparent;
-  }
-
-  /* Hide scrollbar for IE, Edge, and Firefox */
-
-  /* Hide scrollbar thumb */
-  .emoji-container::-webkit-scrollbar-thumb {
-    background-color: transparent;
-  }
-
-  /* Hide scrollbar track */
-  .emoji-container::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  .actions-list-wrp {
+  .actions-list {
     width: 100%;
+    font-size: 1rem;
+    font-weight: normal;
     box-sizing: border-box;
-    position: static;
-    margin-left: 10px;
-    height: min-content;
+
+    li {
+      font-family: Avenir, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: $text-main;
+      padding: 5px 12px 5px 12px;
+      box-sizing: border-box;
+      display: flex;
+      border-radius: 3px;
+      align-items: center;
+      flex-direction: row;
+      cursor: pointer;
+
+      button {
+        height: 100%;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      span {
+        font-size: 0.8rem sans-serif;
+        font-weight: 300;
+      }
+
+      &:hover {
+        background-color: $hover;
+      }
+    }
+    .delete-action {
+      color: #e02b2b;
+    }
   }
 }
+
+
 
 .dark .msg-actions {
   background-color: $content-main-l;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  .actions-list {
+    li {
+      color: $text-main-l;
+    }
+    .delete-action {
+      color: #e02b2b;
+    }
+  }
 }
 
 .dark .msg-actions .emoji-container {
