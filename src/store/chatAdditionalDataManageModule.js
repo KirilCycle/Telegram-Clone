@@ -2,7 +2,7 @@ export const chatAdditionalDataManageModule = {
     state: () => ({
       chatContainerRef: null,
       wasObserved: null,
-      chatKey: "",
+      chatKey: "h",
       chatsCount: 0,
       scrollBottomData: {
         isBottom: null,

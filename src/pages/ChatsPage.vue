@@ -72,7 +72,7 @@
       <div ref="chatContainer" class="chat-container-x">
         <component
           :is="currentChatType"
-          :key="$store.state.chat.chatKey"
+          :key="$store.state.chatAdditionalDataManage.chatKey"
           :parentRef="$refs.chatContainer"
         >
         </component>
@@ -154,6 +154,7 @@ export default {
   },
   mounted() {
     store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
+    console.log(this.$store.state.chatAdditionalDataManage.chatKey, 'RRRRgvojuucsvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
   },
   methods: {
     update(changeId) {

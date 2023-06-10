@@ -242,7 +242,7 @@ export default {
     watchEffect(() => {
       if (store.state.chat.chatId !== lastChatId.value) {
         console.log("HA > ");
-        store.commit("chat/setChatKey", store.state.chat.chatId);
+        store.commit("chatAdditionalDataManage/setChatKey", store.state.chat.chatId);
         lastChatId.value = store.state.chat.chatId;
       }
     });
