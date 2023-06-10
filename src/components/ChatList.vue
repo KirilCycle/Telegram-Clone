@@ -47,6 +47,7 @@ export default {
   padding: 0px 3px 0px 3px;
   box-sizing: border-box;
   padding-bottom: 40px;
+  
 }
 
 .list-enter-active,
@@ -58,4 +59,6 @@ export default {
   opacity: 0;
   transform: translateX(30px);
 }
+
+
 </style>

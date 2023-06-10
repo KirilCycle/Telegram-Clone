@@ -1,10 +1,12 @@
 <template>
   <div class="cht-i" :class="{ active: id === $store.state.chat.chatId }">
+   
     <div class="img-conatiner">
       <div class="img-wrap">
         <img :src="pthUrl" />
       </div>
     </div>
+   
     <div class="chatitem_info_container">
       <div class="name">
         <slot name="name"></slot>
@@ -65,7 +67,7 @@ export default {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   width: 100%;
-  height: 70px;
+  height: 72px;
   overflow: hidden;
   display: flex;
   &:hover {
@@ -91,8 +93,8 @@ export default {
   }
 
   .img-conatiner {
-    padding-left: 5px;
-    padding-right: 5px;
+    margin-left: 9px;
+    margin-right: 9px;
     height: 100%;
     flex-shrink: 0;
     display: flex;
@@ -113,16 +115,16 @@ export default {
     right: 12px;
     top: 18px;
     font-size: 0.75rem;
-    color: rgb(78, 78, 78);
+    color: rgb(146, 146, 146);
   }
 }
 
 
     .img-wrap {
       margin: 0% auto;
-      width: 52px;
+      width: 54px;
       border: 1px solid rgb(66, 66, 66);
-      height: 52px;
+      height: 54px;
       border-radius: 50%;
       overflow: hidden;
 
@@ -140,7 +142,7 @@ export default {
 
 .active {
   @extend .cht-i;
-  background-color: rgb(96, 173, 255);
+  background-color: $main;
 
   color: #ffff;
 
@@ -149,7 +151,7 @@ export default {
   }
 
   &:hover {
-    background-color: rgb(96, 173, 255);
+    background-color: $main;
     .time {
       color: #ffff;
     }

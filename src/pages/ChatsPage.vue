@@ -153,8 +153,7 @@ export default {
     };
   },
   mounted() {
-    store.commit("chat/setChatContainerRef", this.$refs.chatContainer);
-    console.log(this.$store.state.chatAdditionalDataManage.chatKey, 'RRRRgvojuucsvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')
+    store.commit("chatAdditionalDataManage/setChatContainerRef", this.$refs.chatContainer);
   },
   methods: {
     update(changeId) {
@@ -481,7 +480,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 
 .fade-enter-from,
@@ -731,6 +730,7 @@ export default {
 
   .chat-list {
     overflow-x: hidden;
+    padding: 0px 6px 0px 6px;
   }
 
   .chat-list-hided {
@@ -738,19 +738,10 @@ export default {
   }
 
   .chat-list::-webkit-scrollbar {
-    display: block;
-    width: 5px;
+    width:0em;
   }
 
-  .chat-list-wrap::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.648);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  }
-
-  .chat-list-wrap::-webkit-scrollbar-thumb {
-    background: rgba(152, 152, 152, 0.343);
-    border-radius: 20px;
-  }
+ 
 }
 
 .left-bar:hover {

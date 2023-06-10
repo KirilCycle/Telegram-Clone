@@ -32,7 +32,7 @@
           ref="scrollBottom"
           @click="scrollToBottom"
           class="scroll-bottom"
-          v-show="!$store.state.chat.scrollBottomData.isBottom"
+          v-show="!$store.state.chatAdditionalDataManage.scrollBottomData.isBottom"
         >
           <span class="material-symbols-outlined"> arrow_downward </span>
         </button>
@@ -190,7 +190,7 @@ export default {
 
     function scrollToBottom() {
       setTimeout(() => {
-        store.state.chat.scrollBottomData.bottomRef.scrollIntoView({
+        store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView({
           block: "start",
           inline: "start",
           behavior: "smooth",

@@ -15,13 +15,13 @@
 .button {
     border-radius: 15px;
     box-sizing: border-box;
-    background-color: $second;
+    background-color: $main;
     font-size: 1.2rem;
     color: #fff;
     cursor: pointer;
 }
 
 .button:hover {
-    background-color: $main;
+    background-color: $main-hover;
 }
 </style>

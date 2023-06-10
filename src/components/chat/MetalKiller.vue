@@ -43,12 +43,18 @@ export default {
   components: {
     InLoadingMsgsPreview,
     GroupMessageItemVue: defineAsyncComponent(() => {
-      console.log(store.state.chat)
-      return import(
+       return import(
         `./${
           isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
         }/GroupMessageItem.vue`
       )
+
+
+      
+   
+    
+
+      
     }),
   },
   data() {
@@ -121,7 +127,7 @@ export default {
     }
 
     function handleScrollBtn(isBottom) {
-      store.commit("chat/setScrollBottomData", {
+      store.commit("chatAdditionalDataManage/setScrollBottomData", {
         isBottom,
         wasPaginated: !chatQuerry.value ? false : true,
       });
@@ -137,7 +143,10 @@ export default {
         bottomRef: scrollAtTheBottom.value,
       };
 
-      store.commit("chat/setScrollBottomData", scrollBotomdata);
+      store.commit(
+        "chatAdditionalDataManage/setScrollBottomData",
+        scrollBotomdata
+      );
     });
 
     function subscribeToSnapshot() {
@@ -242,7 +251,10 @@ export default {
     watchEffect(() => {
       if (store.state.chat.chatId !== lastChatId.value) {
         console.log("HA > ");
-        store.commit("chatAdditionalDataManage/setChatKey", store.state.chat.chatId);
+        store.commit(
+          "chatAdditionalDataManage/setChatKey",
+          store.state.chat.chatId
+        );
         lastChatId.value = store.state.chat.chatId;
       }
     });
