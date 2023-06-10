@@ -1,10 +1,9 @@
 <template>
   <Teleport to="body">
     <transition name="fade">
-      <message-actions
-        :key="'d'"
-        v-if="$store.state.message.visible"
-      ></message-actions>
+      <div  v-if="$store.state.message.visible">
+        <message-actions ></message-actions>
+      </div>
     </transition>
   </Teleport>
 
@@ -478,17 +477,16 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
+
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
-
-
 
 .profile-component-wrap {
   width: 100%;
