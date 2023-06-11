@@ -65,8 +65,12 @@
         @click="commitProfileChanges"
         class="save-changes-btn"
       >
-        <span class="material-symbols-outlined"> done </span>
-
+        <span v-show="!changesLoading" class="material-symbols-outlined">
+          done
+        </span>
+        <div v-show="changesLoading" class="spinner">
+          <div class="spinner-inner"></div>
+        </div>
       </main-button>
     </transition>
   </div>
@@ -90,7 +94,7 @@ import { updateStoreUser } from "@/features/updateStoreUser";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
 import TopSettingsNavbarVue from "../UI/navbars/TopSettingsNavbar.vue";
-import MainButton from '../UI/buttons/MainButton.vue';
+import MainButton from "../UI/buttons/MainButton.vue";
 
 export default {
   components: {
@@ -118,7 +122,7 @@ export default {
       usernameExist: false,
       usernameAvaible: false,
       shortLength: false,
-      changesLoading: false, 
+      changesLoading: false,
     };
   },
   computed: {
@@ -249,12 +253,12 @@ export default {
     },
 
     updateLocalData() {
-      this.uploadedPhoto = null,
-      this.profilePhoto = this.$store.state.user.user.photoURL,
-      this.firtsNameTmp = this.$store.state.user.user.displayName,
-      this.usernameTmp = this.$store.state.user.user.username,
-      this.bioTmp = this.$store.state.user.user.bio,
-      this.changesLoading = false 
+      (this.uploadedPhoto = null),
+        (this.profilePhoto = this.$store.state.user.user.photoURL),
+        (this.firtsNameTmp = this.$store.state.user.user.displayName),
+        (this.usernameTmp = this.$store.state.user.user.username),
+        (this.bioTmp = this.$store.state.user.user.bio),
+        (this.changesLoading = false);
     },
 
     showPrewiePhoto(e) {
@@ -314,7 +318,7 @@ export default {
         let newData = {};
 
         if (this.uploadedPhoto) {
-          this.changesLoading = true
+          this.changesLoading = true;
           const storage = getStorage();
 
           const storageRef = ref(
@@ -336,12 +340,12 @@ export default {
                 ...(this.bio !== this.bioTmp && { bio: this.bio }),
                 photoURL: url,
               };
-        
+
               updateDoc(userDoc, newData).then((res) => {
                 this.$emit("close");
                 updateStoreUser().then((res) => {
-                  this.updateLocalData()
-                })
+                  this.updateLocalData();
+                });
               });
             });
           });
@@ -357,11 +361,13 @@ export default {
           };
 
           if (res) {
+            this.changesLoading = true;
             if (res.username === this.$store.state.user.user.username) {
               await updateDoc(userDoc, newData).then((res) => {
                 console.log(res, "UPDATED SAME USERNAME");
+
                 this.$emit("close");
-                updateStoreUser().then((res) => this.updateLocalData())
+                updateStoreUser().then((res) => this.updateLocalData());
               });
 
               console.log("ENOTHER DATA", newData);
@@ -369,11 +375,11 @@ export default {
               alert("wrong data");
             }
           } else {
+            this.changesLoading = true;
             await updateDoc(userDoc, newData)
               .then((res) => {
-               
                 this.$emit("close");
-                updateStoreUser().then((res) =>  this.updateLocalData() )
+                updateStoreUser().then((res) => this.updateLocalData());
               })
               .catch((er) => console.log(er));
 
@@ -408,6 +414,37 @@ $def-gray: #828282;
   }
   100% {
     transform: scale(1);
+  }
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.spinner-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  border-top-color: #888;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 .edit-wrap {
@@ -473,12 +510,12 @@ $def-gray: #828282;
 
   .input-username-ok {
     border: 1px solid rgb(0, 255, 47);
-    
+
     &:focus {
       border: 1px solid rgb(0, 255, 47);
       box-shadow: rgb(0, 255, 47) 0px 0px 0px 1px;
     }
-    
+
     &:hover {
       border: 1px solid 0, 255, 47;
     }
@@ -581,10 +618,6 @@ $def-gray: #828282;
     }
   }
 }
-
-
-
-
 
 .save-changes-btn {
   border-radius: 30px;
