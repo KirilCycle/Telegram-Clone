@@ -1,22 +1,6 @@
 <template>
   <div class="main">
-  
-    <div ref="leftbars" class="left-bar">
-    
-    
-      <div @click.stop="() => shoveRightSide(true)" class="LEFTBAR-SUS"></div>
-    </div>
-  
-  
-    <div
-      @click.stop="() => shoveRightSide(false)"
-      ref="rightsides"
-      class="right-side"
-    >
-      
-      <div @click.stop="() => shoveRightSide(true)" class="test-block"></div>
-    </div>
-   
+    <group-message-item-vue v-for="msg in msgs" :key="msg.id" :message="msg"></group-message-item-vue>
   </div>
 </template>
 
@@ -29,106 +13,69 @@ export default {
     GroupMessageItemVue,
   },
   data() {
-    return {};
-  },
-  setup() {
-    const rightside = ref(null);
-    const leftbar = ref(null);
-    onMounted(() => {
-      rightside.value = document.querySelector(".right-side");
-      leftbar.value = document.querySelector(".left-bar");
-      shoveRightSide(true);
-    });
-
-    function shoveRightSide(isBack) {
-      if (window.innerWidth < 999) {
-        const leftBarWdth = leftbar.value.offsetWidth;
-
-        if (!isBack) {
-          // this.$refs.settings.style.transform = `translateX(${pos})`;
-          console.log(leftBarWdth, rightside.value);
-          rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
-          return;
-        }
-        rightside.value.style.transform = `translateX(${0}px)`;
-      }
-    }
-
     return {
-      rightside,
-      leftbar,
-      shoveRightSide,
+      msgs: [
+        {
+          id: "23400",
+          text: "suuus",
+          userId: "5SEC8Idp9mPbOD4C0kEQSPMfDdA2",
+          source: {
+            type: "img",
+            src: "https://wallpaperaccess.com/full/2472396.png",
+          },
+          createdAt: { seconds: 189323223, nanoseconds: 2000222 },
+        },
+        {
+          id: "23400",
+          text: "suuus",
+          userId: "5SEC8Idp9mPbOD4C0kEQSPMfDdA2",
+          source: {
+            type: "img",
+            src: "https://apriori-center.org/wp-content/uploads/2016/07/Evolution_by_will_yen-500x500.png",
+          },
+          createdAt: { seconds: 189323223, nanoseconds: 2000222 },
+        },
+        {
+          id: "23400",
+          text: "suuus",
+          userId: "5SEC8Idp9mPbOD4C0kEQSPMfDdA2",
+          source: {
+            type: "img",
+            src: "https://wallpaperaccess.com/full/144124.jpg",
+          },
+          createdAt: { seconds: 189323223, nanoseconds: 2000222 },
+        },
+        {
+          id: "23400",
+          text: "suuus",
+          userId: "5SEC8Idp9mPbOD4C0kEQSPMfDdA2",
+          source: {
+            type: "img",
+            src: "https://wallpaperaccess.com/full/2472396.png",
+          },
+          createdAt: { seconds: 189323223, nanoseconds: 2000222 },
+        },
+        {
+          id: "23400",
+          text: "suuus",
+          userId: "5SEC8Idp9mPbOD4C0kEQSPMfDdA2",
+          source: {
+            type: "img",
+            src: "https://wallpaperaccess.com/full/424456.jpg",
+          },
+          createdAt: { seconds: 189323223, nanoseconds: 2000222 },
+        },
+      ],
     };
   },
+  setup() {},
 };
 </script>
 
 <style lang="scss" scoped>
 .main {
-  height: 100vh;
-  max-height: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  display: flex;
-  position: relative;
   width: 100%;
-}
-
-.LEFTBAR-SUS {
-  width: 70px;
-  height: 70px;
-  background-color: #8a8a8a;
-}
-
-.left-bar {
-    display: flex;
-    left: 0;
-    max-width: none;
-    position: fixed;
-    background-color: rebeccapurple;
-    top: 0;
-    flex-shrink: 0;
-    width: 300px;
-}
-
-.right-side {
-  width: 100vw;
-  box-sizing: border-box;
-  border: 1px solid red;
-  height: 100%;
-  padding: 30px;
-  position: fixed;
-  background-color: rgb(30, 30, 30);
-  transition: transform 0.4s ease-in-out;
-}
-
-.test-block {
-  width: 70%;
-  height: 300px;
-  background-color: green;
-}
-
-@media (max-width: 1000px) {
-  .right-side {
-    flex-shrink: 0;
-    position: absolute;
-  }
-}
-
-@media (min-width: 1000px) {
-  .right-side {
-    transform: translateX(0px) !important;
-    position: relative;
-  }
-
-  .left-bar {
-    position: relative;
-  }
-}
-
-@media (max-width: 650px) {
-  .left-bar {
-    width: 100%;
-  }
+  height: 10000px;
+  background-color: white;
 }
 </style>

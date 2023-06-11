@@ -14,28 +14,30 @@ export default {
 <style lang="scss" scoped>
 .source-wrp {
   width: 100%;
-  max-width: 500px;
+  max-width: 380px;
   position: relative;
   height: 400px;
+  
 
   @media (max-width: 350px) {
-   .source-wrp {
+    .source-wrp {
       max-width: 320px;
-   } 
+    }
   }
 
   img {
     border-radius: 10px 10px 0px 0px;
-    width: max-content;
     height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
     width: 100%;
   }
 
   video {
     border-radius: 10px 10px 0px 0px;
-    max-height: 500px;
     width: max-content;
-    max-width: 500px;
+    height: 100%;
+    width: 100%;
   }
 
   .video-player:hover {

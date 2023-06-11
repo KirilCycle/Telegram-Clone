@@ -306,7 +306,7 @@ export default {
   
 
   .scroll-bottom {
-    @extend %btn-pattern;
+    position: absolute;
     bottom: 75px;
     color: $second;
     background-color: $content-main-dark;
