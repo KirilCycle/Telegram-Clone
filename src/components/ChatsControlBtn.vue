@@ -1,37 +1,44 @@
 <template>
   <main-button @click="v = !v" class="control">
-    <ul v-if="v" class="chat-controll-actions-list">
-      <li @click="newChatSearchOpen">
-        <span v-show="v" class="material-symbols-outlined"> chat </span>
-        <p >New Chat</p>
-      </li>
-      <li>
-        <span v-show="v" class="material-symbols-outlined"> group </span>
-        <p>New Group</p>
-      </li>
-    </ul>
-    <span v-show="!v" class="material-symbols-outlined"> edit </span>
-    <span v-show="v" class="material-symbols-outlined"> close </span>
+      <optiosn-list-vue
+        class="chat-controll-actions-list"
+        v-if="v"
+        :optionsList="options"
+      ></optiosn-list-vue>
+
+      <span v-show="!v" class="material-symbols-outlined"> edit </span>
+      <span v-show="v" class="material-symbols-outlined"> close </span>
   </main-button>
 </template>
 
 <script>
-import store from '@/store/store';
+import store from "@/store/store";
+import OptiosnListVue from "./UI/lists/OptiosnList.vue";
+
 export default {
   props: {
     inputRef: Object,
   },
+  components: {
+    OptiosnListVue,
+  },
   data() {
     return {
       v: false,
+      options: [
+        {
+          execute: this.newChatSearchOpen,
+          htmlIcoEl: `<span class="material-symbols-outlined"> chat </span>`,
+          description: "New chat",
+        },
+      ],
     };
   },
   methods: {
     newChatSearchOpen() {
-       store.commit("chat/setQuery", '@')
-       this.$emit('globalInvoke')
-       this.inputRef.focus();
-
+      store.commit("chat/setQuery", "@");
+      this.$emit("globalInvoke");
+      this.inputRef.focus();
     },
   },
 };
@@ -61,33 +68,20 @@ export default {
     border-radius: 10px;
     bottom: 60px;
     right: 0px;
-    background-color: $content-main-dark;
     list-style: none;
-
-    li {
-      font-size: 0.9rem;
-      text-align: left;
-      display: flex;
-      flex-direction: row;
-      padding: 9px 0px 9px 9px;
-      color: $text-main;
-      &:hover {
-        background-color: $hover;
-      }
-
-      p {
-        margin-left: 3px;
-      }
-
-      span {
-        font-size: 0.9rem;
-      }
-    }
   }
 
   span {
     color: white;
     font-size: 1.8rem;
   }
+}
+
+.detect-content-leave {
+  width: 250px;
+  height: 250px;
+  right: -20px;
+  position: absolute;
+  background-color: rgba(0, 0, 139, 0.355);
 }
 </style>

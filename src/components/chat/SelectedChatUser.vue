@@ -36,6 +36,15 @@ export default {
 
 <style lang="scss" scoped>
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 
 .chat_nav_img_wrap {
   width: 42px;

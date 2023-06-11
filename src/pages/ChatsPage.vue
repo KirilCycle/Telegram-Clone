@@ -1,8 +1,8 @@
 <template>
   <Teleport to="body">
     <transition name="fade">
-      <div  v-if="$store.state.message.visible">
-        <message-actions ></message-actions>
+      <div v-if="$store.state.message.visible">
+        <message-actions></message-actions>
       </div>
     </transition>
   </Teleport>
@@ -153,7 +153,10 @@ export default {
     };
   },
   mounted() {
-    store.commit("chatAdditionalDataManage/setChatContainerRef", this.$refs.chatContainer);
+    store.commit(
+      "chatAdditionalDataManage/setChatContainerRef",
+      this.$refs.chatContainer
+    );
   },
   methods: {
     update(changeId) {
@@ -477,7 +480,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors";
 
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -513,10 +515,9 @@ export default {
   z-index: 10;
   bottom: 20px;
   right: 20px;
-
   position: absolute;
   transition: transform 0.1s ease-out;
-  transform: translateY(100px);
+  transform: translateY(200px);
 }
 
 .chat-container-x {
@@ -731,6 +732,9 @@ export default {
   .chat-list {
     overflow-x: hidden;
     padding: 0px 6px 0px 6px;
+    @media (max-width: 650px) {
+       padding: 0px;
+    }
   }
 
   .chat-list-hided {
@@ -738,13 +742,17 @@ export default {
   }
 
   .chat-list::-webkit-scrollbar {
-    width:0em;
+    width: 0em;
   }
-
- 
 }
 
 .left-bar:hover {
+  .btn-controll {
+    transform: translateY(0px);
+  }
+}
+
+@media (max-width: 650px) {
   .btn-controll {
     transform: translateY(0px);
   }
