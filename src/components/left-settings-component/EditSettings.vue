@@ -1,12 +1,5 @@
 <template>
   <div v-if="$store.state.user.user" class="edit-wrap">
-    <!-- <nav class="edti-nav">
-      <button @click="() => $emit('close')">
-        <span class="material-symbols-outlined"> arrow_back </span>
-      </button>
-      <h1 class="page-header">Edit Profile</h1>
-    </nav> -->
-
     <top-settings-navbar-vue :title="'Edit Profile'">
       <template v-slot:close-btn>
         <control-button @click="() => $emit('close')">
@@ -146,9 +139,9 @@ export default {
     somethingChanged() {
       let somethingChanged =
         this.uploadedPhoto ||
-        this.firtsName !== this.firtsNameTmp ||
-        this.username !== this.usernameTmp ||
-        this.bio !== this.bioTmp;
+        this.firtsName?.trim() !== this.firtsNameTmp ||
+        this.username?.trim() !== this.usernameTmp ||
+        this.bio?.trim() !== this.bioTmp;
 
       if (somethingChanged) {
         return true;
@@ -497,7 +490,7 @@ $def-gray: #828282;
       box-shadow: rgba(34, 137, 255, 0.916) 0px 0px 0px 1px;
     }
     &:hover {
-      border: 1px solid $main;
+      border: 1px solid $input-main-color;
     }
   }
 }
