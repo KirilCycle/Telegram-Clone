@@ -26,7 +26,9 @@ import { getFirestore } from "firebase/firestore";
 import { setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-const isDark = useDark();
+// setTimeout(() => {
+//  document.documentElement.classList.add('dark');
+// },8000)
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -56,7 +58,6 @@ const auth = initializeAuth(app, {
 
 const db = getFirestore(app);
 
-
 const firestore = firebase.firestore();
 
 const storage = getStorage(app);
@@ -65,6 +66,11 @@ onMounted(() => {
   store.commit("user/setFirestore", firestore);
   store.commit("user/setStorage", storage);
   store.commit("user/setCustomStorageRef", ref);
+
+  if ( window.localStorage.getItem('theme')) {
+    console.log(window.localStorage.getItem('theme'));
+    document.documentElement.classList.add('dark');
+  } 
   // console.log(auth.currentUser,store.state.user.isAuth, 'APPP')
 });
 

@@ -90,7 +90,6 @@
 <script>
 import store from "@/store/store";
 import { signOut } from "firebase/auth";
-import { useDark } from "@vueuse/core";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getAuth } from "firebase/auth";
@@ -145,13 +144,9 @@ export default {
   computed: {
     prevTheme() {
       if (
-        localStorage.getItem("vueuse-color-scheme") !== "auto"
-          ? "dark"
-          : "light"
+        localStorage.getItem("theme") 
       ) {
-        return localStorage.getItem("vueuse-color-scheme") !== "auto"
-          ? "dark"
-          : "light";
+        return "light" 
       }
       return "dark";
     },
@@ -198,18 +193,14 @@ export default {
         });
     }
 
-    const isDark = useDark();
-
     function setLightTheme() {
-      isDark.value = false;
-      const root = document.querySelector("#app");
-      root.classList.remove("dark-theme");
+     window.localStorage.setItem('theme','')
+     document.documentElement.classList.remove("dark");
     }
 
     function setDarkTheme() {
-      isDark.value = true;
-      const root = document.querySelector("#app");
-      root.classList.add("dark-theme");
+      document.documentElement.classList.add("dark");
+     window.localStorage.setItem('theme','dark')
     }
 
     const themeVariations = ref([
