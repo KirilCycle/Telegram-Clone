@@ -180,7 +180,6 @@ export default {
     cursor: pointer;
     font-weight: 600;
   }
-
 }
 
 .reply-block {
@@ -304,6 +303,13 @@ export default {
   bottom: 1px;
 }
 
+.dark .tail-left {
+  border-bottom: 20px solid white;
+}
+.dark .tail-right {
+   border-bottom: 22px solid  $msg-item-l;
+}
+
 .message-wrap {
   width: 100%;
   padding: 1px 10px 1px 10px;
@@ -315,9 +321,9 @@ export default {
   color: white;
   width: max-content;
   max-width: 500px;
-  line-height: 20px;
+  line-height: 23px;
   text-align: left;
-  font-size: 0.9rem;
+  font-size: 16px;
   overflow-wrap: break-word;
   word-break: normal;
   position: relative;
@@ -331,6 +337,7 @@ export default {
   padding-right: 8px;
   padding-top: 6px;
   padding-bottom: 6px;
+  font-family: "Roboto", sans-serif;
 }
 
 .message {
@@ -343,6 +350,31 @@ export default {
   background-color: $main;
   margin-left: auto;
 }
+.dark .message {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: white;
+  .text {
+    color: black;
+  }
+}
+
+.dark .my-message {
+  background-color: $msg-item-l;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  .text {
+    color: black;
+  }
+
+  .reply_block_text_wrap {
+    h3 {
+      font-size: 14px;
+    }
+    p {
+      color: white;
+      font-size: 14px;
+    }
+  }
+}
 
 @media (max-width: 650px) {
   .my-message {
@@ -350,7 +382,7 @@ export default {
   }
 
   .message {
-     max-width: 400px;
+    max-width: 400px;
   }
 }
 
@@ -369,7 +401,7 @@ export default {
   }
 
   .message {
-     max-width: 300px;
+    max-width: 300px;
   }
 }
 

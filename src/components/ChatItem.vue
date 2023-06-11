@@ -1,12 +1,11 @@
 <template>
   <div class="cht-i" :class="{ active: id === $store.state.chat.chatId }">
-   
     <div class="img-conatiner">
       <div class="img-wrap">
         <img :src="pthUrl" />
       </div>
     </div>
-   
+
     <div class="chatitem_info_container">
       <div class="name">
         <slot name="name"></slot>
@@ -99,10 +98,7 @@ export default {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-
-
   }
-
 
   .chatitem_info_container {
     text-align: left;
@@ -119,31 +115,35 @@ export default {
   }
 }
 
+.img-wrap {
+  margin: 0% auto;
+  width: 54px;
+  border: 1px solid rgb(66, 66, 66);
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
 
-    .img-wrap {
-      margin: 0% auto;
-      width: 54px;
-      border: 1px solid rgb(66, 66, 66);
-      height: 54px;
-      border-radius: 50%;
-      overflow: hidden;
-
-      img {
-        width: 100%;
-        min-height: 100%;
-        object-fit: cover;
-      }
-    }
-
+  img {
+    width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+}
 
 .dark .cht-i .name {
   color: $text-main-l;
 }
 
+.dark .active {
+  .name {
+    color: white;
+  }
+ 
+}
+
 .active {
   @extend .cht-i;
   background-color: $main;
-
   color: #ffff;
 
   .name {
@@ -157,8 +157,6 @@ export default {
     }
   }
 
- 
-
   .time {
     color: #ffff;
   }
@@ -170,6 +168,9 @@ export default {
   }
 }
 
+.dark .active {
+  background-color: $main-l;
+}
 
 @media (max-width: 600px) {
   .active {
@@ -177,31 +178,21 @@ export default {
     border-radius: 0px;
 
     .time {
-      color: rgb(78, 78, 78);
+      color: rgb(255, 255, 255);
     }
   }
-
-
- 
 }
 
-
-
-
-.dark  {
- 
+.dark  .cht-i{
   &:hover {
-    background-color: rgb(96, 173, 255);
+  
     .time {
-      color: rgb(78, 78, 78);
+      color: rgb(255, 255, 255);
     }
   }
 }
 
-
-  .dark 
-    .img-wrap {
-      border: none;
-    }
-  
+.dark .img-wrap {
+  border: none;
+}
 </style>

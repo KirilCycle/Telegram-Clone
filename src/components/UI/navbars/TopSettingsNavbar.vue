@@ -67,6 +67,7 @@ export default {
   font-size: 1.25rem;
   font-weight: 550;
   margin: 0% auto;
+  font-family: 'Roboto', sans-serif;
 }
 
 .dark .settings-title {

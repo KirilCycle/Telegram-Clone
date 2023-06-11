@@ -24,4 +24,11 @@ export default {
 .button:hover {
   background-color: $main-hover;
 }
+
+.dark .button {
+  background-color: $main-l;
+  &:hover {
+    background-color: $main-hover-l;
+  }
+}
 </style>

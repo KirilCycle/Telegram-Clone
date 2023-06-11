@@ -127,12 +127,21 @@ export default {
   }
 }
 
+
 .dark .select-radios-wrp {
   background: $content-main-l;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
   .btns-container {
     color: $text-main-l;
+  }
+
+ .container span:after {
+      background-color: $main-l;
+    }
+
+  .container input[type="radio"]:checked ~ span {
+    border: 2px solid $main-l;
   }
 }
 </style>

@@ -50,10 +50,8 @@ import { getAuth } from "firebase/auth";
 import { updateDoc } from "@firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { doc } from "firebase/firestore";
-
 import { ref } from "vue";
-import { getStorage, ref as storageRef } from "firebase/storage";
-import { getDatabase, ref as databaseRef, push } from "firebase/database";
+
 
 export default {
   components: { SelectedFileModal, ReplyMessageBorder },
