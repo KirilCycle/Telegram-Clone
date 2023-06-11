@@ -66,6 +66,7 @@
         class="save-changes-btn"
       >
         <span class="material-symbols-outlined"> done </span>
+
       </main-button>
     </transition>
   </div>
@@ -84,7 +85,7 @@ import {
 import firebase from "firebase/compat/app";
 import { setDoc, updateDoc } from "firebase/firestore";
 import store from "@/store/store";
-import { reactive } from "vue";
+
 import { updateStoreUser } from "@/features/updateStoreUser";
 import { getStorage, uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { uuidv4 } from "@firebase/util";
@@ -117,6 +118,7 @@ export default {
       usernameExist: false,
       usernameAvaible: false,
       shortLength: false,
+      changesLoading: false, 
     };
   },
   computed: {
@@ -246,6 +248,15 @@ export default {
       }
     },
 
+    updateLocalData() {
+      this.uploadedPhoto = null,
+      this.profilePhoto = this.$store.state.user.user.photoURL,
+      this.firtsNameTmp = this.$store.state.user.user.displayName,
+      this.usernameTmp = this.$store.state.user.user.username,
+      this.bioTmp = this.$store.state.user.user.bio,
+      this.changesLoading = false 
+    },
+
     showPrewiePhoto(e) {
       if (e.target.files[0]) {
         const uploadedTarget = e.target.files[0];
@@ -303,6 +314,7 @@ export default {
         let newData = {};
 
         if (this.uploadedPhoto) {
+          this.changesLoading = true
           const storage = getStorage();
 
           const storageRef = ref(
@@ -324,10 +336,12 @@ export default {
                 ...(this.bio !== this.bioTmp && { bio: this.bio }),
                 photoURL: url,
               };
-
+        
               updateDoc(userDoc, newData).then((res) => {
                 this.$emit("close");
-                updateStoreUser();
+                updateStoreUser().then((res) => {
+                  this.updateLocalData()
+                })
               });
             });
           });
@@ -347,7 +361,7 @@ export default {
               await updateDoc(userDoc, newData).then((res) => {
                 console.log(res, "UPDATED SAME USERNAME");
                 this.$emit("close");
-                updateStoreUser();
+                updateStoreUser().then((res) => this.updateLocalData())
               });
 
               console.log("ENOTHER DATA", newData);
@@ -357,8 +371,9 @@ export default {
           } else {
             await updateDoc(userDoc, newData)
               .then((res) => {
+               
                 this.$emit("close");
-                updateStoreUser();
+                updateStoreUser().then((res) =>  this.updateLocalData() )
               })
               .catch((er) => console.log(er));
 
