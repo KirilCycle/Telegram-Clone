@@ -34,9 +34,10 @@ export default {
   }
 
   video {
-    border-radius: 10px 10px 0px 0px;
-    width: max-content;
+   border-radius: 10px 10px 0px 0px;
     height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
     width: 100%;
   }
 

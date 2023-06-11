@@ -19,13 +19,13 @@
     </div>
 
     <div class="send-btn-wrp">
-      <button class="send-btn" v-show="ableTosend" @click="send">
+      <main-button class="send-btn" v-show="ableTosend" @click="send">
         <span class="material-symbols-outlined"> send </span>
-      </button>
+      </main-button>
 
-      <button v-show="!ableTosend" class="send-btn">
+      <main-button v-show="!ableTosend" class="send-btn">
         <span class="material-symbols-outlined"> keyboard_voice </span>
-      </button>
+      </main-button>
 
       <transition name="fade">
         <button
@@ -274,7 +274,6 @@ export default {
   width: 55px;
   height: 55px;
   display: flex;
-  overflow: hidden;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -306,6 +305,7 @@ export default {
   
 
   .scroll-bottom {
+    @extend %btn-pattern;
     position: absolute;
     bottom: 75px;
     color: $second;
@@ -458,6 +458,13 @@ export default {
     }
   }
 }
+
+ .send-btn-wrp {
+    margin-left: 10px;
+    .scroll-bottom {
+      position: absolute;
+    }
+  }
 
 @media (max-width: 1270px) {
   %main-wrap-pattern {

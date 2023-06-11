@@ -18,6 +18,7 @@
     background-color: $main;
     font-size: 1.2rem;
     color: #fff;
+    overflow: hidden;
     cursor: pointer;
 }
 
