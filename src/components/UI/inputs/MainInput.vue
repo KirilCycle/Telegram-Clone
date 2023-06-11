@@ -18,6 +18,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+$input-color: rgb(34, 137, 255);
+
 .input {
   padding: 0px 0px 0px 5px;
   width: 100%;
@@ -28,11 +30,11 @@ export default {
   font-size: 1rem;
   color: $text-main;
   &:focus {
-    border: 1px solid $second;
+    border: 1px solid $input-color;
     box-shadow: rgb(34, 137, 255) 0px 0px 0px 1px;
   }
   &:hover {
-    border: 1px solid $second;
+    border: 1px solid $input-color;
   }
 }
 

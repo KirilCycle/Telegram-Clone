@@ -30,7 +30,7 @@
       <transition name="fade">
         <button
           ref="scrollBottom"
-          @click="scrollToBottom"
+          @click.prevent="scrollToBottom"
           class="scroll-bottom"
           v-show="!$store.state.chatAdditionalDataManage.scrollBottomData.isBottom"
         >
@@ -277,8 +277,6 @@ export default {
   justify-content: center;
   align-items: center;
   position: absolute;
-  cursor: pointer;
-  flex-shrink: 0;
   border-radius: 27.5px;
 }
 
@@ -292,8 +290,6 @@ export default {
   justify-content: center;
   align-items: center;
   position: absolute;
-  cursor: pointer;
-  flex-shrink: 0;
   border-radius: 27.5px;
   right: -59px;
 }
@@ -301,12 +297,13 @@ export default {
 .send-btn-wrp {
   @extend %btn-pattern;
   right: -59px;
-  color: white;
+  
   
 
   .scroll-bottom {
     @extend %btn-pattern;
     position: absolute;
+    overflow: hidden;
     bottom: 75px;
     color: $second;
     background-color: $content-main-dark;
@@ -318,11 +315,6 @@ export default {
 
   .send-btn {
     @extend %btn-pattern;
-    background-color: $second;
-    &:hover {
-      background-color: $main;
-    }
-
     span {
       font-size: 2rem;
     }

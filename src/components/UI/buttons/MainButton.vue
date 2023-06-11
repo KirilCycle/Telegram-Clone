@@ -1,28 +1,27 @@
 <template>
-    <button class="button">
-       <slot></slot>
-    </button>
+  <button class="button">
+    <slot></slot>
+  </button>
 </template>
 
 <script>
-    export default {
-        name: 'main-button'
-    }
+export default {
+  name: "main-button",
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/colors.scss'; 
+@import "@/styles/colors.scss";
 .button {
-    border-radius: 15px;
-    box-sizing: border-box;
-    background-color: $main;
-    font-size: 1.2rem;
-    color: #fff;
-    overflow: hidden;
-    cursor: pointer;
+  box-sizing: border-box;
+  background-color: $main;
+  flex-shrink: 0;
+  color: #fff;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .button:hover {
-    background-color: $main-hover;
+  background-color: $main-hover;
 }
 </style>

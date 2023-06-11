@@ -32,13 +32,12 @@
       <div class="inputs_wrp">
         <div class="inpt-container">
           <p>First Name</p>
-          <main-input class="default-inpt" v-model="firtsName" />
+          <main-input v-model="firtsName" />
         </div>
 
         <div class="inpt-container">
           <p>{{ usernameState }}</p>
           <main-input
-            class="default-inpt"
             :class="{
               'input-username-wrong':
                 usernameWrongData || usernameExist || shortLength,
@@ -175,6 +174,11 @@ export default {
           "$",
           "!",
           " ",
+          ".",
+          "`",
+          "~",
+          "}",
+          "{",
           "+",
           "|",
           "=",
@@ -452,13 +456,23 @@ $def-gray: #828282;
     border: 1px solid red;
     &:focus {
       border: 1px solid red;
+      box-shadow: rgb(255, 0, 0) 0px 0px 0px 1px;
+    }
+    &:hover {
+      border: 1px solid red;
     }
   }
 
   .input-username-ok {
     border: 1px solid rgb(0, 255, 47);
+    
     &:focus {
       border: 1px solid rgb(0, 255, 47);
+      box-shadow: rgb(0, 255, 47) 0px 0px 0px 1px;
+    }
+    
+    &:hover {
+      border: 1px solid 0, 255, 47;
     }
   }
 
@@ -506,7 +520,7 @@ $def-gray: #828282;
 .edit-content {
   width: 100%;
   position: relative;
-  top: 8%;
+  top: 9%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -560,40 +574,12 @@ $def-gray: #828282;
   }
 }
 
-.edti-nav {
-  width: 100%;
-  height: 8%;
-  max-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0px;
-  z-index: 100;
 
-  button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    height: 10px;
-    color: $def-gray;
-  }
-}
-.page-header {
-  color: $text-main;
-  font-size: 1.4rem;
-  font-weight: 550;
-  margin: 0% auto;
-}
 
-.dark .page-header {
-  color: $text-main-l;
-}
+
 
 .save-changes-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  border-radius: 30px;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -601,6 +587,7 @@ $def-gray: #828282;
   position: absolute;
   right: 10px;
   bottom: 10px;
-  background-color: #2897ff;
+  width: 55px;
+  height: 55px;
 }
 </style>

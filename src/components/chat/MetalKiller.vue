@@ -84,7 +84,7 @@ export default {
     const gettingType = ref(null);
     const msgs = ref([]);
     const pivotMessage = ref(null);
-    const limit = ref(42);
+    const limit = ref(72);
     const chatQuerry = ref(null);
     const messagesRef = ref(
       db
@@ -365,7 +365,7 @@ export default {
 
 .block-scroll-to-prevent-stick-to-top {
   position: relative;
-  top: 1px;
+  top: 127px;
 }
 
 .previos-observer {
@@ -375,7 +375,7 @@ export default {
 
 @media (min-width: 2700px) {
   .previos-observer {
-    top: 1367px;
+    top: 967px;
   }
 }
 

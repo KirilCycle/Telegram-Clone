@@ -1,5 +1,5 @@
 <template>
-  <button @click="v = !v" class="control">
+  <main-button @click="v = !v" class="control">
     <ul v-if="v" class="chat-controll-actions-list">
       <li @click="newChatSearchOpen">
         <span v-show="v" class="material-symbols-outlined"> chat </span>
@@ -12,7 +12,7 @@
     </ul>
     <span v-show="!v" class="material-symbols-outlined"> edit </span>
     <span v-show="v" class="material-symbols-outlined"> close </span>
-  </button>
+  </main-button>
 </template>
 
 <script>
