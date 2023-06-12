@@ -1,29 +1,25 @@
 <template>
-
-    <div @click="close" @touch="close" class="msg-action-wrap">
-      <div ref="modal" class="msg-actions">
-        <div @wheel="(e) => handleScroll(e)" class="emoji-container">
-          <div class="emoji-list">
-            <div
-              @click="
-                () => replyEmoji(em, $store.state.message.selectedMsgData)
-              "
-              v-for="em in emojis"
-              :key="em + 1"
-            >
-              {{ em }}
-            </div>
+  <div @click="close" @touch="close" class="msg-action-wrap">
+    <div ref="modal" class="msg-actions">
+      <div @wheel="(e) => handleScroll(e)" class="emoji-container">
+        <div class="emoji-list">
+          <div
+            @click="() => replyEmoji(em, $store.state.message.selectedMsgData)"
+            v-for="em in emojis"
+            :key="em + 1"
+          >
+            {{ em }}
           </div>
         </div>
-
-        <ul class="actions-list">
-          <optiosn-list-vue :optionsList="messageActions"></optiosn-list-vue>
-        </ul>
       </div>
+
+      <ul class="actions-list">
+        <optiosn-list-vue :optionsList="messageActions"></optiosn-list-vue>
+      </ul>
     </div>
+  </div>
 
-    <forward-modal @close="close" v-if="v"></forward-modal>
-
+  <forward-modal @close="close" v-if="v"></forward-modal>
 </template>
 
 <script>
@@ -108,10 +104,11 @@ export default {
         from: msgData.userName,
         ...(msgData.source ? { source: msgData.source } : {}),
       });
+
+      this.close();
     },
 
     close() {
-      this.v = false;
       this.$emit("close");
     },
 
@@ -219,6 +216,7 @@ export default {
         .catch((error) => {
           console.error("Error copying text to clipboard:", error);
         });
+         this.close();
     },
 
     async deleteMsg() {
@@ -235,6 +233,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      this.close();
     },
 
     close() {

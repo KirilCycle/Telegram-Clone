@@ -60,7 +60,7 @@ export default {
         store.state.message.selectedMsgData
       )
 
-      this.$emit('close')
+     this.$emit('close')
 
     },
   },

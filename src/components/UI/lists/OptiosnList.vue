@@ -1,7 +1,7 @@
 <template>
   <div class="more-content">
     <ul class="more_list">
-      <li @click="op.execute" :key="op.description" v-for="op in optionsList">
+      <li @click.stop="op.execute" :key="op.description" v-for="op in optionsList">
         <div v-html="op.htmlIcoEl"></div>
         <p class="action-name">{{ op.description }}</p>
       </li>

@@ -224,6 +224,12 @@ export default {
           chatId,
         });
 
+        setTimeout(() => {
+          store.state.chatAdditionalDataManage.chatContainerRef.scrollTo({
+            top: 10000,
+          });
+        });
+
         uploadTask
           .then((snapshot) => {
             getDownloadURL(storageRef).then((url) => {
