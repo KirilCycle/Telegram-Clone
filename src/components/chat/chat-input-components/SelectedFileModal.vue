@@ -61,7 +61,7 @@ import { sendMessageToFoundedChat } from "@/features/sendMsgToFoundedChat";
 export default {
   props: {
     isFounded: Boolean,
-    requiered: true
+    requiered: true,
   },
   data() {
     return {
@@ -161,6 +161,12 @@ export default {
           chatId,
         });
 
+        setTimeout(() => {
+          store.state.chatAdditionalDataManage.chatContainerRef.scrollTo({
+            top: 10000,
+          });
+        });
+
         uploadTask.on(
           "state_changed",
           (snapshot) => {
@@ -187,8 +193,8 @@ export default {
                   src: downloadURL,
                 };
 
-                props.isFounded?
-                   sendMessageToFoundedChat(caption, chatId, resData).finally(
+                props.isFounded
+                  ? sendMessageToFoundedChat(caption, chatId, resData).finally(
                       store.commit("previewChat/removeLoadingMsg", previewMsgId)
                     )
                   : sendMsg(
@@ -226,19 +232,21 @@ export default {
                 src: url,
               };
 
-              if( props.isFounded ) {
-                sendMessageToFoundedChat(caption, chatId, resData).finally(
-                   store.commit("previewChat/removeLoadingMsg", previewMsgId)
-                 ).catch((e) => console.log(e))
+              if (props.isFounded) {
+                sendMessageToFoundedChat(caption, chatId, resData)
+                  .finally(
+                    store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                  )
+                  .catch((e) => console.log(e));
               } else {
                 sendMsg(
-                   caption,
-                   resData,
-                   store.state.message.replyTarget,
-                   chatId
-                 ).finally(
-                   store.commit("previewChat/removeLoadingMsg", previewMsgId)
-                 );
+                  caption,
+                  resData,
+                  store.state.message.replyTarget,
+                  chatId
+                ).finally(
+                  store.commit("previewChat/removeLoadingMsg", previewMsgId)
+                );
               }
             });
           })
@@ -417,6 +425,10 @@ $padver: 16px;
   }
 }
 .dark .bloor .modal {
+  .send-btn {
+    background-color: $main-l;
+  }
+
   background-color: $content-main-dark-l;
 }
 

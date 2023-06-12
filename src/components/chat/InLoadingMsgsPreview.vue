@@ -1,31 +1,25 @@
 <template>
-<div class="wrap">
-  <div
-    v-for="msg in $store.state.previewChat.msgs"
-    :key="msg.id"
-    class="in-loading-msg-preview"
-    v-show="msg.chatId === $store.state.chat.chatId"
-  >
-    <div class="loading-data-content-wrp">
-      <close-spiner-vue @click="msg.cancel"></close-spiner-vue>
-    </div>
+  <div class="wrap">
+    <div
+      v-for="msg in $store.state.previewChat.msgs"
+      :key="msg.id"
+      class="in-loading-msg-preview"
+      v-show="msg.chatId === $store.state.chat.chatId"
+    >
+      <div class="loading-data-content-wrp">
+        <close-spiner-vue @click="msg.cancel"></close-spiner-vue>
+      </div>
 
-    <message-source-container-vue :source="msg.source">
-    </message-source-container-vue>   
-    <!-- <img v-if="msg.source.type === 'img'" :src="msg.source.src" />
-    <video class="video-player" v-else :src="msg.source.src"></video> -->
-  
+      <message-source-container-vue :source="msg.source">
+      </message-source-container-vue>
+    </div>
   </div>
-  <div class="wrap-bottom" ref="inLoadingPreviewWrapBottom"></div>
-</div>
- 
 </template>
 
 <script>
 import store from "@/store/store";
 import MessageSourceContainerVue from "./MessageSourceContainer.vue";
 import CloseSpinerVue from "../UI/CloseSpiner.vue";
-
 
 export default {
   components: {
@@ -40,20 +34,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .wrap {
   width: 100%;
   display: flex;
-  justify-content: end;
+  right: 0px;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .in-loading-msg-preview {
-  width: 250px;
-  height: auto;
-  max-height: 500px;
+  width: 100%;
+  max-width: 380px;
+  width: max-content;
   position: relative;
+  height: 400px;
+  margin-top: 3px;
+  border-radius: 20px;
   margin-left: 0%;
+  position: relative;
 }
+
 
 
 .loading-data-content-wrp {
