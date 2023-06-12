@@ -123,6 +123,11 @@ span {
   cursor: pointer;
   color: $second;
 }
+
+.dark span {
+  color: $main-l;
+}
+
 .target-info {
   display: flex;
   justify-content: start;
@@ -139,9 +144,10 @@ span {
     h3 {
       font-weight: 550;
       font-size: 1rem;
-
       color: $second;
     }
+
+  
     p {
       font-weight: 500;
       font-size: 0.8rem;
@@ -149,6 +155,10 @@ span {
     }
   }
 }
+
+ .dark .text-container h3 {
+      color: $main-l;
+    }
 
 .dark .content {
   .text-container {
