@@ -733,7 +733,7 @@ export default {
     overflow-x: hidden;
     padding: 0px 6px 0px 6px;
     @media (max-width: 650px) {
-       padding: 0px;
+      padding: 0px;
     }
   }
 
@@ -744,6 +744,15 @@ export default {
   .chat-list::-webkit-scrollbar {
     width: 0em;
   }
+}
+
+.dark .left-bar .search-input-container {
+  
+    .reset-search-btn {
+      &:hover {
+        color: $main-l;
+      }
+    }
 }
 
 .left-bar:hover {
@@ -768,7 +777,8 @@ export default {
     }
 
     &:focus {
-      box-shadow: inset 0px 1px 2px $second, inset 0px 0px 0px 2px $second;
+      box-shadow: inset 0px 1px 2px $input-main-color,
+        inset 0px 0px 0px 2px $input-main-color;
       border: 1px solid white;
     }
   }

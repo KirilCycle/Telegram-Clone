@@ -7,9 +7,7 @@
         <button class="action" @click="action.executeFn">
           {{ action.title }}
         </button>
-        <button @click="$emit('close')" class="action">
-           cancel
-        </button>
+        <button @click="$emit('close')" class="action">cancel</button>
       </div>
     </div>
   </div>
@@ -73,6 +71,10 @@ export default {
   &:hover {
     background-color: $hover;
   }
+}
+
+.dark .action {
+  color: $main-l;
 }
 
 .action + .action {

@@ -11,7 +11,7 @@
       </button>
 
       <input
-         @keydown.enter="send"
+        @keydown.enter="send"
         :value="chatSettingsWait"
         v-on:input="(e) => textHndl(e.target.value)"
         placeholder="Message"
@@ -32,7 +32,9 @@
           ref="scrollBottom"
           @click.prevent="scrollToBottom"
           class="scroll-bottom"
-          v-show="!$store.state.chatAdditionalDataManage.scrollBottomData.isBottom"
+          v-show="
+            !$store.state.chatAdditionalDataManage.scrollBottomData.isBottom
+          "
         >
           <span class="material-symbols-outlined"> arrow_downward </span>
         </button>
@@ -52,7 +54,6 @@ import { Timestamp } from "firebase/firestore";
 import { doc } from "firebase/firestore";
 import { ref } from "vue";
 
-
 export default {
   components: { SelectedFileModal, ReplyMessageBorder },
   props: {
@@ -64,7 +65,7 @@ export default {
   data() {
     return {
       text: null,
-      vBeforeListInitial: '',
+      vBeforeListInitial: "",
     };
   },
   methods: {
@@ -164,15 +165,18 @@ export default {
 
     chatSettingsWait() {
       if (this.$store.state.chat.chatSettings[this.$store.state.chat.chatId]) {
-         return this.$store.state.chat.chatSettings[this.$store.state.chat.chatId].v
+        return this.$store.state.chat.chatSettings[
+          this.$store.state.chat.chatId
+        ].v;
       } else {
-        return  this.vBeforeListInitial
+        return this.vBeforeListInitial;
       }
     },
 
     ableTosend() {
       if (
-        this.$store.state.chat?.chatSettings[this.$store.state.chat.chatId]?.v ||
+        this.$store.state.chat?.chatSettings[this.$store.state.chat.chatId]
+          ?.v ||
         store.state.message.forwardTarget
       ) {
         return true;
@@ -188,11 +192,13 @@ export default {
 
     function scrollToBottom() {
       setTimeout(() => {
-        store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView({
-          block: "start",
-          inline: "start",
-          behavior: "smooth",
-        });
+        store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView(
+          {
+            block: "start",
+            inline: "start",
+            behavior: "smooth",
+          }
+        );
       });
     }
 
@@ -252,9 +258,6 @@ export default {
       // };
     }
 
-
-
-
     return {
       startRecording,
       scrollToBottom,
@@ -295,8 +298,6 @@ export default {
 .send-btn-wrp {
   @extend %btn-pattern;
   right: -59px;
-  
-  
 
   .scroll-bottom {
     @extend %btn-pattern;
@@ -326,6 +327,14 @@ export default {
   .fade-enter,
   .fade-leave-to {
     opacity: 0;
+  }
+}
+
+.dark .send-btn-wrp .scroll-bottom {
+  color: $main-hover-l;
+  &:hover {
+    color: $main-l;
+    background-color: rgb(228, 228, 228);
   }
 }
 
@@ -449,12 +458,12 @@ export default {
   }
 }
 
- .send-btn-wrp {
-    margin-left: 10px;
-    .scroll-bottom {
-      position: absolute;
-    }
+.send-btn-wrp {
+  margin-left: 10px;
+  .scroll-bottom {
+    position: absolute;
   }
+}
 
 @media (max-width: 1270px) {
   %main-wrap-pattern {

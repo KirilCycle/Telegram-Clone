@@ -1,7 +1,8 @@
 <template>
   <div class="search-info-wrap">
-    <p>Global search {{ searchState }}</p>
+    <p class="info-srch-text">Global search {{ searchState }}</p>
   </div>
+
   <div class="global-users-wrap">
     <chat-item
       :pthUrl="us.photoURL"
@@ -43,11 +44,19 @@ export default {
   },
   computed: {
     searchState() {
-        if( !this.loading && !this.founded.length && store.state.chat.query.length > 3) {
-          return `0 users founded by querry ${store.state.chat.query.replaceAll("@", "")} `
-        } else if (this.loading) {
-         return 'Loading...'
-        } return ''
+      if (
+        !this.loading &&
+        !this.founded.length &&
+        store.state.chat.query.length > 3
+      ) {
+        return `0 users founded by querry ${store.state.chat.query.replaceAll(
+          "@",
+          ""
+        )} `;
+      } else if (this.loading) {
+        return "Loading...";
+      }
+      return "";
     },
   },
 
@@ -55,13 +64,13 @@ export default {
     console.log(store.state.chat.querry);
 
     const founded = ref([]);
-    const loading = ref(false)
+    const loading = ref(false);
 
     const db = firebase.firestore();
 
     watchEffect(() => {
       if (store.state.chat.query && store.state.chat.query.length > 3) {
-         loading.value = true
+        loading.value = true;
         const filteredSearchQuerry = store.state.chat.query.replaceAll("@", "");
 
         const query = db
@@ -78,7 +87,7 @@ export default {
             const user = doc.data();
             users.push(user);
           });
-          loading.value = false
+          loading.value = false;
           founded.value = users;
           console.log(users, "FROM LIST");
         });
@@ -136,8 +145,6 @@ h3 {
   color: $text-main-l;
 }
 
-
-
 .username-text {
   font-size: 0.8rem;
   color: #448fff;
@@ -149,8 +156,20 @@ h3 {
 
 .search-info-wrap {
   background-color: $main;
-  padding: 5px;
+  right: 0px;
+  box-sizing: border-box;
+  top: 0px;
+  padding: 5px 0px 5px 25px;
+  width: 100%;
   color: white;
+  height: max-content;
   text-align: left;
+
+  .info-srch-text {
+  }
+}
+
+.dark .search-info-wrap {
+  background-color: $main-hover-l;
 }
 </style>

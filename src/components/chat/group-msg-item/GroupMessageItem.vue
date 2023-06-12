@@ -307,7 +307,7 @@ export default {
   border-bottom: 20px solid white;
 }
 .dark .tail-right {
-   border-bottom: 22px solid  $msg-item-l;
+  border-bottom: 22px solid $msg-item-l;
 }
 
 .message-wrap {
@@ -351,7 +351,8 @@ export default {
   margin-left: auto;
 }
 .dark .message {
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   background-color: white;
   .text {
     color: black;
@@ -360,7 +361,8 @@ export default {
 
 .dark .my-message {
   background-color: $msg-item-l;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   .text {
     color: black;
   }
