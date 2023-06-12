@@ -40,7 +40,7 @@
             v-model="username"
           />
         </div>
-        <div class="inpt-container">
+        <div class="inpt-container bio">
           <p>Bio</p>
           <textarea
             ref="textarea"
@@ -147,9 +147,9 @@ export default {
         this.uploadedPhoto ||
         this.firtsName?.trim() !== this.firtsNameTmp ||
         this.username?.trim() !== this.usernameTmp ||
-        this.bio?.trim() !== this.bioTmp;
+        this.bio?.trim() !== this.bioTmp
 
-      if (somethingChanged) {
+      if (somethingChanged && !this.usernameWrongData) {
         return true;
       } else {
         return false;
@@ -197,6 +197,7 @@ export default {
         for (let i = 0; i < this.username.length; i++) {
           for (let j = 0; j < wrongSymphols.length; j++) {
             if (this.username[i].includes(wrongSymphols[j])) {
+                  this.usernameWrongData = true;
               ready = false;
               break;
             }
@@ -332,12 +333,12 @@ export default {
             getDownloadURL(storageRef).then((url) => {
               newData = {
                 ...(this.firtsName !== this.firtsNameTmp && {
-                  displayName: this.firtsName,
+                  displayName: this.firtsName.trim() ,
                 }),
                 ...(this.username !== this.usernameTmp && {
-                  username: this.username,
+                  username: this.username.trim() ,
                 }),
-                ...(this.bio !== this.bioTmp && { bio: this.bio }),
+                ...(this.bio !== this.bioTmp && { bio: this.bio.trim() }),
                 photoURL: url,
               };
 
