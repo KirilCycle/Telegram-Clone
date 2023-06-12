@@ -70,7 +70,7 @@ export default {
 
     const collectionRef = db.collection("usersLinksToChat");
 
-    const chatList = ref("");
+    const chatList = ref([]);
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {

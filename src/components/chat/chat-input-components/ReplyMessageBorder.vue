@@ -26,7 +26,7 @@ import SmallChatImage from "../../SmallChatImage.vue";
 
 export default {
   props: {
-    selected: Object,
+    selected: Boolean,
     required: true,
   },
   components: { SmallChatImage },
