@@ -108,6 +108,8 @@ import ProfileImage from "../UI/img-components/ProfileImage.vue";
 import StandartAlertVue from "../UI/alerts/StandartAlert.vue";
 
 export default {
+  name:'settings-component',
+  emits: ['close','shove'],
   components: {
     UserImage,
     UserPhotoVue,
@@ -179,7 +181,7 @@ export default {
       this.moreContentV = false;
     },
   },
-  setup(props) {
+  setup(props, {emit}) {
     console.log(store.state.user);
 
     function logout() {

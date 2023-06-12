@@ -2,9 +2,9 @@
   <div class="forward">
     <div class="forward_modal">
       <div class="forward_modal_top_content">
-        <button>
+        <control-button @click="() => $emit('close')">
           <span class="material-symbols-outlined"> close </span>
-        </button>
+        </control-button>
 
         <input
           v-on:input="(e) => handleSearch(e.target.value)"
@@ -148,24 +148,6 @@ export default {
       padding-left: 10px;
       top: 0px;
 
-      button {
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-
-        &:hover {
-          background-color: $hover;
-        }
-
-        span {
-          font-size: 1.6rem;
-          color: gray;
-        }
-      }
 
       input {
         caret-color: $second;
@@ -174,6 +156,15 @@ export default {
       }
     }
   }
+
+ @media (max-width: 500px) {
+  .forward_modal {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+  }
+ }
+
 }
 
 .dark .forward {
