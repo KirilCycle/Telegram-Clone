@@ -58,13 +58,20 @@ export default {
   },
   mounted() {
     const chatRef = this.$store.state.chatAdditionalDataManage.chatContainerRef;
-    const space = this.$refs.replyBlock.clientHeight
+    const msgsListWay =
+      this.$store.state.chatAdditionalDataManage.chatScrollWayRef;
 
-    chatRef.style.transform = `translateY(${-space}px)`
+    console.log(msgsListWay.clientHeight, chatRef.clientHeight, "REPL TEST");
+
+    const space = this.$refs.replyBlock.clientHeight;
+
+    if ((msgsListWay.clientHeight + 80) >= chatRef.clientHeight) {
+      chatRef.style.transform = `translateY(${-space}px)`;
+    }
   },
   beforeUnmount() {
     const chatRef = this.$store.state.chatAdditionalDataManage.chatContainerRef;
-    chatRef.style.transform = `translateY(${0}px)`
+    chatRef.style.transform = `translateY(${0}px)`;
   },
 };
 </script>
@@ -147,7 +154,6 @@ span {
       color: $second;
     }
 
-  
     p {
       font-weight: 500;
       font-size: 0.8rem;
@@ -156,9 +162,9 @@ span {
   }
 }
 
- .dark .text-container h3 {
-      color: $main-l;
-    }
+.dark .text-container h3 {
+  color: $main-l;
+}
 
 .dark .content {
   .text-container {

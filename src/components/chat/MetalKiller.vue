@@ -1,4 +1,5 @@
 <template>
+<div ref="chatScrollWay" class="chat-scroll-way">
   <div
     v-observer="disableScroll"
     class="block-scroll-to-prevent-stick-to-top"
@@ -22,6 +23,7 @@
   ></div>
 
   <div class="next" v-observer="next"></div>
+</div>
 </template>
 
 <script>
@@ -84,6 +86,7 @@ export default {
     const top = ref(null);
     const gettingType = ref(null);
     const msgs = ref([]);
+    const chatScrollWay = ref(null);
     const pivotMessage = ref(null);
     const limit = ref(72);
     const chatQuerry = ref(null);
@@ -144,11 +147,13 @@ export default {
         bottomRef: scrollAtTheBottom.value,
       };
 
-      store.commit(
+    store.commit(
+    
         "chatAdditionalDataManage/setScrollBottomData",
         scrollBotomdata
       );
-    });
+    store.commit("chatAdditionalDataManage/setChatScrollWayRef",chatScrollWay.value)
+   });
 
     function subscribeToSnapshot() {
       unsubscribe.value = chatQuerry.value.onSnapshot(
@@ -324,6 +329,7 @@ export default {
       scrollAtTheBottom,
       msgs,
       next,
+      chatScrollWay,
       handleScrollBtn,
       top,
       atTheBottom,

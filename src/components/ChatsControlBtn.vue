@@ -1,13 +1,14 @@
 <template>
   <main-button @click="v = !v" class="control">
+    <transition name="fade">
       <optiosn-list-vue
         class="chat-controll-actions-list"
         v-if="v"
         :optionsList="options"
       ></optiosn-list-vue>
-
-      <span v-show="!v" class="material-symbols-outlined"> edit </span>
-      <span v-show="v" class="material-symbols-outlined"> close </span>
+    </transition>
+    <span v-show="!v" class="material-symbols-outlined"> edit </span>
+    <span v-show="v" class="material-symbols-outlined"> close </span>
   </main-button>
 </template>
 
@@ -46,6 +47,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
 .control {
   cursor: pointer;
   width: 55px;

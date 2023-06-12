@@ -16,10 +16,12 @@
           <span class="material-symbols-outlined"> more_vert </span>
 
           <div class="options-list-wrap">
-            <optiosn-list-vue
-              v-show="moreContentV"
-              :optionsList="settingsOptions"
-            ></optiosn-list-vue>
+            <transition name="fade">
+              <optiosn-list-vue
+                v-show="moreContentV"
+                :optionsList="settingsOptions"
+              ></optiosn-list-vue>
+            </transition>
           </div>
         </control-button>
       </template>
@@ -143,10 +145,8 @@ export default {
   },
   computed: {
     prevTheme() {
-      if (
-        localStorage.getItem("theme") 
-      ) {
-        return "light" 
+      if (localStorage.getItem("theme")) {
+        return "light";
       }
       return "dark";
     },
@@ -194,13 +194,13 @@ export default {
     }
 
     function setLightTheme() {
-     window.localStorage.setItem('theme','')
-     document.documentElement.classList.remove("dark");
+      window.localStorage.setItem("theme", "");
+      document.documentElement.classList.remove("dark");
     }
 
     function setDarkTheme() {
       document.documentElement.classList.add("dark");
-     window.localStorage.setItem('theme','dark')
+      window.localStorage.setItem("theme", "dark");
     }
 
     const themeVariations = ref([
@@ -262,7 +262,7 @@ $def-gray: #b2b2b2;
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 
 .fade-enter-from,
