@@ -1,5 +1,5 @@
 <template>
-  <div class="conetent">
+  <div ref="replyBlock" class="conetent">
     <div @click="scrllToTarget" class="target-info">
       <span class="material-symbols-outlined"> reply </span>
 
@@ -56,6 +56,16 @@ export default {
       return false;
     },
   },
+  mounted() {
+    const chatRef = this.$store.state.chatAdditionalDataManage.chatContainerRef;
+    const space = this.$refs.replyBlock.clientHeight
+
+    chatRef.style.transform = `translateY(${-space}px)`
+  },
+  beforeUnmount() {
+    const chatRef = this.$store.state.chatAdditionalDataManage.chatContainerRef;
+    chatRef.style.transform = `translateY(${0}px)`
+  },
 };
 </script>
 
@@ -81,7 +91,7 @@ export default {
 }
 
 .conetent {
-   border-radius: 20px 20px 0px 0px;
+  border-radius: 20px 20px 0px 0px;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */

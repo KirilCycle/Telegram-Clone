@@ -62,6 +62,7 @@ export default {
   height: 3.5rem;
   text-align: left;
   display: flex;
+  z-index: 5;
   color: $text-main;
   align-items: center;
   -webkit-user-select: none; /* Safari */

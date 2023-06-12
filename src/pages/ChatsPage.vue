@@ -528,6 +528,7 @@ export default {
   overflow-x: hidden;
   max-width: 1100px;
   padding-top: 20px;
+  transition: transform 0.2s ease-in-out ;
 }
 
 .chat-container-x::-webkit-scrollbar {
