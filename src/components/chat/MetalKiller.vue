@@ -40,21 +40,22 @@ export default {
   props: {
     parentRef: Object,
   },
+
   components: {
     InLoadingMsgsPreview,
-    GroupMessageItemVue: defineAsyncComponent(() => {
-       return import(
+    GroupMessageItemVue: defineAsyncComponent(async () => {
+      let obj = await import(
         `./${
           isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
         }/GroupMessageItem.vue`
-      )
-
-
-      
-   
-    
-
-      
+      ).finally(() =>
+        setTimeout(() => {
+          store.state.chatAdditionalDataManage.chatContainerRef.scrollTo({
+            top: 100000,
+          });
+        })
+      );
+      return obj;
     }),
   },
   data() {
