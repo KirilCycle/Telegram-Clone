@@ -528,7 +528,7 @@ export default {
   overflow-x: hidden;
   max-width: 1100px;
   padding-top: 20px;
-  transition: transform 0.2s ease-in-out ;
+  transition: transform 0.2s ease-in-out;
 }
 
 .chat-container-x::-webkit-scrollbar {
@@ -748,12 +748,11 @@ export default {
 }
 
 .dark .left-bar .search-input-container {
-  
-    .reset-search-btn {
-      &:hover {
-        color: $main-l;
-      }
+  .reset-search-btn {
+    &:hover {
+      color: $main-l;
     }
+  }
 }
 
 .left-bar:hover {
@@ -798,7 +797,7 @@ export default {
   width: 100vw;
   box-sizing: border-box;
   background-image: url("../components/UI/images/Jhone.jpg");
-  background-image: url("https://f.vividscreen.info/soft/2404dd397349330e01bfaedfd35261ee/IOS-13-Grey-1920x1200.jpg");
+  background-image: url("https://images.hdqwalls.com/wallpapers/cyberpunk-city-night-view-4k-8l.jpg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;
@@ -810,7 +809,8 @@ export default {
 }
 
 .dark .right-side {
-  background-color: #7ee8fa;
+  background-color: #ffffff;
+  background-image: url("https://preview.redd.it/cubnmrxmu5v31.png?auto=webp&s=debd8a7920c7ac3b0778b8b688c5f35c093933d7");
 }
 
 .right-side-shoved-back {

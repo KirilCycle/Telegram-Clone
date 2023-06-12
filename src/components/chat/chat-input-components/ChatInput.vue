@@ -308,7 +308,7 @@ export default {
     background-color: $content-main-dark;
 
     &:hover {
-      background-color: $hover;
+      background-color:  $content-main-dark-x2;
     }
   }
 
