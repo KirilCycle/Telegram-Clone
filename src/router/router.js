@@ -60,27 +60,27 @@ export const routes = [
   {
     path: "/",
     name: "chats",
-    component:ChatsPage,
+    component: ChatsPage,
     beforeEnter: async (to, from) => {
-      //i cant use transaction or bacth when user created 
+      //i cant use transaction or bacth when user created
       //so i need check it, and add in case connection was lost
       //Authentication not the same as usersPrew, two different users objects
       //i cant allow Authentication user object show to enother user during search or conversation, as this objects keep pasword, and other
       //private data
-      
+
       const mainExecute = new Promise(function (resolve, reject) {
         const db = firebase.firestore();
         firebase.auth().onAuthStateChanged(function (user) {
           if (user) {
             async function checkNeccessaryData() {
               const docRef = doc(db, "usersLinksToChat", user.uid);
-              const docSnap = await getDoc(docRef)
+              const docSnap = await getDoc(docRef);
 
               if (!docSnap.exists()) {
                 console.log("cc action");
-                await setDoc(doc(db, "usersLinksToChat", user.uid), {
-                  //
-                }).catch((er) => reject(er));
+                await setDoc(doc(db, "usersLinksToChat", user.uid), {}).catch(
+                  (er) => reject(er)
+                );
               }
 
               const prewuserSnapRef = doc(db, "usersPrew", user.uid);
@@ -96,7 +96,10 @@ export const routes = [
                     user.email.slice(0, user.email.indexOf("@")) +
                     wordGenerator(),
                 })
-                  .then((res) => setUserToStore(res))
+                  .then(() => {
+                    setUserToStore(user);
+                    resolve(true);
+                  })
                   .catch(() => reject(er));
               } else {
                 setUserToStore(prewuserSnap.data(), db);
@@ -106,16 +109,13 @@ export const routes = [
 
             checkNeccessaryData();
           } else {
-            console.log("NOO :(");
-            reject('no');
+            router.push({name:"auth"})
+            reject("no");
           }
         });
       });
 
-      await mainExecute
-        
-
-        
+      await mainExecute;
     },
   },
 ];

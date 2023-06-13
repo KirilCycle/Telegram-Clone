@@ -52,6 +52,7 @@ import useValidationForm from "@/hooks/useValidationForm";
 import useValidationFeatures from "@/hooks/useValidationsFeatures";
 import AuthRegFormWrap from "@/components/AuthRegFormWrap.vue";
 import AppLogoIntro from "@/components/AppLogoIntro.vue";
+import { createPreviewUserCoppy } from "@/features/createPreviewUserCoppy"
 
 export default {
   components: {
@@ -100,12 +101,9 @@ export default {
           email.value,
           password.value
         ).then((data) => {
-          console.log(data);
+          
           store.commit("user/setUser", data.user);
-          store.commit("user/setAuth", true);
-          
-          
-          // router.push({ name: "fake" })
+          router.push({ name: "chats" })
         });
       }
     }
