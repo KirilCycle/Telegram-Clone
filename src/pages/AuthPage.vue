@@ -166,6 +166,7 @@ h4 {
   .btn-c {
     padding-top: 15px;
     padding-bottom: 15px;
+    border-radius: 20px;
     font-size: 17px;
     width: 100%;
   }

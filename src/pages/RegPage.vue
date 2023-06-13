@@ -17,9 +17,8 @@
         />
       </div>
 
-
       <div class="last-content">
-        <div  v-show="!ableToVerify" class="input-container">
+        <div v-show="!ableToVerify" class="input-container">
           <p class="info-tx">repeat password</p>
           <main-input
             :class="{ invalidData: wrongData }"
@@ -27,28 +26,19 @@
             v-model="secondPassword"
           />
         </div>
-        
-        <div  v-show="ableToVerify" class="btn-container">
-         
-          <main-button
-          
-          class="btn-c"
-          @click.prevent="register"
-          >GO</main-button
-          >
+
+        <div v-show="ableToVerify" class="btn-container">
+          <main-button class="btn-c" @click.prevent="register">GO</main-button>
         </div>
       </div>
-
-
-
     </auth-reg-form-wrap>
-    <button  class="pas_visible">
+    <button class="pas_visible">
       <span @click.prevent="handleVisible" class="material-symbols-outlined">
         {{ visible !== "password" ? "visibility" : "visibility_off" }}
       </span>
     </button>
 
-    <router-link class="link" to="/">I already have account </router-link>
+    <router-link class="link" to="/auth">I already have account </router-link>
   </div>
 </template>
 
@@ -95,8 +85,6 @@ export default {
     const { email, password, error, visible, wrongValues, wrongData } =
       useValidationForm();
 
-    const { googleSignIn } = useValidationFeatures();
-
     const secondPassword = ref("");
 
     function handleVisible() {
@@ -107,15 +95,18 @@ export default {
 
     function register() {
       if (email.value.length > 7 && password.value.length > 7) {
-        createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-          .then((data) => {
-            const auth = getAuth();
-            store.commit("user/setUser", auth.currentUser);
-            store.commit("user/setAuth", true);
-            console.log(store.state.user.isAuth);
-            router.push({ name: "chat" });
-          })
-          .catch((e) => (wrongData.value = true));
+        createUserWithEmailAndPassword(
+          getAuth(),
+          email.value,
+          password.value
+        ).then((data) => {
+          console.log(data);
+          store.commit("user/setUser", data.user);
+          store.commit("user/setAuth", true);
+          
+          
+          // router.push({ name: "fake" })
+        });
       }
     }
 
@@ -135,7 +126,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 
-
 h4 {
   color: #f70000;
 }
@@ -146,17 +136,16 @@ h4 {
 
 .invalidData {
   border: 1px solid rgba(220, 6, 6, 0.988);
- }
+}
 
 .link {
   color: rgb(105, 105, 105);
   text-decoration: none;
-  
+
   &:hover {
     color: $second;
-    text-decoration:underline
+    text-decoration: underline;
   }
-
 }
 
 .info-tx {
@@ -167,12 +156,16 @@ h4 {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   position: absolute;
-  top: -12px;
+  top: -5px;
   left: 2%;
   padding: 0px 3px 0px 3px;
-  background-color:  $body-color;
+  background-color: $body-color;
   pointer-events: none;
   height: min-content;
+}
+
+.dark .info-tx {
+  background-color: white;
 }
 
 .wronginput {
@@ -187,6 +180,7 @@ h4 {
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 17px;
+    border-radius: 20px;
     width: 100%;
   }
 }
@@ -201,7 +195,6 @@ h2 {
 
 .dark h2 {
   color: rgb(0, 0, 0);
-  
 }
 .wrap {
   display: flex;
@@ -225,13 +218,12 @@ h2 {
   overflow: hidden;
   margin-top: 10px;
   height: min-content;
- 
+
   :hover {
     color: $second;
   }
   margin-bottom: 5px;
 }
-
 
 .input-container {
   width: 100%;
@@ -239,10 +231,6 @@ h2 {
   display: flex;
   margin-top: 25px;
 }
-
-
-
-
 
 input {
   border: 1px solid rgb(98, 98, 98);
