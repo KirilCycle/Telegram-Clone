@@ -11,12 +11,14 @@
           alt="hi text"
         />
       </div>
+    
     </div>
   </div>
 </template>
 
 <script>
 import ChatInput from "./chat-input-components/ChatInput.vue";
+
 
 export default {
   components: {

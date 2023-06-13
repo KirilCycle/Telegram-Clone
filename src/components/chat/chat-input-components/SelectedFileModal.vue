@@ -11,41 +11,43 @@
   </div>
 
   <Teleport to="body">
-    <div v-if="v" class="bloor">
-      <div class="modal">
-        <h3 class="action-header">{{ actionName }}</h3>
+    <transition name="fade">
+      <div v-if="v" class="bloor">
+        <div class="modal">
+          <h3 class="action-header">{{ actionName }}</h3>
 
-        <button @click="reset" class="close-btn">
-          <span class="material-symbols-outlined"> close </span>
-        </button>
-
-        <div class="preview-container">
-          <img class="content" v-if="localType" :src="preview" />
-          <video content="content" v-else :src="preview" controls></video>
-        </div>
-
-        <div class="caption-container">
-          <input
-            class="caption"
-            v-model="caption"
-            type="text"
-            placeholder="Caption"
-          />
-          <button
-            class="send-btn"
-            :class="{ 'btn-disabled': notready }"
-            :disabled="notready"
-            @click="
-              () => {
-                postMessage(source, caption, reset, preview);
-              }
-            "
-          >
-            Send
+          <button @click="reset" class="close-btn">
+            <span class="material-symbols-outlined"> close </span>
           </button>
+
+          <div class="preview-container">
+            <img class="content" v-if="localType" :src="preview" />
+            <video content="content" v-else :src="preview" controls></video>
+          </div>
+
+          <div class="caption-container">
+            <input
+              class="caption"
+              v-model="caption"
+              type="text"
+              placeholder="Caption"
+            />
+            <button
+              class="send-btn"
+              :class="{ 'btn-disabled': notready }"
+              :disabled="notready"
+              @click="
+                () => {
+                  postMessage(source, caption, reset, preview);
+                }
+              "
+            >
+              Send
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </Teleport>
 </template>
 
@@ -194,7 +196,7 @@ export default {
                 };
 
                 props.isFounded
-                  ? sendMessageToFoundedChat(caption, chatId, resData).finally(
+                  ? sendMessageToFoundedChat(caption,  store.state.chat.selectedUser.uid, resData).finally(
                       store.commit("previewChat/removeLoadingMsg", previewMsgId)
                     )
                   : sendMsg(
@@ -239,7 +241,8 @@ export default {
               };
 
               if (props.isFounded) {
-                sendMessageToFoundedChat(caption, chatId, resData)
+                console.log("IMAGE CASE");
+                sendMessageToFoundedChat(caption, store.state.chat.selectedUser.uid, resData)
                   .finally(
                     store.commit("previewChat/removeLoadingMsg", previewMsgId)
                   )
@@ -273,6 +276,17 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/colors";
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 $padhor: 10px;
 $padver: 16px;
 
