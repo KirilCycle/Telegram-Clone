@@ -250,7 +250,7 @@ export default {
     let x = store.state.message?.coords?.x;
     let y = store.state.message?.coords?.y;
 
-    const estimatedSpace = 190;
+    const estimatedSpace = 50;
 
     if (window.innerHeight - y < 220) {
       y -= estimatedSpace;

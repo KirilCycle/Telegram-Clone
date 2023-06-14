@@ -48,7 +48,7 @@ export default {
     GroupMessageItemVue: defineAsyncComponent(async () => {
       let obj = await import(
         `./${
-          isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
+          !isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
         }/GroupMessageItem.vue`
       ).finally(() =>
         setTimeout(() => {
@@ -88,7 +88,7 @@ export default {
     const msgs = ref([]);
     const chatScrollWay = ref(null);
     const pivotMessage = ref(null);
-    const limit = ref(72);
+    const limit = ref(85);
     const chatQuerry = ref(null);
     const messagesRef = ref(
       db
@@ -339,11 +339,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.msg {
-  width: 300px;
-  height: 300px;
-  background-color: #13b05a;
-}
+
 
 .super-pop {
   position: absolute;
@@ -372,12 +368,12 @@ export default {
 
 .block-scroll-to-prevent-stick-to-top {
   position: relative;
-  top: 127px;
+  top: 197px;
 }
 
 .previos-observer {
   position: relative;
-  top: 267px;
+  top: 367px;
 }
 
 @media (min-width: 2700px) {

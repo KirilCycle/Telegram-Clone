@@ -289,23 +289,6 @@ export default {
   }
 }
 
-.time {
-  cursor: pointer;
-  direction: ltr;
-  display: inline-flex;
-  float: right;
-  font-size: 0.7rem;
-  line-height: 1;
-  pointer-events: none;
-  width: 40px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  vertical-align: middle;
-  visibility: hidden;
-  z-index: 1;
-  color: gray;
-}
 
 %no-select {
   -webkit-user-select: none; /* Safari */
@@ -343,19 +326,6 @@ export default {
   @extend %no-select;
 }
 
-.inner-time {
-  align-items: center;
-  bottom: 0;
-  display: flex;
-  height: 10px;
-  line-height: 1;
-  padding: inherit;
-  pointer-events: all;
-  position: absolute;
-  right: 0;
-  visibility: visible;
-  white-space: nowrap;
-}
 
 .tail-left {
   position: absolute;
@@ -386,7 +356,7 @@ export default {
 }
 
 %message-pattern {
-  color: rgb(207, 0, 0);
+  color: rgb(255, 255, 255);
   width: max-content;
   max-width: 500px;
   line-height: 20px;
@@ -405,6 +375,7 @@ export default {
   padding-right: 8px;
   padding-top: 8px;
   padding-bottom: 8px;
+  font-family: "Roboto", sans-serif;
 }
 
 .message {
@@ -467,4 +438,41 @@ export default {
 .group-space {
   height: 10px;
 }
+
+.dark .message {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  background-color: white;
+  .text {
+    color: black;
+  }
+}
+
+.dark .my-message {
+  background-color: $msg-item-l;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  .text {
+    color: black;
+  }
+
+  .reply_block_text_wrap {
+    h3 {
+      font-size: 14px;
+    }
+    p {
+      color: white;
+      font-size: 14px;
+    }
+  }
+}
+
+.dark .tail-left {
+  border-bottom: 20px solid white;
+}
+.dark .tail-right {
+  border-bottom: 22px solid $msg-item-l;
+}
+
+
 </style>

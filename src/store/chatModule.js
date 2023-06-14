@@ -5,12 +5,9 @@ export const chatModule = {
     query: null,
     chatSettings: {},
     chatsCount: 0,
-    chatContainerRef: null,
     wasObserved: null,
-    chatKey: "",
-    scrollBottomData: {
-      isBottom: null,
-    },
+
+ 
   }),
   getters: {
     getChatBottom(state) {
