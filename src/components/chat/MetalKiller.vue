@@ -1,29 +1,29 @@
 <template>
-<div ref="chatScrollWay" class="chat-scroll-way">
-  <div
-    v-observer="disableScroll"
-    class="block-scroll-to-prevent-stick-to-top"
-  ></div>
-  <div class="previos-observer" v-observer="previous"></div>
+  <div ref="chatScrollWay" class="chat-scroll-way">
+    <div
+      v-observer="disableScroll"
+      class="block-scroll-to-prevent-stick-to-top"
+    ></div>
+    <div class="previos-observer" v-observer="previous"></div>
 
-  <group-message-item-vue
-    v-for="(it, index) in msgs"
-    :key="it.id"
-    :message="it"
-    :isMy="it.userId.includes(firstPartOfmyId)"
-    :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
-  >
-  </group-message-item-vue>
+    <group-message-item-vue
+      v-for="(it, index) in msgs"
+      :key="it.id"
+      :message="it"
+      :isMy="it.userId.includes(firstPartOfmyId)"
+      :groupRole="getGroupRole(it.userId, msgs[index + 1]?.userId)"
+    >
+    </group-message-item-vue>
 
-  <in-loading-msgs-preview></in-loading-msgs-preview>
-  <div
-    ref="scrollAtTheBottom"
-    class="check-bottom-scroll"
-    v-desapeared="handleScrollBtn"
-  ></div>
+    <in-loading-msgs-preview></in-loading-msgs-preview>
+    <div
+      ref="scrollAtTheBottom"
+      class="check-bottom-scroll"
+      v-desapeared="handleScrollBtn"
+    ></div>
 
-  <div class="next" v-observer="next"></div>
-</div>
+    <div class="next" v-observer="next"></div>
+  </div>
 </template>
 
 <script>
@@ -108,6 +108,8 @@ export default {
     const scrollWasDisabled = ref(null);
     const recentMsgID = ref(null);
 
+    const removedMsgs = ref(null);
+
     function resetPrevListener() {
       if (unsubscribe.value) {
         unsubscribe.value();
@@ -147,22 +149,33 @@ export default {
         bottomRef: scrollAtTheBottom.value,
       };
 
-    store.commit(
-    
+      store.commit(
         "chatAdditionalDataManage/setScrollBottomData",
         scrollBotomdata
       );
-    store.commit("chatAdditionalDataManage/setChatScrollWayRef",chatScrollWay.value)
-   });
+      store.commit(
+        "chatAdditionalDataManage/setChatScrollWayRef",
+        chatScrollWay.value
+      );
+    });
 
     function subscribeToSnapshot() {
       unsubscribe.value = chatQuerry.value.onSnapshot(
         (snapshot, parameters) => {
           if (gettingType.value === "prev" || gettingType.value === "next") {
-            msgs.value = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
+            if (removedMsgs.value) {
+              msgs.value = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+              msgs.value.concat(removedMsgs.value)
+              removedMsgs.value = null
+            } else {
+              msgs.value = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+            }
           } else {
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -267,13 +280,12 @@ export default {
 
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
-        gettingType.value = "prev";
         const middle = Math.floor((msgs.value.length - 1) / 2);
 
-        //-2 as i want see more new data
+        removedMsgs.value = [...msgs.value].slice(0, middle);
+
+        gettingType.value = "prev";
         pivotMessage.value = msgs.value[middle].createdAt;
-        console.log(msgs.value[middle].text, "prev midle");
-        console.log("GO ?", middle);
       }
     }
 
@@ -339,8 +351,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 .super-pop {
   position: absolute;
   width: 100px;
