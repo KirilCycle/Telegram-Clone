@@ -201,7 +201,7 @@ export default {
               .endBefore(pivotMessage.value);
             resetPrevListener();
 
-            console.log("WAS");
+            
             break;
           case "next":
             chatQuerry.value = db
@@ -214,7 +214,7 @@ export default {
 
             resetPrevListener();
 
-            console.log("WAS 2");
+         
             break;
           default:
             chatQuerry.value = db
@@ -226,7 +226,7 @@ export default {
 
             resetPrevListener();
 
-            console.log("WAS DEF");
+          
         }
       },
       { immediate: true }
@@ -253,7 +253,7 @@ export default {
             top: 100000,
           });
 
-          console.log(scrollAtTheBottom.value, "AHHAHAHAHAH");
+       
           isFirstSrllWasExecuted.value = true;
         });
       }
@@ -261,7 +261,7 @@ export default {
 
     watchEffect(() => {
       if (store.state.chat.chatId !== lastChatId.value) {
-        console.log("HA > ");
+       
         store.commit(
           "chatAdditionalDataManage/setChatKey",
           store.state.chat.chatId
@@ -307,7 +307,6 @@ export default {
 
     function disableScroll() {
       if (gettingType.value === "prev" && msgs.value === limit.value) {
-        console.log("stop scrolling");
         show();
       }
     }

@@ -10,7 +10,7 @@ export async function replyEmoji(em, msg, isSelected) {
   // await updateDoc(washingtonRef, {
   //   capital: true
   // });
-  console.log(em, msg.emj, "START");
+  
 
   const user = store.state.user.user.uid;
 
@@ -30,7 +30,7 @@ export async function replyEmoji(em, msg, isSelected) {
     async function postReaction(key) {
       let linkToSendedEm = `emj.${key}`;
 
-      console.log(linkToSendedEm, "LETS GO ");
+     
 
       await updateDoc(msgRef, {
         [linkToSendedEm]: arrayUnion(user),
@@ -82,17 +82,17 @@ export async function replyEmoji(em, msg, isSelected) {
       if (founded) {
         if (founded === em) {
           removeReaction(founded, last);
-          console.log(founded, em, "DIFF  REM POS??? DEL ");
+          
           return;
         }
-        console.log(founded, em, "DIFF  REM POS???");
+
 
         removeReaction(founded, last).then(() => {
           postReaction(em);
         });
       } else {
         postReaction(em);
-        console.log(founded, em, "DIFF NO F POST ???");
+
       }
     }
     return;

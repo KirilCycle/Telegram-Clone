@@ -182,7 +182,7 @@ export default {
     },
   },
   setup(props, {emit}) {
-    console.log(store.state.user);
+    
 
     function logout() {
       const auth = getAuth();

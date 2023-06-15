@@ -113,7 +113,6 @@ export default {
       }
     },
     reset() {
-      console.log("reset");
       this.photo = null;
       this.preview = "";
       this.filePreview = "";
@@ -150,7 +149,6 @@ export default {
 
       const previewMsgId = uuidv4();
       if (fileType === "video") {
-        console.log(source, "VID");
 
         const storageRef = ref(storage, `videos/${source.name + uuidv4()}`);
 
@@ -176,19 +174,18 @@ export default {
 
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload progress:", progress);
+           
           },
           (error) => {
             store.commit("previewChat/removeLoadingMsg", previewMsgId);
-            console.error("Error uploading video:", error);
+          
           },
           () => {
             // Handle successful upload
-            console.log("Video uploaded successfully");
             // Get the download URL of the uploaded video file
             getDownloadURL(uploadTask.snapshot.ref)
               .then((downloadURL) => {
-                console.log("Download URL:", downloadURL);
+              
 
                 const resData = {
                   type: "video",
@@ -241,7 +238,6 @@ export default {
               };
 
               if (props.isFounded) {
-                console.log("IMAGE CASE");
                 sendMessageToFoundedChat(caption, store.state.chat.selectedUser.uid, resData)
                   .finally(
                     store.commit("previewChat/removeLoadingMsg", previewMsgId)
@@ -263,7 +259,8 @@ export default {
             store.commit("previewChat/removeLoadingMsg", previewMsgId);
             console.log(er, "post er");
           });
-        // console.log("PHT");
+            
+
       }
     }
 

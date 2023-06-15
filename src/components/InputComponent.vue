@@ -28,15 +28,11 @@ export default {
   },
   computed: {
     mutadedValue() {
-      console.log("mut");
       return this.value.toLocaleLowerCase().replaceAll("a", "%");
     },
   },
   watch: {
     post: {
-     handler(newV,oldV) {
-       console.log(oldV) 
-     },
      deep: true,
      immediate: true
     },

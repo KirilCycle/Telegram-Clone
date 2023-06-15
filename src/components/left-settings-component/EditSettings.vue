@@ -163,7 +163,7 @@ export default {
       this.usernameExist = false;
       if (this.username.length > 3 && this.username.length < 27) {
         this.shortLength = false;
-        console.log("username changes", this);
+       
 
         let data = this;
 
@@ -193,7 +193,7 @@ export default {
 
         let ready = true;
 
-        console.log(this.username);
+      
         for (let i = 0; i < this.username.length; i++) {
           for (let j = 0; j < wrongSymphols.length; j++) {
             if (this.username[i].includes(wrongSymphols[j])) {
@@ -206,7 +206,7 @@ export default {
 
         if (ready) {
           this.usernameWrongData = false;
-          console.log("withou wrong data", this.username);
+         
 
           const username = this.username;
 
@@ -241,11 +241,11 @@ export default {
 
           findUser();
         } else {
-          console.log("Huynya predelivay");
+        
           this.usernameWrongData = true;
           this.usernameAvaible = false;
 
-          console.log(this.usernameWrongData);
+        
         }
       } else {
         this.usernameAvaible = false;
@@ -284,7 +284,7 @@ export default {
     },
 
     handleTextArea(v) {
-      console.log("handleTextArea", v);
+     
 
       let el = this.$refs.textarea;
 
@@ -293,7 +293,7 @@ export default {
       el.style.height = "45px";
       el.style.height = el.scrollHeight + "px";
 
-      console.log(this.bio);
+   
     },
     async commitProfileChanges() {
       this.usernameAvaible = false;
@@ -328,7 +328,7 @@ export default {
           );
 
           uploadBytes(storageRef, this.uploadedPhoto).then((snapshot) => {
-            console.log(storageRef._location.path_, "Uploaded a blob or file!");
+           
 
             getDownloadURL(storageRef).then((url) => {
               newData = {
@@ -365,13 +365,13 @@ export default {
             this.changesLoading = true;
             if (res.username === this.$store.state.user.user.username) {
               await updateDoc(userDoc, newData).then((res) => {
-                console.log(res, "UPDATED SAME USERNAME");
+              
 
                 this.$emit("close");
                 updateStoreUser().then((res) => this.updateLocalData());
               });
 
-              console.log("ENOTHER DATA", newData);
+           
             } else {
               alert("wrong data");
             }
@@ -382,9 +382,7 @@ export default {
                 this.$emit("close");
                 updateStoreUser().then((res) => this.updateLocalData());
               })
-              .catch((er) => console.log(er));
 
-            console.log("ENOTHER DATA", newData);
           }
         }
         // To update age and favorite color:

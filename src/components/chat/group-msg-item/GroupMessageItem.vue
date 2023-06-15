@@ -117,7 +117,7 @@ export default {
 
   methods: {
     handleEmojiClick(emj) {
-      console.log(emj);
+      
     },
     handleSelectMsg(e) {
       store.commit("message/setReplyMsgRef", this.$refs.msg);
@@ -129,7 +129,7 @@ export default {
       store.commit("message/setSelectdMsg", this.message);
       store.commit("message/setVisible", true);
 
-      console.log(store.state.message.selectedMsgData, "SELECTED");
+    
     },
   },
 

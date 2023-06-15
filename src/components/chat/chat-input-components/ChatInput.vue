@@ -104,9 +104,7 @@ export default {
           .doc(store.state.chat.chatId)
           .collection("messages");
 
-        console.log(chatRefMsg, "AS SEND");
-
-        chatRefMsg.add(message).then((res) => console.log("res", res));
+        chatRefMsg.add(message).then((res) => {});
 
         const user1usersChatRef = doc(
           db,
@@ -191,28 +189,25 @@ export default {
     const scrollBottom = ref(null);
 
     function scrollToBottom() {
-    
-     store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView(
-        {
-          block: "start",
-          inline: "start",
-          behavior: "smooth",
-        }
-      );
-
-    setTimeout(() => {
       if (
         store.state.chatAdditionalDataManage.scrollBottomData.aboveBottomChat
       ) {
-        console.log("YES GO DEF");
         store.state.chatAdditionalDataManage.chatGettingMsgsSettings();
       }
-    },200)
+      
+      setTimeout(() => {
+        store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView(
+          {
+            block: "start",
+            inline: "start",
+            behavior: "smooth",
+          }
+        );
+      },100)
     }
 
     async function startRecording() {
       if (navigator.mediaDevices) {
-        console.log("start");
         // recording.value = new MediaRecorder(
         //   navigator.mediaDevices.getUserMedia({ audio: true })
         // );
@@ -225,25 +220,18 @@ export default {
           const mediaRecorder = new MediaRecorder(stream);
 
           mediaRecorder.start();
-          console.log(mediaRecorder.state);
-          console.log("recorder started");
 
           setTimeout(async () => {
             mediaRecorder.stop();
-            console.log(mediaRecorder.state, "S");
-
             const storageRef = ref(
               storage,
               "recordings/" + Date.now() + ".webm"
             );
-            console.log(blob, "AAAUDIO");
 
             chunks = [];
             const audioURL = URL.createObjectURL(blob);
 
             const snapshot = await storageRef.put(blob);
-
-            console.log("recorder stopped", audioURL);
 
             mediaRecorder.ondataavailable = (e) => {
               chunks.push(e.data);
@@ -254,7 +242,6 @@ export default {
     }
 
     async function sendRecording() {
-      console.log("end");
       // recording.value.stop();
       // recording.value.ondataavailable = (event) => {
       //   const blob = event.data;

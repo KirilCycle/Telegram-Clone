@@ -55,12 +55,6 @@ export default {
     };
   },
 
-  watch: {
-    store(newValue) {
-      console.log("AAAAA");
-    },
-  },
-
   setup() {
     //i know this is horrible solution, but only it is works (i will make rerender particular component to get actual data from store, in addition )
     //
@@ -98,7 +92,6 @@ export default {
 
       rerender.value = false;
 
-      console.log(store.state.chat?.selectedUser?.username, "AAAAAAA CHANGES");
     });
 
     return {

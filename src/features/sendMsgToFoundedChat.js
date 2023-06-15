@@ -44,7 +44,6 @@ export async function sendMessageToFoundedChat(v, toUserId ,source) {
 
       chatDocRef.get().then((doc) => {
         if (doc.exists) {
-          console.log("Document exists 1");
           store.commit("chat/setChatId", enotherChatId);
           store.commit("chat/setSelectedUser", userId2);
         } else {
@@ -52,7 +51,6 @@ export async function sendMessageToFoundedChat(v, toUserId ,source) {
 
           chatDocRefSecond.get().then((doc) => {
             if (doc.exists) {
-              console.log("Document exists 2");
               store.commit("chat/setChatId", chatId);
               store.commit("chat/setSelectedUser", userId2);
             } else {

@@ -41,9 +41,9 @@ import { getAuth } from "firebase/auth";
           .doc(chatId)
           .collection("messages");
 
-        console.log(chatRefMsg, "AS SEND");
 
-        chatRefMsg.add(message).then((res) => console.log("res", res));
+
+        chatRefMsg.add(message).then((res) => {});
 
         const user1usersChatRef = doc(
           db,

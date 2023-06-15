@@ -12,7 +12,6 @@ export async function getUser(id) {
       .then((doc) => {
     
         if (doc.data().uid) {
-            console.log(  doc.data());
             return doc.data()
          } 
          return 'Error getting user (corupted data)'

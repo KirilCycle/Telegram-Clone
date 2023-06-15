@@ -35,10 +35,8 @@ function wordGenerator() {
 }
 
 async function setUserToStore(user, db) {
-  console.log(user, "USER");
   store.commit("user/setUser", user);
   store.commit("user/setAuth", true);
-  console.log("user setted");
 }
 
 export const routes = [
@@ -72,7 +70,7 @@ export const routes = [
               const docSnap = await getDoc(docRef);
 
               if (!docSnap.exists()) {
-                console.log("cc action");
+          
                 await setDoc(doc(db, "usersLinksToChat", user.uid), {}).catch(
                   (er) => reject(er)
                 );
@@ -82,7 +80,7 @@ export const routes = [
               const prewuserSnap = await getDoc(prewuserSnapRef);
 
               if (!prewuserSnap.exists()) {
-                console.log("cpu action");
+             
                 await setDoc(doc(db, "usersPrew", user.uid), {
                   uid: user.uid,
                   photoURl: `https://robohash.org/${user.uid}.png`,

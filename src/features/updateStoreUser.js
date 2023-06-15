@@ -10,7 +10,6 @@ export async function updateStoreUser(id) {
     const prewuserSnapRef = doc(db, "usersPrew", id ? id : store.state.user.user.uid);
     const prewuserSnap = await getDoc(prewuserSnapRef);
 
-    console.log(prewuserSnap.data(), "USER");
     store.commit("user/setUser", prewuserSnap.data());
   }
 

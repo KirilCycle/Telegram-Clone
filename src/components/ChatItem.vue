@@ -134,7 +134,7 @@ export default {
   color: $text-main-l;
 }
 .dark .cht-i {
-   &:hover {
+  &:hover {
     background-color: #b3b3b330;
     .time {
       color: rgb(93, 93, 93);
@@ -146,12 +146,11 @@ export default {
   .name {
     color: white;
   }
- 
 }
 
 .active {
   @extend .cht-i;
-  background-color: $main;
+  background-color: $main !important;
   color: #ffff;
 
   .name {
@@ -159,7 +158,7 @@ export default {
   }
 
   &:hover {
-    background-color: $main;
+    background-color: $main !important;
     .time {
       color: #ffff;
     }
@@ -177,7 +176,12 @@ export default {
 }
 
 .dark .active {
-  background-color: $main-l;
+  background-color: $main-l !important;
+  &:hover {
+    .time {
+      color: white !important;
+    }
+  }
 }
 
 @media (max-width: 600px) {
@@ -190,7 +194,6 @@ export default {
     }
   }
 }
-
 
 .dark .img-wrap {
   border: none;

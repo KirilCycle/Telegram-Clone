@@ -70,9 +70,7 @@ export default {
     const { error, visible, wrongValues, wrongData, password, email } =
       useValidationForm();
     const { googleSignIn } = useValidationFeatures();
-    watchEffect(() => {
-      console.log(email.value);
-    });
+   
     return {
       googleSignIn,
       error,
@@ -104,7 +102,6 @@ export default {
           .then((data) => {
             store.commit("user/setAuth", true);
             store.commit("user/setUser", data);
-            console.log(store.state.user.isAuth, store.state.user.user);
             router.push({ name: "chats" });
           })
           .catch((er) => {

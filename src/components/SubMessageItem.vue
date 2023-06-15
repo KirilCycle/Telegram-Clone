@@ -45,7 +45,7 @@ export default {
   watch: {
      visible() {
          this.$emit('openModal',true)
-         console.log('GO')
+         
         if (this.visible.value) {
         }
      }
@@ -54,7 +54,7 @@ export default {
 
 
     selectAction(e) {
-      console.log("select");
+     
     },
 
  
@@ -69,10 +69,8 @@ export default {
 
       getDownloadURL(pathReference)
         .then((url) => {
-          console.log(url, "AS PATH FROM ITEM");
           this.profilePhotoUrl = url;
         })
-        .catch((er) => console.log("er", er));
     },
   },
 
@@ -92,8 +90,6 @@ export default {
 
     const photoURL = ref(null);
 
-    console.log(props.message.userPhotoURl, "ASS I NEED");
-
     const storage = getStorage();
     // async function SUS (){
 
@@ -103,10 +99,7 @@ export default {
         `${props.message.imageRef}`
       );
 
-      console.log(pathReference, "HHHHHEEEEERERREREEEE");
-
       getDownloadURL(pathReference).then((url) => {
-        console.log(url, "AS PATH MESI");
         photoURL.value = url;
       });
     }

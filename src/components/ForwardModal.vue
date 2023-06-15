@@ -53,7 +53,7 @@ export default {
       }
         
 
-     console.log(modified, 'MOD');
+   
 
       store.commit(
         "message/setForwardTarget",
@@ -77,13 +77,13 @@ export default {
         const formated = Object.values(doc.data());
         // Do something with the document data
 
-        console.log(store.state.chat.chatId);
+      
 
         chatList.value = formated.sort(
           (a, b) => b.lastMsg.createdAt.seconds - a.lastMsg.createdAt.seconds
         );
       } else {
-        console.log("No such document!");
+       
       }
     });
 

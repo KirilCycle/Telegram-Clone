@@ -60,7 +60,7 @@ export default {
   },
 
   setup() {
-    console.log(store.state.chat.querry);
+  
 
     const founded = ref([]);
     const loading = ref(false);
@@ -88,7 +88,6 @@ export default {
           });
           loading.value = false;
           founded.value = users;
-          console.log(users, "FROM LIST");
         });
       }
     });
@@ -104,8 +103,6 @@ export default {
       const first = us.uid + store.state.user.user.uid;
 
       const second = store.state.user.user.uid + us.uid;
-
-      console.log("handle us ", store.state.chat.chatIdList);
 
       if (store.state.chat.chatIdList) {
         if (store.state.chat.chatIdList.find((ch) => ch.id === first)) {

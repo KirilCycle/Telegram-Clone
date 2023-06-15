@@ -48,7 +48,6 @@ export default {
   computed: {
     select() {
       if (this.$store.state.message.replyTarget) {
-        console.log(this.$store.state.message.replyTarget, "REP");
         return this.$store.state.message.replyTarget;
       } else if (this.$store.state.message.forwardTarget) {
         return this.$store.state.message.forwardTarget;
@@ -59,9 +58,8 @@ export default {
   mounted() {
     const chatRef = this.$store.state.chatAdditionalDataManage.chatContainerRef;
     const msgsListWay =
-      this.$store.state.chatAdditionalDataManage.chatScrollWayRef;
+    this.$store.state.chatAdditionalDataManage.chatScrollWayRef;
 
-    console.log(msgsListWay.clientHeight, chatRef.clientHeight, "REPL TEST");
 
     const space = this.$refs.replyBlock.clientHeight;
 

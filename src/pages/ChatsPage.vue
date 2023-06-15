@@ -161,7 +161,6 @@ export default {
   methods: {
     update(changeId) {
       if (changeId !== this.chatKey) {
-        console.log("UPDATED");
         this.chatKey = changeId;
       }
     },
@@ -222,9 +221,8 @@ export default {
           .doc(store.state.chat.chatId)
           .collection("messages");
 
-        console.log(chatRefMsg, "AS SEND");
 
-        chatRefMsg.add(message).then((res) => console.log("res", res));
+        chatRefMsg.add(message).then((res) => {});
 
         const user1usersChatRef = doc(
           db,
@@ -388,7 +386,6 @@ export default {
         id,
       };
 
-      console.log(settings, "HERE");
 
       store.commit("chat/changeChatSettings", settings);
     }
@@ -402,7 +399,6 @@ export default {
 
       //same width as user set before
       if (localStorage.getItem("leftbarwidth")) {
-        console.log("ha ?", localStorage.getItem("leftbarwidth"));
         leftbar.value.style.width = localStorage.getItem("leftbarwidth");
       }
 
@@ -430,7 +426,6 @@ export default {
 
         if (!isBack) {
           // this.$refs.settings.style.transform = `translateX(${pos})`;
-          console.log(leftBarWdth, rightside.value, "GO SVOVE");
           rightside.value.style.transform = `translateX(${leftBarWdth}px)`;
           isShoved.value = false;
           return;
