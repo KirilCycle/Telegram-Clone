@@ -504,7 +504,7 @@ export default {
   height: 100%;
   position: absolute;
   overflow: hidden;
-  max-width: 390px;
+  max-width: 450px;
   min-width: 220px;
   z-index: 30;
   transform: translateX(-120%);

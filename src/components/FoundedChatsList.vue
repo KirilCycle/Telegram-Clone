@@ -35,7 +35,6 @@ import { watchEffect } from "vue";
 import { getDatabase, onValue } from "firebase/database";
 import { updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
-import DirectChat from "@/components/DirectChat.vue";
 import ChatItem from "./ChatItem.vue";
 export default {
   components: { ChatItem },

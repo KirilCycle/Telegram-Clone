@@ -133,6 +133,14 @@ export default {
 .dark .cht-i .name {
   color: $text-main-l;
 }
+.dark .cht-i {
+   &:hover {
+    background-color: #b3b3b330;
+    .time {
+      color: rgb(93, 93, 93);
+    }
+  }
+}
 
 .dark .active {
   .name {
@@ -183,14 +191,6 @@ export default {
   }
 }
 
-.dark  .cht-i{
-  &:hover {
-  
-    .time {
-      color: rgb(255, 255, 255);
-    }
-  }
-}
 
 .dark .img-wrap {
   border: none;

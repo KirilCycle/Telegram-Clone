@@ -357,6 +357,15 @@ export default {
   .text {
     color: black;
   }
+
+  .reply-block {
+    color: rgb(67, 67, 67);
+    .reply_block_text_wrap {
+      p {
+        color: rgb(67, 67, 67);
+      }
+    }
+  }
 }
 
 .dark .my-message {
@@ -367,15 +376,17 @@ export default {
     color: black;
   }
 
-  .reply_block_text_wrap {
+  .reply-block {
     h3 {
-      font-size: 14px;
+      color: rgb(67, 67, 67);
     }
-    p {
-      color: white;
-      font-size: 14px;
+    .reply_block_text_wrap {
+      p {
+        color: white;
+      }
     }
   }
+
 }
 
 @media (max-width: 650px) {

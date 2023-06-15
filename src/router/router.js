@@ -53,11 +53,6 @@ export const routes = [
     component: () => import("@/pages/RegPage.vue"),
   },
   {
-    path: "/fake",
-    name: "fake",
-    component: () => import("@/pages/FakeChat.vue"),
-  },
-  {
     path: "/",
     name: "chats",
     component: ChatsPage,
@@ -124,18 +119,5 @@ const router = createRouter({
   routes,
   history: createWebHashHistory(process.env.BASE_URL),
 });
-
-// router.beforeEach(async (to,from ) => {
-//     if (
-
-//       // make sure the user is authenticated
-//       !isAuthenticated &&
-//       // ❗️ Avoid an infinite redirect
-//       to.name !== 'auth' && to.name  !== 'reg'
-//     ) {
-//       // redirect the user to the login page
-//       return { name:  from.name}
-//     }
-//   })
 
 export default router;
