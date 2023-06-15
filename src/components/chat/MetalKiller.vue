@@ -6,7 +6,6 @@
     ></div>
     <div class="previos-observer" v-observer="previous"></div>
 
-    <div class="super-pop" v-if="sus"></div>
     <group-message-item-vue
       v-for="(it, index) in msgs"
       :key="it.id"
@@ -28,7 +27,7 @@
 </template>
 
 <script>
-import { onBeforeMount, onMounted, watchEffect } from "vue";
+import {  onMounted, watchEffect } from "vue";
 import { uuidv4 } from "@firebase/util";
 import firebase from "firebase/compat/app";
 import { ref, watch, defineAsyncComponent } from "vue";
@@ -36,7 +35,6 @@ import { query, orderBy, startAt, endBefore } from "firebase/firestore";
 import store from "@/store/store";
 import InLoadingMsgsPreview from "./InLoadingMsgsPreview.vue";
 import { isTouchDevice } from "@/features/isTouchDevice";
-// import GroupMessageItemVue from "./GroupMessageItem.vue";
 
 export default {
   emits: ["shoveIsAvaible"],
@@ -329,7 +327,6 @@ export default {
     }
 
     return {
-      sus,
       show,
       bottom,
       previous,
@@ -348,15 +345,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.super-pop {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  right: 0px;
-  background-color: #fff;
-  bottom: 0px;
-  z-index: 300;
-}
+
 
 .scroll-bottom {
   width: 30px;

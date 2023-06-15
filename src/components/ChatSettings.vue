@@ -7,63 +7,60 @@
 </template>
 
 <script>
-import { writeBatch, doc } from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import store from "@/store/store";
-import { collection, getDocs, getDoc, Timestamp } from "firebase/firestore";
+
 
 export default {
   methods: {
-    async deleteChat() {
-      return
-      console.log("pizda maline");
-      //user 1
-      //user 2
-      const db = firebase.firestore();
-      //delete collection
-      // Get a new write batch
-      const batch = writeBatch(db);
+    // async deleteChat() {
+    //   return
+    //   console.log("pizda maline");
+    //   //user 1
+    //   //user 2
+    //   const db = firebase.firestore();
+    //   //delete collection
+    //   // Get a new write batch
+    //   const batch = writeBatch(db);
 
-      // Set the value of 'NYC'
-      // Update the population of 'SF'
-      const myId = this.$store.state.user.user.uid;
+    //   // Set the value of 'NYC'
+    //   // Update the population of 'SF'
+    //   const myId = this.$store.state.user.user.uid;
 
-      const chatId = this.$store.state.chat.chatId;
+    //   const chatId = this.$store.state.chat.chatId;
 
-      console.log(myId, chatId, chatId.replace(myId, ""));
+    //   console.log(myId, chatId, chatId.replace(myId, ""));
 
     
 
-      const user2Ref = doc(db, "usersLinksToChat", chatId.replace(myId, ""));
+    //   const user2Ref = doc(db, "usersLinksToChat", chatId.replace(myId, ""));
 
-      const user1Ref = doc(db, "usersLinksToChat", myId);
+    //   const user1Ref = doc(db, "usersLinksToChat", myId);
 
-      batch.update(user1Ref, {
-        [chatId]: firebase.firestore.FieldValue.delete(),
-      });
+    //   batch.update(user1Ref, {
+    //     [chatId]: firebase.firestore.FieldValue.delete(),
+    //   });
 
-      batch.update(user2Ref, {
-        [chatId]: firebase.firestore.FieldValue.delete(),
-      });
+    //   batch.update(user2Ref, {
+    //     [chatId]: firebase.firestore.FieldValue.delete(),
+    //   });
 
-      const chatRef = db.collection("chatMessages").doc(chatId);
+    //   const chatRef = db.collection("chatMessages").doc(chatId);
 
-      batch.delete(chatRef);
+    //   batch.delete(chatRef);
 
-      //   // Delete the city 'LA'
-      //   const laRef = doc(db, "cities", "LA");
-      //   batch.delete(laRef);
+    //   //   // Delete the city 'LA'
+    //   //   const laRef = doc(db, "cities", "LA");
+    //   //   batch.delete(laRef);
 
-      //   // Commit the batch
-        await batch
-          .commit()
-          .then(() => {
-            console.log("Batch operation successful");
-          })
-          .catch((error) => {
-            console.error("Batch operation failed:", error);
-          });
-    },
+    //   //   // Commit the batch
+    //     await batch
+    //       .commit()
+    //       .then(() => {
+    //         console.log("Batch operation successful");
+    //       })
+    //       .catch((error) => {
+    //         console.error("Batch operation failed:", error);
+    //       });
+    // },
   },
 };
 </script>
