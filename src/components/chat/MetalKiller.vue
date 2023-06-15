@@ -5,8 +5,8 @@
       class="block-scroll-to-prevent-stick-to-top"
     ></div>
     <div class="previos-observer" v-observer="previous"></div>
-   
-   <div class="super-pop " v-if="sus"></div>
+
+    <div class="super-pop" v-if="sus"></div>
     <group-message-item-vue
       v-for="(it, index) in msgs"
       :key="it.id"
@@ -88,7 +88,7 @@ export default {
     const gettingType = ref(null);
     const msgs = ref([]);
     const chatScrollWay = ref(null);
-    const sus = ref(false)
+    const sus = ref(false);
     const pivotMessage = ref(null);
     const limit = ref(85);
     const chatQuerry = ref(null);
@@ -122,22 +122,14 @@ export default {
       });
     }
 
-    
-
     function handleScrollBtn(isBottom) {
-      store.commit("chatAdditionalDataManage/setChatGettingMsgsSettings", 
-        () => {
-          chatQuerry.value = null
-          gettingType.value = null
-          pivotMessage.value = null
-        }
-      );  
-
-      const isBottomChatPart = msgs.value[msgs.value.length - 1]?.id === recentMsgID.value
+      const isBottomChatPart =
+        msgs.value[msgs.value.length - 1]?.id === recentMsgID.value;
 
       store.commit("chatAdditionalDataManage/setScrollBottomData", {
         isBottom: isBottomChatPart && isBottom,
-        wasObserved: isBottomChatPart
+        //that means queery params focused on other chat parts
+        aboveBottomChat: !isBottomChatPart,
       });
 
       atTheBottom.value = isBottom;
@@ -159,6 +151,14 @@ export default {
       store.commit(
         "chatAdditionalDataManage/setChatScrollWayRef",
         chatScrollWay.value
+      );
+      store.commit(
+        "chatAdditionalDataManage/setChatGettingMsgsSettings",
+        () => {
+          chatQuerry.value = null;
+          gettingType.value = null;
+          pivotMessage.value = null;
+        }
       );
     });
 
@@ -275,12 +275,15 @@ export default {
     function previous() {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
         const middle = Math.floor((msgs.value.length - 1) / 2);
-
         gettingType.value = "prev";
         pivotMessage.value = msgs.value[middle].createdAt;
+
+        store.commit("chatAdditionalDataManage/setScrollBottomData", {
+          //that means queery params focused on other chat parts
+          aboveBottomChat: true,
+        });
       }
     }
-
 
     function next() {
       // if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {

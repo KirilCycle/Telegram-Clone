@@ -191,18 +191,23 @@ export default {
     const scrollBottom = ref(null);
 
     function scrollToBottom() {
-      setTimeout(() => {
-        store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView(
-          {
-            block: "start",
-            inline: "start",
-            behavior: "smooth",
-          }
-        );
-      });
-      setTimeout(() => {
-        store.state.chatAdditionalDataManage.chatGettingMsgsSettings()
-      }, 3000);
+    
+     store.state.chatAdditionalDataManage.scrollBottomData.bottomRef.scrollIntoView(
+        {
+          block: "start",
+          inline: "start",
+          behavior: "smooth",
+        }
+      );
+
+    setTimeout(() => {
+      if (
+        store.state.chatAdditionalDataManage.scrollBottomData.aboveBottomChat
+      ) {
+        console.log("YES GO DEF");
+        store.state.chatAdditionalDataManage.chatGettingMsgsSettings();
+      }
+    },200)
     }
 
     async function startRecording() {
