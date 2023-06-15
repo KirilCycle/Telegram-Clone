@@ -247,10 +247,11 @@ export default {
   },
 
   mounted() {
+    
     let x = store.state.message?.coords?.x;
     let y = store.state.message?.coords?.y;
 
-    const estimatedSpace = 50;
+    const estimatedSpace = 150;
 
     if (window.innerHeight - y < 220) {
       y -= estimatedSpace;

@@ -5,7 +5,8 @@
       class="block-scroll-to-prevent-stick-to-top"
     ></div>
     <div class="previos-observer" v-observer="previous"></div>
-
+   
+   <div class="super-pop " v-if="sus"></div>
     <group-message-item-vue
       v-for="(it, index) in msgs"
       :key="it.id"
@@ -48,7 +49,7 @@ export default {
     GroupMessageItemVue: defineAsyncComponent(async () => {
       let obj = await import(
         `./${
-          !isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
+          isTouchDevice() ? "group-msg-item-mobile" : "group-msg-item"
         }/GroupMessageItem.vue`
       ).finally(() =>
         setTimeout(() => {
@@ -87,28 +88,17 @@ export default {
     const gettingType = ref(null);
     const msgs = ref([]);
     const chatScrollWay = ref(null);
+    const sus = ref(false)
     const pivotMessage = ref(null);
     const limit = ref(85);
     const chatQuerry = ref(null);
-    const messagesRef = ref(
-      db
-        .collection("chatMessages")
-        .doc(store.state.chat.chatId)
-        .collection("messages")
-    );
-    const currentAction = ref(null);
     const unsubscribe = ref(null);
     const isBottom = ref(null);
     const scrollAtTheBottom = ref(null);
     const atTheBottom = ref(null);
     const lastChatId = ref(null);
-    const invokeStartChat = ref(null);
     const isFirstSrllWasExecuted = ref(null);
-    const firstGettinWas = ref(null);
-    const scrollWasDisabled = ref(null);
     const recentMsgID = ref(null);
-
-    const removedMsgs = ref(null);
 
     function resetPrevListener() {
       if (unsubscribe.value) {
@@ -132,11 +122,24 @@ export default {
       });
     }
 
+    
+
     function handleScrollBtn(isBottom) {
+      store.commit("chatAdditionalDataManage/setChatGettingMsgsSettings", 
+        () => {
+          chatQuerry.value = null
+          gettingType.value = null
+          pivotMessage.value = null
+        }
+      );  
+
+      const isBottomChatPart = msgs.value[msgs.value.length - 1]?.id === recentMsgID.value
+
       store.commit("chatAdditionalDataManage/setScrollBottomData", {
-        isBottom,
-        wasPaginated: !chatQuerry.value ? false : true,
+        isBottom: isBottomChatPart && isBottom,
+        wasObserved: isBottomChatPart
       });
+
       atTheBottom.value = isBottom;
     }
     onMounted(() => {
@@ -163,19 +166,10 @@ export default {
       unsubscribe.value = chatQuerry.value.onSnapshot(
         (snapshot, parameters) => {
           if (gettingType.value === "prev" || gettingType.value === "next") {
-            if (removedMsgs.value) {
-              msgs.value = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-              msgs.value.concat(removedMsgs.value)
-              removedMsgs.value = null
-            } else {
-              msgs.value = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-            }
+            msgs.value = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
           } else {
             msgs.value = snapshot.docs
               .map((doc) => ({ id: doc.id, ...doc.data() }))
@@ -282,12 +276,11 @@ export default {
       if (msgs.value.length > limit.value - 1 || gettingType.value === "next") {
         const middle = Math.floor((msgs.value.length - 1) / 2);
 
-        removedMsgs.value = [...msgs.value].slice(0, middle);
-
         gettingType.value = "prev";
         pivotMessage.value = msgs.value[middle].createdAt;
       }
     }
+
 
     function next() {
       // if (msgs.value[msgs.value.length - 1].id !== recentMsgID.value) {
@@ -333,6 +326,7 @@ export default {
     }
 
     return {
+      sus,
       show,
       bottom,
       previous,

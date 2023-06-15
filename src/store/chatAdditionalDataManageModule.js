@@ -2,7 +2,8 @@ export const chatAdditionalDataManageModule = {
   state: () => ({
     chatContainerRef: null,
     chatScrollWayRef: null,
-    chatKey: "h",
+    chatKey: "defautlFirstStartKey",
+    chatGettingMsgsSettings: null,
     scrollBottomData: {
       isBottom: null,
     },
@@ -20,6 +21,9 @@ export const chatAdditionalDataManageModule = {
     getChatsCount(state) {
       return state.chatsCount;
     },
+    getChatGettingMsgsSettings(state) {
+      return state.chatGettingMsgsSettings;
+    },
   },
   mutations: {
     setScrollBottomData(state, data) {
@@ -27,6 +31,9 @@ export const chatAdditionalDataManageModule = {
     },
     setChatKey(state, key) {
       state.chatKey = key;
+    },
+    setChatGettingMsgsSettings(state, data) {
+      state.chatGettingMsgsSettings = data;
     },
     setChatScrollWayRef(state, ref) {
       state.chatScrollWayRef = ref;
@@ -39,6 +46,9 @@ export const chatAdditionalDataManageModule = {
   actions: {
     setScrollBottomData({ commit, data }) {
       commit("setScrollBottomData", data);
+    },
+    setChatGettingMsgsSettings({ commit, data }) {
+      commit("setChatGettingMsgsSettings", data);
     },
     setChatScrollWayRef({ commit, data }) {
       commit("setChatScrollWayRef", data);

@@ -200,6 +200,9 @@ export default {
           }
         );
       });
+      setTimeout(() => {
+        store.state.chatAdditionalDataManage.chatGettingMsgsSettings()
+      }, 3000);
     }
 
     async function startRecording() {
@@ -308,7 +311,7 @@ export default {
     background-color: $content-main-dark;
 
     &:hover {
-      background-color:  $content-main-dark-x2;
+      background-color: $content-main-dark-x2;
     }
   }
 
