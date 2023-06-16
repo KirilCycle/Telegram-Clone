@@ -4,6 +4,10 @@
 ```
 npm install
 ```
+## Demo Link 
+```
+https://visionary-kleicha-85eadc.netlify.app/#/reg
+```
 
 ### Compiles and hot-reloads for development
 ```
