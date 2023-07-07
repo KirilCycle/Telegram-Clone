@@ -18,18 +18,15 @@
 
 <script>
 import ChatInput from "./chat-input-components/ChatInput.vue";
-
+import { sendMessageToFoundedChat } from '@/features/sendMsgToFoundedChat';
 
 export default {
   components: {
     ChatInput,
   },
-  props: {
-    sendMessageToFoundedChat: Function,
-  },
   methods: {
     sayHi() {
-      this.sendMessageToFoundedChat('Hi',this.$store.state.chat.selectedUser.uid )
+      sendMessageToFoundedChat('Hi',this.$store.state.chat.selectedUser.uid )
     },
   },
   computed: {

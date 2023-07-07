@@ -8,7 +8,7 @@
   </Teleport>
 
   <div class="main">
-    <div ref="leftbars" class="left-bar">
+    <div  class="left-bar">
       <div ref="settings" class="settings-wrap">
         <div v-if="settingsVisible" class="profile-component-wrap">
           <settings-component
@@ -334,9 +334,7 @@ export default {
       shoveRightSide(true);
     }
 
-    function saveLastLeftBarWidth() {
-      localStorage.setItem("leftbarwidth", leftbar.value.offsetWidth + "px");
-    }
+    
 
     collectionRef.doc(store.state.user.user.uid).onSnapshot((doc) => {
       if (doc.exists) {
@@ -398,17 +396,13 @@ export default {
       shoveRightSide(false);
 
       //same width as user set before
-      if (localStorage.getItem("leftbarwidth")) {
-        leftbar.value.style.width = localStorage.getItem("leftbarwidth");
-      }
-
+   
       //right-side should have relative width to left-bar even during left-bar resize
       const resizeObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           const resizedElement = entry.target;
           const newWidth = resizedElement.clientWidth;
-          localStorage.setItem("leftbarwidth", newWidth + "px");
-
+        
           if (!isShoved.value) {
             rightside.value.style.transform = `translateX(${newWidth}px)`;
           }
@@ -457,7 +451,6 @@ export default {
       rightside,
       leftbar,
       shoveRightSide,
-      saveLastLeftBarWidth,
       chatList,
       chatContainer,
       currentChatType,

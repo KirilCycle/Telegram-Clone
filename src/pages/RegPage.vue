@@ -28,7 +28,7 @@
         </div>
 
         <div v-show="ableToVerify" class="btn-container">
-          <main-button class="btn-c" @click.prevent="register">GO</main-button>
+          <main-button class="btn-c"  @keyup.enter="register" @click.prevent="register">GO</main-button>
         </div>
       </div>
     </auth-reg-form-wrap>

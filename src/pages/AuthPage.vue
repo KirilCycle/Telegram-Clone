@@ -31,7 +31,7 @@
       </button>
       <!-- <input  v-model="login" /> -->
       <div class="btn-container">
-        <main-button v-show="ableToVerify" class="btn-c"  @click.prevent="register">SIGN IN</main-button>
+        <main-button v-show="ableToVerify" class="btn-c" @keyup.enter="register" @click.prevent="register">SIGN IN</main-button>
       </div>
       
 
