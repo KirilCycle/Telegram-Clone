@@ -4,9 +4,13 @@
 ```
 npm install
 ```
-## Demo Link 
+## Demo Info 
 ```
 https://sensational-sprinkles-bb85d8.netlify.app/#/auth
+user1@gmail.com
+pass: user12345678
+
+
 ```
 ### Description
 ```
