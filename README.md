@@ -6,7 +6,7 @@ npm install
 ```
 ## Demo Link 
 ```
-https://visionary-kleicha-85eadc.netlify.app/#/reg
+https://sensational-sprinkles-bb85d8.netlify.app/#/auth
 ```
 ### Description
 ```
